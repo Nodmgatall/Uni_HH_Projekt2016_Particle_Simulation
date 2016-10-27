@@ -7,6 +7,6 @@ int main() {
 	int x = 1234;
 	int y = 2345;
 	int z = 3456;
-	DEBUG_VAR(x, y, z);
+	debug_var(x, y, z);
 	std::cout << "Hello World" << std::endl;
 }

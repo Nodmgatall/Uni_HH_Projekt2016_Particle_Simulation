@@ -17,20 +17,20 @@ extern std::ofstream debug_file;
 #endif
 
 template<typename T>
-void _DEBUG_VAR(T v) {
+void _debug_var(T v) {
 	debug_file << v << std::endl;
 }
 
 template<typename T, typename ... Args>
-void _DEBUG_VAR(T v, Args ... args) {
+void _debug_var(T v, Args ... args) {
 	debug_file << v << ", ";
-	_DEBUG_VAR(args...);
+	_debug_var(args...);
 }
 
 template<typename ... Args>
-void DEBUG_VAR(Args ... args) {
+void debug_var(Args ... args) {
 	debug_file << __FILE__ << ":" << __LINE__ << " -> ";
-	_DEBUG_VAR(args...);
+	_debug_var(args...);
 }
 
 #endif /* DEBUG_HPP_ */
