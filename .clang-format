@@ -23,7 +23,7 @@ IndentCaseLabels: true
 IndentFunctionDeclarationAfterType: false
 IndentWidth: 4
 Language: Cpp
-MaxEmptyLinesToKeep: 0
+MaxEmptyLinesToKeep: 1
 NamespaceIndentation: None
 ObjCSpaceAfterProperty: true
 ObjCSpaceBeforeProtocolList: true
@@ -33,7 +33,7 @@ PenaltyBreakFirstLessLess: 0
 PenaltyBreakString: 100
 PenaltyExcessCharacter: 1
 PenaltyReturnTypeOnItsOwnLine: 20
-PointerBindsToType: true
+PointerBindsToType: false
 SpaceBeforeAssignmentOperators: true
 SpaceBeforeParens: Always
 SpaceInEmptyParentheses: false
