@@ -3,7 +3,7 @@ project(particle_simulation)
 
 file(GLOB_RECURSE sources src/*.cpp src/*.hpp)
 
-add_definitions(" -g -Wall -Wextra -pedantic -Werror -std=c++14 -Wno-unused-parameter")
+add_definitions(" -g -Wall -Wextra -pedantic -Werror -std=c++11 -Wno-unused-parameter")
 
 find_package(glm REQUIRED)
 
