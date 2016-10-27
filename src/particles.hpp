@@ -12,7 +12,6 @@ class Particles {
 
 		glm::vec3 get_velocity(int particle_id);
 		std::vector<glm::vec3> *get_velocities();
-
 };
 
 #endif
