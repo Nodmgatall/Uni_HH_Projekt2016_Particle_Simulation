@@ -15,5 +15,4 @@
 EXTERN std::vector<glm::vec3> position;
 EXTERN std::vector<glm::vec3> geschwindigkeit;
 EXTERN std::vector<glm::vec3> beschleunigung;
-
 #endif /* DEFINITIONS_HPP_ */
