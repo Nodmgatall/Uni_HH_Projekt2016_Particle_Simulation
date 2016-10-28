@@ -1,8 +1,8 @@
 #include <iostream>
 #define EXTERN
 #define MAIN_CPP
-#include "definitions.hpp"
 #include "debug.hpp"
+#include "definitions.hpp"
 #include "particles.hpp"
 int main () {
 	int x = 1234;
