@@ -1,0 +1,66 @@
+My thoughts:
+    Variable names:
+        lower case
+        words sepreated by _
+        Member variables:
+            variable name has a m_ before the name 
+                eg: m_member_variable_x
+        Global variables:
+            all Upper case
+            variable nam has a G_ before the name
+                eg: G_DEBUG_FILE_STRING
+
+    Macros (please no :P)
+        All Upper case
+        variable name has a M_ before the macro name
+
+    parameter names:
+        nothing special just a name in lower case
+        fitting names
+        short forms only if REALLY necessary (almost never)
+        (we could put a p_ before parameters but that could be overkill
+        never done that before but maybe its worth a thought)
+
+    Mehthod names
+        lower case
+        camelcase?/words sepertated by _ ? (no idea what would be better, i tend to use _ )
+    Class names
+        first character Uppercase
+            rest lower
+        CamelCase
+
+    Enumerations:
+        enum list_of_whatever{EINS, ZWEI, DREI, ETC}
+
+    Structs that define a type:
+        struct name has a _t at the end
+        eg: data_collection_t
+
+    For loops running index naming:
+        if possible a name that is not just i or idx but a name that says something about what the idx represents
+            so instead of for(auto idx : example_vector_with_particles):
+                (auto particle : exam....)
+
+            or for a normal for loop:
+                vector<glm::vec3> particle_vector;
+                unsigned long particle_index = 0;
+                unsigned long particle_vector_length = particle_vector.size();
+                for(particle_index; current_particle_id < particle_vector_length; current_particle_id ++)
+                {
+                    std::cout << particle_vector[particle_id].print() << std::endl;
+                }
+
+    use of auto:
+        i kind of dislike the use of auto since it obscures code
+        in range based for loops the use of auto is ok as long as the variable name is well chosen.
+
+    the ?: Opertator
+        nice to use, bad to read
+
+    
+PS:
+    id like not to use typedefs as the variable name should make clear what it is so there is no need
+    to let the type clarify what it is
+
+    we also need to talk about if we care where variables are defined
+    for example if we want to define every variable in a function at the top or if we dont give a damn and declare/define them when we need them (no real opinion on that)
