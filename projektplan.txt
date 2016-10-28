@@ -1,0 +1,137 @@
+Hallo Oliver,
+Die Folien wurden am Freitag versendet ... ich hatte die übersehen, auf dem Ipad sind die Anhänge mitten in der Email Signatur untergegangen ...
+
+Zu beginn des Projekts sollen wir einen Projektplan aufstellen, der beinhaltet welche Aufgaben es gibt, und wie wir planen das aufzuteilen.
+Ich habe mir schon mal ein paar Gedanken gemacht, was zu tun ist, um das Ziel zu erreichen ... 
+Was hälst du davon?
+Hast du eine Komplett andere Vorstellung?
+
+
+symbolerklärung:
+-> unterthemen/fragen
+. definitionen
+>> typ der Definition
+
+0. erstes Treffen (definition Datenstrukturen/Vorgehen)
+
+-——glm Mathe-bib
+
+	Vector
+	. x >> float
+	. y >> float
+	. z >> float
+	Partikel
+	. position >> Vector
+	. geschwindigkeit >> Vector
+	. beschleunigung >> Vector
+	. aktuell wirkende Kraft >> Vector
+	. Stoff >> AtomConstants
+	AtomConstants
+	. masse
+	. ladung -> elektron/proton/neutron ??
+	-> gibt es noch mehr Datenstrukturen, die vorher geklärt werden müssen?
+	-> eigene Listen für jede Eigenschaft haben den Vorteil, dass man eine Eigenschaft für alle Gleichzeitig auf 0 setzen kann (memset)
+		-> z.b. für die Kraft/beschleunigung? wäre dass sinnvoll ... sofern diese überhaupt abgespeichert werden muss
+		-> auch die visualisierung/ausgabe würde profitieren, da für diese nur die position relevant ist -> speedup
+	-> jede Optimierung enthält nur Pointer/indizes auf die "MasterListe" in der alle Partikel in der Reihnfolge der Eingabe stehen(oder sortiert nach irgendwas?)
+	-> mehr Definitionen?? weniger??
+	-> svn / git
+		-> server?
+	-> beim ersten treffen basis-programm schreiben mit definitionen und compilierbar -> andernfalls unnötige merge konflikte
+	-> jedes teilthema+jede Variante muss in eine eigene c-datei um merge konflikte zu minimieren
+		-> löschen einer variante erst nachdem mehrere analysen ergeben, dass das verfahren immer schlecht ist. 
+		-> auch wenn alles versioniert wird, ist es später aufwendig alle varianten wiederzufinden
+	-> code-kommentare :: ein bild sagt mehr als 1000 worte
+		-> 2d skizzen/formeln der optimierungen sind besser als verbale beschreibungen (meistens) (finde ich)
+		-> kommentare, die nur den code in natürliche sprache übersetzen halte ich für sinnlos
+		-> funktionskommentare sollten annahmen über die eingabe enthalten sowie zusicherungen für die ausgabe beschreiben. diese art von kommentar ist bei partnerarbeit immer sinnvoll
+		-> formeln sollten einmal in nicht optimierter form angegeben sein -> optimierter code kann teilweise echt anders aussehen und schwer nachzuvollziehen sein
+		-> auch für den abschlussbericht/präsentation sinnvoll
+	-> formatter gemeinsam erstellen
+	-> benchmark
+	-> debugg programmieren
+--—getopt parameter parser
+
+1. importieren der Startdaten (Benjamin)
+	-> aus Datei
+	-> generieren nach bestimmten verteilungen für tests, welches verfahren wann am besten ist
+		-> kugel in der mitte
+		-> verteilte kugeln jeweils gleichmäßig gefüllt
+		-> gleichmäßig
+		-> pseudorandom
+		-> wenige partikel
+		-> viele partikel
+		-> weit auseinander
+		-> eng zusammen
+		-> generieren nach mustern
+	-> geeignete prototypen wählen -> parameterisierbar bei start des programs
+2. implementierung der Lennard-Jones-Simulation (Oliver)
+	-> lesen im kapitel des buches?!?
+	-> was für daten werden benötigt?
+	:input 2 Partikel
+	:do änderung der Partikel
+3a. ausgabe der Daten (Benjamin)
+	-> für andere Programme?
+3b. ausgabe der Daten (Benjamin)
+	-> OpenGl?
+	-> nur endergebnis? Zwischenergebnisse?
+(4.) prototypen/interface für Optimierte Datenstrukturen
+	. insert(Particle):void
+—weg?	. remove(Particle):void
+—weg?	. update(Particle):void
+	. next():Particle
+	. neighbours(Particle):Particlelist
+	-> zusätzliche? weniger?
+	-> dies würde die austauschbarkeit enorm vereinfachen ... autotuneing müsste nur noch eine variable ändern
+	-> gemeinsam treffen, nachdem die vorherigen aufgaben abgeschlossen sind.
+5. optimierung
+	-> openmp
+	-> cuda? opencl?
+	-> mpi?
+	-> funtionsprototypen für die verschiedenen Verfahren
+6. autotuneing + analyse
+	-> als Grid
+	-> mit Listen der Nachbarn
+	-> gruppen zusammenfassen? Schwerpunkt berechnen? einfluss als Gruppe auch über größere distanz??
+	-> welches verfahren sollte "gelöscht" werden -> wiso?
+	-> welches verfahren ist am besten -> wiso? abhängig von der eingabe??
+	-> kriterien für analyse?
+	-> eingaben kategorisieren um analysieren zu können
+7. andere Simulationsverfahren
+	-> Smoothed Particle Hydrodynamics
+	-> Dissipative Particle Dynamics
+
+-> habe ich ein Themenbereich vergessen?
+-> fehlen irgendwelche unterpunkte?
+
+
+Komplexität der Kapitel
+Phase 1 :: lauffähiges Programm ohne optimierung
+	0. -> 1h (gemeinsam)	wenn die Datenstruktur blöd gewählt ist, dann wird später alles Schwieriger zu verändern sein
+	1. -> 0.5h		importieren/generieren der Daten muss schon früh passieren, da die nächsten Schritte darauf aufbauen
+	2. -> 3h ???		lesen von dem Buch. was gehört in die Simulation rein? Benötigte Variablen? Optimierung der Function? Cacheing von Werten, die öfter benutzt werden
+	3a.-> 2h		welche Programme gibt es? was für datenstrukturen werden erwartet? gibt es eine library für den export?
+	3b.-> 2h?		einbinden von opengl. abspeichern als bild/video? rendering von verschiedenen Partikeln? oder alle gleich?
+Phase 2 :: optimierungen
+	4. -> 0.5h? (gemeinsam)	Datenstruktur sollte sinnvoll definiert werden, da änderungen sehr viel aufwand bedeuten werden
+	5. -> xxxx		was für datenstrukturen sind denkbar? wie optimiert man geschwindigkeit am besten? wo ist die optimierung am stärksten
+	6. -> xxxx		welche optimierung ist wann am besten? atomklumpen/gleichverteilung/mehrere klumpen/einzelne atome/wenig/viele
+	7. -> optional
+
+projektplan wer macht was??
+In der 1. Phase würde ich gerne 1. sowie 3b. programmieren. 
+-> Was hälst du davon? 
+-> Was möchtest du gerne Machen?
+Zu beginn der 2. Phase sollten wir erstmal sammeln, was für optimierungsstrategien uns sinnvoll erschreinen (grid/nachbarlisten/okttree/bintree/hashtable/etc.???).
+Was hälst du von meinen Zeitschätzungen?
+
+
+-> sind alle Partikel gleich?oder eher verschieden?? konfigurierbar??
+	-> selber stoff/atomsorte?
+	-> unterteilt in Elektronen/Protonen ???
+-> was wenn ein teilchen kein anderes in der direkten nähe hat?? wechselwirkung mit dem schwerpunkt aller teile?? irgendwelche kräfte müssen ja wirken
+-> 3a oder/und 3b. ???
+-> ist die literatur nur für 2. relevant??
+
+mit freundlichen Grüßen
+Benjamin Warnke
