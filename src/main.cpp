@@ -5,9 +5,11 @@
 #include "definitions.hpp"
 #include "particles.hpp"
 int main () {
-	int x = 1234;
-	int y = 2345;
-	int z = 3457;
-	debug_var (x, y, z);
+	particles = new Particles ();
+	generatorMode = GENERATOR_MODE_UNIFORM_DISTRIBUTION;
+	if (generatorMode != GENERATOR_MODE_FILE) {
+		ParticleGenerator::generate (generatorMode);
+	}
+
 	std::cout << "Hello World" << std::endl;
 }
