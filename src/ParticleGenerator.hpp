@@ -12,7 +12,7 @@
 
 class ParticleGenerator {
 	public:
-	static void generate (GeneratorMode generatorMode);
+	static void generate ();
 };
 
 #endif /* SRC_PARTICLEGENERATOR_HPP_ */
