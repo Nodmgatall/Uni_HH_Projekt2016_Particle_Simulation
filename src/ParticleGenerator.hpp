@@ -8,11 +8,20 @@
 #ifndef SRC_PARTICLEGENERATOR_HPP_
 #define SRC_PARTICLEGENERATOR_HPP_
 
+#include <memory>
+
+#include "Particles.hpp"
 #include "definitions.hpp"
 
 class ParticleGenerator {
+	private:
+	static e_generator_mode m_mode;
+
 	public:
-	static void generate ();
+	static void generate (std::shared_ptr<Particles> p_particles, glm::vec3 p_bounds);
+	static void set_generator_mode (e_generator_mode p_mode);
+    static void generate_uniform_distribution (std::shared_ptr<Particles> p_particles,
+													   glm::vec3 p_bounds); 
 };
 
 #endif /* SRC_PARTICLEGENERATOR_HPP_ */
