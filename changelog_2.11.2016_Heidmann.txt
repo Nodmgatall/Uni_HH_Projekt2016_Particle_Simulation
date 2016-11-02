@@ -1,0 +1,25 @@
+ParticleGenerator:
+	added new funtion for the generation of uniform distibutions
+	moved pushing of new particles to Particles.hpp (addParticle(...))
+
+definitions.hpp:
+	removed all classes
+	removed gentype for file loading(will be handled before we generate)
+	removed sim parameter class
+
+ParticleSimulator:
+	added class ParticleSimulator
+	added member for bounds
+	added dummy method for initialization
+	added dummy method for simulate method aka main loop
+	added dummy method for parsing input parameters
+	added dummy method for finding the best simulation algorithm
+
+Particles:
+	added function for adding  particles
+	added function for returning number or particles
+
+main:
+	added ParticleSimulator calls
+	removed everything else
+	
