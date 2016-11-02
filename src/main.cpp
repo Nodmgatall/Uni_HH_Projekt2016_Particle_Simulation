@@ -5,9 +5,13 @@
 #include "debug.hpp"
 #include "definitions.hpp"
 #include "particles.hpp"
+#include <memory>
 int main () {
-	particles = new Particles ();
 
+    //please dont use "new" look into smart pointers since they care mem management
+	//particles = new Particles();
+
+    std::shared_ptr<Particles> particles = std::make_shared<Particles>();
 	if (startParams.m_generatorMode != GENERATOR_MODE_FILE) {
 		ParticleGenerator::generate ();
 	}

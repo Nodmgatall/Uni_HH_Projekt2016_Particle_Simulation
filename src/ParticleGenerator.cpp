@@ -8,6 +8,9 @@
 #include "ParticleGenerator.hpp"
 
 void ParticleGenerator::generate () {
+    
+
+    //enums defined in definitions
 	switch (startParams.m_generatorMode) {
 		case GENERATOR_MODE_FILE: {
 			DEBUG_BEGIN << DEBUG_VAR (startParams.m_generatorMode) << DEBUG_END;
@@ -28,15 +31,15 @@ void ParticleGenerator::generate () {
 		case GENERATOR_MODE_UNIFORM_DISTRIBUTION: {
 			float temp = pow (startParams.m_particleCount, 1.0f / 3.0f);
 			ParticleBounds bounds  = startParams.m_particleBounds;
-			vec3		   delta   = (bounds.m_p1 - bounds.m_p0) / (temp - 1);
+			glm::vec3		   delta   = (bounds.m_p1 - bounds.m_p0) / (temp - 1);
 			int			   tempInt = temp;
 			for (int x = 0; x < tempInt; x++) {
 				for (int y = 0; y < tempInt; y++) {
 					for (int z = 0; z < tempInt; z++) {
 						particles->m_position.push_back (
-							vec3 (x * delta.x, y * delta.y, z * delta.z));
-						particles->m_velocities.push_back (vec3 (0, 0, 0));
-						particles->m_acceleration.push_back (vec3 (0, 0, 0));
+							glm::vec3 (x * delta.x, y * delta.y, z * delta.z));
+						particles->m_velocities.push_back (glm::vec3 (0, 0, 0));
+						particles->m_acceleration.push_back (glm::vec3 (0, 0, 0));
 					}
 				}
 			}

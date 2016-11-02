@@ -8,9 +8,9 @@
 #define DEBUG_HPP_
 #include "definitions.hpp"
 #ifdef MAIN_CPP
-ofstream debug_file ("log.txt");
+std::ofstream debug_file ("log.txt");
 #else
-extern ofstream debug_file;
+extern std::ofstream debug_file;
 #endif
 #define DEBUG_BEGIN debug_file << __FILE__ << ":" << __LINE__ << " -> "
 #define DEBUG_VAR(var) #var << " = " << var << ", "

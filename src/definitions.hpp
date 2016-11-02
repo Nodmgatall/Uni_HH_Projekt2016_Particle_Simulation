@@ -13,9 +13,6 @@
 #include <glm/glm.hpp>
 #include <vector>
 
-using namespace glm;
-using namespace std;
-
 #include "debug.hpp"
 #include "particles.hpp"
 
@@ -30,10 +27,10 @@ typedef enum {
 
 class ParticleBounds {
 	public:
-	vec3 m_p0, m_p1;
+	glm::vec3 m_p0, m_p1;
 	ParticleBounds () {
-		m_p0 = vec3 (0, 0, 0);
-		m_p1 = vec3 (1, 1, 1);
+		m_p0 = glm::vec3 (0, 0, 0);
+		m_p1 = glm::vec3 (1, 1, 1);
 	}
 };
 
