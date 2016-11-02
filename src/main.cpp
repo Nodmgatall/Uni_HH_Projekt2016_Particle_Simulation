@@ -8,7 +8,7 @@
 #include <memory>
 int main () {
 
-    //please dont use "new" look into smart pointers since they care mem management
+    //please dont use "new", look into smart pointers since they take care of mem management
 	//particles = new Particles();
 
     std::shared_ptr<Particles> particles = std::make_shared<Particles>();
