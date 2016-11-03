@@ -7,8 +7,8 @@
 #include "ParticleGenerator.hpp"
 #include "ParticleSimulator.hpp"
 #include "Particles.hpp"
-#include "debug.hpp"
-#include "definitions.hpp"
+#include "Debug.hpp"
+#include "Definitions.hpp"
 
 #include <memory>
 

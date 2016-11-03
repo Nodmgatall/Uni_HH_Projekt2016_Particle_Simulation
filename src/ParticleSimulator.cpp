@@ -6,7 +6,7 @@
 #include "ParticleSimulator.hpp"
 #include "Particles.hpp"
 #include "Usage.hpp"
-#include "definitions.hpp"
+#include "Definitions.hpp"
 
 // functions
 #include "DummyAlgorithm.hpp"
@@ -28,10 +28,10 @@ void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 			case 'h':
 				print_usage_particle_sim ();
 				exit (EXIT_SUCCESS);
-                break;
+				break;
 			case 'v':
 				m_verbose_option = 1;
-                break;
+				break;
 			case 'd':
 				// set dynamic algorithm choosing
 				break;

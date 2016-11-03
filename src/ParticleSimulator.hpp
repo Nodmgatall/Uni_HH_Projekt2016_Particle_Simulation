@@ -7,7 +7,7 @@
 
 #include "LennardJonesAlgorithm.hpp"
 #include "Particles.hpp"
-#include "definitions.hpp"
+#include "Definitions.hpp"
 
 class ParticleSimulator {
 	private:

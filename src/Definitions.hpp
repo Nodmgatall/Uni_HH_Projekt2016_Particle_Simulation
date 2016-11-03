@@ -14,7 +14,7 @@
 #include <vector>
 
 #include "Particles.hpp"
-#include "debug.hpp"
+#include "Debug.hpp"
 
 enum e_generator_mode {
 	GENERATOR_MODE_SINGLE_OBJECT_MIDDLE, // eine Kugel in der Mitte des Volumens

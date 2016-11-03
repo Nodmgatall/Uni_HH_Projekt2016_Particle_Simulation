@@ -11,7 +11,7 @@
 #include <memory>
 
 #include "Particles.hpp"
-#include "definitions.hpp"
+#include "Definitions.hpp"
 
 class ParticleGenerator {
 	private:
