@@ -1,6 +1,9 @@
 #include <iostream>
 #define EXTERN
 #define MAIN_CPP
+
+#include <iostream>
+
 #include "ParticleGenerator.hpp"
 #include "ParticleSimulator.hpp"
 #include "debug.hpp"
@@ -8,10 +11,23 @@
 #include "Particles.hpp"
 
 #include <memory>
+void print_header()
+{
+    std::cout << "========================================================" << std::endl;
+    std::cout << "                 Particle Simulation" << std::endl;
+    std::cout << "========================================================" << std::endl;
+    std::cout << "             Benjamin Wanke, Oliver Heidmann" << std::endl << std::endl;
+    std::cout << "             Supervisior:"<<std::endl;
+    std::cout << "               Philipp Neumann"<< std::endl;
+    std::cout << "========================================================" << std::endl
+        <<std::endl;
+}
 int main () {
 
+    print_header();
 	std::string filename = "";
-    ParticleSimulator::init_particle_data (filename);
+
+    ParticleSimulator::init_particle_data (filename, 10);
 	ParticleSimulator::find_simulation_algorithm ();
 	ParticleSimulator::simulate ();
 /*

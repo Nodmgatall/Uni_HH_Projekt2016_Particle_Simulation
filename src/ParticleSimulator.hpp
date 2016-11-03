@@ -20,7 +20,8 @@ class ParticleSimulator {
 	public:
 	static void parse_argv (std::string p_argv);
 	static void simulate ();
-	static void init_particle_data (std::string p_file_name,
+	static void init_particle_data (std::string   p_file_name,
+									unsigned long p_particle_cnt,
 									e_generator_mode p_generator_mode = GENERATOR_MODE_UNIFORM_DISTRIBUTION);
 	static void find_simulation_algorithm ();
 };

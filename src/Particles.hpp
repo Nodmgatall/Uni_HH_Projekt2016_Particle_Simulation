@@ -4,6 +4,7 @@
 #include <vector>
 class Particles {
 	public:
+    Particles(unsigned long p_particle_cnt);
 	std::vector<glm::vec3> m_positions;
 	std::vector<glm::vec3> m_velocities;
 	std::vector<glm::vec3> m_accelerations;

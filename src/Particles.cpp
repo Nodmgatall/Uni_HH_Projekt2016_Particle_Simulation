@@ -1,6 +1,15 @@
-#include "Particles.hpp"
 #include <glm/glm.hpp>
 #include <vector>
+#include <iostream>
+
+#include "Particles.hpp"
+
+Particles::Particles(unsigned long p_particle_cnt)
+{
+    m_positions = std::vector<glm::vec3>(p_particle_cnt);
+    m_velocities = std::vector<glm::vec3>(p_particle_cnt);
+    m_accelerations = std::vector<glm::vec3>(p_particle_cnt);
+}
 
 glm::vec3 Particles::get_velocity (int particle_id) {
 	return m_velocities[particle_id];
