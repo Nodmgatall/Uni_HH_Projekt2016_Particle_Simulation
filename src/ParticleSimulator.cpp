@@ -28,8 +28,10 @@ void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 			case 'h':
 				print_usage_particle_sim ();
 				exit (EXIT_SUCCESS);
+                break;
 			case 'v':
 				m_verbose_option = 1;
+                break;
 			case 'd':
 				// set dynamic algorithm choosing
 				break;
@@ -41,7 +43,7 @@ void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 				break;
 			case '?':
 				if (optopt == 'd') {
-					std::cout << "Option -c requires an argument " << std::endl;
+					std::cout << "Option -d requires an argument " << std::endl;
 				}
 				exit (EXIT_FAILURE);
 				break;
