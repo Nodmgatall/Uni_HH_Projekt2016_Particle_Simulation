@@ -1,2 +1,3 @@
-Urls:
-    Overleaf:   https://git.overleaf.com/6868875ythfvywgzr
+Url:
+    Overleaf Web:       https://www.overleaf.com/6868875yrhfvynywgzr
+    Overleaf Git:       http://git.overleaf.com/6868875yrhfvynywgzr
