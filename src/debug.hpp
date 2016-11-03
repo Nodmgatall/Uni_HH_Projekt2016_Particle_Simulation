@@ -16,4 +16,5 @@ extern std::ofstream debug_file;
 #define DEBUG_VAR(var) #var << " = " << var << ", "
 #define DEBUG_END std::endl
 
+
 #endif /* DEBUG_HPP_ */

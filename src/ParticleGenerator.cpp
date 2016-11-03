@@ -5,10 +5,10 @@
  *      Author: benjamin
  */
 #include <memory>
+#include <iostream>
+#include <string.h>
 
 #include "ParticleGenerator.hpp"
-#include <iostream>
-
 e_generator_mode ParticleGenerator::m_mode = GENERATOR_MODE_UNIFORM_DISTRIBUTION;
 
 void ParticleGenerator::generate (std::shared_ptr<Particles> p_particles, glm::vec3 p_bounds) {
@@ -59,6 +59,10 @@ void ParticleGenerator::generate_uniform_distribution (std::shared_ptr<Particles
 	DEBUG_BEGIN << DEBUG_VAR (p_patriclesGenerated) << DEBUG_END;
 }
 
-void ParticleGenerator::set_generator_mode (e_generator_mode p_mode) {
-	m_mode = p_mode;
+void ParticleGenerator::set_generator_mode(char * p_argument_mode)
+{
+    if(strcmp(p_argument_mode, "GMUD") == 0)
+    {
+        m_mode = GENERATOR_MODE_UNIFORM_DISTRIBUTION;
+    }
 }

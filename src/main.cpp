@@ -11,6 +11,7 @@
 #include "Particles.hpp"
 
 #include <memory>
+
 void print_header()
 {
     std::cout << "========================================================" << std::endl;
@@ -22,11 +23,12 @@ void print_header()
     std::cout << "========================================================" << std::endl
         <<std::endl;
 }
-int main () {
+int main (int argc, char**argv) {
 
     print_header();
 	std::string filename = "";
 
+    ParticleSimulator::parse_argv(argc, argv);
     ParticleSimulator::init_particle_data (filename, 10);
 	ParticleSimulator::find_simulation_algorithm ();
 	ParticleSimulator::simulate ();
