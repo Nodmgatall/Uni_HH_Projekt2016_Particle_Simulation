@@ -16,11 +16,11 @@
 #include "Particles.hpp"
 #include "debug.hpp"
 
- enum e_generator_mode{
-	GENERATOR_MODE_SINGLE_OBJECT_MIDDLE,			 // eine Kugel in der Mitte des Volumens
-	GENERATOR_MODE_MULTIPLE_SPHERES, // mehrere Kugeln gleichmäßig verteilt
+enum e_generator_mode {
+	GENERATOR_MODE_SINGLE_OBJECT_MIDDLE, // eine Kugel in der Mitte des Volumens
+	GENERATOR_MODE_MULTIPLE_SPHERES,	 // mehrere Kugeln gleichmäßig verteilt
 	GENERATOR_MODE_UNIFORM_DISTRIBUTION, // komplett gleichmäßig
 	GENERATOR_MODE_RANDOM,				 // komplett zufällig
 	GENERATOR_MODE_RANDOM_UNIFORM,		 // zufällig ungefähr gleichmäßig
-}; 
+};
 #endif /* DEFINITIONS_HPP_ */

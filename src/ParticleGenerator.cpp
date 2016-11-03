@@ -4,8 +4,8 @@
  *  Created on: Oct 29, 2016
  *      Author: benjamin
  */
-#include <memory>
 #include <iostream>
+#include <memory>
 #include <string.h>
 
 #include "ParticleGenerator.hpp"
@@ -38,8 +38,7 @@ void ParticleGenerator::generate (std::shared_ptr<Particles> p_particles, glm::v
 	}
 	std::cout << "Generation finished" << std::endl;
 }
-void ParticleGenerator::generate_uniform_distribution (std::shared_ptr<Particles> p_particles,
-													   glm::vec3 p_bounds) {
+void ParticleGenerator::generate_uniform_distribution (std::shared_ptr<Particles> p_particles, glm::vec3 p_bounds) {
 	float	 temp	= pow (p_particles->get_particle_count (), 1.0f / 3.0f);
 	glm::vec3 delta   = (glm::vec3 (0, 0, 0) - p_bounds) / (temp - 1);
 	int		  tempInt = temp;
@@ -47,9 +46,7 @@ void ParticleGenerator::generate_uniform_distribution (std::shared_ptr<Particles
 		for (int y = 0; y < tempInt; y++) {
 			for (int z = 0; z < tempInt; z++) {
 
-				p_particles->add_particle (glm::vec3 (x * delta.x,
-													  y * delta.y,
-													  z * delta.z),
+				p_particles->add_particle (glm::vec3 (x * delta.x, y * delta.y, z * delta.z),
 										   glm::vec3 (0, 0, 0),
 										   glm::vec3 (0, 0, 0));
 			}
@@ -59,10 +56,8 @@ void ParticleGenerator::generate_uniform_distribution (std::shared_ptr<Particles
 	DEBUG_BEGIN << DEBUG_VAR (p_patriclesGenerated) << DEBUG_END;
 }
 
-void ParticleGenerator::set_generator_mode(char * p_argument_mode)
-{
-    if(strcmp(p_argument_mode, "GMUD") == 0)
-    {
-        m_mode = GENERATOR_MODE_UNIFORM_DISTRIBUTION;
-    }
+void ParticleGenerator::set_generator_mode (char *p_argument_mode) {
+	if (strcmp (p_argument_mode, "GMUD") == 0) {
+		m_mode = GENERATOR_MODE_UNIFORM_DISTRIBUTION;
+	}
 }

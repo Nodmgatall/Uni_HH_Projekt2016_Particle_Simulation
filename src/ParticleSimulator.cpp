@@ -5,8 +5,8 @@
 #include "ParticleGenerator.hpp"
 #include "ParticleSimulator.hpp"
 #include "Particles.hpp"
-#include "definitions.hpp"
 #include "Usage.hpp"
+#include "definitions.hpp"
 
 // functions
 #include "DummyAlgorithm.hpp"
@@ -25,20 +25,20 @@ void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 
 	while ((argv_index = getopt (p_argc, p_argv, "hvd:")) != -1) {
 		switch (argv_index) {
-            case 'h':
-                print_usage_particle_sim();
-                exit(EXIT_SUCCESS);
+			case 'h':
+				print_usage_particle_sim ();
+				exit (EXIT_SUCCESS);
 			case 'v':
 				m_verbose_option = 1;
-            case 'd':
-                //set dynamic algorithm choosing
-                break;
-            case 'a':
-                //set algorithm
-                break;
+			case 'd':
+				// set dynamic algorithm choosing
+				break;
+			case 'a':
+				// set algorithm
+				break;
 			case 'g':
 				ParticleGenerator::set_generator_mode (optarg);
-                break;
+				break;
 			case '?':
 				if (optopt == 'd') {
 					std::cout << "Option -c requires an argument " << std::endl;

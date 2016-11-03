@@ -11,17 +11,16 @@
 
 class ParticleSimulator {
 	private:
+	static short m_verbose_option;
 
-    static short m_verbose_option;
-        
-    static std::shared_ptr<Particles> m_particles;
+	static std::shared_ptr<Particles> m_particles;
 	// boundaries define box of particles
 	static glm::vec3 m_bounds;
 
 	static std::function<bool(std::shared_ptr<Particles>)> m_algorithm;
 
 	public:
-	static void parse_argv (int argc, char** p_argv);
+	static void parse_argv (int argc, char **p_argv);
 	static void simulate ();
 	static void init_particle_data (std::string   p_file_name,
 									unsigned long p_particle_cnt,

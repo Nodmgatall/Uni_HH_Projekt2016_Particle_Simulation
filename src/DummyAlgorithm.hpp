@@ -12,6 +12,6 @@ bool dummy_algo (std::shared_ptr<Particles>) {
 		std::cout << "Error:  iteration could not be finished" << std::endl;
 		return false;
 	}
-    return true;
+	return true;
 }
 #endif
