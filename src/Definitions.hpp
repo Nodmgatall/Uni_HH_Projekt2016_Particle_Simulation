@@ -20,7 +20,6 @@
 #include "Debug.hpp"
 #include "ParticlesBase.hpp"
 
-
 enum e_generator_mode {
 	GENERATOR_MODE_MULTIPLE_OBJECTS,	 // mehrere Kugeln gleichmäßig verteilt
 	GENERATOR_MODE_RANDOM,				 // komplett zufällig

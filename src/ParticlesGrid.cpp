@@ -25,7 +25,6 @@ std::vector<unsigned long> *ParticlesGrid::get_ids () {
 	return &m_particle_ids;
 }
 
-
 unsigned long ParticlesGrid::get_particle_count () {
 	return m_positions.size ();
 }

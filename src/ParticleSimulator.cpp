@@ -13,8 +13,8 @@
 #include "DummyAlgorithm.hpp"
 
 std::shared_ptr<ParticlesBase> ParticleSimulator::m_particles;
-glm::vec3				   ParticleSimulator::m_bounds;
-short					   ParticleSimulator::m_verbose_option = 0;
+glm::vec3					   ParticleSimulator::m_bounds;
+short						   ParticleSimulator::m_verbose_option = 0;
 
 std::function<bool(std::shared_ptr<ParticlesBase>)> ParticleSimulator::m_algorithm;
 
