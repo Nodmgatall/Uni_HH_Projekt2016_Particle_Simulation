@@ -8,8 +8,6 @@
 #ifndef SRC_PARTICLEGENERATOR_HPP_
 #define SRC_PARTICLEGENERATOR_HPP_
 
-#include <memory>
-
 #include "Definitions.hpp"
 #include "ParticlesBase.hpp"
 

@@ -71,13 +71,7 @@ void ParticleSimulator::init_particle_data (std::string		 p_file_name,
 	if (p_file_name.length () > 0) {
 		std::cout << "loading from file: " << p_file_name << std::endl;
 	} else {
-		switch (p_generator_mode) {
-			case GENERATOR_MODE_UNIFORM_DISTRIBUTION:
-				ParticleGenerator::generate (m_particles, m_bounds);
-				break;
-			default:
-				std::cout << "  Error: file generation method not found" << std::endl;
-		}
+		ParticleGenerator::generate (m_particles, m_bounds);
 	}
 }
 

@@ -10,15 +10,17 @@
 #define EXTERN extern
 #endif
 
+#include "Debug.hpp"
+#include "ParticlesBase.hpp"
 #include <cstdlib>
 #include <ctime>
 #include <fstream>
 #include <glm/glm.hpp>
 #include <iostream>
+#include <iostream>
+#include <memory>
+#include <string.h>
 #include <vector>
-
-#include "Debug.hpp"
-#include "ParticlesBase.hpp"
 
 enum e_generator_mode {
 	GENERATOR_MODE_MULTIPLE_OBJECTS,	 // mehrere Kugeln gleichmäßig verteilt

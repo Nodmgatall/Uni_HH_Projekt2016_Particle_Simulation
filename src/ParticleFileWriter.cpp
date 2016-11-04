@@ -8,9 +8,7 @@
 #include "ParticleFileWriter.hpp"
 
 ParticleFileWriter::ParticleFileWriter () {
-	// TODO Auto-generated constructor stub
+	m_timestep = 0;
 }
-
-ParticleFileWriter::~ParticleFileWriter () {
-	// TODO Auto-generated destructor stub
+void ParticleFileWriter::saveData (std::shared_ptr<ParticlesBase> p_particles) {
 }
