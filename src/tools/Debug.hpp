@@ -12,9 +12,6 @@
 
 struct OutputAndConsole : std::ofstream
 {
-    /*OutputAndConsole(const std::string& fileName)
-       : std::ofstream(fileName) , fileName(fileName)
-    {}; const std::string fileName;*/
 };
 
 template <typename T>
@@ -28,7 +25,12 @@ OutputAndConsole& operator<<(OutputAndConsole& strm, const T& var)
 
 
 EXTERN OutputAndConsole debug_file;
+
+#ifdef RELEASE
+#define DEBUG_BEGIN if (1) {} else debug_file
+#else
 #define DEBUG_BEGIN debug_file << __FILE__ << ":" << __LINE__ << " -> "
+#endif
 #define DEBUG_VAR(var) #var << " = " << var << ", "
 #define DEBUG_END std::endl
 
