@@ -6,13 +6,10 @@
  */
 #ifndef DEBUG_HPP_
 #define DEBUG_HPP_
-<<<<<<< HEAD
 
 #include "Definitions.hpp"
-
-=======
 #include <fstream>
->>>>>>> 34a35cb25751b5c3786d53c9b988cfa9f9f867fe
+
 #ifdef MAIN_CPP
 std::ofstream debug_file ("log.txt");
 #else
