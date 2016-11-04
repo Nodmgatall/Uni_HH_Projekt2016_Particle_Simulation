@@ -5,19 +5,19 @@
 #include <iostream>
 #include <memory>
 
-#include "LennardJonesAlgorithm.hpp"
-#include "Particles.hpp"
 #include "Definitions.hpp"
+#include "LennardJonesAlgorithm.hpp"
+#include "ParticlesBase.hpp"
 
 class ParticleSimulator {
 	private:
 	static short m_verbose_option;
 
-	static std::shared_ptr<Particles> m_particles;
+	static std::shared_ptr<ParticlesBase> m_particles;
 	// boundaries define box of particles
 	static glm::vec3 m_bounds;
 
-	static std::function<bool(std::shared_ptr<Particles>)> m_algorithm;
+	static std::function<bool(std::shared_ptr<ParticlesBase>)> m_algorithm;
 
 	public:
 	static void parse_argv (int argc, char **p_argv);

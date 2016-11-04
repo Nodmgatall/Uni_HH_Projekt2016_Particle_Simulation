@@ -11,7 +11,7 @@
 #include "ParticleGenerator.hpp"
 e_generator_mode ParticleGenerator::m_mode = GENERATOR_MODE_UNIFORM_DISTRIBUTION;
 
-void ParticleGenerator::generate (std::shared_ptr<Particles> p_particles, glm::vec3 p_bounds) {
+void ParticleGenerator::generate (std::shared_ptr<ParticlesBase> p_particles, glm::vec3 p_bounds) {
 
 	// enums defined in definitions
 	switch (m_mode) {
@@ -38,7 +38,7 @@ void ParticleGenerator::generate (std::shared_ptr<Particles> p_particles, glm::v
 	}
 	std::cout << "Generation finished" << std::endl;
 }
-void ParticleGenerator::generate_uniform_distribution (std::shared_ptr<Particles> p_particles, glm::vec3 p_bounds) {
+void ParticleGenerator::generate_uniform_distribution (std::shared_ptr<ParticlesBase> p_particles, glm::vec3 p_bounds) {
 	float	 temp	= pow (p_particles->get_particle_count (), 1.0f / 3.0f);
 	glm::vec3 delta   = (glm::vec3 (0, 0, 0) - p_bounds) / (temp - 1);
 	int		  tempInt = temp;

@@ -3,9 +3,9 @@
 
 #include <memory>
 
-#include "Particles.hpp"
+#include "ParticlesBase.hpp"
 
-bool dummy_algo (std::shared_ptr<Particles>) {
+bool dummy_algo (std::shared_ptr<ParticlesBase>) {
 	std::cout << "calculating interation" << std::endl;
 
 	if (true) {

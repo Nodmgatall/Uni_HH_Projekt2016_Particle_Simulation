@@ -2,20 +2,21 @@
 
 #include <unistd.h>
 
+#include "Definitions.hpp"
 #include "ParticleGenerator.hpp"
 #include "ParticleSimulator.hpp"
-#include "Particles.hpp"
+#include "ParticlesBase.hpp"
+#include "ParticlesGrid.hpp"
 #include "Usage.hpp"
-#include "Definitions.hpp"
 
 // functions
 #include "DummyAlgorithm.hpp"
 
-std::shared_ptr<Particles> ParticleSimulator::m_particles;
+std::shared_ptr<ParticlesBase> ParticleSimulator::m_particles;
 glm::vec3				   ParticleSimulator::m_bounds;
 short					   ParticleSimulator::m_verbose_option = 0;
 
-std::function<bool(std::shared_ptr<Particles>)> ParticleSimulator::m_algorithm;
+std::function<bool(std::shared_ptr<ParticlesBase>)> ParticleSimulator::m_algorithm;
 
 void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 	std::cout << "Reading console input" << std::endl;
@@ -66,7 +67,7 @@ void ParticleSimulator::init_particle_data (std::string		 p_file_name,
 											unsigned long	p_particle_cnt,
 											e_generator_mode p_generator_mode) {
 	std::cout << "Initializing paticle data" << std::endl;
-	m_particles = std::make_shared<Particles> (p_particle_cnt);
+	m_particles = std::make_shared<ParticlesGrid> (p_particle_cnt);
 	if (p_file_name.length () > 0) {
 		std::cout << "loading from file: " << p_file_name << std::endl;
 	} else {

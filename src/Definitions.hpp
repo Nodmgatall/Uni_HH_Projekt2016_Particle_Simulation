@@ -13,8 +13,8 @@
 #include <glm/glm.hpp>
 #include <vector>
 
-#include "Particles.hpp"
 #include "Debug.hpp"
+#include "ParticlesBase.hpp"
 
 enum e_generator_mode {
 	GENERATOR_MODE_SINGLE_OBJECT_MIDDLE, // eine Kugel in der Mitte des Volumens
