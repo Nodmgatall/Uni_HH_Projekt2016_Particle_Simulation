@@ -27,7 +27,6 @@ class ParticleSimulator {
 	static void												   print_header ();
 
 	public:
-	static std::shared_ptr<ParticlesBase> m_particles;
 	static void parse_argv (int argc, char **p_argv);
 	static void simulate ();
 	static void init_particle_data (std::string p_file_name, unsigned long p_particle_cnt);
