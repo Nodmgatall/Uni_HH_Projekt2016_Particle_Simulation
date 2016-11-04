@@ -10,13 +10,12 @@
 #define EXTERN extern
 #endif
 
-#include "Debug.hpp"
-#include "ParticlesBase.hpp"
+#include "tools/Debug.hpp"
+#include "datastructures/ParticlesBase.hpp"
 #include <cstdlib>
 #include <ctime>
 #include <fstream>
 #include <glm/glm.hpp>
-#include <iostream>
 #include <iostream>
 #include <memory>
 #include <string.h>

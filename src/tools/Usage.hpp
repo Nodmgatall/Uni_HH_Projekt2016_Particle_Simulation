@@ -1,6 +1,8 @@
 #ifndef USAGE_HPP
 #define USAGE_HPP
 
+#include <iostream>
+
 void print_usage_generation_mode () {
 	std::cout << "Usage:" << std::endl;
 	std::cout << "-g [generation_mode]" << std::endl;

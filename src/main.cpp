@@ -4,9 +4,9 @@
 
 #include <iostream>
 
-#include "Debug.hpp"
+#include "tools/Debug.hpp"
 #include "Definitions.hpp"
-#include "ParticleGenerator.hpp"
+#include "generators/ParticleGenerator.hpp"
 #include "ParticleSimulator.hpp"
 
 #include <memory>

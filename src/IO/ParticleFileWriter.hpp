@@ -7,7 +7,7 @@
 
 #ifndef SRC_PARTICLEFILEWRITER_HPP_
 #define SRC_PARTICLEFILEWRITER_HPP_
-#include "Definitions.hpp"
+#include "../Definitions.hpp"
 class ParticleFileWriter {
 	private:
 	int m_timestep;

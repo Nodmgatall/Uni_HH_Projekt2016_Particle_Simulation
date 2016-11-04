@@ -8,8 +8,9 @@
 #ifndef SRC_PARTICLEGENERATOR_HPP_
 #define SRC_PARTICLEGENERATOR_HPP_
 
-#include "Definitions.hpp"
-#include "ParticlesBase.hpp"
+
+#include "../Definitions.hpp"
+#include "../datastructures/ParticlesBase.hpp"
 
 class ParticleGenerator {
 	private:

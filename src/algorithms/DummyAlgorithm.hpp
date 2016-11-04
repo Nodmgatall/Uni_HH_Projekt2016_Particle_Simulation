@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "ParticlesBase.hpp"
+#include "../datastructures/ParticlesBase.hpp"
 
 bool dummy_algo (std::shared_ptr<ParticlesBase>) {
 	std::cout << "calculating interation" << std::endl;
