@@ -6,6 +6,7 @@
  */
 #ifndef DEBUG_HPP_
 #define DEBUG_HPP_
+#include <fstream>
 #ifdef MAIN_CPP
 std::ofstream debug_file ("log.txt");
 #else

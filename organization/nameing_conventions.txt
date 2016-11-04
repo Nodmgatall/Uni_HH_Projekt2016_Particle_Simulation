@@ -1,4 +1,4 @@
-My thoughts:
+
     Variable names:
         lower case
         words sepreated by _
@@ -18,37 +18,25 @@ My thoughts:
         nothing special just a name in lower case
         fitting names
         short forms only if REALLY necessary (almost never)
-        (we could put a p_ before parameters but that could be overkill
-        never done that before but maybe its worth a thought)
+        p_ before parameters
 
     Mehthod names
         lower case
-        camelcase?/words sepertated by _ ? (no idea what would be better, i tend to use _ )
+        words sepreated by _
     Class names
         first character Uppercase
             rest lower
         CamelCase
 
     Enumerations:
-        enum list_of_whatever{EINS, ZWEI, DREI, ETC}
+    	enum name lower case
+        enum name has a e_ at the beginning
+        enum e_list_of_whatever{EINS, ZWEI, DREI, ETC}
 
     Structs that define a type:
-        struct name has a _t at the end
-        eg: data_collection_t
-
-    For loops running index naming:
-        if possible a name that is not just i or idx but a name that says something about what the idx represents
-            so instead of for(auto idx : example_vector_with_particles):
-                (auto particle : exam....)
-
-            or for a normal for loop:
-                vector<glm::vec3> particle_vector;
-                unsigned long particle_index = 0;
-                unsigned long particle_vector_length = particle_vector.size();
-                for(particle_index; current_particle_id < particle_vector_length; current_particle_id ++)
-                {
-                    std::cout << particle_vector[particle_id].print() << std::endl;
-                }
+	    lower case
+        struct name has a s_ at the beginning
+        eg: s_data_collection
 
     use of auto:
         i kind of dislike the use of auto since it obscures code
@@ -58,7 +46,6 @@ My thoughts:
         nice to use, bad to read
 
     
-PS:
     id like not to use typedefs as the variable name should make clear what it is so there is no need
     to let the type clarify what it is
 

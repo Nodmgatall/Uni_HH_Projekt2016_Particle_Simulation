@@ -5,9 +5,9 @@
 #include <iostream>
 #include <memory>
 
+#include "Definitions.hpp"
 #include "LennardJonesAlgorithm.hpp"
 #include "Particles.hpp"
-#include "Definitions.hpp"
 
 class ParticleSimulator {
 	private:
