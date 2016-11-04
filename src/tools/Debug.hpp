@@ -8,11 +8,7 @@
 #define DEBUG_HPP_
 
 #include <fstream>
-#ifdef MAIN_CPP
-std::ofstream debug_file ("log.txt");
-#else
-extern std::ofstream debug_file;
-#endif
+EXTERN std::ofstream debug_file;
 #define DEBUG_BEGIN debug_file << __FILE__ << ":" << __LINE__ << " -> "
 #define DEBUG_VAR(var) #var << " = " << var << ", "
 #define DEBUG_END std::endl

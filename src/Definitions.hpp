@@ -10,8 +10,8 @@
 #define EXTERN extern
 #endif
 
-#include "tools/Debug.hpp"
 #include "datastructures/ParticlesBase.hpp"
+#include "tools/Debug.hpp"
 #include <cstdlib>
 #include <ctime>
 #include <fstream>
@@ -19,6 +19,9 @@
 #include <iostream>
 #include <memory>
 #include <string.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
 #include <vector>
 
 enum e_generator_mode {
@@ -28,4 +31,5 @@ enum e_generator_mode {
 	GENERATOR_MODE_SINGLE_OBJECT_MIDDLE, // eine Kugel in der Mitte des Volumens
 	GENERATOR_MODE_UNIFORM_DISTRIBUTION, // komplett gleichmäßig
 };
+
 #endif /* DEFINITIONS_HPP_ */
