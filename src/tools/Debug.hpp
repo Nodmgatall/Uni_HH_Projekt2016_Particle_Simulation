@@ -7,7 +7,7 @@
 #ifndef DEBUG_HPP_
 #define DEBUG_HPP_
 
-#include "Definitions.hpp"
+#include "../Definitions.hpp"
 #include <fstream>
 
 #ifdef MAIN_CPP

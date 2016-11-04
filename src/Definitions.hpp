@@ -17,8 +17,8 @@
 #include <iostream>
 #include <vector>
 
-#include "Debug.hpp"
-#include "ParticlesBase.hpp"
+#include "datastructures/ParticlesBase.hpp"
+#include "tools/Debug.hpp"
 
 enum e_generator_mode {
 	GENERATOR_MODE_MULTIPLE_OBJECTS,	 // mehrere Kugeln gleichmäßig verteilt

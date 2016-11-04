@@ -10,8 +10,8 @@
 
 #include <memory>
 
-#include "Definitions.hpp"
-#include "ParticlesBase.hpp"
+#include "../Definitions.hpp"
+#include "../datastructures/ParticlesBase.hpp"
 
 class ParticleGenerator {
 	private:

@@ -3,14 +3,14 @@
 #include <unistd.h>
 
 #include "Definitions.hpp"
-#include "ParticleGenerator.hpp"
+#include "generators/ParticleGenerator.hpp"
 #include "ParticleSimulator.hpp"
-#include "ParticlesBase.hpp"
-#include "ParticlesGrid.hpp"
-#include "Usage.hpp"
+#include "datastructures/ParticlesBase.hpp"
+#include "datastructures/ParticlesGrid.hpp"
+#include "tools/Usage.hpp"
 
 // functions
-#include "DummyAlgorithm.hpp"
+#include "algorithms/DummyAlgorithm.hpp"
 
 std::shared_ptr<ParticlesBase> ParticleSimulator::m_particles;
 glm::vec3					   ParticleSimulator::m_bounds;

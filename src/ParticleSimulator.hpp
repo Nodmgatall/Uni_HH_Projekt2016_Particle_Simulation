@@ -6,8 +6,7 @@
 #include <memory>
 
 #include "Definitions.hpp"
-#include "LennardJonesAlgorithm.hpp"
-#include "ParticlesBase.hpp"
+#include "datastructures/ParticlesBase.hpp"
 
 class ParticleSimulator {
 	private:
