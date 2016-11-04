@@ -19,15 +19,15 @@
 std::shared_ptr<ParticlesBase> ParticleSimulator::m_particles;
 glm::vec3					   ParticleSimulator::m_bounds;
 std::map<e_particle_variable, bool> ParticleSimulator::m_write_modes;
-unsigned long	ParticleSimulator::m_particle_count;
-bool			 ParticleSimulator::m_verbose;
-unsigned int	 ParticleSimulator::m_seed;
-e_algorithm_type ParticleSimulator::m_algorithm_type;
-e_data_format	ParticleSimulator::m_data_format;
-int				 ParticleSimulator::m_write_fequency;
-float			 ParticleSimulator::m_run_time_limit;
-float			 ParticleSimulator::m_timestep;
-bool			ParticleSimulator::m_dynamic_algorithm_use;
+unsigned long										ParticleSimulator::m_particle_count;
+bool												ParticleSimulator::m_verbose;
+unsigned int										ParticleSimulator::m_seed;
+e_algorithm_type									ParticleSimulator::m_algorithm_type;
+e_data_format										ParticleSimulator::m_data_format;
+int													ParticleSimulator::m_write_fequency;
+float												ParticleSimulator::m_run_time_limit;
+float												ParticleSimulator::m_timestep;
+bool												ParticleSimulator::m_dynamic_algorithm_use;
 std::function<bool(std::shared_ptr<ParticlesBase>)> ParticleSimulator::m_algorithm;
 
 void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
@@ -58,13 +58,13 @@ void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 	int long_options;
 	while ((argv_index = getopt_long (p_argc, p_argv, "vs:a:F:p:f:l:t:g:d:", &options[0], &long_options)) != -1) {
 		/*
-        if (strcmp (optarg, "-h") == 0 || strcmp (optarg, "--help") == 0) {
+		if (strcmp (optarg, "-h") == 0 || strcmp (optarg, "--help") == 0) {
 			// TODO:  Display help from option
 		}
 		*/
-        std::cout << "lol" << std::endl;
+		std::cout << "lol" << std::endl;
 		switch (argv_index) {
-            case 0:
+			case 0:
 
 				if (strcmp (options[long_options].name, g_enum_to_string_map[VELOCITY]) == 0) {
 					m_write_modes[VELOCITY] = std::stoi (optarg) == 0;
@@ -117,10 +117,10 @@ void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 				break;
 
 			case '?':
-								break;
+				break;
 		}
 	}
-        print_choosen_options();
+	print_choosen_options ();
 }
 void ParticleSimulator::print_header () {
 	std::cout << "========================================================" << std::endl;
@@ -174,22 +174,20 @@ void ParticleSimulator::find_simulation_algorithm () {
 	m_algorithm = dummy_algo;
 }
 
-void ParticleSimulator::print_choosen_options()
-{
-    std::cout << "Choosen Options:"     << std::endl;
-        std::cout  << "verbose: "       << m_verbose  << std::endl;
-        std::cout  << "seed:    "       << m_seed     << std::endl;
-        std::cout  << "algorithm type: "<< m_algorithm_type << std::endl;
-        std::cout  << "data fromat: "   << m_data_format << std::endl;
-        std::cout  << "particle count " << m_particle_count << std::endl;
-        std::cout  << "write frequency: "<< m_write_fequency << std::endl;
-        std::cout  << "run time limit: " << m_run_time_limit << std::endl;
-        std::cout  << "time step: "     << m_timestep << std::endl;
-        std::cout  << "dynamic algo: "  << m_dynamic_algorithm_use << std::endl;
-        std::cout  << "write mode ID: " << m_write_modes[ID] << std::endl;
-        std::cout  << "write mode POSITION: " << m_write_modes[POSITION] << std::endl;
-        std::cout  << "write mode VELOCITY: " << m_write_modes[VELOCITY] << std::endl;
-        std::cout  << "write mode ACCELERATION: " << m_write_modes[ACCELERATION] << std::endl;
-        std::cout  << "write mode PARTICLE_TYPE: " << m_write_modes[PARTICLE_TYPE] << std::endl;
-        
+void ParticleSimulator::print_choosen_options () {
+	std::cout << "Choosen Options:" << std::endl;
+	std::cout << "verbose: " << m_verbose << std::endl;
+	std::cout << "seed:    " << m_seed << std::endl;
+	std::cout << "algorithm type: " << m_algorithm_type << std::endl;
+	std::cout << "data fromat: " << m_data_format << std::endl;
+	std::cout << "particle count " << m_particle_count << std::endl;
+	std::cout << "write frequency: " << m_write_fequency << std::endl;
+	std::cout << "run time limit: " << m_run_time_limit << std::endl;
+	std::cout << "time step: " << m_timestep << std::endl;
+	std::cout << "dynamic algo: " << m_dynamic_algorithm_use << std::endl;
+	std::cout << "write mode ID: " << m_write_modes[ID] << std::endl;
+	std::cout << "write mode POSITION: " << m_write_modes[POSITION] << std::endl;
+	std::cout << "write mode VELOCITY: " << m_write_modes[VELOCITY] << std::endl;
+	std::cout << "write mode ACCELERATION: " << m_write_modes[ACCELERATION] << std::endl;
+	std::cout << "write mode PARTICLE_TYPE: " << m_write_modes[PARTICLE_TYPE] << std::endl;
 }
