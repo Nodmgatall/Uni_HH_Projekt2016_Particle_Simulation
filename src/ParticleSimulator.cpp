@@ -1,3 +1,11 @@
+#include <memory>
+
+#include <getopt.h>
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+#include <vector>
+
 #include "ParticleSimulator.hpp"
 #include "Definitions.hpp"
 #include "algorithms/DummyAlgorithm.hpp"
@@ -11,6 +19,8 @@
 std::shared_ptr<ParticlesBase> ParticleSimulator::m_particles;
 glm::vec3					   ParticleSimulator::m_bounds;
 short						   ParticleSimulator::m_verbose_option = 0;
+std::map<e_particle_variable, bool> ParticleSimulator::m_write_modes;
+unsigned long ParticleSimulator::m_particle_count;
 
 std::function<bool(std::shared_ptr<ParticlesBase>)> ParticleSimulator::m_algorithm;
 
@@ -18,10 +28,44 @@ void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 	std::cout << "Reading console input" << std::endl;
 
 	int argv_index;
-	opterr = 0;
 
-	while ((argv_index = getopt (p_argc, p_argv, "hvd:")) != -1) {
+	/*clang-format off */
+	std::vector<option> options =
+		{ { g_enum_to_string_map[VELOCITY], required_argument, 0, 0 },
+		  { g_enum_to_string_map[POSITION], required_argument, 0, 0 },
+		  { g_enum_to_string_map[ACCELERATION], required_argument, 0, 0 },
+		  { g_enum_to_string_map[PARTICLE_TYPE], required_argument, 0, 0 },
+		  { "generator_mode", required_argument, 0, 'g' },
+		  { "timestep", required_argument, 0, 't' },
+		  { "algorithm", required_argument, 0, 'a' },
+		  { "particle_count", required_argument, 0, 'p' },
+		  { "verbose", no_argument, 0, 'v' },
+		  { "help", no_argument, 0, 'h' } };
+	/*clang-format on */
+
+	opterr = 0;
+	int long_options;
+	while ((argv_index = getopt_long (p_argc, p_argv, "htvd:", &options[0], &long_options)) != -1) {
 		switch (argv_index) {
+			case 0:
+				if (strcmp (options[long_options].name, g_enum_to_string_map[VELOCITY]) == 0) {
+				}
+				if (strcmp (options[long_options].name, g_enum_to_string_map[POSITION]) == 0) {
+				}
+				if (strcmp (options[long_options].name, g_enum_to_string_map[ACCELERATION]) == 0) {
+				}
+				if (strcmp (options[long_options].name, g_enum_to_string_map[PARTICLE_TYPE]) == 0) {
+				}
+				if (strcmp (options[long_options].name, "generator_mode") == 0) {
+				}
+				if (strcmp (options[long_options].name, "timestep") == 0) {
+				}
+				if (strcmp (options[long_options].name, "algorithm") == 0) {
+				}
+				if (strcmp (options[long_options].name, "particle_count") == 0) {
+				}
+				std::cout << "lol" << std::endl;
+				break;
 			case 'h':
 				print_usage_particle_sim ();
 				exit (EXIT_SUCCESS);
@@ -83,9 +127,7 @@ void ParticleSimulator::simulate () {
 	std::cout << "Simulation finished" << std::endl;
 }
 
-void ParticleSimulator::init_particle_data (std::string		 p_file_name,
-											unsigned long	p_particle_cnt,
-											e_generator_mode p_generator_mode) {
+void ParticleSimulator::init_particle_data (std::string p_file_name, unsigned long p_particle_cnt) {
 	std::cout << "Initializing paticle data" << std::endl;
 	DEBUG_BEGIN << DEBUG_VAR (p_particle_cnt) << DEBUG_END;
 	m_particles = std::make_shared<ParticlesGrid> ();
