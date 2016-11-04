@@ -7,5 +7,5 @@ add_definitions(" -g -Wall -Wextra -pedantic -Werror -std=c++11 -Wno-unused-para
 
 find_package(glm REQUIRED)
 
-add_executable(particle_simulation ${sources})
+add_executable(particle_simulation.x ${sources})
 
