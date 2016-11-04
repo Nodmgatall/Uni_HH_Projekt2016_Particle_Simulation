@@ -6,8 +6,8 @@
 #include <unistd.h>
 #include <vector>
 
-#include "ParticleSimulator.hpp"
 #include "Definitions.hpp"
+#include "ParticleSimulator.hpp"
 #include "algorithms/DummyAlgorithm.hpp"
 #include "datastructures/ParticlesBase.hpp"
 #include "datastructures/ParticlesGrid.hpp"
@@ -111,7 +111,6 @@ void ParticleSimulator::init () {
 	mkdir ("logdata", 0700);
 	mkdir (timeString, 0700);
 	debug_file.open (std::string (timeString) + "/log.txt", std::fstream::out);
-	std::cout.rdbuf (debug_file.rdbuf ());
 	ParticleFileWriter::m_file_name_base = std::string (timeString) + "/data";
 }
 void ParticleSimulator::simulate () {

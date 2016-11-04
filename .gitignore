@@ -7,5 +7,5 @@
 /.project
 /.cproject
 /.settings
-/logdata/
+/logdata/*
 /particle_simulation.x

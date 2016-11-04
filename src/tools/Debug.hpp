@@ -8,7 +8,26 @@
 #define DEBUG_HPP_
 
 #include <fstream>
-EXTERN std::ofstream debug_file;
+#include <iostream>
+
+struct OutputAndConsole : std::ofstream
+{
+    /*OutputAndConsole(const std::string& fileName)
+       : std::ofstream(fileName) , fileName(fileName)
+    {}; const std::string fileName;*/
+};
+
+template <typename T>
+OutputAndConsole& operator<<(OutputAndConsole& strm, const T& var)
+{
+	std::cout << var;
+    static_cast<std::ofstream&>(strm) << var;
+    return strm;
+}
+
+
+
+EXTERN OutputAndConsole debug_file;
 #define DEBUG_BEGIN debug_file << __FILE__ << ":" << __LINE__ << " -> "
 #define DEBUG_VAR(var) #var << " = " << var << ", "
 #define DEBUG_END std::endl
