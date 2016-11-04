@@ -6,15 +6,15 @@
 #include <unistd.h>
 #include <vector>
 
-#include "Definitions.hpp"
 #include "ParticleSimulator.hpp"
+#include "Definitions.hpp"
+#include "algorithms/DummyAlgorithm.hpp"
 #include "datastructures/ParticlesBase.hpp"
 #include "datastructures/ParticlesGrid.hpp"
 #include "generators/ParticleGenerator.hpp"
 #include "tools/Usage.hpp"
-
-// functions
-#include "algorithms/DummyAlgorithm.hpp"
+#include <memory>
+#include <unistd.h>
 
 std::shared_ptr<ParticlesBase> ParticleSimulator::m_particles;
 glm::vec3					   ParticleSimulator::m_bounds;
@@ -91,6 +91,29 @@ void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 		}
 	}
 }
+void ParticleSimulator::print_header () {
+	std::cout << "========================================================" << std::endl;
+	std::cout << "                 Particle Simulation" << std::endl;
+	std::cout << "========================================================" << std::endl;
+	std::cout << "             Benjamin Wanke, Oliver Heidmann" << std::endl << std::endl;
+	std::cout << "             Supervisior:" << std::endl;
+	std::cout << "               Philipp Neumann" << std::endl;
+	std::cout << "========================================================" << std::endl
+			  << std::endl;
+}
+void ParticleSimulator::init () {
+	time_t	 current_time;
+	struct tm *time_info;
+	char	   timeString[26];
+	time (&current_time);
+	time_info = localtime (&current_time);
+	strftime (timeString, sizeof (timeString), "logdata/%Y-%m-%d_%H%M%S", time_info);
+	mkdir ("logdata", 0700);
+	mkdir (timeString, 0700);
+	debug_file.open (std::string (timeString) + "/log.txt", std::fstream::out);
+	std::cout.rdbuf (debug_file.rdbuf ());
+	ParticleFileWriter::m_file_name_base = std::string (timeString) + "/data";
+}
 void ParticleSimulator::simulate () {
 	std::cout << "Starting simulation" << std::endl;
 	bool iteration_successfull = true;
@@ -100,16 +123,18 @@ void ParticleSimulator::simulate () {
 	{
 		m_algorithm (m_particles);
 	}
+	ParticleFileWriter::saveData (m_particles);
 	std::cout << "Simulation finished" << std::endl;
 }
 
 void ParticleSimulator::init_particle_data (std::string p_file_name, unsigned long p_particle_cnt) {
 	std::cout << "Initializing paticle data" << std::endl;
-	m_particles = std::make_shared<ParticlesGrid> (p_particle_cnt);
+	DEBUG_BEGIN << DEBUG_VAR (p_particle_cnt) << DEBUG_END;
+	m_particles = std::make_shared<ParticlesGrid> ();
 	if (p_file_name.length () > 0) {
 		std::cout << "loading from file: " << p_file_name << std::endl;
 	} else {
-		ParticleGenerator::generate (m_particles, m_bounds);
+		ParticleGenerator::generate (m_particles, m_bounds, p_particle_cnt);
 	}
 }
 

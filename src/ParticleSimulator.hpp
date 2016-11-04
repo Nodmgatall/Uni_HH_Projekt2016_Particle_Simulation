@@ -1,14 +1,14 @@
 #ifndef PARTICLE_SIMULATOR_HPP
 #define PARTICLE_SIMULATOR_HPP
 
+#include "Definitions.hpp"
+#include "IO/ParticleFileWriter.hpp"
+#include "datastructures/ParticlesBase.hpp"
 #include <functional>
 #include <getopt.h>
 #include <iostream>
 #include <map>
 #include <memory>
-
-#include "Definitions.hpp"
-#include "datastructures/ParticlesBase.hpp"
 
 class ParticleSimulator {
 	private:
@@ -24,12 +24,15 @@ class ParticleSimulator {
 	static glm::vec3 m_bounds;
 
 	static std::function<bool(std::shared_ptr<ParticlesBase>)> m_algorithm;
+	static void												   print_header ();
 
 	public:
+	static std::shared_ptr<ParticlesBase> m_particles;
 	static void parse_argv (int argc, char **p_argv);
 	static void simulate ();
 	static void init_particle_data (std::string p_file_name, unsigned long p_particle_cnt);
 	static void find_simulation_algorithm ();
+	static void init ();
 };
 
 #endif

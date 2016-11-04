@@ -20,6 +20,9 @@
 #include <map>
 #include <memory>
 #include <string.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
 #include <vector>
 
 enum e_generator_mode {
