@@ -92,7 +92,7 @@ void ParticleSimulator::init_particle_data (std::string		 p_file_name,
 	if (p_file_name.length () > 0) {
 		std::cout << "loading from file: " << p_file_name << std::endl;
 	} else {
-		ParticleGenerator::generate (m_particles, m_bounds,p_particle_cnt);
+		ParticleGenerator::generate (m_particles, m_bounds, p_particle_cnt);
 	}
 }
 
