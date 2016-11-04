@@ -4,10 +4,10 @@
 
 #include <iostream>
 
-#include "tools/Debug.hpp"
 #include "Definitions.hpp"
-#include "generators/ParticleGenerator.hpp"
 #include "ParticleSimulator.hpp"
+#include "generators/ParticleGenerator.hpp"
+#include "tools/Debug.hpp"
 
 #include <memory>
 
