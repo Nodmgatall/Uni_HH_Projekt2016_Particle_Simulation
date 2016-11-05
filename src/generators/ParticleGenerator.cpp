@@ -11,7 +11,7 @@ void ParticleGenerator::generate (std::shared_ptr<ParticlesBase> p_particles,
 								  glm::vec3						 p_bounds,
 								  unsigned long					 p_particle_count) {
 	DEBUG_BEGIN << "ParticleGenerator :: starting" << DEBUG_END;
-	++g_debug_stream;
+	g_debug_stream.indent ();
 	switch (m_generator_mode) {
 		case MULTIPLE_OBJECTS:
 			break;
@@ -29,7 +29,7 @@ void ParticleGenerator::generate (std::shared_ptr<ParticlesBase> p_particles,
 			DEBUG_BEGIN << "ParticleGenerator :: error" << DEBUG_END;
 			exit (1);
 	}
-	--g_debug_stream;
+	g_debug_stream.unindent ();
 	DEBUG_BEGIN << "ParticleGenerator :: finish" << DEBUG_END;
 }
 void ParticleGenerator::generate_uniform_distribution (std::shared_ptr<ParticlesBase> p_particles,

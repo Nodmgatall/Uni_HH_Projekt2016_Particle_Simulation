@@ -79,15 +79,13 @@ struct s_debug_stream : std::ofstream {
 		static_cast<std::ofstream &> (*this) << var;
 		return *this;
 	}
-	s_debug_stream &operator++ () {
+	void indent () {
 		if (m_indent_count < 20)
 			m_indent_count++;
-		return *this;
 	}
-	s_debug_stream &operator-- () {
+	void unindent () {
 		if (m_indent_count > 0)
 			m_indent_count--;
-		return *this;
 	}
 };
 

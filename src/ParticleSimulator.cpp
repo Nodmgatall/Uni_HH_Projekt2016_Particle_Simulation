@@ -18,7 +18,7 @@
 
 void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 	DEBUG_BEGIN << "ParameterParser :: starting" << DEBUG_END;
-	++g_debug_stream;
+	g_debug_stream.indent ();
 	int argv_index;
 	int generator_mode_set = 0, algorithm_set = 0, data_format_set = 0;
 	/*clang-format off */
@@ -173,7 +173,7 @@ void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 		std::cout << "Error: multiple data formats set" << std::endl;
 		exit (EXIT_SUCCESS);
 	}
-	--g_debug_stream;
+	g_debug_stream.unindent ();
 	DEBUG_BEGIN << "ParameterParser :: finish" << DEBUG_END;
 
 	print_choosen_options ();
@@ -250,7 +250,7 @@ void ParticleSimulator::find_simulation_algorithm () {
 
 void ParticleSimulator::print_choosen_options () {
 	DEBUG_BEGIN << "Print-Options :: starting" << DEBUG_END;
-	++g_debug_stream;
+	g_debug_stream.indent ();
 	// DEBUG_BEGIN << "algorithm     :" << m_algorithm << DEBUG_END;
 	// DEBUG_BEGIN << "particles:" << m_particles << DEBUG_END;
 	DEBUG_BEGIN << "algorithm_type : " << m_algorithm_type << DEBUG_END;
@@ -280,6 +280,6 @@ void ParticleSimulator::print_choosen_options () {
 		g_debug_stream << ", PARTICLE_TYPE";
 	}
 	g_debug_stream << "]" << DEBUG_END;
-	--g_debug_stream;
+	g_debug_stream.unindent ();
 	DEBUG_BEGIN << "Print-Options :: starting" << DEBUG_END;
 }
