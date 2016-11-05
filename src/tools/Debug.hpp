@@ -22,8 +22,8 @@ struct s_debug_stream : std::ofstream {
 		m_last_char_was_std_endl = true;
 		return *this;
 	}
-
-	template <typename T>
+	
+    template <typename T>
 	void print (const T &var) {
 		if (m_last_char_was_std_endl) {
 			std::cout << std::string (m_indent_count * 4, ' ');
@@ -66,7 +66,6 @@ struct s_debug_stream : std::ofstream {
 		print (g_enum_particle_variable_to_string_map[var]);
 		return *this;
 	}
-
 	//////////////////////////////////////////////////////////////////////
 	//<<<<--- veränderter output
 	//////////////////////////////////////////////////////////////////////

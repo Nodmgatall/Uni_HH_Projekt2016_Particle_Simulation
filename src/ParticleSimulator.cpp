@@ -65,6 +65,7 @@ void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 									{ "single_object_middle", no_argument, 0, 7 },
 									{ "uniform_dist", no_argument, 0, 8 },
 
+
 									// Algorithms
 									{ "lennard", no_argument, 0, 9 },
 									{ "smothed", no_argument, 0, 10 },
@@ -108,6 +109,7 @@ void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 			case 4:
 				m_particle_generator->set_generator_mode (MULTIPLE_OBJECTS);
 				generator_mode_set++;
+
 				break;
 			case 5:
 				m_particle_generator->set_generator_mode (RANDOM);
@@ -133,7 +135,7 @@ void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 				m_seed = std::stoi (optarg);
 				break;
 			}
-			case 'p': {
+					case 'p': {
 				m_particle_count = std::stoi (optarg);
 				break;
 			}
@@ -151,6 +153,7 @@ void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 			}
 			case 'd': {
 				m_autotuneing = true;
+
 				break;
 			}
 			case 'h': {
@@ -230,7 +233,6 @@ void ParticleSimulator::print_choosen_options () {
 	DEBUG_BEGIN << "data_format    : " << m_data_format << DEBUG_END;
 	DEBUG_BEGIN << "file_in_name   : " << m_in_file_name << DEBUG_END;
 	DEBUG_BEGIN << "file_out_name  : " << m_out_file_name << DEBUG_END;
-	//	DEBUG_BEGIN << "generator_mode : " << m_generator_mode << DEBUG_END;
 	DEBUG_BEGIN << "particle_count : " << m_particle_count << DEBUG_END;
 	DEBUG_BEGIN << "run_time_limit : " << m_run_time_limit << DEBUG_END;
 	DEBUG_BEGIN << "seed           : " << m_seed << DEBUG_END;
