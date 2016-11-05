@@ -24,9 +24,7 @@ ParticleSimulator::ParticleSimulator (int argc, char **argv)
   m_dynamic_algorithm_use (false), m_out_file_name (""), m_in_file_name (""),
   m_particle_generator (new ParticleGenerator ()), m_particles (std::make_shared<ParticlesGrid> ()),
   m_algorithm (dummy_algo)
-
 {
-
 	init ();
 	parse_argv (argc, argv);
 	init_particle_data ();
@@ -39,46 +37,45 @@ void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 
 	int argv_index;
 
-    int algorithm_set = 0;
-    int data_format_set = 0;
-    int generator_mode_set = 0;
+	int algorithm_set	  = 0;
+	int data_format_set	= 0;
+	int generator_mode_set = 0;
 
 	/*clang-format off */
-	std::vector<option> options = { 
-                                    //Variable write options
-                                    { "write_velo", required_argument, 0, 0 },
+	std::vector<option> options = { // Variable write options
+									{ "write_velo", required_argument, 0, 0 },
 									{ "write_pos", required_argument, 0, 1 },
 									{ "write_accel", required_argument, 0, 2 },
 									{ "write_type", required_argument, 0, 3 },
 
-                                    //Generator modes
+									// Generator modes
 									{ "multiple_objects", no_argument, 0, 4 },
 									{ "random", no_argument, 0, 5 },
 									{ "random_uniform", no_argument, 0, 6 },
 									{ "single_object_middle", no_argument, 0, 7 },
-									{ "uniform_distibution", no_argument, 0, 8 },
-                                    
-                                    //Algorithms
-                                    { "lennard",  no_argument , 0, 9},
-                                    { "smothed", no_argument , 0, 10},
-                                    { "dissipative", no_argument, 0, 11},
+									{ "uniform_dist", no_argument, 0, 8 },
 
-                                    //Verbose option
+									// Algorithms
+									{ "lennard", no_argument, 0, 9 },
+									{ "smothed", no_argument, 0, 10 },
+									{ "dissipative", no_argument, 0, 11 },
+
+									// Verbose option
 									{ "verbose", no_argument, 0, 'v' },
-									
-                                    //Simulation parameters
-                                    { "seed", required_argument, 0, 's' },
+
+									// Simulation parameters
+									{ "seed", required_argument, 0, 's' },
 									{ "particle_count", required_argument, 0, 'p' },
 									{ "run_time_limit", required_argument, 0, 'l' },
 									{ "timestep", required_argument, 0, 't' },
 
-                                    //Help
-									{ "help", no_argument, 0, 'h' } };
+									// Help
+									{ "help", no_argument, 0, 'h' }
+	};
 	/*clang-format on */
-
 	opterr = 0;
 	int long_options;
-	while ((argv_index = getopt_long (p_argc, p_argv, "vs:a:F:p:f:l:t:g:d:", &options[0], &long_options)) != -1) {
+	while ((argv_index = getopt_long (p_argc, p_argv, "vs:p:l:t:", &options[0], &long_options)) != -1) {
 		/*
 		if (strcmp (optarg, "-h") == 0 || strcmp (optarg, "--help") == 0) {
 			// TODO:  Display help from option
@@ -98,25 +95,25 @@ void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 				m_write_modes[PARTICLE_TYPE] = !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
 				break;
 
-            case 4:
-                m_particle_generator->set_generator_mode(MULTIPLE_OBJECTS);
-                generator_mode_set++;
+			case 4:
+				m_particle_generator->set_generator_mode (MULTIPLE_OBJECTS);
+				generator_mode_set++;
 				break;
 			case 5:
-                m_particle_generator->set_generator_mode(RANDOM);
-                generator_mode_set++;
+				m_particle_generator->set_generator_mode (RANDOM);
+				generator_mode_set++;
 				break;
 			case 6:
-                m_particle_generator->set_generator_mode(RANDOM_UNIFORM);
-                generator_mode_set++;
+				m_particle_generator->set_generator_mode (RANDOM_UNIFORM);
+				generator_mode_set++;
 				break;
 			case 7:
-                m_particle_generator->set_generator_mode(SINGLE_OBJECT_MIDDLE);
-                generator_mode_set++;
+				m_particle_generator->set_generator_mode (SINGLE_OBJECT_MIDDLE);
+				generator_mode_set++;
 				break;
 			case 8:
-                m_particle_generator->set_generator_mode(UNIFORM_DISTRIBUTION);
-                generator_mode_set++;
+				m_particle_generator->set_generator_mode (UNIFORM_DISTRIBUTION);
+				generator_mode_set++;
 				break;
 
 			case 'v':
@@ -146,24 +143,23 @@ void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 				break;
 
 			case '?':
+                std::cout << "Error: unkown option: " <<p_argv[optind-1] << std::endl;
+				exit (EXIT_SUCCESS);
 				break;
 		}
 	}
-    if(generator_mode_set > 1)
-    {
-        std::cout << "Error: multiple generator modes set" << std::endl;
-        exit(EXIT_SUCCESS);
-    }
-    if(algorithm_set > 1)
-    {
-        std::cout << "Error: multiple algorithms set" << std::endl;
-        exit(EXIT_SUCCESS);
-    }
-    if(data_format_set > 1)
-    {
-        std::cout << "Error: multiple data formats set" << std::endl;
-        exit(EXIT_SUCCESS);
-    }
+	if (generator_mode_set > 1) {
+		std::cout << "Error: multiple generator modes set" << std::endl;
+		exit (EXIT_SUCCESS);
+	}
+	if (algorithm_set > 1) {
+		std::cout << "Error: multiple algorithms set" << std::endl;
+		exit (EXIT_SUCCESS);
+	}
+	if (data_format_set > 1) {
+		std::cout << "Error: multiple data formats set" << std::endl;
+		exit (EXIT_SUCCESS);
+	}
 	print_choosen_options ();
 }
 void ParticleSimulator::print_header () {
