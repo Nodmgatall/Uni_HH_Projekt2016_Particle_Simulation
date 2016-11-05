@@ -12,20 +12,17 @@
 #include "../datastructures/ParticlesBase.hpp"
 
 class ParticleGenerator {
-private:
-	static e_generator_mode m_mode;
-static int m_count;
+	private:
+	 e_generator_mode m_mode;
 
-public:
-	static void generate(std::shared_ptr<ParticlesBase> p_particles,
-			glm::vec3 p_bounds, int p_count);
-	static void set_generator_mode(char *p_argument_mode);
-	static void set_generator_count(char *p_argument_count);
-	static void generate_uniform_distribution(
-			std::shared_ptr<ParticlesBase> p_particles, glm::vec3 p_bounds, int p_count);
-	static void generate_random(std::shared_ptr<ParticlesBase> p_particles,
-			glm::vec3 p_bounds, int p_count);
-
+	public:
+	void generate (std::shared_ptr<ParticlesBase> p_particles, glm::vec3 p_bounds);
+	void set_generator_mode (e_generator_mode p_mode);
+	void set_generator_count (unsigned long p_particle_cnt);
+	void generate_uniform_distribution (std::shared_ptr<ParticlesBase> p_particles,
+	 								   glm::vec3					  p_bounds);
+	void generate_random (std::shared_ptr<ParticlesBase> p_particles, glm::vec3 p_bounds);
+    void print_generator_mode();
 };
 
 #endif /* SRC_PARTICLEGENERATOR_HPP_ */

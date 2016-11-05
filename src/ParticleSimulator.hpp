@@ -9,36 +9,42 @@
 #include <iostream>
 #include <map>
 #include <memory>
+#include "generators/ParticleGenerator.hpp"
 
 class ParticleSimulator {
 	private:
-	static std::map<e_particle_variable, bool> m_write_modes;
-	static bool				m_verbose;
-	static unsigned int		m_seed;
-	static e_algorithm_type m_algorithm_type;
-	static e_data_format	m_data_format;
-	static unsigned long	m_particle_count;
-	static int				m_write_fequency;
-	static float			m_run_time_limit;
-	static float			m_timestep;
-	static bool				m_dynamic_algorithm_use;
+	std::map<e_particle_variable, bool> m_write_modes;
+	bool				m_verbose;
+	unsigned int		m_seed;
+	e_algorithm_type m_algorithm_type;
+	e_data_format	m_data_format;
+	unsigned long	m_particle_count;
+	int				m_write_fequency;
+	float			m_run_time_limit;
+	float			m_timestep;
+	bool			m_dynamic_algorithm_use;
+    std::string     m_out_file_name;
+    std::string     m_in_file_name;
 
-	static std::shared_ptr<ParticlesBase> m_particles;
+    std::unique_ptr<ParticleGenerator> m_particle_generator;
+
+	std::shared_ptr<ParticlesBase> m_particles;
 	// boundaries define box of particles
-	static glm::vec3 m_bounds;
+	glm::vec3 m_bounds;
 
-	static std::function<bool(std::shared_ptr<ParticlesBase>)> m_algorithm;
-	static void												   print_header ();
+	std::function<bool(std::shared_ptr<ParticlesBase>)> m_algorithm;
+	void												   print_header ();
 
-	static float m_delta_t;
+	float m_delta_t;
 
 	public:
-	static void parse_argv (int argc, char **p_argv);
-	static void simulate ();
-	static void init_particle_data (std::string p_file_name, unsigned long p_particle_cnt);
-	static void find_simulation_algorithm ();
-	static void init ();
-	static void print_choosen_options ();
+    ParticleSimulator(int argc, char** argv);
+	void parse_argv (int argc, char **p_argv);
+	void simulate ();
+	void init_particle_data ();
+	void find_simulation_algorithm ();
+	void init ();
+	void print_choosen_options ();
 };
 
 #endif
