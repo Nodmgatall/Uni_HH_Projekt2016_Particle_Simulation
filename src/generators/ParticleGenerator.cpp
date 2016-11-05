@@ -7,32 +7,35 @@
 
 #include "ParticleGenerator.hpp"
 
-void ParticleGenerator::generate (std::shared_ptr<ParticlesBase> p_particles, glm::vec3 p_bounds) {
-	std::cout << "ParticleGenerator :: starting" << std::endl;
-	std::cout << "    generating " << p_particles->get_particle_count () << " Particles" << std::endl;
-	switch (m_mode) {
+void ParticleGenerator::generate (std::shared_ptr<ParticlesBase> p_particles,
+								  glm::vec3						 p_bounds,
+								  unsigned long					 p_particle_count) {
+	DEBUG_BEGIN << "ParticleGenerator :: starting" << DEBUG_END;
+	++g_debug_stream;
+	switch (m_generator_mode) {
 		case MULTIPLE_OBJECTS:
 			break;
 		case RANDOM:
-			generate_random (p_particles, p_bounds);
+			generate_random (p_particles, p_bounds, p_particle_count);
 			break;
 		case RANDOM_UNIFORM:
 			break;
 		case SINGLE_OBJECT_MIDDLE:
 			break;
 		case UNIFORM_DISTRIBUTION:
-			generate_uniform_distribution (p_particles, p_bounds);
+			generate_uniform_distribution (p_particles, p_bounds, p_particle_count);
 			break;
 		default:
-			std::cout << "ParticleGenerator :: error: no mode selected" << std::endl;
-			DEBUG_BEGIN << DEBUG_VAR (m_mode) << DEBUG_END;
+			DEBUG_BEGIN << "ParticleGenerator :: error" << DEBUG_END;
 			exit (1);
 	}
-	std::cout << "ParticleGenerator :: finish" << std::endl;
+	--g_debug_stream;
+	DEBUG_BEGIN << "ParticleGenerator :: finish" << DEBUG_END;
 }
 void ParticleGenerator::generate_uniform_distribution (std::shared_ptr<ParticlesBase> p_particles,
-													   glm::vec3					  p_bounds) {
-	std::cout << "    method :: uniform distribution" << std::endl;
+													   glm::vec3					  p_bounds,
+													   unsigned long p_particle_count) {
+	DEBUG_BEGIN << "method :: uniform distribution" << DEBUG_END;
 	float	 temp	= pow (p_particles->get_particle_count (), 1.0f / 3.0f);
 	glm::vec3 delta   = (glm::vec3 (0, 0, 0) - p_bounds) / (temp - 1);
 	int		  tempInt = temp;
@@ -45,11 +48,12 @@ void ParticleGenerator::generate_uniform_distribution (std::shared_ptr<Particles
 			}
 		}
 	}
-	int p_patriclesGenerated = pow (tempInt, 3);
-	DEBUG_BEGIN << DEBUG_VAR (p_patriclesGenerated) << DEBUG_END;
 }
 
-void ParticleGenerator::generate_random (std::shared_ptr<ParticlesBase> p_particles, glm::vec3 p_bounds) {
+void ParticleGenerator::generate_random (std::shared_ptr<ParticlesBase> p_particles,
+										 glm::vec3						p_bounds,
+										 unsigned long					p_particle_count) {
+	DEBUG_BEGIN << "method :: random" << DEBUG_END;
 	long seed = std::time (0);
 	std::srand (seed); // TODO parameter bei programmstart
 	for (unsigned long i = 0; i < p_particles->get_particle_count (); i++) {
@@ -58,12 +62,6 @@ void ParticleGenerator::generate_random (std::shared_ptr<ParticlesBase> p_partic
 								   glm::vec3 (0, 0, 0));
 	}
 }
-
-void ParticleGenerator::set_generator_mode (e_generator_mode p_mode) {
-	m_mode = p_mode;
-}
-
-void ParticleGenerator::print_generator_mode()
-{
-    std::cout <<"Generator mode: " <<m_mode << std::endl;
+void ParticleGenerator::set_generator_mode (e_generator_mode p_generator_mode) {
+	m_generator_mode = p_generator_mode;
 }

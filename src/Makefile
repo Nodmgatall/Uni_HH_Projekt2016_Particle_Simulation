@@ -1,8 +1,14 @@
-format:
-	clang-format -i -sort-includes *.cpp
-	clang-format -i -sort-includes *.hpp
+all: format
+	cd .. && $(MAKE) clean
+	cd .. && cmake .
+	cd .. && $(MAKE)
+	cd .. && ./particle_simulation.x
 
-clean:
+format:
+	find -name '*.cpp' -o -name '*.hpp' | xargs clang-format -i -sort-includes
+	find -name '*.cpp' -o -name '*.hpp' | xargs clang-format -i -sort-includes
+
+clean: format
 	cd .. && $(MAKE) clean
 	rm -rf ../CMakeFiles
 	rm -f ../CMakeCache.txt
@@ -13,9 +19,12 @@ cmake:
 	cd .. && cmake .
 	cd .. && $(MAKE)
 
-build:
+build: format
 	cd .. && $(MAKE)
-	
-run:
+
+run: format
 	cd .. && $(MAKE)
 	cd .. && ./particle_simulation.x
+	
+rmlog: format
+	rm -rf ../logdata

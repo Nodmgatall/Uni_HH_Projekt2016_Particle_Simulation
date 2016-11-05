@@ -13,37 +13,32 @@
 
 class ParticleSimulator {
 	private:
-	std::map<e_particle_variable, bool> m_write_modes;
-	bool			 m_verbose;
-	unsigned int	 m_seed;
-	e_algorithm_type m_algorithm_type;
-	e_data_format	 m_data_format;
-	unsigned long	 m_particle_count;
-	int				 m_write_fequency;
-	float			 m_run_time_limit;
-	float			 m_timestep;
-	bool			 m_dynamic_algorithm_use;
-	std::string		 m_out_file_name;
-	std::string		 m_in_file_name;
-
-	std::unique_ptr<ParticleGenerator> m_particle_generator;
-
-	std::shared_ptr<ParticlesBase> m_particles;
-	// boundaries define box of particles
-	glm::vec3 m_bounds;
 
 	std::function<bool(std::shared_ptr<ParticlesBase>)> m_algorithm;
+	e_algorithm_type									m_algorithm_type;
+	bool												m_autotuneing;
+	glm::vec3											m_bounds;
+	e_data_format										m_data_format;
+	float												m_delta_t;
+	std::string											m_in_file_name;
+	std::string											m_out_file_name;
+	unsigned long										m_particle_count;
+	std::unique_ptr<ParticleGenerator>					m_particle_generator;
+	std::shared_ptr<ParticlesBase>						m_particles;
+	float												m_run_time_limit;
+	unsigned int										m_seed;
+	float												m_timestep;
+	bool												m_verbose;
+	int													m_write_fequency;
+	std::map<e_particle_variable, bool> m_write_modes;
 	void print_header ();
 
-	float m_delta_t;
-
 	public:
-	ParticleSimulator (int argc, char **argv);
 	void parse_argv (int argc, char **p_argv);
 	void simulate ();
 	void init_particle_data ();
 	void find_simulation_algorithm ();
-	void init ();
+	ParticleSimulator (int argc, char **argv);
 	void print_choosen_options ();
 };
 

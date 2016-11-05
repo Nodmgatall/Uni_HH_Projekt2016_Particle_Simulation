@@ -16,25 +16,35 @@
 #include <memory>
 #include <unistd.h>
 
+/*clang-format off */
 ParticleSimulator::ParticleSimulator (int argc, char **argv)
-: m_write_modes (
-	  { { ID, true }, { VELOCITY, true }, { POSITION, true }, { ACCELERATION, true }, { PARTICLE_TYPE, true } }),
-  m_verbose (false), m_seed (0), m_algorithm_type (NO_ALGORITHM), m_data_format (NO_FORMAT),
-  m_particle_count (0), m_write_fequency (1000), m_run_time_limit (20), m_timestep (0),
-  m_dynamic_algorithm_use (false), m_out_file_name (""), m_in_file_name (""),
-  m_particle_generator (new ParticleGenerator ()), m_particles (std::make_shared<ParticlesGrid> ()),
-  m_algorithm (dummy_algo)
-{
-	init ();
+: m_algorithm (dummy_algo), m_algorithm_type (LENNARD_JONES), m_autotuneing (false),
+  m_bounds (glm::vec3 (0, 0, 0)), m_data_format (CSV), m_delta_t (1), m_in_file_name (""),
+  m_out_file_name (""), m_particle_count (0), m_particle_generator (new ParticleGenerator ()),
+  m_particles (std::make_shared<ParticlesGrid> ()), m_run_time_limit (20), m_seed (0),
+  m_timestep (0), m_verbose (false), m_write_fequency (1000),
+  m_write_modes (
+	  { { ID, true }, { VELOCITY, true }, { POSITION, true }, { ACCELERATION, true }, { PARTICLE_TYPE, true } }) {
+	time_t	 current_time;
+	struct tm *time_info;
+	char	   timeString[29];
+	time (&current_time);
+	time_info = localtime (&current_time);
+	strftime (timeString, sizeof (timeString), "logdata/%Y-%m-%d_%H-%M-%S", time_info);
+	mkdir ("logdata", 0700);
+	mkdir (timeString, 0700);
+	g_debug_stream.open (std::string (timeString) + "/log.txt", std::fstream::out);
+	print_header ();
+	ParticleFileWriter::m_file_name_base = std::string (timeString) + "/data";
 	parse_argv (argc, argv);
 	init_particle_data ();
 	find_simulation_algorithm ();
-	simulate ();
 }
+/*clang-format off */
 
 void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
-	std::cout << "Reading console input" << std::endl;
-
+	DEBUG_BEGIN << "ParameterParser :: starting" << DEBUG_END;
+	++g_debug_stream;
 	int argv_index;
 
 	int algorithm_set	  = 0;
@@ -75,12 +85,12 @@ void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 	/*clang-format on */
 	opterr = 0;
 	int long_options;
-	while ((argv_index = getopt_long (p_argc, p_argv, "vs:p:l:t:", &options[0], &long_options)) != -1) {
+	while ((argv_index = getopt_long (p_argc, p_argv, "vs:p:l:t:d", &options[0], &long_options)) != -1) {
 		/*
-		if (strcmp (optarg, "-h") == 0 || strcmp (optarg, "--help") == 0) {
-			// TODO:  Display help from option
-		}
-		*/
+		 if (strcmp (optarg, "-h") == 0 || strcmp (optarg, "--help") == 0) {
+		 // TODO:  Display help from option
+		 }
+		 */
 		switch (argv_index) {
 			case 0:
 				m_write_modes[VELOCITY] = !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
@@ -115,37 +125,45 @@ void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 				m_particle_generator->set_generator_mode (UNIFORM_DISTRIBUTION);
 				generator_mode_set++;
 				break;
-
-			case 'v':
+			case 'v': {
 				m_verbose = true;
 				break;
-			case 's':
+			}
+			case 's': {
 				m_seed = std::stoi (optarg);
 				break;
-			case 'p':
+			}
+			case 'p': {
 				m_particle_count = std::stoi (optarg);
 				break;
-			case 'f':
+			}
+			case 'f': {
 				m_write_fequency = std::stoi (optarg);
 				break;
-			case 'l':
+			}
+			case 'l': {
 				m_run_time_limit = std::stoi (optarg);
 				break;
-			case 't':
+			}
+			case 't': {
 				m_timestep = std::stof (optarg);
 				break;
-			case 'd':
-				m_dynamic_algorithm_use = std::stoi (optarg) != 0;
+			}
+			case 'd': {
+				m_autotuneing = true;
 				break;
-			case 'h':
+			}
+			case 'h': {
 				print_usage_particle_sim ();
 				exit (EXIT_SUCCESS);
 				break;
-
-			case '?':
-                std::cout << "Error: unkown option: " <<p_argv[optind-1] << std::endl;
-				exit (EXIT_SUCCESS);
-				break;
+			}
+				{
+					case '?':
+						std::cout << "Error: unkown option: " << p_argv[optind - 1] << std::endl;
+						exit (EXIT_SUCCESS);
+						break;
+				}
 		}
 	}
 	if (generator_mode_set > 1) {
@@ -160,32 +178,22 @@ void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 		std::cout << "Error: multiple data formats set" << std::endl;
 		exit (EXIT_SUCCESS);
 	}
+	--g_debug_stream;
+	DEBUG_BEGIN << "ParameterParser :: finish" << DEBUG_END;
+
 	print_choosen_options ();
 }
 void ParticleSimulator::print_header () {
-	std::cout << "========================================================" << std::endl;
-	std::cout << "                 Particle Simulation" << std::endl;
-	std::cout << "========================================================" << std::endl;
-	std::cout << "             Benjamin Wanke, Oliver Heidmann" << std::endl << std::endl;
-	std::cout << "             Supervisior:" << std::endl;
-	std::cout << "               Philipp Neumann" << std::endl;
-	std::cout << "========================================================" << std::endl
-			  << std::endl;
-}
-void ParticleSimulator::init () {
-	time_t	 current_time;
-	struct tm *time_info;
-	char	   timeString[29];
-	time (&current_time);
-	time_info = localtime (&current_time);
-	strftime (timeString, sizeof (timeString), "logdata/%Y-%m-%d_%H-%M-%S", time_info);
-	mkdir ("logdata", 0700);
-	mkdir (timeString, 0700);
-	debug_file.open (std::string (timeString) + "/log.txt", std::fstream::out);
-	ParticleFileWriter::m_file_name_base = std::string (timeString) + "/data";
+	DEBUG_BEGIN << "=======================================================" << DEBUG_END;
+	DEBUG_BEGIN << "                  Particle Simulation                  " << DEBUG_END;
+	DEBUG_BEGIN << "=======================================================" << DEBUG_END;
+	DEBUG_BEGIN << "            Benjamin Wanke, Oliver Heidmann            " << DEBUG_ENDL;
+	DEBUG_BEGIN << "                      Supervisior                      " << DEBUG_END;
+	DEBUG_BEGIN << "                    Philipp Neumann                    " << DEBUG_END;
+	DEBUG_BEGIN << "=======================================================" << DEBUG_ENDL;
 }
 void ParticleSimulator::simulate () {
-	std::cout << "Starting simulation" << std::endl;
+	DEBUG_BEGIN << "Starting simulation" << DEBUG_END;
 	bool iteration_successfull = true;
 	// TODO: set up simulation parameters according to later function parameters
 	while (false && iteration_successfull == true) // TODO: fix while to end
@@ -194,40 +202,55 @@ void ParticleSimulator::simulate () {
 		m_algorithm (m_particles);
 	}
 	ParticleFileWriter::saveData (m_particles);
-	std::cout << "Simulation finished" << std::endl;
+	DEBUG_BEGIN << "Simulation finished" << DEBUG_END;
 }
 
 void ParticleSimulator::init_particle_data () {
-	std::cout << "Initializing paticle data" << std::endl;
-	DEBUG_BEGIN << DEBUG_VAR (m_particle_count) << DEBUG_END;
 	m_particles = std::make_shared<ParticlesGrid> ();
-	if (m_out_file_name.length () > 0) {
-		std::cout << "loading from file: " << m_out_file_name << std::endl;
+	if (m_in_file_name.length () > 0) {
+		DEBUG_BEGIN << "loading from file: " << m_in_file_name << DEBUG_END;
 	} else {
-		m_particle_generator->generate (m_particles, m_bounds);
+		m_particle_generator->generate (m_particles, m_bounds, m_particle_count);
 	}
 }
 
 void ParticleSimulator::find_simulation_algorithm () {
-	std::cout << "Setting simulation algorithm" << std::endl;
+	DEBUG_BEGIN << "Setting simulation algorithm" << DEBUG_END;
 	m_algorithm = dummy_algo;
 }
 
 void ParticleSimulator::print_choosen_options () {
-	std::cout << "Choosen Options:" << std::endl;
-	std::cout << "verbose: " << m_verbose << std::endl;
-	std::cout << "seed:    " << m_seed << std::endl;
-	std::cout << "algorithm type: " << m_algorithm_type << std::endl;
-	std::cout << "data fromat: " << m_data_format << std::endl;
-	std::cout << "particle count " << m_particle_count << std::endl;
-	std::cout << "write frequency: " << m_write_fequency << std::endl;
-	std::cout << "run time limit: " << m_run_time_limit << std::endl;
-	std::cout << "time step: " << m_timestep << std::endl;
-	std::cout << "dynamic algo: " << m_dynamic_algorithm_use << std::endl;
-	std::cout << "write mode ID: " << m_write_modes[ID] << std::endl;
-	std::cout << "write mode POSITION: " << m_write_modes[POSITION] << std::endl;
-	std::cout << "write mode VELOCITY: " << m_write_modes[VELOCITY] << std::endl;
-	std::cout << "write mode ACCELERATION: " << m_write_modes[ACCELERATION] << std::endl;
-	std::cout << "write mode PARTICLE_TYPE: " << m_write_modes[PARTICLE_TYPE] << std::endl;
-	m_particle_generator->print_generator_mode ();
+	DEBUG_BEGIN << "Print-Options :: starting" << DEBUG_END;
+	++g_debug_stream;
+	// DEBUG_BEGIN << "algorithm     :" << m_algorithm << DEBUG_END;
+	// DEBUG_BEGIN << "particles:" << m_particles << DEBUG_END;
+	DEBUG_BEGIN << "algorithm_type : " << m_algorithm_type << DEBUG_END;
+	DEBUG_BEGIN << "autotuneing    : " << m_autotuneing << DEBUG_END;
+	DEBUG_BEGIN << "bounds         : " << m_bounds << DEBUG_END;
+	DEBUG_BEGIN << "data_format    : " << m_data_format << DEBUG_END;
+	DEBUG_BEGIN << "file_in_name   : " << m_in_file_name << DEBUG_END;
+	DEBUG_BEGIN << "file_out_name  : " << m_out_file_name << DEBUG_END;
+	//	DEBUG_BEGIN << "generator_mode : " << m_generator_mode << DEBUG_END;
+	DEBUG_BEGIN << "particle_count : " << m_particle_count << DEBUG_END;
+	DEBUG_BEGIN << "run_time_limit : " << m_run_time_limit << DEBUG_END;
+	DEBUG_BEGIN << "seed           : " << m_seed << DEBUG_END;
+	DEBUG_BEGIN << "timestep       : " << m_timestep << DEBUG_END;
+	DEBUG_BEGIN << "verbose        : " << m_verbose << DEBUG_END;
+	DEBUG_BEGIN << "write_fequency : " << m_write_fequency << DEBUG_END;
+	DEBUG_BEGIN << "write_modes    : [ID";
+	if (m_write_modes[POSITION]) {
+		g_debug_stream << ", POSITION";
+	}
+	if (m_write_modes[VELOCITY]) {
+		g_debug_stream << ", VELOCITY";
+	}
+	if (m_write_modes[ACCELERATION]) {
+		g_debug_stream << ", ACCELERATION";
+	}
+	if (m_write_modes[PARTICLE_TYPE]) {
+		g_debug_stream << ", PARTICLE_TYPE";
+	}
+	g_debug_stream << "]" << DEBUG_END;
+	--g_debug_stream;
+	DEBUG_BEGIN << "Print-Options :: starting" << DEBUG_END;
 }

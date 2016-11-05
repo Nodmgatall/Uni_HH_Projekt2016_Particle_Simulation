@@ -4,37 +4,36 @@
 
 #include "ParticlesGrid.hpp"
 
-ParticlesGrid::ParticlesGrid() {
+ParticlesGrid::ParticlesGrid () {
 }
 
-glm::vec3 ParticlesGrid::get_velocity(int particle_id) {
+glm::vec3 ParticlesGrid::get_velocity (int particle_id) {
 	return m_velocities[particle_id];
 }
-std::vector<glm::vec3> *ParticlesGrid::get_positions() {
+std::vector<glm::vec3> *ParticlesGrid::get_positions () {
 	return &m_positions;
 }
 
-std::vector<glm::vec3> *ParticlesGrid::get_accelerations() {
+std::vector<glm::vec3> *ParticlesGrid::get_accelerations () {
 	return &m_accelerations;
 }
 
-std::vector<glm::vec3> *ParticlesGrid::get_velocities() {
+std::vector<glm::vec3> *ParticlesGrid::get_velocities () {
 	return &m_velocities;
 }
-std::vector<unsigned long> *ParticlesGrid::get_ids() {
+std::vector<unsigned long> *ParticlesGrid::get_ids () {
 	return &m_ids;
 }
 
-unsigned long ParticlesGrid::get_particle_count() {
-	return m_positions.size();
+unsigned long ParticlesGrid::get_particle_count () {
+	return m_positions.size ();
 }
 
-void ParticlesGrid::add_particle(glm::vec3 p_position, glm::vec3 p_velocity,
-		glm::vec3 p_acceleration) {
-	m_positions.push_back(p_position);
-	m_velocities.push_back(p_velocity);
-	m_accelerations.push_back(p_acceleration);
+void ParticlesGrid::add_particle (glm::vec3 p_position, glm::vec3 p_velocity, glm::vec3 p_acceleration) {
+	m_positions.push_back (p_position);
+	m_velocities.push_back (p_velocity);
+	m_accelerations.push_back (p_acceleration);
 }
 
-ParticlesGrid::~ParticlesGrid() {
+ParticlesGrid::~ParticlesGrid () {
 }

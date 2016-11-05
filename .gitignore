@@ -3,9 +3,8 @@
 /CMakeCache.txt
 /log.txt
 /Makefile
-/particle_simulation
 /.project
 /.cproject
 /.settings
-/logdata/*
 /particle_simulation.x
+/logdata/

@@ -13,16 +13,15 @@
 
 class ParticleGenerator {
 	private:
-	 e_generator_mode m_mode;
+	e_generator_mode m_generator_mode;
 
 	public:
-	void generate (std::shared_ptr<ParticlesBase> p_particles, glm::vec3 p_bounds);
-	void set_generator_mode (e_generator_mode p_mode);
-	void set_generator_count (unsigned long p_particle_cnt);
+	void generate (std::shared_ptr<ParticlesBase> p_particles, glm::vec3 p_bounds, unsigned long p_particle_count);
 	void generate_uniform_distribution (std::shared_ptr<ParticlesBase> p_particles,
-	 								   glm::vec3					  p_bounds);
-	void generate_random (std::shared_ptr<ParticlesBase> p_particles, glm::vec3 p_bounds);
-    void print_generator_mode();
+										glm::vec3					   p_bounds,
+										unsigned long				   p_particle_count);
+	void generate_random (std::shared_ptr<ParticlesBase> p_particles, glm::vec3 p_bounds, unsigned long p_particle_count);
+	void set_generator_mode (e_generator_mode p_generator_mode);
 };
 
 #endif /* SRC_PARTICLEGENERATOR_HPP_ */
