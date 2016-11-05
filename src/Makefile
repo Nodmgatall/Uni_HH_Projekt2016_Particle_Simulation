@@ -1,4 +1,4 @@
-all: format
+all: format cmake run
 	cd .. && $(MAKE) clean
 	cd .. && cmake .
 	cd .. && $(MAKE)
@@ -22,9 +22,8 @@ cmake:
 build: format
 	cd .. && $(MAKE)
 
-run: format
-	cd .. && $(MAKE)
-	cd .. && ./particle_simulation.x
+run: build
+	cd .. && ./particle_simulation.x -p 10
 	
 rmlog: format
 	rm -rf ../logdata

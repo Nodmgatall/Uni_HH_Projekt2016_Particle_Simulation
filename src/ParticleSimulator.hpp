@@ -19,6 +19,7 @@ class ParticleSimulator {
 	glm::vec3											m_bounds;
 	e_data_format										m_data_format;
 	float												m_delta_t;
+	std::unique_ptr<ParticleFileWriter>					m_particle_file_writer;
 	std::string											m_in_file_name;
 	std::string											m_out_file_name;
 	unsigned long										m_particle_count;
