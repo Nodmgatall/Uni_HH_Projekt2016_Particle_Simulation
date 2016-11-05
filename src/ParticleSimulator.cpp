@@ -65,7 +65,6 @@ void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 									{ "single_object_middle", no_argument, 0, 7 },
 									{ "uniform_dist", no_argument, 0, 8 },
 
-
 									// Algorithms
 									{ "lennard", no_argument, 0, 9 },
 									{ "smothed", no_argument, 0, 10 },
@@ -135,7 +134,7 @@ void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 				m_seed = std::stoi (optarg);
 				break;
 			}
-					case 'p': {
+			case 'p': {
 				m_particle_count = std::stoi (optarg);
 				break;
 			}
