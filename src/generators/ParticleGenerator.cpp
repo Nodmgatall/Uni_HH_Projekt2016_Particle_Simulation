@@ -9,26 +9,24 @@
 
 void ParticleGenerator::generate (std::shared_ptr<ParticlesBase> p_particles,
 								  glm::vec3						 p_bounds,
-								  e_generator_mode				 p_generator_mode,
 								  unsigned long					 p_particle_count) {
 	DEBUG_BEGIN << "ParticleGenerator :: starting" << DEBUG_END;
 	++g_debug_stream;
-	switch (p_generator_mode) {
+	switch (m_generator_mode) {
 		case MULTIPLE_OBJECTS:
 			break;
 		case RANDOM:
-			generate_random (p_particles, p_bounds, p_generator_mode, p_particle_count);
+			generate_random (p_particles, p_bounds, p_particle_count);
 			break;
 		case RANDOM_UNIFORM:
 			break;
 		case SINGLE_OBJECT_MIDDLE:
 			break;
 		case UNIFORM_DISTRIBUTION:
-			generate_uniform_distribution (p_particles, p_bounds, p_generator_mode, p_particle_count);
+			generate_uniform_distribution (p_particles, p_bounds, p_particle_count);
 			break;
 		default:
 			DEBUG_BEGIN << "ParticleGenerator :: error" << DEBUG_END;
-			DEBUG_BEGIN << DEBUG_VAR (p_generator_mode) << DEBUG_END;
 			exit (1);
 	}
 	--g_debug_stream;
@@ -36,8 +34,7 @@ void ParticleGenerator::generate (std::shared_ptr<ParticlesBase> p_particles,
 }
 void ParticleGenerator::generate_uniform_distribution (std::shared_ptr<ParticlesBase> p_particles,
 													   glm::vec3					  p_bounds,
-													   e_generator_mode p_generator_mode,
-													   unsigned long	p_particle_count) {
+													   unsigned long p_particle_count) {
 	DEBUG_BEGIN << "method :: uniform distribution" << DEBUG_END;
 	float	 temp	= pow (p_particles->get_particle_count (), 1.0f / 3.0f);
 	glm::vec3 delta   = (glm::vec3 (0, 0, 0) - p_bounds) / (temp - 1);
@@ -55,7 +52,6 @@ void ParticleGenerator::generate_uniform_distribution (std::shared_ptr<Particles
 
 void ParticleGenerator::generate_random (std::shared_ptr<ParticlesBase> p_particles,
 										 glm::vec3						p_bounds,
-										 e_generator_mode				p_generator_mode,
 										 unsigned long					p_particle_count) {
 	DEBUG_BEGIN << "method :: random" << DEBUG_END;
 	long seed = std::time (0);
@@ -65,4 +61,7 @@ void ParticleGenerator::generate_random (std::shared_ptr<ParticlesBase> p_partic
 								   glm::vec3 (0, 0, 0),
 								   glm::vec3 (0, 0, 0));
 	}
+}
+void ParticleGenerator::set_generator_mode (e_generator_mode p_generator_mode) {
+	m_generator_mode = p_generator_mode;
 }

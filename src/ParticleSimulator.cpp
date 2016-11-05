@@ -16,42 +16,42 @@
 #include <memory>
 #include <unistd.h>
 
-std::function<bool(std::shared_ptr<ParticlesBase>)> ParticleSimulator::m_algorithm;
-std::shared_ptr<ParticlesBase>						ParticleSimulator::m_particles;
-std::map<e_particle_variable, bool> ParticleSimulator::m_write_modes;
-e_algorithm_type ParticleSimulator::m_algorithm_type = e_algorithm_type::LENNARD_JONES;
-bool			 ParticleSimulator::m_autotuneing	= false;
-glm::vec3		 ParticleSimulator::m_bounds		 = glm::vec3 (1, 1, 1);
-e_data_format	ParticleSimulator::m_data_format	= e_data_format::CSV;
-std::string		 ParticleSimulator::m_file_name		 = "";
-e_generator_mode ParticleSimulator::m_generator_mode = e_generator_mode::UNIFORM_DISTRIBUTION;
-unsigned long	ParticleSimulator::m_particle_count = 1;
-float			 ParticleSimulator::m_run_time_limit = 1;
-unsigned int	 ParticleSimulator::m_seed			 = std::time (0);
-float			 ParticleSimulator::m_timestep		 = 1;
-bool			 ParticleSimulator::m_verbose		 = false;
-int				 ParticleSimulator::m_write_fequency = 1;
-
 void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 	DEBUG_BEGIN << "ParameterParser :: starting" << DEBUG_END;
 	++g_debug_stream;
 	int argv_index;
-
+	int generator_mode_set = 0, algorithm_set = 0, data_format_set = 0;
 	/*clang-format off */
-	std::vector<option> options =
-		{ { g_enum_particle_variable_to_string_map[VELOCITY], required_argument, 0, 0 },
-		  { g_enum_particle_variable_to_string_map[POSITION], required_argument, 0, 0 },
-		  { g_enum_particle_variable_to_string_map[ACCELERATION], required_argument, 0, 0 },
-		  { g_enum_particle_variable_to_string_map[PARTICLE_TYPE], required_argument, 0, 0 },
-		  { "verbose", no_argument, 0, 'v' },
-		  { "seed", required_argument, 0, 's' },
-		  { "algorithm", required_argument, 0, 'a' },
-		  { "format", required_argument, 0, 'F' },
-		  { "particle_count", required_argument, 0, 'p' },
-		  { "run_time_limit", required_argument, 0, 'l' },
-		  { "timestep", required_argument, 0, 't' },
-		  { "generator_mode", required_argument, 0, 'g' },
-		  { "help", no_argument, 0, 'h' } };
+	std::vector<option> options = { // Variable write options
+									{ "write_velo", required_argument, 0, 0 },
+									{ "write_pos", required_argument, 0, 1 },
+									{ "write_accel", required_argument, 0, 2 },
+									{ "write_type", required_argument, 0, 3 },
+
+									// Generator modes
+									{ "multiple_objects", no_argument, 0, 4 },
+									{ "random", no_argument, 0, 5 },
+									{ "random_uniform", no_argument, 0, 6 },
+									{ "single_object_middle", no_argument, 0, 7 },
+									{ "uniform_distibution", no_argument, 0, 8 },
+
+									// Algorithms
+									{ "lennard", no_argument, 0, 9 },
+									{ "smothed", no_argument, 0, 10 },
+									{ "dissipative", no_argument, 0, 11 },
+
+									// Verbose option
+									{ "verbose", no_argument, 0, 'v' },
+
+									// Simulation parameters
+									{ "seed", required_argument, 0, 's' },
+									{ "particle_count", required_argument, 0, 'p' },
+									{ "run_time_limit", required_argument, 0, 'l' },
+									{ "timestep", required_argument, 0, 't' },
+
+									// Help
+									{ "help", no_argument, 0, 'h' }
+	};
 	/*clang-format on */
 
 	opterr = 0;
@@ -63,25 +63,39 @@ void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 		 }
 		 */
 		switch (argv_index) {
-			case 0: {
-
-				if (strcmp (options[long_options].name, g_enum_particle_variable_to_string_map[VELOCITY]) == 0) {
-					m_write_modes[VELOCITY] = std::stoi (optarg) == 0;
-				}
-				if (strcmp (options[long_options].name, g_enum_particle_variable_to_string_map[POSITION]) == 0) {
-					m_write_modes[POSITION] = std::stoi (optarg) == 0;
-				}
-				if (strcmp (options[long_options].name,
-							g_enum_particle_variable_to_string_map[ACCELERATION]) == 0) {
-					m_write_modes[ACCELERATION] = std::stoi (optarg) == 0;
-				}
-				if (strcmp (options[long_options].name,
-							g_enum_particle_variable_to_string_map[PARTICLE_TYPE]) == 0) {
-					m_write_modes[PARTICLE_TYPE] = std::stoi (optarg) == 0;
-				}
-
+			case 0:
+				m_write_modes[VELOCITY] = !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
 				break;
-			}
+			case 1:
+				m_write_modes[POSITION] = !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
+				break;
+			case 2:
+				m_write_modes[ACCELERATION] = !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
+				break;
+			case 3:
+				m_write_modes[PARTICLE_TYPE] = !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
+				break;
+
+			case 4:
+				m_particle_generator->set_generator_mode (MULTIPLE_OBJECTS);
+				generator_mode_set++;
+				break;
+			case 5:
+				m_particle_generator->set_generator_mode (RANDOM);
+				generator_mode_set++;
+				break;
+			case 6:
+				m_particle_generator->set_generator_mode (RANDOM_UNIFORM);
+				generator_mode_set++;
+				break;
+			case 7:
+				m_particle_generator->set_generator_mode (SINGLE_OBJECT_MIDDLE);
+				generator_mode_set++;
+				break;
+			case 8:
+				m_particle_generator->set_generator_mode (UNIFORM_DISTRIBUTION);
+				generator_mode_set++;
+				break;
 			case 'v': {
 				m_verbose = true;
 				break;
@@ -119,8 +133,8 @@ void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 					 iterator != g_enum_generator_mode_to_string_map.end ();
 					 iterator++) {
 					if (strcmp (iterator->second, optarg) == 0) {
-						m_generator_mode = iterator->first;
-						found			 = true;
+						m_particle_generator->set_generator_mode (iterator->first);
+						found = true;
 						break;
 					}
 				}
@@ -146,6 +160,18 @@ void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 			}
 		}
 	}
+	if (generator_mode_set > 1) {
+		std::cout << "Error: multiple generator modes set" << std::endl;
+		exit (EXIT_SUCCESS);
+	}
+	if (algorithm_set > 1) {
+		std::cout << "Error: multiple algorithms set" << std::endl;
+		exit (EXIT_SUCCESS);
+	}
+	if (data_format_set > 1) {
+		std::cout << "Error: multiple data formats set" << std::endl;
+		exit (EXIT_SUCCESS);
+	}
 	--g_debug_stream;
 	DEBUG_BEGIN << "ParameterParser :: finish" << DEBUG_END;
 
@@ -160,7 +186,25 @@ void ParticleSimulator::print_header () {
 	DEBUG_BEGIN << "                    Philipp Neumann                    " << DEBUG_END;
 	DEBUG_BEGIN << "=======================================================" << DEBUG_ENDL;
 }
-void ParticleSimulator::init (int argc, char **argv) {
+ParticleSimulator::ParticleSimulator (int argc, char **argv) //
+	: m_algorithm (dummy_algo),								 //
+	  m_algorithm_type (LENNARD_JONES),						 //
+	  m_autotuneing (false),								 //
+	  m_bounds (glm::vec3 (0, 0, 0)),						 //
+	  m_data_format (CSV),									 //
+	  m_delta_t (1),										 //
+	  m_in_file_name (""),									 //
+	  m_out_file_name (""),									 //
+	  m_particle_count (0),									 //
+	  m_particle_generator (new ParticleGenerator ()),		 //
+	  m_particles (std::make_shared<ParticlesGrid> ()),		 //
+	  m_run_time_limit (20),								 //
+	  m_seed (0),											 //
+	  m_timestep (0),										 //
+	  m_verbose (false),									 //
+	  m_write_fequency (1000),								 //
+	  m_write_modes (										 //
+		  { { ID, true }, { VELOCITY, true }, { POSITION, true }, { ACCELERATION, true }, { PARTICLE_TYPE, true } }) {
 	time_t	 current_time;
 	struct tm *time_info;
 	char	   timeString[29];
@@ -191,10 +235,10 @@ void ParticleSimulator::simulate () {
 
 void ParticleSimulator::init_particle_data () {
 	m_particles = std::make_shared<ParticlesGrid> ();
-	if (m_file_name.length () > 0) {
-		DEBUG_BEGIN << "loading from file: " << m_file_name << DEBUG_END;
+	if (m_in_file_name.length () > 0) {
+		DEBUG_BEGIN << "loading from file: " << m_in_file_name << DEBUG_END;
 	} else {
-		ParticleGenerator::generate (m_particles, m_bounds, m_generator_mode, m_particle_count);
+		m_particle_generator->generate (m_particles, m_bounds, m_particle_count);
 	}
 }
 
@@ -212,8 +256,9 @@ void ParticleSimulator::print_choosen_options () {
 	DEBUG_BEGIN << "autotuneing    : " << m_autotuneing << DEBUG_END;
 	DEBUG_BEGIN << "bounds         : " << m_bounds << DEBUG_END;
 	DEBUG_BEGIN << "data_format    : " << m_data_format << DEBUG_END;
-	DEBUG_BEGIN << "file_name      : " << m_file_name << DEBUG_END;
-	DEBUG_BEGIN << "generator_mode : " << m_generator_mode << DEBUG_END;
+	DEBUG_BEGIN << "file_in_name   : " << m_in_file_name << DEBUG_END;
+	DEBUG_BEGIN << "file_out_name  : " << m_out_file_name << DEBUG_END;
+	//	DEBUG_BEGIN << "generator_mode : " << m_generator_mode << DEBUG_END;
 	DEBUG_BEGIN << "particle_count : " << m_particle_count << DEBUG_END;
 	DEBUG_BEGIN << "run_time_limit : " << m_run_time_limit << DEBUG_END;
 	DEBUG_BEGIN << "seed           : " << m_seed << DEBUG_END;

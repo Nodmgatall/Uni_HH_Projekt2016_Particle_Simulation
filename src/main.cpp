@@ -4,6 +4,5 @@
 #include "ParticleSimulator.hpp"
 
 int main (int argc, char **argv) {
-	ParticleSimulator::init (argc, argv);
-	ParticleSimulator::simulate ();
+	std::unique_ptr<ParticleSimulator> particle_simulator (new ParticleSimulator (argc, argv));
 }
