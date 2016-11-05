@@ -1,8 +1,4 @@
-all: format cmake run
-	cd .. && $(MAKE) clean
-	cd .. && cmake .
-	cd .. && $(MAKE)
-	cd .. && ./particle_simulation.x
+all: format cmake build run
 
 format:
 	find -name '*.cpp' -o -name '*.hpp' | xargs clang-format -i -sort-includes
@@ -17,13 +13,12 @@ clean: format
 
 cmake:
 	cd .. && cmake .
-	cd .. && $(MAKE)
 
 build: format
 	cd .. && $(MAKE)
 
-run: build
-	cd .. && ./particle_simulation.x -p 10
-	
 rmlog: format
 	rm -rf ../logdata
+	
+run: build
+	cd .. && ./particle_simulation.x -p 27

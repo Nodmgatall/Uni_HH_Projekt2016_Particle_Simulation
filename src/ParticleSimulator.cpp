@@ -19,13 +19,13 @@
 /*clang-format off */
 ParticleSimulator::ParticleSimulator (int argc, char **argv)
 : m_algorithm (dummy_algo), m_algorithm_type (LENNARD_JONES), m_autotuneing (false),
-  m_bounds (glm::vec3 (0, 0, 0)), m_data_format (CSV), m_delta_t (1),
+  m_bounds (glm::vec3 (1, 1, 1)), m_data_format (CSV), m_delta_t (1),
   m_particle_file_writer (new ParticleFileWriter ()), m_in_file_name (""), m_out_file_name (""),
   m_particle_count (0), m_particle_generator (new ParticleGenerator ()),
   m_particles (std::make_shared<ParticlesGrid> ()), m_run_time_limit (20), m_seed (0),
   m_timestep (0), m_verbose (false), m_write_fequency (1000),
   m_write_modes (
-	  { { ID, true }, { VELOCITY, true }, { POSITION, true }, { ACCELERATION, true }, { PARTICLE_TYPE, true } }) {
+	  { { ID, true }, { VELOCITY, true }, { POSITION, true }, { ACCELERATION, true }, { PARTICLE_TYPE, false } }) {
 	time_t	 current_time;
 	struct tm *time_info;
 	char	   log_folder[29];
@@ -207,7 +207,7 @@ void ParticleSimulator::simulate () {
 	{
 		m_algorithm (m_particles);
 	}
-	m_particle_file_writer->saveData (m_particles);
+	m_particle_file_writer->saveData (m_particles, m_write_modes);
 	DEBUG_BEGIN << "Simulation finished" << DEBUG_END;
 }
 
