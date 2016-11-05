@@ -13,8 +13,9 @@
 
 class ParticleGenerator {
 	private:
-	public:
 	e_generator_mode m_generator_mode;
+
+	public:
 	void generate (std::shared_ptr<ParticlesBase> p_particles, glm::vec3 p_bounds, unsigned long p_particle_count);
 	void generate_uniform_distribution (std::shared_ptr<ParticlesBase> p_particles,
 										glm::vec3					   p_bounds,

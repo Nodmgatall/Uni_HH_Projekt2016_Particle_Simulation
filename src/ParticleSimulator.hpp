@@ -13,6 +13,7 @@
 
 class ParticleSimulator {
 	private:
+
 	std::function<bool(std::shared_ptr<ParticlesBase>)> m_algorithm;
 	e_algorithm_type									m_algorithm_type;
 	bool												m_autotuneing;
