@@ -13,6 +13,6 @@ class ParticlesGrid : public ParticlesBase {
 	std::vector<unsigned long> *get_ids ();
 	void add_particle (glm::vec3 p_position, glm::vec3 p_velocity, glm::vec3 p_acceleration);
 	unsigned long get_particle_count ();
-	virtual ~ParticlesGrid();
+	virtual ~ParticlesGrid ();
 };
 #endif

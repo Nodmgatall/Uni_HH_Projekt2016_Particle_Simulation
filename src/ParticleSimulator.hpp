@@ -12,32 +12,31 @@
 
 class ParticleSimulator {
 	private:
-	static std::map<e_particle_variable, bool> m_write_modes;
-	static bool				m_verbose;
-	static unsigned int		m_seed;
-	static e_algorithm_type m_algorithm_type;
-	static e_data_format	m_data_format;
-	static unsigned long	m_particle_count;
-	static int				m_write_fequency;
-	static float			m_run_time_limit;
-	static float			m_timestep;
-	static bool				m_dynamic_algorithm_use;
-
-	static std::shared_ptr<ParticlesBase> m_particles;
-	// boundaries define box of particles
-	static glm::vec3 m_bounds;
-
 	static std::function<bool(std::shared_ptr<ParticlesBase>)> m_algorithm;
-	static void												   print_header ();
+	static e_algorithm_type									   m_algorithm_type;
+	static bool												   m_autotuneing;
+	static glm::vec3										   m_bounds;
+	static e_data_format									   m_data_format;
+	static float											   m_delta_t;
+	static std::string										   m_file_name;
+	static e_generator_mode									   m_generator_mode;
+	static unsigned long									   m_particle_count;
+	static std::shared_ptr<ParticlesBase>					   m_particles;
+	static float											   m_run_time_limit;
+	static unsigned int										   m_seed;
+	static float											   m_timestep;
+	static bool												   m_verbose;
+	static int												   m_write_fequency;
+	static std::map<e_particle_variable, bool> m_write_modes;
 
-	static float m_delta_t;
+	static void print_header ();
 
 	public:
 	static void parse_argv (int argc, char **p_argv);
 	static void simulate ();
-	static void init_particle_data (std::string p_file_name, unsigned long p_particle_cnt);
+	static void init_particle_data ();
 	static void find_simulation_algorithm ();
-	static void init ();
+	static void init (int argc, char **argv);
 	static void print_choosen_options ();
 };
 

@@ -16,6 +16,7 @@ class ParticlesBase {
 	virtual std::vector<unsigned long> *get_ids ()			 = 0;
 	virtual void add_particle (glm::vec3 p_position, glm::vec3 p_velocity, glm::vec3 p_acceleration) = 0;
 	virtual unsigned long get_particle_count () = 0;
-	virtual ~ParticlesBase(){}
+	virtual ~ParticlesBase () {
+	}
 };
 #endif
