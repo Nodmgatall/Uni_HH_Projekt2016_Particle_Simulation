@@ -230,8 +230,8 @@ void ParticleSimulator::print_choosen_options () {
 	g_debug_stream.indent ();
 	// DEBUG_BEGIN << "algorithm     :" << m_algorithm << DEBUG_END;
 	// DEBUG_BEGIN << "particles:" << m_particles << DEBUG_END;
-	DEBUG_BEGIN << "algorithm_type : " << m_algorithm_type << DEBUG_END;
-	DEBUG_BEGIN << "autotuneing    : " << m_autotuneing << DEBUG_END;
+	debug( "algorithm_type : " , m_algorithm_type );
+	debug( "autotuneing    : " , m_autotuneing);
 	DEBUG_BEGIN << "bounds         : " << m_bounds << DEBUG_END;
 	DEBUG_BEGIN << "data_format    : " << m_data_format << DEBUG_END;
 	DEBUG_BEGIN << "file_in_name   : " << m_in_file_name << DEBUG_END;

@@ -91,6 +91,16 @@ struct s_debug_stream : std::ofstream {
 
 EXTERN s_debug_stream g_debug_stream;
 
+#define debug(x, y) \
+	g_debug_stream >> __FILE__ >> ":" >> __LINE__ >> " -> " << x << " " << y << std::endl
+#define debug3(x, y, z) \
+	g_debug_stream >> __FILE__ >> ":" >> __LINE__ >> " -> " << x << " " << y << " " << z << std::endl
+#define debug4(x, y, z, w)                                                                       \
+	g_debug_stream >> __FILE__ >> ":" >> __LINE__ >> " -> " << x << " " << y << " " << z << " " \
+															<< w << std::endl
+#define debug5(x, y, z, w, k)                                                                    \
+	g_debug_stream >> __FILE__ >> ":" >> __LINE__ >> " -> " << x << " " << y << " " << z << " " \
+															<< w << " " << k << std::endl
 #define DEBUG_BEGIN g_debug_stream >> __FILE__ >> ":" >> __LINE__ >> " -> "
 #define DEBUG_VAR(var) #var << " = " << var << ", "
 #define DEBUG_END std::endl
