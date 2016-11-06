@@ -26,19 +26,24 @@ void ConfigLoader::serialize_configs () {
 		out_archive << boost::serialization::make_nvp ("configs", m_configs);
 	} else {
 		std::cout << "Error: could not open file: " << m_config_file_name << std::endl;
+		exit (EXIT_FAILURE);
 	}
 }
 
 void ConfigLoader::deserialize_configs () {
+	std::string   input;
 	std::ifstream in_file_stream (m_config_file_name);
 	if (in_file_stream.is_open ()) {
 		if (in_file_stream.good ()) {
 
 			if (in_file_stream.peek () == std::ifstream::traits_type::eof ()) {
-				std::string input;
 				std::cout << "Config file empty or corrupted" << std::endl;
 				std::cout << "Do you wan to continue? File could be deleted(y/n)" << std::endl;
+#ifndef DESKTOP_VERSION
 				std::cin >> input;
+#else
+                input = "n";
+#endif
 				if (input[0] != 'y') {
 					exit (EXIT_SUCCESS);
 				}
@@ -49,7 +54,17 @@ void ConfigLoader::deserialize_configs () {
 		}
 	} else {
 		std::cout << "Error: File not found: " << m_config_file_name << std::endl;
-		exit (EXIT_FAILURE);
+		std::cout << "do you want to create a new file vor saving input configs?(y/n)" << std::endl;
+#ifndef DESKTOP_VERSION
+		std::cin >> input;
+#else 
+    input = "n";
+#endif 
+        if (input[0] == 'y') {
+			std::cout << "created new config file" << std::endl;
+		} else {
+			exit (EXIT_FAILURE);
+		}
 	}
 }
 

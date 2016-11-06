@@ -13,50 +13,57 @@ void OptionHandler::handle_options (int					 p_argc,
 	g_debug_stream.indent ();
 	int argv_index;
 
-	bool		save_config  = false;
-	bool		list_configs = false;
-	std::string config_name  = "";
+	bool		save_config			= false;
+	bool		load_config			= false;
+	bool		list_configs		= false;
+	bool		config_feature_used = false;
+	bool		print_config		= true;
+    bool        print_saved_config  = false;
+	std::string config_name			= "";
 
 	int algorithm_set	  = 0;
 	int data_format_set	= 0;
 	int generator_mode_set = 0;
 
 	/*clang-format off */
-	std::vector<option> options = { // Variable write options
-									{ "write_velo", required_argument, 0, 0 },
-									{ "write_pos", required_argument, 0, 1 },
-									{ "write_accel", required_argument, 0, 2 },
-									{ "write_type", required_argument, 0, 3 },
+	std::vector<option> options = {
+		// Variable write options
+		{ "write_velo", required_argument, 0, 0 },
+		{ "write_pos", required_argument, 0, 1 },
+		{ "write_accel", required_argument, 0, 2 },
+		{ "write_type", required_argument, 0, 3 },
 
-									// Generator modes
-									{ "multiple_objects", no_argument, 0, 4 },
-									{ "random", no_argument, 0, 5 },
-									{ "random_uniform", no_argument, 0, 6 },
-									{ "single_object_middle", no_argument, 0, 7 },
-									{ "uniform_dist", no_argument, 0, 8 },
+		// Generator modes
+		{ "multiple_objects", no_argument, 0, 4 },
+		{ "random", no_argument, 0, 5 },
+		{ "random_uniform", no_argument, 0, 6 },
+		{ "single_object_middle", no_argument, 0, 7 },
+		{ "uniform_dist", no_argument, 0, 8 },
 
-									// Algorithms
-									{ "lennard", no_argument, 0, 9 },
-									{ "smothed", no_argument, 0, 10 },
-									{ "dissipative", no_argument, 0, 11 },
+		// Algorithms
+		{ "lennard", no_argument, 0, 9 },
+		{ "smothed", no_argument, 0, 10 },
+		{ "dissipative", no_argument, 0, 11 },
 
-									// data structure
-									{ "grid", no_argument, 0, 12 },
-									{ "list", no_argument, 0, 13 },
+		// data structure
+		{ "grid", no_argument, 0, 12 },
+		{ "list", no_argument, 0, 13 },
 
-									// Verbose option
-									{ "verbose", no_argument, 0, 'v' },
+		// Verbose option
+		{ "verbose", no_argument, 0, 'v' },
 
-									// Simulation parameters
-									{ "seed", required_argument, 0, 's' },
-									{ "particle_count", required_argument, 0, 'p' },
-									{ "run_time_limit", required_argument, 0, 'l' },
-									{ "timestep", required_argument, 0, 't' },
+		// Simulation parameters
+		{ "seed", required_argument, 0, 's' },
+		{ "particle_count", required_argument, 0, 'p' },
+		{ "run_time_limit", required_argument, 0, 'l' },
+		{ "timestep", required_argument, 0, 't' },
 
-									// Misc
-									{ "help", no_argument, 0, 'h' },
-									{ "save_config", required_argument, 0, 31 },
-									{ "list_configs", no_argument, 0, 30 }
+		// Misc
+		{ "help", no_argument, 0, 'h' },
+        { "load_config", required_argument, 0, 28},
+		{ "print_config", required_argument, 0, 29 },
+		{ "list_configs", no_argument, 0, 30 },
+		{ "save_config", required_argument, 0, 31 }
 	};
 	/*clang-format on */
 	opterr = 0;
@@ -123,13 +130,27 @@ void OptionHandler::handle_options (int					 p_argc,
 				break;
 			case 13:
 				p_sim_options->m_data_structure = LIST;
+                break;
 			// config options
+            case 28:
+                config_feature_used = true;
+                load_config = true;
+                config_name = std::string(optarg);
+                break;
+			case 29:
+				config_feature_used = true;
+				print_saved_config	= true;
+				config_name			= std::string (optarg);
+                break;
 			case 30:
-				list_configs = true;
+				config_feature_used = true;
+				list_configs		= true;
 				break;
 			case 31:
-				save_config = true;
-				config_name = std::string (optarg);
+				config_feature_used = true;
+				save_config			= true;
+				config_name			= std::string (optarg);
+                break;
 			case 'v': {
 				p_sim_options->m_verbose = true;
 				break;
@@ -184,19 +205,32 @@ void OptionHandler::handle_options (int					 p_argc,
 		std::cout << "Error: multiple data formats set" << std::endl;
 		exit (EXIT_SUCCESS);
 	}
-	if (list_configs == true) {
+	if (config_feature_used == true) {
 		ConfigLoader config_loader;
-		config_loader.list_configs ();
-		exit (EXIT_SUCCESS);
-	}
-	if (save_config == true) {
-		ConfigLoader config_loader;
-		config_loader.save_config (config_name, p_sim_options, p_gen_options);
+		if (list_configs == true) {
+			config_loader.list_configs ();
+			exit (EXIT_SUCCESS);
+		}
+		if (save_config == true) {
+			config_loader.save_config (config_name, p_sim_options, p_gen_options);
+		}
+		if (load_config == true) {
+			config_loader.load_config (config_name, p_sim_options, p_gen_options);
+		}
+        if(print_saved_config == true)
+        {
+            config_loader.load_config(config_name, p_sim_options, p_gen_options);
+        }
 	}
 	g_debug_stream.unindent ();
 	DEBUG_BEGIN << "ParameterParser :: finish" << DEBUG_END;
-
-	print_choosen_options (p_sim_options, p_gen_options);
+	if (print_config) {
+		print_choosen_options (p_sim_options, p_gen_options);
+        if(print_saved_config == true)
+        {
+            exit(EXIT_SUCCESS);
+        }
+	}
 }
 void OptionHandler::print_choosen_options (s_simulator_options *p_sim_options, s_generator_options *p_gen_options) {
 	DEBUG_BEGIN << "Print-Options :: starting" << DEBUG_END;
@@ -204,7 +238,7 @@ void OptionHandler::print_choosen_options (s_simulator_options *p_sim_options, s
 	g_debug_stream.indent ();
 	// DEBUG_BEGIN << "algorithm     :" << m_algorithm << DEBUG_END;
 	// DEBUG_BEGIN << "particles:" << m_particles << DEBUG_END;
-	macro_debug ("algorithp_sim_options->type : ", p_sim_options->m_algorithm_type);
+	macro_debug ("algorithm_type : ", p_sim_options->m_algorithm_type);
 	macro_debug ("autotuneing    : ", p_sim_options->m_autotuneing);
 	DEBUG_BEGIN << "data_format    : " << p_sim_options->m_data_format << DEBUG_END;
 	DEBUG_BEGIN << "file_in_name   : " << p_sim_options->m_in_file_name << DEBUG_END;
