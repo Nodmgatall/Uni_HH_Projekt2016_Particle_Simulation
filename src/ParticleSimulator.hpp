@@ -26,7 +26,7 @@ class ParticleSimulator {
 	void												print_header ();
 
 	public:
-    ParticleSimulator (s_simulator_options *p_sim_options, s_generator_options *p_gen_options);
+	ParticleSimulator (s_simulator_options *p_sim_options, s_generator_options *p_gen_options);
 	void simulate ();
 	void init_particle_data ();
 	void find_simulation_algorithm ();

@@ -9,13 +9,13 @@
 #define SRC_PARTICLEGENERATOR_HPP_
 
 #include "../Definitions.hpp"
-#include "../datastructures/ParticlesBase.hpp"
 #include "../IO/OptionsGenerator.hpp"
+#include "../datastructures/ParticlesBase.hpp"
 
 class ParticleGenerator {
 	private:
-	e_generator_mode m_generator_mode;
-    s_generator_options *m_options;
+	e_generator_mode	 m_generator_mode;
+	s_generator_options *m_options;
 
 	public:
 	ParticleGenerator (s_generator_options *p_gen_options);

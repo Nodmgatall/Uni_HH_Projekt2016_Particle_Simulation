@@ -22,13 +22,10 @@
 
 /*clang-format off */
 ParticleSimulator::ParticleSimulator (s_simulator_options *p_sim_options, s_generator_options *p_gen_options)
-: m_algorithm (dummy_algo), 
-  m_bounds (glm::vec3 (1, 1, 1)),
-  m_delta_t(0),
-  m_options(p_sim_options),
-  m_particle_file_writer (new ParticleFileWriter ()), m_particle_generator (new ParticleGenerator (p_gen_options)),
-  m_particles (std::make_shared<ParticlesGrid> ()), m_save_config (false)
-  {
+: m_algorithm (dummy_algo), m_bounds (glm::vec3 (1, 1, 1)), m_delta_t (0),
+  m_options (p_sim_options), m_particle_file_writer (new ParticleFileWriter ()),
+  m_particle_generator (new ParticleGenerator (p_gen_options)),
+  m_particles (std::make_shared<ParticlesGrid> ()), m_save_config (false) {
 	time_t	 current_time;
 	struct tm *time_info;
 	char	   log_folder[29];
@@ -69,22 +66,21 @@ void ParticleSimulator::simulate () {
 }
 
 void ParticleSimulator::init_particle_data () {
-    switch(m_options->m_data_structure)
-    {
-        case GRID:
-	        m_particles = std::make_shared<ParticlesGrid> ();
-        break;
-        case LIST:
-            m_particles = std::make_shared<ParticlesList> ();
-            break;
-        case LISTEDGIRD:
-            std::cout << "Mixture of list and grind not implemented" << std::endl;
-            exit(EXIT_SUCCESS);
-    }
+	switch (m_options->m_data_structure) {
+		case GRID:
+			m_particles = std::make_shared<ParticlesGrid> ();
+			break;
+		case LIST:
+			m_particles = std::make_shared<ParticlesList> ();
+			break;
+		case LISTEDGIRD:
+			std::cout << "Mixture of list and grind not implemented" << std::endl;
+			exit (EXIT_SUCCESS);
+	}
 	if (m_options->m_in_file_name.length () > 0) {
 		DEBUG_BEGIN << "loading from file: " << m_options->m_in_file_name << DEBUG_END;
 	} else {
-		m_particle_generator->generate (m_particles, m_bounds, m_particles->get_particle_count());
+		m_particle_generator->generate (m_particles, m_bounds, m_particles->get_particle_count ());
 	}
 }
 
@@ -92,4 +88,3 @@ void ParticleSimulator::find_simulation_algorithm () {
 	DEBUG_BEGIN << "Setting simulation algorithm" << DEBUG_END;
 	m_algorithm = dummy_algo;
 }
-

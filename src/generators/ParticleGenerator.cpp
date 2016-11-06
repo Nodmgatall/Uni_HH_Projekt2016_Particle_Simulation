@@ -9,7 +9,7 @@
 #include "../IO/OptionsGenerator.hpp"
 
 ParticleGenerator::ParticleGenerator (s_generator_options *p_gen_options)
-: m_generator_mode (e_generator_mode::UNIFORM_DISTRIBUTION), m_options(p_gen_options) {
+: m_generator_mode (e_generator_mode::UNIFORM_DISTRIBUTION), m_options (p_gen_options) {
 }
 void ParticleGenerator::generate (std::shared_ptr<ParticlesBase> p_particles,
 								  glm::vec3						 p_bounds,
