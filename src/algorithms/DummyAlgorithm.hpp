@@ -6,12 +6,12 @@
 #include "../datastructures/ParticlesBase.hpp"
 
 bool dummy_algo (std::shared_ptr<ParticlesBase>) {
-	std::cout << "calculating interation" << std::endl;
+    std::cout << "calculating interation" << std::endl;
 
-	if (true) {
-		std::cout << "Error:  iteration could not be finished" << std::endl;
-		return false;
-	}
-	return true;
+    if (true) {
+        std::cout << "Error:  iteration could not be finished" << std::endl;
+        return false;
+    }
+    return true;
 }
 #endif

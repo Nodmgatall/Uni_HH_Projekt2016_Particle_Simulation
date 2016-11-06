@@ -10,13 +10,13 @@
 #include "OptionsSimulation.hpp"
 
 class OptionHandler {
-	public:
-	void handle_options (int p_argc, char **p_argv, s_simulator_options *p_sim_options, s_generator_options *p_gen_options);
+    public:
+    void handle_options (int p_argc, char **p_argv, s_simulator_options *p_sim_options, s_generator_options *p_gen_options);
 
-	private:
-	void print_choosen_options (s_simulator_options *p_sim_options, s_generator_options *p_gen_options);
-	void print_usage_particle_sim ();
-	void print_usage_generation_mode ();
+    private:
+    void print_choosen_options (s_simulator_options *p_sim_options, s_generator_options *p_gen_options);
+    void print_usage_particle_sim ();
+    void print_usage_generation_mode ();
 };
 
 #endif
