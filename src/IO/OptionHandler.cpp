@@ -1,4 +1,5 @@
 #include "OptionHandler.hpp"
+#include "ConfigLoader.hpp"
 #include "OptionsGenerator.hpp"
 #include "OptionsSimulation.hpp"
 #include <getopt.h>
@@ -12,46 +13,50 @@ void OptionHandler::handle_options (int					 p_argc,
 	g_debug_stream.indent ();
 	int argv_index;
 
+	bool		save_config  = false;
+	bool		list_configs = false;
+	std::string config_name  = "";
+
 	int algorithm_set	  = 0;
 	int data_format_set	= 0;
 	int generator_mode_set = 0;
 
 	/*clang-format off */
-	std::vector<option> options = {
-		// Variable write options
-		{ "write_velo", required_argument, 0, 0 },
-		{ "write_pos", required_argument, 0, 1 },
-		{ "write_accel", required_argument, 0, 2 },
-		{ "write_type", required_argument, 0, 3 },
+	std::vector<option> options = { // Variable write options
+									{ "write_velo", required_argument, 0, 0 },
+									{ "write_pos", required_argument, 0, 1 },
+									{ "write_accel", required_argument, 0, 2 },
+									{ "write_type", required_argument, 0, 3 },
 
-		// Generator modes
-		{ "multiple_objects", no_argument, 0, 4 },
-		{ "random", no_argument, 0, 5 },
-		{ "random_uniform", no_argument, 0, 6 },
-		{ "single_object_middle", no_argument, 0, 7 },
-		{ "uniform_dist", no_argument, 0, 8 },
+									// Generator modes
+									{ "multiple_objects", no_argument, 0, 4 },
+									{ "random", no_argument, 0, 5 },
+									{ "random_uniform", no_argument, 0, 6 },
+									{ "single_object_middle", no_argument, 0, 7 },
+									{ "uniform_dist", no_argument, 0, 8 },
 
-		// Algorithms
-		{ "lennard", no_argument, 0, 9 },
-		{ "smothed", no_argument, 0, 10 },
-		{ "dissipative", no_argument, 0, 11 },
+									// Algorithms
+									{ "lennard", no_argument, 0, 9 },
+									{ "smothed", no_argument, 0, 10 },
+									{ "dissipative", no_argument, 0, 11 },
 
-		// data structure
-		{ "grid", no_argument, 0, 12 },
-		{ "list", no_argument, 0, 13 },
+									// data structure
+									{ "grid", no_argument, 0, 12 },
+									{ "list", no_argument, 0, 13 },
 
-		// Verbose option
-		{ "verbose", no_argument, 0, 'v' },
+									// Verbose option
+									{ "verbose", no_argument, 0, 'v' },
 
-		// Simulation parameters
-		{ "seed", required_argument, 0, 's' },
-		{ "particle_count", required_argument, 0, 'p' },
-		{ "run_time_limit", required_argument, 0, 'l' },
-		{ "timestep", required_argument, 0, 't' },
+									// Simulation parameters
+									{ "seed", required_argument, 0, 's' },
+									{ "particle_count", required_argument, 0, 'p' },
+									{ "run_time_limit", required_argument, 0, 'l' },
+									{ "timestep", required_argument, 0, 't' },
 
-		// Misc
-		{ "help", no_argument, 0, 'h' },
-		{ "save_config", no_argument, 0, 100 },
+									// Misc
+									{ "help", no_argument, 0, 'h' },
+									{ "save_config", required_argument, 0, 31 },
+									{ "list_configs", no_argument, 0, 30 }
 	};
 	/*clang-format on */
 	opterr = 0;
@@ -118,9 +123,13 @@ void OptionHandler::handle_options (int					 p_argc,
 				break;
 			case 13:
 				p_sim_options->m_data_structure = LIST;
-			// Save config
+			// config options
+			case 30:
+				list_configs = true;
+				break;
 			case 31:
-			// TODO: save config option
+				save_config = true;
+				config_name = std::string (optarg);
 			case 'v': {
 				p_sim_options->m_verbose = true;
 				break;
@@ -174,6 +183,15 @@ void OptionHandler::handle_options (int					 p_argc,
 	if (data_format_set > 1) {
 		std::cout << "Error: multiple data formats set" << std::endl;
 		exit (EXIT_SUCCESS);
+	}
+	if (list_configs == true) {
+		ConfigLoader config_loader;
+		config_loader.list_configs ();
+		exit (EXIT_SUCCESS);
+	}
+	if (save_config == true) {
+		ConfigLoader config_loader;
+		config_loader.save_config (config_name, p_sim_options, p_gen_options);
 	}
 	g_debug_stream.unindent ();
 	DEBUG_BEGIN << "ParameterParser :: finish" << DEBUG_END;
