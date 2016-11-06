@@ -14,7 +14,6 @@
 
 class ParticleGenerator {
 	private:
-	e_generator_mode	 m_generator_mode;
 	s_generator_options *m_options;
 
 	public:
@@ -24,7 +23,6 @@ class ParticleGenerator {
 										glm::vec3					   p_bounds,
 										unsigned long				   p_particle_count);
 	void generate_random (std::shared_ptr<ParticlesBase> p_particles, glm::vec3 p_bounds, unsigned long p_particle_count);
-	void set_generator_mode (e_generator_mode p_generator_mode);
 	e_generator_mode get_generator_mode ();
 };
 

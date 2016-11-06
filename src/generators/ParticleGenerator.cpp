@@ -9,15 +9,15 @@
 #include "../IO/OptionsGenerator.hpp"
 
 ParticleGenerator::ParticleGenerator (s_generator_options *p_gen_options)
-: m_generator_mode (e_generator_mode::UNIFORM_DISTRIBUTION), m_options (p_gen_options) {
+: m_options (p_gen_options) {
 }
 void ParticleGenerator::generate (std::shared_ptr<ParticlesBase> p_particles,
 								  glm::vec3						 p_bounds,
 								  unsigned long					 p_particle_count) {
 	DEBUG_BEGIN << "ParticleGenerator :: starting" << DEBUG_END;
 	g_debug_stream.indent ();
-	DEBUG_BEGIN << "method :: " << m_generator_mode << DEBUG_END;
-	switch (m_generator_mode) {
+	DEBUG_BEGIN << "method :: " << m_options->m_mode << DEBUG_END;
+	switch (m_options->m_mode) {
 		case MULTIPLE_OBJECTS:
 			break;
 		case RANDOM:
@@ -65,10 +65,7 @@ void ParticleGenerator::generate_random (std::shared_ptr<ParticlesBase> p_partic
 								   glm::vec3 (0, 0, 0));
 	}
 }
-void ParticleGenerator::set_generator_mode (e_generator_mode p_generator_mode) {
-	m_generator_mode = p_generator_mode;
-}
 
 e_generator_mode ParticleGenerator::get_generator_mode () {
-	return m_generator_mode;
+    return m_options->m_mode;
 }

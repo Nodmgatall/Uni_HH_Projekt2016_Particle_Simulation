@@ -69,7 +69,7 @@ void OptionHandler::handle_options (int					 p_argc,
 	/*clang-format on */
 	opterr = 0;
 	int long_options;
-	while ((argv_index = getopt_long (p_argc, p_argv, "vs:p:l:t:dfh", &options[0], &long_options)) != -1) {
+	while ((argv_index = getopt_long (p_argc, p_argv, "vs:p:l:t:df:h", &options[0], &long_options)) != -1) {
 		/*
 		 if (strcmp (optarg, "-h") == 0 || strcmp (optarg, "--help") == 0) {
 		 // TODO:  Display help from option
