@@ -40,14 +40,10 @@ void ParticleGenerator::generate_uniform_distribution (std::shared_ptr<Particles
 	float	 temp	= pow (p_particle_count, 1.0f / 3.0f);
 	glm::vec3 delta   = (glm::vec3 (0, 0, 0) - p_bounds) / (temp - 1);
 	int		  tempInt = temp;
-	int		  id	  = 0;
 	for (int x = 0; x < tempInt; x++) {
 		for (int y = 0; y < tempInt; y++) {
 			for (int z = 0; z < tempInt; z++) {
-				p_particles->add_particle (id++,
-										   glm::vec3 (x, y, z) * delta,
-										   glm::vec3 (0, 0, 0),
-										   glm::vec3 (0, 0, 0));
+				p_particles->add_particle (glm::vec3 (x, y, z) * delta, glm::vec3 (0, 0, 0), glm::vec3 (0, 0, 0));
 			}
 		}
 	}
@@ -60,8 +56,10 @@ void ParticleGenerator::generate_random (std::shared_ptr<ParticlesBase> p_partic
 	long seed = std::time (0);
 	std::srand (seed); // TODO parameter bei programmstart
 	for (unsigned long id = 0; id < p_particle_count; id++) {
-		p_particles->add_particle (id,
-								   glm::vec3 (std::rand () / RAND_MAX, std::rand () / RAND_MAX, std::rand () / RAND_MAX) * p_bounds,
+		p_particles->add_particle (glm::vec3 (std::rand () / RAND_MAX,
+                                    std::rand () / RAND_MAX, 
+                                    std::rand () / RAND_MAX) 
+                                    * p_bounds,
 								   glm::vec3 (0, 0, 0),
 								   glm::vec3 (0, 0, 0));
 	}
