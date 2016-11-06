@@ -135,7 +135,7 @@ void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 				m_seed = std::stoi (optarg);
 				break;
 			}
-					case 'p': {
+			case 'p': {
 				m_particle_count = std::stoi (optarg);
 				break;
 			}
