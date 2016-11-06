@@ -4,9 +4,8 @@
 
 #include "ParticlesGrid.hpp"
 
-ParticlesGrid::ParticlesGrid ()
-{
-    m_stucture_name = "Grid";
+ParticlesGrid::ParticlesGrid () {
+	m_stucture_name = "Grid";
 }
 
 glm::vec3 ParticlesGrid::get_velocity (int particle_id) {
@@ -36,7 +35,7 @@ void ParticlesGrid::add_particle (glm::vec3 p_position, glm::vec3 p_velocity, gl
 	m_velocities.push_back (p_velocity);
 	m_accelerations.push_back (p_acceleration);
 	m_ids.push_back (m_max_used_id);
-    m_max_used_id++;
+	m_max_used_id++;
 }
 
 ParticlesGrid::~ParticlesGrid () {

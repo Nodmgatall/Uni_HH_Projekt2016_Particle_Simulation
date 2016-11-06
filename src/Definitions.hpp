@@ -64,15 +64,14 @@ enum e_data_format {
 	VMD,	  //
 	VTK
 };
-static std::map<e_data_format, const char *> g_enum_data_format_to_string_map =
-	{
-	  ENUM_TO_STRING_ENTRY (e_data_format, CSV),	  //
-	  ENUM_TO_STRING_ENTRY (e_data_format, LAMMPS),   //
-	  ENUM_TO_STRING_ENTRY (e_data_format, ESPRESSO), //
-	  ENUM_TO_STRING_ENTRY (e_data_format, GROMACS),  //
-	  ENUM_TO_STRING_ENTRY (e_data_format, VMD),	  //
-	  ENUM_TO_STRING_ENTRY (e_data_format, VTK),
-	};
+static std::map<e_data_format, const char *> g_enum_data_format_to_string_map = {
+	ENUM_TO_STRING_ENTRY (e_data_format, CSV),		//
+	ENUM_TO_STRING_ENTRY (e_data_format, LAMMPS),   //
+	ENUM_TO_STRING_ENTRY (e_data_format, ESPRESSO), //
+	ENUM_TO_STRING_ENTRY (e_data_format, GROMACS),  //
+	ENUM_TO_STRING_ENTRY (e_data_format, VMD),		//
+	ENUM_TO_STRING_ENTRY (e_data_format, VTK),
+};
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 enum e_particle_variable {
@@ -88,6 +87,13 @@ static std::map<e_particle_variable, const char *> g_enum_particle_variable_to_s
 	ENUM_TO_STRING_ENTRY (e_particle_variable, ACCELERATION),
 	ENUM_TO_STRING_ENTRY (e_particle_variable, PARTICLE_TYPE),
 };
+
+enum e_data_structure { GRID, LIST, LISTEDGIRD };
+
+static std::map<e_data_structure, const char *> g_enum_data_structure_variable_to_string_map =
+	{ ENUM_TO_STRING_ENTRY (e_data_structure, GRID),
+	  ENUM_TO_STRING_ENTRY (e_data_structure, LIST),
+	  ENUM_TO_STRING_ENTRY (e_data_structure, LISTEDGIRD) };
 
 #include "tools/Debug.hpp"
 #endif /* DEFINITIONS_HPP_ */

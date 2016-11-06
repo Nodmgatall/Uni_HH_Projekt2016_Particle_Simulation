@@ -1,12 +1,12 @@
 #ifndef PARTICLELIST_HPP
 #define PARTICLELIST_HPP
 
-#include <vector>
 #include "ParticlesBase.hpp"
+#include <vector>
 
 class ParticlesList : public ParticlesBase {
-    public:
-    ParticlesList();
+	public:
+	ParticlesList ();
 	glm::vec3 get_velocity (int p_particle_id);
 	std::vector<glm::vec3> *	get_velocities ();
 	std::vector<glm::vec3> *	get_positions ();

@@ -4,9 +4,8 @@
 
 #include "ParticlesList.hpp"
 
-ParticlesList::ParticlesList ()
-{
-    m_stucture_name = "List";
+ParticlesList::ParticlesList () {
+	m_stucture_name = "List";
 }
 
 glm::vec3 ParticlesList::get_velocity (int particle_id) {
@@ -36,6 +35,5 @@ void ParticlesList::add_particle (glm::vec3 p_position, glm::vec3 p_velocity, gl
 	m_velocities.push_back (p_velocity);
 	m_accelerations.push_back (p_acceleration);
 	m_ids.push_back (m_max_used_id);
-    m_max_used_id++;
+	m_max_used_id++;
 }
-

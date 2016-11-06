@@ -10,20 +10,22 @@
 
 #include "../Definitions.hpp"
 #include "../datastructures/ParticlesBase.hpp"
+#include "../IO/OptionsGenerator.hpp"
 
 class ParticleGenerator {
 	private:
 	e_generator_mode m_generator_mode;
+    s_generator_options *m_options;
 
 	public:
-    ParticleGenerator();
-    void generate (std::shared_ptr<ParticlesBase> p_particles, glm::vec3 p_bounds, unsigned long p_particle_count);
+	ParticleGenerator (s_generator_options *p_gen_options);
+	void generate (std::shared_ptr<ParticlesBase> p_particles, glm::vec3 p_bounds, unsigned long p_particle_count);
 	void generate_uniform_distribution (std::shared_ptr<ParticlesBase> p_particles,
 										glm::vec3					   p_bounds,
 										unsigned long				   p_particle_count);
 	void generate_random (std::shared_ptr<ParticlesBase> p_particles, glm::vec3 p_bounds, unsigned long p_particle_count);
 	void set_generator_mode (e_generator_mode p_generator_mode);
-    e_generator_mode get_generator_mode();
+	e_generator_mode get_generator_mode ();
 };
 
 #endif /* SRC_PARTICLEGENERATOR_HPP_ */

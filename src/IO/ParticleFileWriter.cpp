@@ -42,7 +42,7 @@ void ParticleFileWriter::saveData (std::shared_ptr<ParticlesBase> p_particles,
 		}
 		if (p_write_modes[e_particle_variable::PARTICLE_TYPE]) {
 			DEBUG_BEGIN << "error not implemented" << DEBUG_END;
-			//TODO
+			// TODO
 			exit (1);
 		}
 		csv_file << "\n";

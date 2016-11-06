@@ -95,10 +95,10 @@ EXTERN s_debug_stream g_debug_stream;
 	g_debug_stream >> __FILE__ >> ":" >> __LINE__ >> " -> " << x << " " << y << std::endl
 #define macro_debug_2(x, y, z) \
 	g_debug_stream >> __FILE__ >> ":" >> __LINE__ >> " -> " << x << " " << y << " " << z << std::endl
-#define macro_debug_3(x, y, z, w)                                                                       \
+#define macro_debug_3(x, y, z, w)                                                               \
 	g_debug_stream >> __FILE__ >> ":" >> __LINE__ >> " -> " << x << " " << y << " " << z << " " \
 															<< w << std::endl
-#define debug5(x, y, z, w, k)                                                                    \
+#define debug5(x, y, z, w, k)                                                                   \
 	g_debug_stream >> __FILE__ >> ":" >> __LINE__ >> " -> " << x << " " << y << " " << z << " " \
 															<< w << " " << k << std::endl
 #define DEBUG_BEGIN g_debug_stream >> __FILE__ >> ":" >> __LINE__ >> " -> "
