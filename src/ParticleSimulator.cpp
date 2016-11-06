@@ -11,6 +11,7 @@
 #include "algorithms/DummyAlgorithm.hpp"
 #include "datastructures/ParticlesBase.hpp"
 #include "datastructures/ParticlesGrid.hpp"
+#include "datastructures/ParticlesList.hpp"
 #include "generators/ParticleGenerator.hpp"
 #include "tools/Usage.hpp"
 #include <memory>
@@ -22,8 +23,8 @@ ParticleSimulator::ParticleSimulator (int argc, char **argv)
   m_bounds (glm::vec3 (1, 1, 1)), m_data_format (CSV), m_delta_t (1),
   m_particle_file_writer (new ParticleFileWriter ()), m_in_file_name (""), m_out_file_name (""),
   m_particle_count (0), m_particle_generator (new ParticleGenerator ()),
-  m_particles (std::make_shared<ParticlesGrid> ()), m_run_time_limit (20), m_seed (0),
-  m_timestep (0), m_verbose (false), m_write_fequency (1000),
+  m_particles (std::make_shared<ParticlesGrid> ()), m_run_time_limit (20), m_save_config (false),
+  m_seed (0), m_timestep (0), m_verbose (false), m_write_fequency (1000),
   m_write_modes (
 	  { { ID, true }, { VELOCITY, true }, { POSITION, true }, { ACCELERATION, true }, { PARTICLE_TYPE, false } }) {
 	time_t	 current_time;
@@ -44,7 +45,7 @@ ParticleSimulator::ParticleSimulator (int argc, char **argv)
 	find_simulation_algorithm ();
 	simulate ();
 }
-/*clang-format off */
+/*clang-format on */
 
 void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 	DEBUG_BEGIN << "ParameterParser :: starting" << DEBUG_END;
@@ -56,35 +57,41 @@ void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 	int generator_mode_set = 0;
 
 	/*clang-format off */
-	std::vector<option> options = { // Variable write options
-									{ "write_velo", required_argument, 0, 0 },
-									{ "write_pos", required_argument, 0, 1 },
-									{ "write_accel", required_argument, 0, 2 },
-									{ "write_type", required_argument, 0, 3 },
+	std::vector<option> options = {
+		// Variable write options
+		{ "write_velo", required_argument, 0, 0 },
+		{ "write_pos", required_argument, 0, 1 },
+		{ "write_accel", required_argument, 0, 2 },
+		{ "write_type", required_argument, 0, 3 },
 
-									// Generator modes
-									{ "multiple_objects", no_argument, 0, 4 },
-									{ "random", no_argument, 0, 5 },
-									{ "random_uniform", no_argument, 0, 6 },
-									{ "single_object_middle", no_argument, 0, 7 },
-									{ "uniform_dist", no_argument, 0, 8 },
+		// Generator modes
+		{ "multiple_objects", no_argument, 0, 4 },
+		{ "random", no_argument, 0, 5 },
+		{ "random_uniform", no_argument, 0, 6 },
+		{ "single_object_middle", no_argument, 0, 7 },
+		{ "uniform_dist", no_argument, 0, 8 },
 
-									// Algorithms
-									{ "lennard", no_argument, 0, 9 },
-									{ "smothed", no_argument, 0, 10 },
-									{ "dissipative", no_argument, 0, 11 },
+		// Algorithms
+		{ "lennard", no_argument, 0, 9 },
+		{ "smothed", no_argument, 0, 10 },
+		{ "dissipative", no_argument, 0, 11 },
 
-									// Verbose option
-									{ "verbose", no_argument, 0, 'v' },
+        //data structure 
+        { "grid", no_argument, 0, 12},
+        { "list", no_argument, 0, 13},
 
-									// Simulation parameters
-									{ "seed", required_argument, 0, 's' },
-									{ "particle_count", required_argument, 0, 'p' },
-									{ "run_time_limit", required_argument, 0, 'l' },
-									{ "timestep", required_argument, 0, 't' },
+		// Verbose option
+		{ "verbose", no_argument, 0, 'v' },
 
-									// Help
-									{ "help", no_argument, 0, 'h' }
+		// Simulation parameters
+		{ "seed", required_argument, 0, 's' },
+		{ "particle_count", required_argument, 0, 'p' },
+		{ "run_time_limit", required_argument, 0, 'l' },
+		{ "timestep", required_argument, 0, 't' },
+
+		// Misc
+		{ "help", no_argument, 0, 'h' },
+		{ "save_config", no_argument, 0, 100 },
 	};
 	/*clang-format on */
 	opterr = 0;
@@ -96,6 +103,7 @@ void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 		 }
 		 */
 		switch (argv_index) {
+            //Write modes
 			case 0:
 				m_write_modes[VELOCITY] = !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
 				break;
@@ -109,10 +117,10 @@ void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 				m_write_modes[PARTICLE_TYPE] = !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
 				break;
 
+            //Generator modes
 			case 4:
 				m_particle_generator->set_generator_mode (MULTIPLE_OBJECTS);
 				generator_mode_set++;
-
 				break;
 			case 5:
 				m_particle_generator->set_generator_mode (RANDOM);
@@ -130,7 +138,29 @@ void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 				m_particle_generator->set_generator_mode (UNIFORM_DISTRIBUTION);
 				generator_mode_set++;
 				break;
-			case 'v': {
+		
+            //Algorithm types
+            case 9:
+                    m_algorithm_type = LENNARD_JONES;
+				break;
+			case 10:
+                    m_algorithm_type = SMOTHED_PARTICLE_HYDRODYNAMICS;
+				break;
+			case 11:
+                    m_algorithm_type = DISSIPATIVE_PARTICLE_DYNAMICS;
+				break;
+
+            //Data structures
+            case 12:
+                m_particles = std::make_shared<ParticlesGrid>();
+                break;
+            case 13:
+                m_particles = std::make_shared<ParticlesList>();
+		    //Save config
+            case 31:
+				m_save_config = true;
+			
+            case 'v': {
 				m_verbose = true;
 				break;
 			}
@@ -198,6 +228,7 @@ void ParticleSimulator::print_header () {
 	DEBUG_BEGIN << "                    Philipp Neumann                    " << DEBUG_END;
 	DEBUG_BEGIN << "=======================================================" << DEBUG_ENDL;
 }
+
 void ParticleSimulator::simulate () {
 	DEBUG_BEGIN << "Starting simulation" << DEBUG_END;
 	bool iteration_successfull = true;
@@ -230,8 +261,8 @@ void ParticleSimulator::print_choosen_options () {
 	g_debug_stream.indent ();
 	// DEBUG_BEGIN << "algorithm     :" << m_algorithm << DEBUG_END;
 	// DEBUG_BEGIN << "particles:" << m_particles << DEBUG_END;
-	debug( "algorithm_type : " , m_algorithm_type );
-	debug( "autotuneing    : " , m_autotuneing);
+	macro_debug ("algorithm_type : ", m_algorithm_type);
+	macro_debug ("autotuneing    : ", m_autotuneing);
 	DEBUG_BEGIN << "bounds         : " << m_bounds << DEBUG_END;
 	DEBUG_BEGIN << "data_format    : " << m_data_format << DEBUG_END;
 	DEBUG_BEGIN << "file_in_name   : " << m_in_file_name << DEBUG_END;
@@ -256,6 +287,8 @@ void ParticleSimulator::print_choosen_options () {
 		g_debug_stream << ", PARTICLE_TYPE";
 	}
 	g_debug_stream << "]" << DEBUG_END;
+    macro_debug("generator_mode :" , m_particle_generator->get_generator_mode());
+    macro_debug("data_structure :" , m_particles->get_structure_name());
 	g_debug_stream.unindent ();
 	DEBUG_BEGIN << "Print-Options :: finish" << DEBUG_END;
 }

@@ -7,6 +7,9 @@
 
 #include "ParticleGenerator.hpp"
 
+ParticleGenerator::ParticleGenerator () : 
+    m_generator_mode (e_generator_mode::UNIFORM_DISTRIBUTION) {
+}
 void ParticleGenerator::generate (std::shared_ptr<ParticlesBase> p_particles,
 								  glm::vec3						 p_bounds,
 								  unsigned long					 p_particle_count) {
@@ -56,14 +59,15 @@ void ParticleGenerator::generate_random (std::shared_ptr<ParticlesBase> p_partic
 	long seed = std::time (0);
 	std::srand (seed); // TODO parameter bei programmstart
 	for (unsigned long id = 0; id < p_particle_count; id++) {
-		p_particles->add_particle (glm::vec3 (std::rand () / RAND_MAX,
-                                    std::rand () / RAND_MAX, 
-                                    std::rand () / RAND_MAX) 
-                                    * p_bounds,
+		p_particles->add_particle (glm::vec3 (std::rand () / RAND_MAX, std::rand () / RAND_MAX, std::rand () / RAND_MAX) * p_bounds,
 								   glm::vec3 (0, 0, 0),
 								   glm::vec3 (0, 0, 0));
 	}
 }
 void ParticleGenerator::set_generator_mode (e_generator_mode p_generator_mode) {
 	m_generator_mode = p_generator_mode;
+}
+
+e_generator_mode ParticleGenerator::get_generator_mode () {
+	return m_generator_mode;
 }

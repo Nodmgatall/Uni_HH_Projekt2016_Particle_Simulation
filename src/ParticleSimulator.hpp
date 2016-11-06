@@ -26,6 +26,7 @@ class ParticleSimulator {
 	std::unique_ptr<ParticleGenerator>					m_particle_generator;
 	std::shared_ptr<ParticlesBase>						m_particles;
 	float												m_run_time_limit;
+    bool                                                m_save_config;
 	unsigned int										m_seed;
 	float												m_timestep;
 	bool												m_verbose;

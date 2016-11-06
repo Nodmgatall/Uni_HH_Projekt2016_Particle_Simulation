@@ -5,8 +5,8 @@
 #include "ParticlesGrid.hpp"
 
 ParticlesGrid::ParticlesGrid ()
-   : m_max_used_id(0)
 {
+    m_stucture_name = "Grid";
 }
 
 glm::vec3 ParticlesGrid::get_velocity (int particle_id) {

@@ -7,7 +7,6 @@
 class ParticlesGrid : public ParticlesBase {
 	public:
 	ParticlesGrid ();
-    unsigned long m_max_used_id;
 	glm::vec3 get_velocity (int p_particle_id);
 	std::vector<glm::vec3> *	get_velocities ();
 	std::vector<glm::vec3> *	get_positions ();

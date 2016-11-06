@@ -91,11 +91,11 @@ struct s_debug_stream : std::ofstream {
 
 EXTERN s_debug_stream g_debug_stream;
 
-#define debug(x, y) \
+#define macro_debug(x, y) \
 	g_debug_stream >> __FILE__ >> ":" >> __LINE__ >> " -> " << x << " " << y << std::endl
-#define debug3(x, y, z) \
+#define macro_debug_2(x, y, z) \
 	g_debug_stream >> __FILE__ >> ":" >> __LINE__ >> " -> " << x << " " << y << " " << z << std::endl
-#define debug4(x, y, z, w)                                                                       \
+#define macro_debug_3(x, y, z, w)                                                                       \
 	g_debug_stream >> __FILE__ >> ":" >> __LINE__ >> " -> " << x << " " << y << " " << z << " " \
 															<< w << std::endl
 #define debug5(x, y, z, w, k)                                                                    \
