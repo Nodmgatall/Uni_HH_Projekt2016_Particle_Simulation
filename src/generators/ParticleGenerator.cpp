@@ -11,7 +11,8 @@ void ParticleGenerator::generate (std::shared_ptr<ParticlesBase> p_particles,
 								  glm::vec3						 p_bounds,
 								  unsigned long					 p_particle_count) {
 	DEBUG_BEGIN << "ParticleGenerator :: starting" << DEBUG_END;
-	++g_debug_stream;
+	g_debug_stream.indent ();
+	DEBUG_BEGIN << "method :: " << m_generator_mode << DEBUG_END;
 	switch (m_generator_mode) {
 		case MULTIPLE_OBJECTS:
 			break;
@@ -29,21 +30,22 @@ void ParticleGenerator::generate (std::shared_ptr<ParticlesBase> p_particles,
 			DEBUG_BEGIN << "ParticleGenerator :: error" << DEBUG_END;
 			exit (1);
 	}
-	--g_debug_stream;
+	g_debug_stream.unindent ();
 	DEBUG_BEGIN << "ParticleGenerator :: finish" << DEBUG_END;
 }
 void ParticleGenerator::generate_uniform_distribution (std::shared_ptr<ParticlesBase> p_particles,
 													   glm::vec3					  p_bounds,
 													   unsigned long p_particle_count) {
-	DEBUG_BEGIN << "method :: uniform distribution" << DEBUG_END;
 
-	float	 temp	= pow (p_particles->get_particle_count (), 1.0f / 3.0f);
+	float	 temp	= pow (p_particle_count, 1.0f / 3.0f);
 	glm::vec3 delta   = (glm::vec3 (0, 0, 0) - p_bounds) / (temp - 1);
 	int		  tempInt = temp;
+	int		  id	  = 0;
 	for (int x = 0; x < tempInt; x++) {
 		for (int y = 0; y < tempInt; y++) {
 			for (int z = 0; z < tempInt; z++) {
-				p_particles->add_particle (glm::vec3 (x * delta.x, y * delta.y, z * delta.z),
+				p_particles->add_particle (id++,
+										   glm::vec3 (x, y, z) * delta,
 										   glm::vec3 (0, 0, 0),
 										   glm::vec3 (0, 0, 0));
 			}
@@ -54,12 +56,12 @@ void ParticleGenerator::generate_uniform_distribution (std::shared_ptr<Particles
 void ParticleGenerator::generate_random (std::shared_ptr<ParticlesBase> p_particles,
 										 glm::vec3						p_bounds,
 										 unsigned long					p_particle_count) {
-	DEBUG_BEGIN << "method :: random" << DEBUG_END;
 
 	long seed = std::time (0);
 	std::srand (seed); // TODO parameter bei programmstart
-	for (unsigned long i = 0; i < p_particles->get_particle_count (); i++) {
-		p_particles->add_particle (glm::vec3 (std::rand () / RAND_MAX, std::rand () / RAND_MAX, std::rand () / RAND_MAX) * p_bounds,
+	for (unsigned long id = 0; id < p_particle_count; id++) {
+		p_particles->add_particle (id,
+								   glm::vec3 (std::rand () / RAND_MAX, std::rand () / RAND_MAX, std::rand () / RAND_MAX) * p_bounds,
 								   glm::vec3 (0, 0, 0),
 								   glm::vec3 (0, 0, 0));
 	}

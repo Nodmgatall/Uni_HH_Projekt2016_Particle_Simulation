@@ -19,32 +19,36 @@
 /*clang-format off */
 ParticleSimulator::ParticleSimulator (int argc, char **argv)
 : m_algorithm (dummy_algo), m_algorithm_type (LENNARD_JONES), m_autotuneing (false),
-  m_bounds (glm::vec3 (0, 0, 0)), m_data_format (CSV), m_delta_t (1), m_in_file_name (""),
-  m_out_file_name (""), m_particle_count (0), m_particle_generator (new ParticleGenerator ()),
+  m_bounds (glm::vec3 (1, 1, 1)), m_data_format (CSV), m_delta_t (1),
+  m_particle_file_writer (new ParticleFileWriter ()), m_in_file_name (""), m_out_file_name (""),
+  m_particle_count (0), m_particle_generator (new ParticleGenerator ()),
   m_particles (std::make_shared<ParticlesGrid> ()), m_run_time_limit (20), m_seed (0),
   m_timestep (0), m_verbose (false), m_write_fequency (1000),
   m_write_modes (
-	  { { ID, true }, { VELOCITY, true }, { POSITION, true }, { ACCELERATION, true }, { PARTICLE_TYPE, true } }) {
+	  { { ID, true }, { VELOCITY, true }, { POSITION, true }, { ACCELERATION, true }, { PARTICLE_TYPE, false } }) {
 	time_t	 current_time;
 	struct tm *time_info;
-	char	   timeString[29];
+	char	   log_folder[29];
 	time (&current_time);
 	time_info = localtime (&current_time);
-	strftime (timeString, sizeof (timeString), "logdata/%Y-%m-%d_%H-%M-%S", time_info);
+	strftime (log_folder, sizeof (log_folder), "logdata/%Y-%m-%d_%H-%M-%S", time_info);
 	mkdir ("logdata", 0700);
-	mkdir (timeString, 0700);
-	g_debug_stream.open (std::string (timeString) + "/log.txt", std::fstream::out);
+	mkdir (log_folder, 0700);
+	g_debug_stream.open (std::string (log_folder) + "/log.txt", std::fstream::out);
+	unlink ("logdata/latest");
+	symlink ((std::string ("../") + log_folder).c_str (), "logdata/latest");
 	print_header ();
-	ParticleFileWriter::m_file_name_base = std::string (timeString) + "/data";
+	m_particle_file_writer->set_file_name_base (std::string (log_folder) + "/data");
 	parse_argv (argc, argv);
 	init_particle_data ();
 	find_simulation_algorithm ();
+	simulate ();
 }
 /*clang-format off */
 
 void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 	DEBUG_BEGIN << "ParameterParser :: starting" << DEBUG_END;
-	++g_debug_stream;
+	g_debug_stream.indent ();
 	int argv_index;
 
 	int algorithm_set	  = 0;
@@ -64,7 +68,6 @@ void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 									{ "random_uniform", no_argument, 0, 6 },
 									{ "single_object_middle", no_argument, 0, 7 },
 									{ "uniform_dist", no_argument, 0, 8 },
-
 
 									// Algorithms
 									{ "lennard", no_argument, 0, 9 },
@@ -181,7 +184,7 @@ void ParticleSimulator::parse_argv (int p_argc, char **p_argv) {
 		std::cout << "Error: multiple data formats set" << std::endl;
 		exit (EXIT_SUCCESS);
 	}
-	--g_debug_stream;
+	g_debug_stream.unindent ();
 	DEBUG_BEGIN << "ParameterParser :: finish" << DEBUG_END;
 
 	print_choosen_options ();
@@ -204,7 +207,7 @@ void ParticleSimulator::simulate () {
 	{
 		m_algorithm (m_particles);
 	}
-	ParticleFileWriter::saveData (m_particles);
+	m_particle_file_writer->saveData (m_particles, m_write_modes);
 	DEBUG_BEGIN << "Simulation finished" << DEBUG_END;
 }
 
@@ -224,7 +227,7 @@ void ParticleSimulator::find_simulation_algorithm () {
 
 void ParticleSimulator::print_choosen_options () {
 	DEBUG_BEGIN << "Print-Options :: starting" << DEBUG_END;
-	++g_debug_stream;
+	g_debug_stream.indent ();
 	// DEBUG_BEGIN << "algorithm     :" << m_algorithm << DEBUG_END;
 	// DEBUG_BEGIN << "particles:" << m_particles << DEBUG_END;
 	DEBUG_BEGIN << "algorithm_type : " << m_algorithm_type << DEBUG_END;
@@ -253,6 +256,6 @@ void ParticleSimulator::print_choosen_options () {
 		g_debug_stream << ", PARTICLE_TYPE";
 	}
 	g_debug_stream << "]" << DEBUG_END;
-	--g_debug_stream;
-	DEBUG_BEGIN << "Print-Options :: starting" << DEBUG_END;
+	g_debug_stream.unindent ();
+	DEBUG_BEGIN << "Print-Options :: finish" << DEBUG_END;
 }

@@ -10,11 +10,13 @@
 #include "../Definitions.hpp"
 class ParticleFileWriter {
 	private:
-	static int m_timestep;
+	int			m_timestep;
+	std::string m_file_name_base;
 
 	public:
-	static std::string m_file_name_base;
-	static void saveData (std::shared_ptr<ParticlesBase> p_particles);
+	void saveData (std::shared_ptr<ParticlesBase> p_particles, std::map<e_particle_variable, bool> p_write_modes);
+	ParticleFileWriter ();
+	void set_file_name_base (const std::string &file_name_base);
 };
 
 #endif /* SRC_PARTICLEFILEWRITER_HPP_ */

@@ -29,10 +29,11 @@ unsigned long ParticlesGrid::get_particle_count () {
 	return m_positions.size ();
 }
 
-void ParticlesGrid::add_particle (glm::vec3 p_position, glm::vec3 p_velocity, glm::vec3 p_acceleration) {
+void ParticlesGrid::add_particle (unsigned long p_id, glm::vec3 p_position, glm::vec3 p_velocity, glm::vec3 p_acceleration) {
 	m_positions.push_back (p_position);
 	m_velocities.push_back (p_velocity);
 	m_accelerations.push_back (p_acceleration);
+	m_ids.push_back (p_id);
 }
 
 ParticlesGrid::~ParticlesGrid () {
