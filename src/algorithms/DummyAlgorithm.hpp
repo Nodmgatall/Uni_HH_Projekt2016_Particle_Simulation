@@ -1,5 +1,5 @@
 #ifndef DUMMY_ALGORITHM_HPP
-#define DUMMY_ALGORTIHM_HPP
+#define DUMMY_ALGORITHM_HPP
 
 #include <memory>
 
