@@ -238,8 +238,8 @@ void OptionHandler::print_choosen_options (s_simulator_options *p_sim_options, s
     g_debug_stream.indent ();
     // DEBUG_BEGIN << "algorithm     :" << m_algorithm << DEBUG_END;
     // DEBUG_BEGIN << "particles:" << m_particles << DEBUG_END;
-    macro_debug ("algorithm_type : ", p_sim_options->m_algorithm_type);
-    macro_debug ("autotuneing    : ", p_sim_options->m_autotuneing);
+    DEBUG_BEGIN << "algorithm_type : " << p_sim_options->m_algorithm_type << DEBUG_END;
+    DEBUG_BEGIN << "autotuneing    : " << p_sim_options->m_autotuneing << DEBUG_END;
     DEBUG_BEGIN << "data_format    : " << p_sim_options->m_data_format << DEBUG_END;
     DEBUG_BEGIN << "file_in_name   : " << p_sim_options->m_in_file_name << DEBUG_END;
     DEBUG_BEGIN << "file_out_name  : " << p_sim_options->m_out_file_name << DEBUG_END;
