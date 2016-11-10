@@ -8,9 +8,6 @@ ParticlesList::ParticlesList () {
     m_stucture_name = "List";
 }
 
-glm::vec3 ParticlesList::get_velocity (int particle_id) {
-    return m_velocities[particle_id];
-}
 std::vector<glm::vec3> *ParticlesList::get_positions () {
     return &m_positions;
 }
@@ -36,4 +33,7 @@ void ParticlesList::add_particle (glm::vec3 p_position, glm::vec3 p_velocity, gl
     m_accelerations.push_back (p_acceleration);
     m_ids.push_back (m_max_used_id);
     m_max_used_id++;
+}
+
+void ParticlesList::run_simulation_iteration () {
 }

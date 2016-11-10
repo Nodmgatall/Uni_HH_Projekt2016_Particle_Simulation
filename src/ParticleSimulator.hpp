@@ -15,15 +15,15 @@
 
 class ParticleSimulator {
     private:
-    std::function<bool(std::shared_ptr<ParticlesBase>)> m_algorithm;
-    glm::vec3                                           m_bounds;
-    float                                               m_delta_t;
-    s_simulator_options *                               m_options;
-    std::unique_ptr<ParticleFileWriter>                 m_particle_file_writer;
-    std::unique_ptr<ParticleGenerator>                  m_particle_generator;
-    std::shared_ptr<ParticlesBase>                      m_particles;
-    bool                                                m_save_config;
-    void                                                print_header ();
+    std::function<bool(glm::vec3 &position1, glm::vec3 &velocity1, glm::vec3 &acceleration1, glm::vec3 &position2, glm::vec3 &velocity2, glm::vec3 &acceleration2)> m_algorithm;
+    glm::vec3                           m_bounds;
+    float                               m_delta_t;
+    s_simulator_options *               m_options;
+    std::unique_ptr<ParticleFileWriter> m_particle_file_writer;
+    std::unique_ptr<ParticleGenerator>  m_particle_generator;
+    std::shared_ptr<ParticlesBase>      m_particles;
+    bool                                m_save_config;
+    void                                print_header ();
 
     public:
     ParticleSimulator (s_simulator_options *p_sim_options, s_generator_options *p_gen_options);

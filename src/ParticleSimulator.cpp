@@ -39,6 +39,8 @@ ParticleSimulator::ParticleSimulator (s_simulator_options *p_sim_options, s_gene
     symlink ((std::string ("../") + log_folder).c_str (), "logdata/latest");
     print_header ();
     m_particle_file_writer->set_file_name_base (std::string (log_folder) + "/data");
+    m_delta_t     = 1;     // TODO remove
+    m_save_config = false; // TODO remvove
 }
 /*clang-format on */
 
@@ -59,7 +61,7 @@ void ParticleSimulator::simulate () {
     while (false && iteration_successfull == true) // TODO: fix while to end
                                                    // when simulation ended;
     {
-        m_algorithm (m_particles);
+        m_particles->run_simulation_iteration ();
     }
     m_particle_file_writer->saveData (m_particles, m_options->m_write_modes);
     DEBUG_BEGIN << "Simulation finished" << DEBUG_END;
@@ -87,4 +89,5 @@ void ParticleSimulator::init_particle_data () {
 void ParticleSimulator::find_simulation_algorithm () {
     DEBUG_BEGIN << "Setting simulation algorithm" << DEBUG_END;
     m_algorithm = dummy_algo;
+    m_particles->set_algorithm (m_algorithm);
 }

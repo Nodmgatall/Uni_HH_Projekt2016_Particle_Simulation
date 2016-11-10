@@ -1,8 +1,8 @@
 all: format cmake build run
 
 format:
-	find -name '*.cpp' -o -name '*.hpp' | xargs clang-format -i -sort-includes
-	find -name '*.cpp' -o -name '*.hpp' | xargs clang-format -i -sort-includes
+	find . -maxdepth 10 -name "*.cpp" | xargs clang-format -i -sort-includes
+	find . -maxdepth 10 -name "*.hpp" | xargs clang-format -i -sort-includes
 
 clean: format
 	cd .. && $(MAKE) clean
