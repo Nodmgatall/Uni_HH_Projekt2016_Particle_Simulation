@@ -10,7 +10,6 @@
 #define EXTERN extern
 #endif
 
-#include "datastructures/ParticlesBase.hpp"
 #include <cstdlib>
 #include <ctime>
 #include <fstream>

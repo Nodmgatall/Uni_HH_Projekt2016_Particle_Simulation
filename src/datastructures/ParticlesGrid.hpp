@@ -17,8 +17,9 @@ struct ParticleCell {
 };
 
 class ParticlesGrid : public ParticlesBase {
-	private:
-		std::vector<std::vector<std::vector<ParticleCell>>> m_cells;
+    private:
+    std::vector<std::vector<std::vector<ParticleCell>>> m_cells;
+
     public:
     ParticlesGrid ();
     ~ParticlesGrid ();

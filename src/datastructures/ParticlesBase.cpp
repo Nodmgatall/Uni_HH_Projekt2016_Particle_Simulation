@@ -43,6 +43,11 @@ const std::vector<float *> &ParticlesBase::get_velocities_y () const {
 const std::vector<float *> &ParticlesBase::get_velocities_z () const {
     return m_velocities_z;
 }
+
+void ParticlesBase::set_options (s_simulator_options *p_options) {
+    m_options = p_options;
+}
+
 unsigned long ParticlesBase::get_particle_count () {
     return m_positions_x.size ();
 }

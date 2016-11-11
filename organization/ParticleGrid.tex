@@ -1,0 +1,61 @@
+\documentclass{article}
+\usepackage[a4paper,left=35mm,top=26mm,right=26mm,bottom=15mm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{lineno}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{caption}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{pxfonts}
+\usepackage{pgfplots}
+ \usepackage{pgfplotstable}
+ \usepackage{filecontents}
+\title{ParticleGrid}
+\author{Benjamin Warnke}
+\date{\today}
+
+\lstset{language=C,
+    basicstyle=\ttfamily,
+    keywordstyle=\bfseries,
+    showstringspaces=false,
+    morekeywords={include, printf}
+}
+
+\begin{document}
+
+\maketitle
+
+\section*{Skizze 1}
+
+\setlength{\unitlength}{50pt}
+
+\begin{picture}(0,0)
+\linethickness{1pt} 
+\put(0,-0){\line(+9,0){9}}
+\put(0,-1){\line(+9,0){9}}
+\put(0,-2){\line(+9,0){9}}
+\put(0,-3){\line(+9,0){9}}
+\put(0,-4){\line(+9,0){9}}
+\put(0,-5){\line(+9,0){9}}
+\put(0,-6){\line(+9,0){9}}
+\put(0,-7){\line(+9,0){9}}
+\put(0,-8){\line(+9,0){9}}
+\put(0,-9){\line(+9,0){9}}
+\put(+0,0){\line(0,-9){9}}
+\put(+1,0){\line(0,-9){9}}
+\put(+2,0){\line(0,-9){9}}
+\put(+3,0){\line(0,-9){9}}
+\put(+4,0){\line(0,-9){9}}
+\put(+5,0){\line(0,-9){9}}
+\put(+6,0){\line(0,-9){9}}
+\put(+7,0){\line(0,-9){9}}
+\put(+8,0){\line(0,-9){9}}
+\put(+9,0){\line(0,-9){9}}
+\linethickness{4pt} 
+\put(4.5,-4.5){\line(0,+1){1}}
+\put(4.5,-4.5){\line(1,+1){1}}
+\put(4.5,-4.5){\line(1,+0){1}}
+\put(4.5,-3.5){\line(1,-1){1}}
+\end{picture}
+\end{document}

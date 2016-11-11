@@ -1,6 +1,6 @@
 #ifndef CONFIG_LOADER_HPP
 #define CONFIG_LOADER_HPP
-
+#include "../Definitions.hpp"
 #include <map>
 
 #include "Config.hpp"

@@ -28,6 +28,7 @@ ParticleSimulator::ParticleSimulator (s_simulator_options *p_sim_options, s_gene
   m_particle_generator (ParticleGeneratorFactory::build (p_gen_options)),
   m_particles (std::make_shared<ParticlesGrid> ()), m_save_config (false) {
 
+    m_particles->set_options (p_sim_options);
     m_particle_file_writer->set_file_name_base (std::string (log_folder) + "/data");
     m_save_config = false; // TODO remvove
 }

@@ -1,6 +1,7 @@
 #ifndef PARTICLE_HPP
 #define PARTICLE_HPP
-
+#include "../Definitions.hpp"
+#include "../IO/OptionsSimulation.hpp"
 #include <glm/glm.hpp>
 #include <iostream>
 #include <vector>
@@ -18,6 +19,7 @@ class ParticlesBase {
     std::vector<float *> m_accelerations_x;
     std::vector<float *> m_accelerations_y;
     std::vector<float *> m_accelerations_z;
+    s_simulator_options *m_options;
 
     public:
     virtual ~ParticlesBase () {
@@ -39,5 +41,6 @@ class ParticlesBase {
     const std::vector<float *> &get_velocities_y () const;
     const std::vector<float *> &get_velocities_z () const;
     unsigned long               get_particle_count ();
+    void set_options (s_simulator_options *m_options);
 };
 #endif
