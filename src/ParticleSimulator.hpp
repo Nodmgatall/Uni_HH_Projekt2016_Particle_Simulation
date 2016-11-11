@@ -17,7 +17,6 @@ class ParticleSimulator {
     private:
     std::function<bool(glm::vec3 &position1, glm::vec3 &velocity1, glm::vec3 &acceleration1, glm::vec3 &position2, glm::vec3 &velocity2, glm::vec3 &acceleration2)> m_algorithm;
     glm::vec3                              m_bounds;
-    float                                  m_delta_t;
     s_simulator_options *                  m_options;
     std::unique_ptr<ParticleFileWriter>    m_particle_file_writer;
     std::unique_ptr<ParticleGeneratorBase> m_particle_generator;
