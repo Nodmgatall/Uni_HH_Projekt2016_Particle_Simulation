@@ -20,10 +20,12 @@ class ParticlesBase {
     std::vector<float *> m_accelerations_y;
     std::vector<float *> m_accelerations_z;
     s_simulator_options *m_options;
+    glm::vec3 *          m_bounds;
 
     public:
     virtual ~ParticlesBase () {
     }
+    ParticlesBase (s_simulator_options *p_options, glm::vec3 *p_bounds);
     virtual void run_simulation_iteration () = 0;
     virtual void add_particle (glm::vec3 p_position, glm::vec3 p_velocity, glm::vec3 p_acceleration) = 0;
     void        print_structure_name ();
@@ -41,6 +43,5 @@ class ParticlesBase {
     const std::vector<float *> &get_velocities_y () const;
     const std::vector<float *> &get_velocities_z () const;
     unsigned long               get_particle_count ();
-    void set_options (s_simulator_options *m_options);
 };
 #endif

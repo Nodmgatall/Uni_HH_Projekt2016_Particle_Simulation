@@ -44,10 +44,6 @@ const std::vector<float *> &ParticlesBase::get_velocities_z () const {
     return m_velocities_z;
 }
 
-void ParticlesBase::set_options (s_simulator_options *p_options) {
-    m_options = p_options;
-}
-
 unsigned long ParticlesBase::get_particle_count () {
     return m_positions_x.size ();
 }
@@ -56,4 +52,7 @@ void ParticlesBase::set_algorithm (
     const std::function<bool(glm::vec3 &position1, glm::vec3 &velocity1, glm::vec3 &acceleration1, glm::vec3 &position2, glm::vec3 &velocity2, glm::vec3 &acceleration2)>
         &algorithm) {
     m_algorithm = algorithm;
+}
+ParticlesBase::ParticlesBase (s_simulator_options *p_options, glm::vec3 *p_bounds)
+: m_options (p_options), m_bounds (p_bounds) {
 }

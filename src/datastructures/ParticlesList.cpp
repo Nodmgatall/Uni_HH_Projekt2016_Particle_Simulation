@@ -4,7 +4,8 @@
 
 #include "ParticlesList.hpp"
 
-ParticlesList::ParticlesList () {
+ParticlesList::ParticlesList (s_simulator_options *p_options, glm::vec3 *p_bounds)
+: ParticlesBase (p_options, p_bounds) {
     m_stucture_name = "List";
 }
 ParticlesList::~ParticlesList () {
