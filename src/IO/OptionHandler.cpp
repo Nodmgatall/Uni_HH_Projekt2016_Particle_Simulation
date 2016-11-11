@@ -189,7 +189,8 @@ void OptionHandler::handle_options (int                  p_argc,
                 break;
             }
             case '?': {
-                std::cout << "Error: unkown option: " << p_argv[optind - 1] << std::endl;
+                std::cout << "Error: unkown option" << std::endl;
+                print_usage_particle_sim();
                 exit (EXIT_SUCCESS);
                 break;
             }

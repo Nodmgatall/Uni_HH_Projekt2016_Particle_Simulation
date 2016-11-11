@@ -33,6 +33,7 @@ class ParticlesList : public ParticlesBase {
 
     ~ParticlesList ();
     void add_particle (glm::vec3 p_position, glm::vec3 p_velocity, glm::vec3 p_acceleration);
+    unsigned long get_particle_count();
     void run_simulation_iteration ();
     void build_lists ();
     void calculate_distances_squared (unsigned long       partice_idx,

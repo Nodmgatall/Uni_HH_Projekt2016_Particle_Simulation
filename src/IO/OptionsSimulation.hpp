@@ -43,6 +43,7 @@ struct s_simulator_options {
         s_sim_options &BOOST_SERIALIZATION_NVP (m_verbose);
         s_sim_options &BOOST_SERIALIZATION_NVP (m_write_fequency);
         s_sim_options &BOOST_SERIALIZATION_NVP (m_cuttof_radius);
+        s_sim_options &BOOST_SERIALIZATION_NVP (m_cuttof_radius);
         s_sim_options &BOOST_SERIALIZATION_NVP (m_data_structure);
         s_sim_options &BOOST_SERIALIZATION_NVP (m_write_modes);
     }

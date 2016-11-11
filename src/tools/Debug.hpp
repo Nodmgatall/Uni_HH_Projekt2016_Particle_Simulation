@@ -91,8 +91,8 @@ struct s_debug_stream : std::ofstream {
 EXTERN char log_folder[29];
 EXTERN s_debug_stream g_debug_stream;
 
-
 #ifndef RELEASE
+#define macro_debug_1(x) g_debug_stream >> __FILE__ >> ":" >> __LINE__ >> " : " << x << std::endl;
 #define macro_debug(x, y) \
     g_debug_stream >> __FILE__ >> ":" >> __LINE__ >> " : " << x << " = " << y << std::endl
 

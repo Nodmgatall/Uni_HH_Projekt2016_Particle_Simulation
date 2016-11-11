@@ -2,20 +2,14 @@
 #include <iostream>
 #include <vector>
 
+#include "../tools/Debug.hpp"
 #include "ParticlesList.hpp"
-
 
 ParticlesList::ParticlesList (s_simulator_options *p_options, glm::vec3 *p_bounds)
 : ParticlesBase (p_options, p_bounds) {
     m_stucture_name = "List";
-    m_velocities_x  = std::vector<float> (p_options->m_particle_count);
-    m_velocities_y  = std::vector<float> (p_options->m_particle_count);
-    m_velocities_z  = std::vector<float> (p_options->m_particle_count);
-
-    m_positions_x = std::vector<float> (p_options->m_particle_count);
-    m_positions_y = std::vector<float> (p_options->m_particle_count);
-    m_positions_z = std::vector<float> (p_options->m_particle_count);
-}
+    macro_debug_1("constructor of ParticleList called")
+   }
 ParticlesList::~ParticlesList () {
 }
 
@@ -38,6 +32,14 @@ void ParticlesList::add_particle (glm::vec3 p_position, glm::vec3 p_velocity, gl
 }
 
 void ParticlesList::run_simulation_iteration () {
+    macro_debug_1("running iteration")
+    build_lists();
+    std::cout << "lol" << std::endl;
+}
+
+unsigned long ParticlesList::get_particle_count()
+{
+    return m_positions_x.size();
 }
 
 void ParticlesList::build_lists () {
@@ -90,6 +92,8 @@ void ParticlesList::calculate_distances_squared (unsigned long       particle_id
                                                  std::vector<float> *p_positions_z,
                                                  unsigned long       start_idx,
                                                  unsigned long       end_idx) {
+macro_debug_1("starting distance calculation")
+    
     unsigned long      cur_part_idx;
     unsigned long      other_part_idx;
     float              cur_pos_part;
@@ -102,6 +106,7 @@ void ParticlesList::calculate_distances_squared (unsigned long       particle_id
     std::vector<float> y_distances (range);
     std::vector<float> z_distances (range);
 
+macro_debug_1("starting 1d calc")
     // calculating 1dimensional distances element wise
     for (cur_dist_idx = 0, other_part_idx = start_idx; other_part_idx < end_idx; cur_dist_idx++, other_part_idx++) {
         x_distances[cur_dist_idx] = x - (*p_positions_x)[other_part_idx];
@@ -115,31 +120,32 @@ void ParticlesList::calculate_distances_squared (unsigned long       particle_id
         z_distances[cur_dist_idx] = z - (*p_positions_z)[other_part_idx];
     }
 
+macro_debug_1("starting sqrt")
     // square every entry in vector:
     // x
-    for (cur_part_idx = start_idx; cur_part_idx < end_idx; cur_part_idx++) {
+    for (cur_part_idx = 0; cur_part_idx < range; cur_part_idx++) {
         cur_pos_part              = x_distances[cur_part_idx];
         x_distances[cur_part_idx] = cur_pos_part * cur_pos_part;
     }
     // y
-    for (cur_part_idx = start_idx; cur_part_idx < end_idx; cur_part_idx++) {
+    for (cur_part_idx = 0; cur_part_idx < range; cur_part_idx++) {
         cur_pos_part              = z_distances[cur_part_idx];
         y_distances[cur_part_idx] = cur_pos_part * cur_pos_part;
     }
 
     // z
-    for (cur_part_idx = start_idx; cur_part_idx < end_idx; cur_part_idx++) {
+    for (cur_part_idx = 0; cur_part_idx < range; cur_part_idx++) {
         cur_pos_part              = z_distances[cur_part_idx];
         z_distances[cur_part_idx] = cur_pos_part * cur_pos_part;
     }
-
+macro_debug_1("starting summation")
     // summing up the squared distances
     // frist x + y
-    for (cur_part_idx = start_idx; cur_part_idx < end_idx; cur_part_idx++) {
+    for (cur_part_idx = 0; cur_part_idx < range; cur_part_idx++) {
         (*p_distances_squared)[cur_part_idx] = x_distances[cur_part_idx] + y_distances[cur_part_idx];
     }
     // then the result + z
-    for (cur_part_idx = start_idx; cur_part_idx < end_idx; cur_part_idx++) {
+    for (cur_part_idx = 0; cur_part_idx < range; cur_part_idx++) {
         (*p_distances_squared)[cur_part_idx] += z_distances[cur_part_idx];
     }
 }
