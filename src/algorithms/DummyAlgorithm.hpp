@@ -11,12 +11,6 @@ bool dummy_algo (glm::vec3 &position1,
                  glm::vec3 &position2,
                  glm::vec3 &velocity2,
                  glm::vec3 &acceleration2) {
-    std::cout << "calculating interation" << std::endl;
-
-    if (true) {
-        std::cout << "Error:  iteration could not be finished" << std::endl;
-        return false;
-    }
     return true;
 }
 #endif

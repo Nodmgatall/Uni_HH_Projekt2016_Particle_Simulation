@@ -21,4 +21,4 @@ rmlog: format
 	rm -rf ../logdata
 	
 run: build
-	cd .. && ./particle_simulation.x -p 27
+	cd .. && ./particle_simulation.x -p 27 -l 10

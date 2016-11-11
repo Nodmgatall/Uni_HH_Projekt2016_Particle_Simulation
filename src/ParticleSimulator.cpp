@@ -36,14 +36,19 @@ ParticleSimulator::ParticleSimulator (s_simulator_options *p_sim_options, s_gene
 
 void ParticleSimulator::simulate () {
     DEBUG_BEGIN << "Starting simulation" << DEBUG_END;
-    bool iteration_successfull = true;
-    // TODO: set up simulation parameters according to later function parameters
-    while (false && iteration_successfull == true) // TODO: fix while to end
-                                                   // when simulation ended;
-    {
+    g_debug_stream.indent ();
+    long current_time               = 0.0;
+    int  timesteps_until_next_write = 0;
+    while (current_time <= m_options->m_run_time_limit) {
+        if (!timesteps_until_next_write) {
+            m_particle_file_writer->saveData (m_particles, m_options->m_write_modes);
+            timesteps_until_next_write = m_options->m_write_fequency;
+        }
         m_particles->run_simulation_iteration ();
+        current_time += m_options->m_timestep;
+        timesteps_until_next_write--;
     }
-    m_particle_file_writer->saveData (m_particles, m_options->m_write_modes);
+    g_debug_stream.unindent ();
     DEBUG_BEGIN << "Simulation finished" << DEBUG_END;
 }
 
@@ -67,7 +72,12 @@ void ParticleSimulator::init_particle_data () {
 }
 
 void ParticleSimulator::find_simulation_algorithm () {
-    DEBUG_BEGIN << "Setting simulation algorithm" << DEBUG_END;
+    DEBUG_BEGIN << "find_simulation_algorithm :: starting" << DEBUG_END;
+    g_debug_stream.indent ();
+    DEBUG_BEGIN << "useing 'dummy_algo'" << DEBUG_END;
     m_algorithm = dummy_algo;
     m_particles->set_algorithm (m_algorithm);
+    g_debug_stream.unindent ();
+    DEBUG_BEGIN << "find_simulation_algorithm :: finish" << DEBUG_END;
+    DEBUG_BEGIN << "=======================================================" << DEBUG_END;
 }
