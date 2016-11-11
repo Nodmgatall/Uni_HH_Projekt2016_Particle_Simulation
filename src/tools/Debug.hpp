@@ -91,19 +91,23 @@ struct s_debug_stream : std::ofstream {
 EXTERN char log_folder[29];
 EXTERN s_debug_stream g_debug_stream;
 
+#ifdef RELASE
 #define macro_debug(x, y) \
-    g_debug_stream >> __FILE__ >> ":" >> __LINE__ >> " -> " << x << " " << y << std::endl
-#define macro_debug_2(x, y, z) \
-    g_debug_stream >> __FILE__ >> ":" >> __LINE__ >> " -> " << x << " " << y << " " << z << std::endl
-#define macro_debug_3(x, y, z, w)                                                               \
-    g_debug_stream >> __FILE__ >> ":" >> __LINE__ >> " -> " << x << " " << y << " " << z << " " \
-                                                            << w << std::endl
-#define debug5(x, y, z, w, k)                                                                   \
-    g_debug_stream >> __FILE__ >> ":" >> __LINE__ >> " -> " << x << " " << y << " " << z << " " \
-                                                            << w << " " << k << std::endl
+    g_debug_stream >> __FILE__ >> ":" >> __LINE__ >> " : " << x << " = " << y << std::endl
+
 #define DEBUG_BEGIN g_debug_stream >> __FILE__ >> ":" >> __LINE__ >> " -> "
 #define DEBUG_VAR(var) #var << " = " << var
 #define DEBUG_END std::endl
 #define DEBUG_ENDL std::endl << std::endl
 
+#else
+#define macro_debug(x, y)
+#define macro_debug_2(x, y)
+
+#define DEBUG_BEGIN 
+#define DEBUG_VAR(var) 
+#define DEBUG_END 
+#define DEBUG_ENDL 
+
+#endif
 #endif /* DEBUG_HPP_ */
