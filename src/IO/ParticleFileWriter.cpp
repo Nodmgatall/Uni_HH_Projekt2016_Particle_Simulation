@@ -13,7 +13,9 @@ void writeVectorToStream (std::ofstream &p_stream, glm::vec3 p_data) {
 }
 void ParticleFileWriter::saveData (std::shared_ptr<ParticlesBase> p_particles,
                                    std::map<e_particle_variable, bool> p_write_modes) {
-    DEBUG_BEGIN << "saving Data to " << (m_file_name_base + std::to_string (m_timestep) + ".csv") << DEBUG_END;
+
+    Benchmark::begin ("saveData");
+
     std::ofstream csv_file =
         std::ofstream (m_file_name_base + std::to_string (m_timestep) + ".csv");
     csv_file << "id";
@@ -49,6 +51,7 @@ void ParticleFileWriter::saveData (std::shared_ptr<ParticlesBase> p_particles,
         csv_file << "\n";
     }
     m_timestep++;
+    Benchmark::end ();
 }
 
 void ParticleFileWriter::set_file_name_base (const std::string &file_name_base) {

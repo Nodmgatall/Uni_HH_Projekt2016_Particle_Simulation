@@ -40,6 +40,7 @@ void ParticleSimulator::simulate () {
     long current_time               = 0.0;
     int  timesteps_until_next_write = 0;
     while (current_time <= m_options->m_run_time_limit) {
+        Benchmark::begin ("Simulate Time step");
         if (!timesteps_until_next_write) {
             m_particle_file_writer->saveData (m_particles, m_options->m_write_modes);
             timesteps_until_next_write = m_options->m_write_fequency;
@@ -47,6 +48,7 @@ void ParticleSimulator::simulate () {
         m_particles->run_simulation_iteration ();
         current_time += m_options->m_timestep;
         timesteps_until_next_write--;
+        Benchmark::end ();
     }
     Benchmark::end ();
 }
