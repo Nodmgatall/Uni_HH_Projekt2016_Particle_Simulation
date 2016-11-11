@@ -9,8 +9,8 @@ void OptionHandler::handle_options (int                  p_argc,
                                     char **              p_argv,
                                     s_simulator_options *p_sim_options,
                                     s_generator_options *p_gen_options) {
-    DEBUG_BEGIN << "OptionHandler :: starting" << DEBUG_END;
-    g_debug_stream.indent ();
+    Benchmark::begin ("OptionHandler");
+
     int argv_index;
 
     bool        save_config         = false;
@@ -223,9 +223,7 @@ void OptionHandler::handle_options (int                  p_argc,
             config_loader.load_config (config_name, p_sim_options, p_gen_options);
         }
     }
-    g_debug_stream.unindent ();
-    DEBUG_BEGIN << "OptionHandler :: finish" << DEBUG_END;
-    DEBUG_BEGIN << "=======================================================" << DEBUG_END;
+    Benchmark::end ();
     if (print_config) {
         print_choosen_options (p_sim_options, p_gen_options);
         if (print_saved_config == true) {
@@ -234,9 +232,8 @@ void OptionHandler::handle_options (int                  p_argc,
     }
 }
 void OptionHandler::print_choosen_options (s_simulator_options *p_sim_options, s_generator_options *p_gen_options) {
-    DEBUG_BEGIN << "Print-Options :: starting" << DEBUG_END;
+    Benchmark::begin ("Print-Options");
     (void) p_gen_options;
-    g_debug_stream.indent ();
     // DEBUG_BEGIN << "algorithm     :" << m_algorithm << DEBUG_END;
     // DEBUG_BEGIN << "particles:" << m_particles << DEBUG_END;
     DEBUG_BEGIN << "algorithm_type : " << p_sim_options->m_algorithm_type << DEBUG_END;
@@ -268,9 +265,7 @@ void OptionHandler::print_choosen_options (s_simulator_options *p_sim_options, s
     macro_debug("generator_mode :" , p_sim_options->particle_generator->get_generator_mode());
     macro_debug("data_structure :" , p_sim_options->particles->get_structure_name());
     */
-    g_debug_stream.unindent ();
-    DEBUG_BEGIN << "Print-Options :: finish" << DEBUG_END;
-    DEBUG_BEGIN << "=======================================================" << DEBUG_END;
+    Benchmark::end ();
 }
 
 void OptionHandler::print_usage_generation_mode () {

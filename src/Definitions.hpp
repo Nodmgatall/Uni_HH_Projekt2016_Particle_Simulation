@@ -95,5 +95,6 @@ static std::map<e_data_structure, const char *> g_enum_data_structure_variable_t
       ENUM_TO_STRING_ENTRY (e_data_structure, LIST),
       ENUM_TO_STRING_ENTRY (e_data_structure, LISTEDGIRD) };
 
+#include "tools/Benchmark.hpp"
 #include "tools/Debug.hpp"
 #endif /* DEFINITIONS_HPP_ */

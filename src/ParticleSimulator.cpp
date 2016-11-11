@@ -35,8 +35,8 @@ ParticleSimulator::ParticleSimulator (s_simulator_options *p_sim_options, s_gene
 /*clang-format on */
 
 void ParticleSimulator::simulate () {
-    DEBUG_BEGIN << "Starting simulation" << DEBUG_END;
-    g_debug_stream.indent ();
+    Benchmark::begin ("Simulation");
+
     long current_time               = 0.0;
     int  timesteps_until_next_write = 0;
     while (current_time <= m_options->m_run_time_limit) {
@@ -48,8 +48,7 @@ void ParticleSimulator::simulate () {
         current_time += m_options->m_timestep;
         timesteps_until_next_write--;
     }
-    g_debug_stream.unindent ();
-    DEBUG_BEGIN << "Simulation finished" << DEBUG_END;
+    Benchmark::end ();
 }
 
 void ParticleSimulator::init_particle_data () {
@@ -72,12 +71,9 @@ void ParticleSimulator::init_particle_data () {
 }
 
 void ParticleSimulator::find_simulation_algorithm () {
-    DEBUG_BEGIN << "find_simulation_algorithm :: starting" << DEBUG_END;
-    g_debug_stream.indent ();
+    Benchmark::begin ("find_simulation_algorithm");
     DEBUG_BEGIN << "useing 'dummy_algo'" << DEBUG_END;
     m_algorithm = dummy_algo;
     m_particles->set_algorithm (m_algorithm);
-    g_debug_stream.unindent ();
-    DEBUG_BEGIN << "find_simulation_algorithm :: finish" << DEBUG_END;
-    DEBUG_BEGIN << "=======================================================" << DEBUG_END;
+    Benchmark::end ();
 }

@@ -17,8 +17,7 @@ ParticleGeneratorRandom::~ParticleGeneratorRandom () {
 void ParticleGeneratorRandom::generate (std::shared_ptr<ParticlesBase> p_particles,
                                         glm::vec3                      p_bounds,
                                         unsigned long                  p_particle_count) {
-    DEBUG_BEGIN << "ParticleGeneratorRandom :: starting" << DEBUG_END;
-    g_debug_stream.indent ();
+    Benchmark::begin ("ParticleGeneratorRandom");
     long seed = std::time (0);
     std::srand (seed); // TODO parameter bei programmstart
     for (unsigned long id = 0; id < p_particle_count; id++) {
@@ -26,7 +25,5 @@ void ParticleGeneratorRandom::generate (std::shared_ptr<ParticlesBase> p_particl
                                    glm::vec3 (0, 0, 0),
                                    glm::vec3 (0, 0, 0));
     }
-    g_debug_stream.unindent ();
-    DEBUG_BEGIN << "ParticleGeneratorRandom :: finish" << DEBUG_END;
-    DEBUG_BEGIN << "=======================================================" << DEBUG_END;
+    Benchmark::end ();
 }

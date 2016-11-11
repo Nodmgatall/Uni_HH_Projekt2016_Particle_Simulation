@@ -18,8 +18,7 @@ void ParticleGeneratorGridDistribution::generate (std::shared_ptr<ParticlesBase>
                                                   glm::vec3                      p_bounds,
                                                   unsigned long                  p_particle_count) {
 
-    DEBUG_BEGIN << "ParticleGeneratorGridDistribution :: starting" << DEBUG_END;
-    g_debug_stream.indent ();
+    Benchmark::begin ("ParticleGeneratorGridDistribution");
     float     temp    = pow (p_particle_count, 1.0f / 3.0f);
     glm::vec3 delta   = (glm::vec3 (0, 0, 0) - p_bounds) / (temp - 1);
     int       tempInt = temp;
@@ -30,7 +29,5 @@ void ParticleGeneratorGridDistribution::generate (std::shared_ptr<ParticlesBase>
             }
         }
     }
-    g_debug_stream.unindent ();
-    DEBUG_BEGIN << "ParticleGeneratorGridDistribution :: finish" << DEBUG_END;
-    DEBUG_BEGIN << "=======================================================" << DEBUG_END;
+    Benchmark::end ();
 }
