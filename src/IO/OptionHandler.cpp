@@ -160,7 +160,7 @@ void OptionHandler::handle_options (int                  p_argc,
                 break;
             }
             case 's': {
-                p_sim_options->m_seed = std::stoi (optarg);
+                p_gen_options->m_seed = std::stoi (optarg);
                 break;
             }
             case 'p': {
@@ -236,6 +236,8 @@ void OptionHandler::print_choosen_options (s_simulator_options *p_sim_options, s
     (void) p_gen_options;
     // DEBUG_BEGIN << "algorithm     :" << m_algorithm << DEBUG_END;
     // DEBUG_BEGIN << "particles:" << m_particles << DEBUG_END;
+    DEBUG_BEGIN << "generator seed : " << p_gen_options->m_seed << DEBUG_END;
+    DEBUG_BEGIN << "generator mode : " << p_gen_options->m_mode << DEBUG_END;
     DEBUG_BEGIN << "algorithm_type : " << p_sim_options->m_algorithm_type << DEBUG_END;
     DEBUG_BEGIN << "autotuneing    : " << p_sim_options->m_autotuneing << DEBUG_END;
     DEBUG_BEGIN << "data_format    : " << p_sim_options->m_data_format << DEBUG_END;
@@ -243,7 +245,6 @@ void OptionHandler::print_choosen_options (s_simulator_options *p_sim_options, s
     DEBUG_BEGIN << "file_out_name  : " << p_sim_options->m_out_file_name << DEBUG_END;
     DEBUG_BEGIN << "particle_count : " << p_sim_options->m_particle_count << DEBUG_END;
     DEBUG_BEGIN << "run_time_limit : " << p_sim_options->m_run_time_limit << DEBUG_END;
-    DEBUG_BEGIN << "seed           : " << p_sim_options->m_seed << DEBUG_END;
     DEBUG_BEGIN << "timestep       : " << p_sim_options->m_timestep << DEBUG_END;
     DEBUG_BEGIN << "verbose        : " << p_sim_options->m_verbose << DEBUG_END;
     DEBUG_BEGIN << "write_fequency : " << p_sim_options->m_write_fequency << DEBUG_END;
@@ -262,9 +263,9 @@ void OptionHandler::print_choosen_options (s_simulator_options *p_sim_options, s
     }
     g_debug_stream << "]" << DEBUG_END;
     /*
-    macro_debug("generator_mode :" , p_sim_options->particle_generator->get_generator_mode());
-    macro_debug("data_structure :" , p_sim_options->particles->get_structure_name());
-    */
+     macro_debug("generator_mode :" , p_sim_options->particle_generator->get_generator_mode());
+     macro_debug("data_structure :" , p_sim_options->particles->get_structure_name());
+     */
     Benchmark::end ();
 }
 

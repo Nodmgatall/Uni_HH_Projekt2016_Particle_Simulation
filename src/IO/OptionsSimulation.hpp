@@ -18,7 +18,6 @@ struct s_simulator_options {
     std::string      m_out_file_name  = "";
     unsigned long    m_particle_count = 0;
     float            m_run_time_limit = 1000;
-    unsigned int     m_seed           = 0;
     float            m_timestep       = 1;
     bool             m_verbose        = false;
     int              m_write_fequency = 1;
@@ -39,7 +38,6 @@ struct s_simulator_options {
         s_sim_options &BOOST_SERIALIZATION_NVP (m_out_file_name);
         s_sim_options &BOOST_SERIALIZATION_NVP (m_particle_count);
         s_sim_options &BOOST_SERIALIZATION_NVP (m_run_time_limit);
-        s_sim_options &BOOST_SERIALIZATION_NVP (m_seed);
         s_sim_options &BOOST_SERIALIZATION_NVP (m_timestep);
         s_sim_options &BOOST_SERIALIZATION_NVP (m_verbose);
         s_sim_options &BOOST_SERIALIZATION_NVP (m_write_fequency);

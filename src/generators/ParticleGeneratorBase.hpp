@@ -12,7 +12,7 @@
 #include "../IO/OptionsGenerator.hpp"
 #include "../datastructures/ParticlesBase.hpp"
 class ParticleGeneratorBase {
-    private:
+    protected:
     s_generator_options *m_options;
 
     public:
