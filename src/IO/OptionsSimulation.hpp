@@ -27,7 +27,7 @@ struct s_simulator_options {
                                                           { POSITION, true },
                                                           { VELOCITY, true },
                                                           { ACCELERATION, true },
-                                                          { PARTICLE_TYPE, true } };
+                                                          { PARTICLE_TYPE, false } };
 
     template <class Archive>
     void serialize (Archive &s_sim_options, const unsigned int version) {

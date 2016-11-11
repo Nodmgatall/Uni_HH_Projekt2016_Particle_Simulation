@@ -8,6 +8,7 @@
 #include "ParticleGeneratorFactoryFactory.hpp"
 
 std::unique_ptr<ParticleGeneratorBase> ParticleGeneratorFactory::build (s_generator_options *p_options) {
+    std::unique_ptr<ParticleGeneratorBase> result = 0;
     DEBUG_BEGIN << "ParticleGeneratorFactory :: starting" << DEBUG_END;
     g_debug_stream.indent ();
     DEBUG_BEGIN << "method :: " << p_options->m_mode << DEBUG_END;
@@ -15,14 +16,14 @@ std::unique_ptr<ParticleGeneratorBase> ParticleGeneratorFactory::build (s_genera
         case MULTIPLE_OBJECTS:
             break;
         case RANDOM:
-            return std::make_unique<ParticleGeneratorRandom> (p_options);
+            result = std::make_unique<ParticleGeneratorRandom> (p_options);
             break;
         case RANDOM_UNIFORM:
             break;
         case SINGLE_OBJECT_MIDDLE:
             break;
         case GRID_DISTRIBUTION:
-            return std::make_unique<ParticleGeneratorGridDistribution> (p_options);
+            result = std::make_unique<ParticleGeneratorGridDistribution> (p_options);
             break;
         default:
             DEBUG_BEGIN << "ParticleGenerator :: error" << DEBUG_END;
@@ -30,5 +31,5 @@ std::unique_ptr<ParticleGeneratorBase> ParticleGeneratorFactory::build (s_genera
     }
     g_debug_stream.unindent ();
     DEBUG_BEGIN << "ParticleGeneratorFactory :: finish" << DEBUG_END;
-    return 0;
+    return result;
 }
