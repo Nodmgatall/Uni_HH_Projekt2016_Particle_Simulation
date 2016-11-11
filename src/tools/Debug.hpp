@@ -102,7 +102,7 @@ EXTERN s_debug_stream g_debug_stream;
     g_debug_stream >> __FILE__ >> ":" >> __LINE__ >> " -> " << x << " " << y << " " << z << " " \
                                                             << w << " " << k << std::endl
 #define DEBUG_BEGIN g_debug_stream >> __FILE__ >> ":" >> __LINE__ >> " -> "
-#define DEBUG_VAR(var) #var << " = " << var << ", "
+#define DEBUG_VAR(var) #var << " = " << var
 #define DEBUG_END std::endl
 #define DEBUG_ENDL std::endl << std::endl
 

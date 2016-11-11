@@ -38,6 +38,11 @@ void Benchmark::end () {
     if (print)
         g_debug_stream.unindent ();
     time_diff = ((time_now.tv_sec - time_begin.tv_sec) * 1000000u + time_now.tv_usec - time_begin.tv_usec) / 1.e6;
-    DEBUG_BEGIN << (print ? "<<<" : "---") << section_name << " :: finished in " << std::fixed
-                << std::setprecision (6) << std::setfill ('0') << time_diff << "s" << DEBUG_END;
+    if (print) {
+        DEBUG_BEGIN << "<<<" << section_name << " :: finished in " << std::fixed
+                    << std::setprecision (6) << std::setfill ('0') << time_diff << "s" << DEBUG_END;
+    } else {
+        DEBUG_BEGIN << "---spend " << std::fixed << std::setprecision (6) << std::setfill ('0')
+                    << time_diff << "s for " << section_name << DEBUG_END;
+    }
 }

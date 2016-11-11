@@ -36,19 +36,20 @@ ParticleSimulator::ParticleSimulator (s_simulator_options *p_sim_options, s_gene
 
 void ParticleSimulator::simulate () {
     Benchmark::begin ("Simulation");
-
+    m_particle_file_writer->saveData (m_particles, m_options->m_write_modes);
     long current_time               = 0.0;
-    int  timesteps_until_next_write = 0;
+    int  timesteps_until_next_write = m_options->m_write_fequency;
     while (current_time <= m_options->m_run_time_limit) {
-        Benchmark::begin ("Simulate Time step");
+        DEBUG_BEGIN << DEBUG_VAR (current_time) << DEBUG_END;
+        Benchmark::begin ("Simulating the time-step", false);
+        m_particles->run_simulation_iteration ();
+        Benchmark::end ();
+        current_time += m_options->m_timestep;
+        timesteps_until_next_write--;
         if (!timesteps_until_next_write) {
             m_particle_file_writer->saveData (m_particles, m_options->m_write_modes);
             timesteps_until_next_write = m_options->m_write_fequency;
         }
-        m_particles->run_simulation_iteration ();
-        current_time += m_options->m_timestep;
-        timesteps_until_next_write--;
-        Benchmark::end ();
     }
     Benchmark::end ();
 }

@@ -30,6 +30,7 @@ void createOutputDirectory () {
 int main (int argc, char **argv) {
     createOutputDirectory ();
     print_header ();
+    Benchmark::begin ("everything", false);
     s_generator_options                generator_options;
     s_simulator_options                simulator_options;
     std::unique_ptr<ParticleSimulator> particle_simulator (
@@ -39,4 +40,5 @@ int main (int argc, char **argv) {
     particle_simulator->init_particle_data ();
     particle_simulator->find_simulation_algorithm ();
     particle_simulator->simulate ();
+    Benchmark::end ();
 }
