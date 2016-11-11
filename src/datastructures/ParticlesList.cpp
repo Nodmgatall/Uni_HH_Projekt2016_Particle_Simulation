@@ -34,7 +34,7 @@ void ParticlesList::add_particle (glm::vec3 p_position, glm::vec3 p_velocity, gl
 void ParticlesList::run_simulation_iteration () {
     macro_debug_1("running iteration")
     build_lists();
-    std::cout << "lol" << std::endl;
+    macro_debug_1("iteration done")
 }
 
 unsigned long ParticlesList::get_particle_count()
