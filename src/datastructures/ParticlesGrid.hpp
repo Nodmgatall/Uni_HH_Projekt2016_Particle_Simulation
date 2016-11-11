@@ -4,7 +4,21 @@
 #include "../tools/Debug.hpp"
 #include "ParticlesBase.hpp"
 
+struct ParticleCell {
+    std::vector<float> m_positions_x;
+    std::vector<float> m_positions_y;
+    std::vector<float> m_positions_z;
+    std::vector<float> m_velocities_x;
+    std::vector<float> m_velocities_y;
+    std::vector<float> m_velocities_z;
+    std::vector<float> m_accelerations_x;
+    std::vector<float> m_accelerations_y;
+    std::vector<float> m_accelerations_z;
+};
+
 class ParticlesGrid : public ParticlesBase {
+	private:
+		std::vector<std::vector<std::vector<ParticleCell>>> m_cells;
     public:
     ParticlesGrid ();
     ~ParticlesGrid ();
