@@ -9,7 +9,7 @@ void OptionHandler::handle_options (int                  p_argc,
                                     char **              p_argv,
                                     s_simulator_options *p_sim_options,
                                     s_generator_options *p_gen_options) {
-    DEBUG_BEGIN << "ParameterParser :: starting" << DEBUG_END;
+    DEBUG_BEGIN << "OptionHandler :: starting" << DEBUG_END;
     g_debug_stream.indent ();
     int argv_index;
 
@@ -224,7 +224,8 @@ void OptionHandler::handle_options (int                  p_argc,
         }
     }
     g_debug_stream.unindent ();
-    DEBUG_BEGIN << "ParameterParser :: finish" << DEBUG_END;
+    DEBUG_BEGIN << "OptionHandler :: finish" << DEBUG_END;
+    DEBUG_BEGIN << "=======================================================" << DEBUG_END;
     if (print_config) {
         print_choosen_options (p_sim_options, p_gen_options);
         if (print_saved_config == true) {
@@ -269,6 +270,7 @@ void OptionHandler::print_choosen_options (s_simulator_options *p_sim_options, s
     */
     g_debug_stream.unindent ();
     DEBUG_BEGIN << "Print-Options :: finish" << DEBUG_END;
+    DEBUG_BEGIN << "=======================================================" << DEBUG_END;
 }
 
 void OptionHandler::print_usage_generation_mode () {

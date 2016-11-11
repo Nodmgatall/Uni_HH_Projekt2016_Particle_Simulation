@@ -27,7 +27,7 @@ void ParticleFileWriter::saveData (std::shared_ptr<ParticlesBase> p_particles,
     csv_file << "\n"; // absichtlich NICHT std::endl !!!!!
     unsigned long count = p_particles->get_particle_count ();
     for (unsigned long i = 0; i < count; i++) {
-        csv_file << p_particles->m_ids[i] << ", ";
+        csv_file << p_particles->m_ids[i];
         if (p_write_modes[e_particle_variable::POSITION]) {
             csv_file << ", ";
             writeVectorToStream (csv_file, p_particles->m_positions[i]);

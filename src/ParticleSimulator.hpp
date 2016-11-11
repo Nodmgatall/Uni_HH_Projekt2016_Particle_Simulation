@@ -23,7 +23,6 @@ class ParticleSimulator {
     std::unique_ptr<ParticleGeneratorBase> m_particle_generator;
     std::shared_ptr<ParticlesBase>         m_particles;
     bool                                   m_save_config;
-    void                                   print_header ();
 
     public:
     ParticleSimulator (s_simulator_options *p_sim_options, s_generator_options *p_gen_options);

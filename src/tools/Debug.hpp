@@ -88,7 +88,7 @@ struct s_debug_stream : std::ofstream {
             m_indent_count--;
     }
 };
-
+EXTERN char log_folder[29];
 EXTERN s_debug_stream g_debug_stream;
 
 #define macro_debug(x, y) \

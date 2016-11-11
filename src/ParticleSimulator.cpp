@@ -27,33 +27,12 @@ ParticleSimulator::ParticleSimulator (s_simulator_options *p_sim_options, s_gene
   m_options (p_sim_options), m_particle_file_writer (new ParticleFileWriter ()),
   m_particle_generator (ParticleGeneratorFactory::build (p_gen_options)),
   m_particles (std::make_shared<ParticlesGrid> ()), m_save_config (false) {
-    time_t     current_time;
-    struct tm *time_info;
-    char       log_folder[29];
-    time (&current_time);
-    time_info = localtime (&current_time);
-    strftime (log_folder, sizeof (log_folder), "logdata/%Y-%m-%d_%H-%M-%S", time_info);
-    mkdir ("logdata", 0700);
-    mkdir (log_folder, 0700);
-    g_debug_stream.open (std::string (log_folder) + "/log.txt", std::fstream::out);
-    unlink ("logdata/latest");
-    symlink ((std::string ("../") + log_folder).c_str (), "logdata/latest");
-    print_header ();
+
     m_particle_file_writer->set_file_name_base (std::string (log_folder) + "/data");
     m_delta_t     = 1;     // TODO remove
     m_save_config = false; // TODO remvove
 }
 /*clang-format on */
-
-void ParticleSimulator::print_header () {
-    DEBUG_BEGIN << "=======================================================" << DEBUG_END;
-    DEBUG_BEGIN << "                  Particle Simulation                  " << DEBUG_END;
-    DEBUG_BEGIN << "=======================================================" << DEBUG_END;
-    DEBUG_BEGIN << "            Benjamin Wanke, Oliver Heidmann            " << DEBUG_ENDL;
-    DEBUG_BEGIN << "                      Supervisior                      " << DEBUG_END;
-    DEBUG_BEGIN << "                    Philipp Neumann                    " << DEBUG_END;
-    DEBUG_BEGIN << "=======================================================" << DEBUG_ENDL;
-}
 
 void ParticleSimulator::simulate () {
     DEBUG_BEGIN << "Starting simulation" << DEBUG_END;
