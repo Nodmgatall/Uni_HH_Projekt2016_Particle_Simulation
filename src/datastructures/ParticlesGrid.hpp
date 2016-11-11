@@ -14,15 +14,21 @@ struct ParticleCell {
     std::vector<float> m_accelerations_x;
     std::vector<float> m_accelerations_y;
     std::vector<float> m_accelerations_z;
+    std::vector<int>   m_ids;
+    void add_particle (glm::vec3 p_position, glm::vec3 p_velocity, glm::vec3 p_acceleration, int p_id);
 };
 
 class ParticlesGrid : public ParticlesBase {
     private:
-    std::vector<std::vector<std::vector<ParticleCell>>> m_cells;
+    int                        m_max_id;
+    std::vector<ParticleCell> *m_cells;
+    int                        m_size_x, m_size_y, m_size_z;
+    ParticleCell getCellAt (int x, int y, int z);
 
     public:
-    ParticlesGrid ();
+    ParticlesGrid (s_simulator_options *p_options, glm::vec3 *p_bounds);
     ~ParticlesGrid ();
+
     void run_simulation_iteration ();
     void add_particle (glm::vec3 p_position, glm::vec3 p_velocity, glm::vec3 p_acceleration);
 };

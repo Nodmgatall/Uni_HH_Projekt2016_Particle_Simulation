@@ -4,15 +4,17 @@
 
 #include "ParticlesList.hpp"
 
-ParticlesList::ParticlesList (unsigned long p_particle_count) : m_last_id (0) {
-    m_stucture_name = "List";
-    m_velocities_x  = std::vector<float> (p_particle_count);
-    m_velocities_y  = std::vector<float> (p_particle_count);
-    m_velocities_z  = std::vector<float> (p_particle_count);
 
-    m_positions_x = std::vector<float> (p_particle_count);
-    m_positions_y = std::vector<float> (p_particle_count);
-    m_positions_z = std::vector<float> (p_particle_count);
+ParticlesList::ParticlesList (s_simulator_options *p_options, glm::vec3 *p_bounds)
+: ParticlesBase (p_options, p_bounds) {
+    m_stucture_name = "List";
+    m_velocities_x  = std::vector<float> (p_options->m_particle_count);
+    m_velocities_y  = std::vector<float> (p_options->m_particle_count);
+    m_velocities_z  = std::vector<float> (p_options->m_particle_count);
+
+    m_positions_x = std::vector<float> (p_options->m_particle_count);
+    m_positions_y = std::vector<float> (p_options->m_particle_count);
+    m_positions_z = std::vector<float> (p_options->m_particle_count);
 }
 ParticlesList::~ParticlesList () {
 }
