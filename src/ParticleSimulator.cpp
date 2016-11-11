@@ -12,7 +12,6 @@
 #include "datastructures/ParticlesBase.hpp"
 #include "datastructures/ParticlesGrid.hpp"
 #include "datastructures/ParticlesList.hpp"
-#include "generators/ParticleGenerator.hpp"
 #include "tools/Usage.hpp"
 
 #include "IO/OptionsGenerator.hpp"
@@ -20,11 +19,13 @@
 #include <memory>
 #include <unistd.h>
 
+#include "generators/ParticleGeneratorFactoryFactory.hpp"
+
 /*clang-format off */
 ParticleSimulator::ParticleSimulator (s_simulator_options *p_sim_options, s_generator_options *p_gen_options)
 : m_algorithm (dummy_algo), m_bounds (glm::vec3 (1, 1, 1)), m_delta_t (0),
   m_options (p_sim_options), m_particle_file_writer (new ParticleFileWriter ()),
-  m_particle_generator (new ParticleGenerator (p_gen_options)),
+  m_particle_generator (ParticleGeneratorFactory::build (p_gen_options)),
   m_particles (std::make_shared<ParticlesGrid> ()), m_save_config (false) {
     time_t     current_time;
     struct tm *time_info;

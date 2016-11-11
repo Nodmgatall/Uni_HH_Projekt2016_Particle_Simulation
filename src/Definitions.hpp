@@ -33,14 +33,14 @@ enum e_generator_mode {
     RANDOM,               // komplett zufällig
     RANDOM_UNIFORM,       // zufällig ungefähr gleichmäßig
     SINGLE_OBJECT_MIDDLE, // eine Kugel in der Mitte des Volumens
-    UNIFORM_DISTRIBUTION, // komplett gleichmäßig
+    GRID_DISTRIBUTION,    // komplett gleichmäßig
 };
 static std::map<e_generator_mode, const char *> g_enum_generator_mode_to_string_map = {
     ENUM_TO_STRING_ENTRY (e_generator_mode, MULTIPLE_OBJECTS),
     ENUM_TO_STRING_ENTRY (e_generator_mode, RANDOM),
     ENUM_TO_STRING_ENTRY (e_generator_mode, RANDOM_UNIFORM),
     ENUM_TO_STRING_ENTRY (e_generator_mode, SINGLE_OBJECT_MIDDLE),
-    ENUM_TO_STRING_ENTRY (e_generator_mode, UNIFORM_DISTRIBUTION),
+    ENUM_TO_STRING_ENTRY (e_generator_mode, GRID_DISTRIBUTION),
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////

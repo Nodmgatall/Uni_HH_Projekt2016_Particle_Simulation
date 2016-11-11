@@ -9,7 +9,7 @@
 
 struct s_generator_options {
     friend class boost::serialization::access;
-    e_generator_mode m_mode = UNIFORM_DISTRIBUTION;
+    e_generator_mode m_mode = GRID_DISTRIBUTION;
 
     template <class Archive>
     void serialize (Archive &archive, const unsigned int version) {

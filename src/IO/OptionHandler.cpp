@@ -111,7 +111,7 @@ void OptionHandler::handle_options (int                  p_argc,
                 generator_mode_set++;
                 break;
             case 8:
-                p_gen_options->m_mode = UNIFORM_DISTRIBUTION;
+                p_gen_options->m_mode = GRID_DISTRIBUTION;
                 generator_mode_set++;
                 break;
 
