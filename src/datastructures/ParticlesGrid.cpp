@@ -7,17 +7,16 @@
 ParticlesGrid::ParticlesGrid (s_simulator_options *p_options, glm::vec3 *p_bounds)
 : ParticlesBase (p_options, p_bounds) {
     m_stucture_name = "Grid";
-    m_cells         = new std::vector<ParticleCell>;
     m_size_x = m_size_y = m_size_z = 0;
     m_max_id                       = 0;
     int i;
     m_size_x = m_bounds->x / m_options->m_cuttof_radius + 1;
     m_size_y = m_bounds->y / m_options->m_cuttof_radius + 1;
     m_size_z = m_bounds->z / m_options->m_cuttof_radius + 1;
-    m_cells->reserve (m_size_x * m_size_y * m_size_z);
+    m_cells  = std::vector<ParticleCell> (m_size_x * m_size_y * m_size_z);
     DEBUG_BEGIN << DEBUG_VAR (m_size_x * m_size_y * m_size_z) << DEBUG_END;
     for (i = m_size_x * m_size_y * m_size_z; i >= 0; i--) {
-        m_cells->push_back (ParticleCell ());
+        m_cells.push_back (ParticleCell ());
     }
 }
 
@@ -28,10 +27,25 @@ void ParticlesGrid::add_particle (glm::vec3 p_position, glm::vec3 p_velocity, gl
     y = p_position.y / m_options->m_cuttof_radius;
     z = p_position.z / m_options->m_cuttof_radius;
 
-    getCellAt (x, y, z).add_particle (p_position, p_velocity, p_acceleration, m_max_id++);
+    (getCellAt (x, y, z)).add_particle (p_position, p_velocity, p_acceleration, m_max_id++);
 }
 
 ParticlesGrid::~ParticlesGrid () {
+}
+
+void ParticlesGrid::serialize (std::shared_ptr<ParticleFileWriter> p_file_writer) {
+    for (ParticleCell cell : m_cells) {
+        p_file_writer->saveData (&(cell.m_positions_x),
+                                 &(cell.m_positions_y),
+                                 &(cell.m_positions_y),
+                                 &(cell.m_velocities_x),
+                                 &(cell.m_velocities_y),
+                                 &(cell.m_velocities_z),
+                                 &(cell.m_accelerations_x),
+                                 &(cell.m_accelerations_y),
+                                 &(cell.m_accelerations_z),
+                                 &(cell.m_ids));
+    }
 }
 
 void ParticlesGrid::run_simulation_iteration () { /*
@@ -47,7 +61,7 @@ void ParticlesGrid::run_simulation_iteration () { /*
 
 ParticleCell ParticlesGrid::getCellAt (int x, int y, int z) {
     DEBUG_BEGIN << DEBUG_VAR (x + m_size_x * (y + m_size_y * z)) << DEBUG_END;
-    return (*m_cells)[x + m_size_x * (y + m_size_y * z)];
+    return m_cells[x + m_size_x * (y + m_size_y * z)];
 }
 void ParticleCell::add_particle (glm::vec3 p_position, glm::vec3 p_velocity, glm::vec3 p_acceleration, int p_id) {
     m_positions_x.push_back (p_position.x);
@@ -60,4 +74,11 @@ void ParticleCell::add_particle (glm::vec3 p_position, glm::vec3 p_velocity, glm
     m_accelerations_y.push_back (p_acceleration.y);
     m_accelerations_z.push_back (p_acceleration.z);
     m_ids.push_back (p_id);
+}
+unsigned long ParticlesGrid::get_particle_count () {
+    unsigned long particle_count = 0;
+    for (ParticleCell cell : m_cells) {
+        particle_count += cell.m_positions_x.size ();
+    }
+    return particle_count;
 }

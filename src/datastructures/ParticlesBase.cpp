@@ -1,4 +1,6 @@
 #include "ParticlesBase.hpp"
+#include "../IO/ParticleFileLoader.hpp"
+#include "../IO/ParticleFileWriter.hpp"
 
 void ParticlesBase::print_structure_name () {
     std::cout << m_stucture_name << std::endl;
@@ -6,46 +8,6 @@ void ParticlesBase::print_structure_name () {
 
 std::string ParticlesBase::get_structure_name () {
     return m_stucture_name;
-}
-
-const std::vector<float *> &ParticlesBase::get_accelerations_x () const {
-    return m_accelerations_x;
-}
-
-const std::vector<float *> &ParticlesBase::get_accelerations_y () const {
-    return m_accelerations_y;
-}
-
-const std::vector<float *> &ParticlesBase::get_accelerations_z () const {
-    return m_accelerations_z;
-}
-
-const std::vector<float *> &ParticlesBase::get_positions_x () const {
-    return m_positions_x;
-}
-
-const std::vector<float *> &ParticlesBase::get_positions_y () const {
-    return m_positions_y;
-}
-
-const std::vector<float *> &ParticlesBase::get_positions_z () const {
-    return m_positions_z;
-}
-
-const std::vector<float *> &ParticlesBase::get_velocities_x () const {
-    return m_velocities_x;
-}
-
-const std::vector<float *> &ParticlesBase::get_velocities_y () const {
-    return m_velocities_y;
-}
-
-const std::vector<float *> &ParticlesBase::get_velocities_z () const {
-    return m_velocities_z;
-}
-
-unsigned long ParticlesBase::get_particle_count () {
-    return m_positions_x.size ();
 }
 
 void ParticlesBase::set_algorithm (
