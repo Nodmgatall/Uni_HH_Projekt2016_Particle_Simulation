@@ -177,17 +177,17 @@ void ParticlesList::calculate_distances_squared (unsigned long       particle_id
 }
 
 void ParticlesList::serialize (std::shared_ptr<ParticleFileWriter> p_writer) {
-    unsigned long      size = m_particle_list_ranges.size () / 2;
-    std::vector<unsigned long> ids(size);
-    std::vector<float> positions_x (size);
-    std::vector<float> positions_y (size);
-    std::vector<float> positions_z (size);
-    std::vector<float> velocities_x (size);
-    std::vector<float> velocities_y (size);
-    std::vector<float> velocities_z (size);
-    std::vector<float> accelerations_x (size);
-    std::vector<float> accelerations_y (size);
-    std::vector<float> accelerations_z (size);
+    unsigned long              size = m_particle_list_ranges.size () / 2;
+    std::vector<unsigned long> ids (size);
+    std::vector<float>         positions_x (size);
+    std::vector<float>         positions_y (size);
+    std::vector<float>         positions_z (size);
+    std::vector<float>         velocities_x (size);
+    std::vector<float>         velocities_y (size);
+    std::vector<float>         velocities_z (size);
+    std::vector<float>         accelerations_x (size);
+    std::vector<float>         accelerations_y (size);
+    std::vector<float>         accelerations_z (size);
 
     get_current_status (0,
                         size,
@@ -214,7 +214,8 @@ void ParticlesList::serialize (std::shared_ptr<ParticleFileWriter> p_writer) {
                         &ids);
 }
 /* most likely not used
-void ParticlesList::update_original_vectors (unsigned long p_start_idx, unsigned long p_segment_length) {
+void ParticlesList::update_original_vectors (unsigned long p_start_idx, unsigned long
+p_segment_length) {
 
     get_current_status (p_start_idx,
                         p_segment_length,
@@ -228,7 +229,7 @@ void ParticlesList::update_original_vectors (unsigned long p_start_idx, unsigned
                         &m_accelerations_y,
                         &m_accelerations_z);
 }
-*/ 
+*/
 void ParticlesList::get_current_status (unsigned long p_idx_first,
                                         unsigned long p_segment_length,
 

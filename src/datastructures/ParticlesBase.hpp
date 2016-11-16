@@ -10,7 +10,25 @@
 
 class ParticlesBase {
     protected:
-    std::function<bool(glm::vec3 &position1, glm::vec3 &velocity1, glm::vec3 &acceleration1, glm::vec3 &position2, glm::vec3 &velocity2, glm::vec3 &acceleration2)> m_algorithm;
+    std::function<bool(int &position1x,
+                       int &position1y,
+                       int &position1z,
+                       int &velocity1x,
+                       int &velocity1y,
+                       int &velocity1z,
+                       int &acceleration1x,
+                       int &acceleration1y,
+                       int &acceleration1z,
+                       int &position2x,
+                       int &position2y,
+                       int &position2z,
+                       int &velocity2x,
+                       int &velocity2y,
+                       int &velocity2z,
+                       int &acceleration2x,
+                       int &acceleration2y,
+                       int &acceleration2z)>
+                         m_algorithm;
     std::string          m_stucture_name;
     s_simulator_options *m_options;
     glm::vec3 *          m_bounds;
@@ -23,10 +41,25 @@ class ParticlesBase {
     virtual void add_particle (glm::vec3 p_position, glm::vec3 p_velocity, glm::vec3 p_acceleration) = 0;
     void        print_structure_name ();
     std::string get_structure_name ();
-    void        set_algorithm (
-        const std::function<bool(glm::vec3 &position1, glm::vec3 &velocity1, glm::vec3 &acceleration1, glm::vec3 &position2, glm::vec3 &velocity2, glm::vec3 &acceleration2)>
-            &algorithm);
-    virtual unsigned long get_particle_count () = 0;
+    void set_algorithm (const std::function<bool(int &position1x,
+                                                 int &position1y,
+                                                 int &position1z,
+                                                 int &velocity1x,
+                                                 int &velocity1y,
+                                                 int &velocity1z,
+                                                 int &acceleration1x,
+                                                 int &acceleration1y,
+                                                 int &acceleration1z,
+                                                 int &position2x,
+                                                 int &position2y,
+                                                 int &position2z,
+                                                 int &velocity2x,
+                                                 int &velocity2y,
+                                                 int &velocity2z,
+                                                 int &acceleration2x,
+                                                 int &acceleration2y,
+                                                 int &acceleration2z)> &algorithm);
+    virtual unsigned long get_particle_count ()                           = 0;
     virtual void serialize (std::shared_ptr<ParticleFileWriter> p_writer) = 0;
 };
 #endif

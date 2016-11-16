@@ -15,7 +15,25 @@
 
 class ParticleSimulator {
     private:
-    std::function<bool(glm::vec3 &position1, glm::vec3 &velocity1, glm::vec3 &acceleration1, glm::vec3 &position2, glm::vec3 &velocity2, glm::vec3 &acceleration2)> m_algorithm;
+    std::function<bool(int &position1x,
+                       int &position1y,
+                       int &position1z,
+                       int &velocity1x,
+                       int &velocity1y,
+                       int &velocity1z,
+                       int &acceleration1x,
+                       int &acceleration1y,
+                       int &acceleration1z,
+                       int &position2x,
+                       int &position2y,
+                       int &position2z,
+                       int &velocity2x,
+                       int &velocity2y,
+                       int &velocity2z,
+                       int &acceleration2x,
+                       int &acceleration2y,
+                       int &acceleration2z)>
+                                           m_algorithm;
     glm::vec3                              m_bounds;
     s_simulator_options *                  m_options;
     std::shared_ptr<ParticleFileWriter>    m_particle_file_writer;

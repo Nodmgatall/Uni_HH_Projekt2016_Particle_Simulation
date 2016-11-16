@@ -9,19 +9,19 @@
 ParticleFileWriter::ParticleFileWriter (std::map<e_particle_variable, bool> *p_write_modes)
 : m_timestep (0), m_file_name_base (""), m_write_modes (p_write_modes) {
 }
-void ParticleFileWriter::saveData (std::vector<float> *p_positions_x,
-                                   std::vector<float> *p_positions_y,
-                                   std::vector<float> *p_positions_z,
-                                   std::vector<float> *p_velocities_x,
-                                   std::vector<float> *p_velocities_y,
-                                   std::vector<float> *p_velocities_z,
-                                   std::vector<float> *p_accelerations_x,
-                                   std::vector<float> *p_accelerations_y,
-                                   std::vector<float> *p_accelerations_z,
+void ParticleFileWriter::saveData (std::vector<float> *        p_positions_x,
+                                   std::vector<float> *        p_positions_y,
+                                   std::vector<float> *        p_positions_z,
+                                   std::vector<float> *        p_velocities_x,
+                                   std::vector<float> *        p_velocities_y,
+                                   std::vector<float> *        p_velocities_z,
+                                   std::vector<float> *        p_accelerations_x,
+                                   std::vector<float> *        p_accelerations_y,
+                                   std::vector<float> *        p_accelerations_z,
                                    std::vector<unsigned long> *ids) {
     std::cout << "WARINING: IDS ARE NOT USED WHILE WRITING, NEEDS TO BE IMPLEMENTED" << std::endl;
-    (void)(ids);
-    
+    (void) (ids);
+
     Benchmark::begin ("saving the data", false);
     std::ofstream csv_file =
         std::ofstream (m_file_name_base + std::to_string (m_timestep) + ".csv");
