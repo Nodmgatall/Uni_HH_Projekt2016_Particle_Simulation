@@ -38,8 +38,7 @@ void ParticlesList::add_particle (glm::vec3 p_position, glm::vec3 p_velocity, gl
 }
 
 void ParticlesList::run_simulation_iteration () {
-    macro_debug_1 ("running iteration") 
-        setup_iteration ();
+    macro_debug_1 ("running iteration") setup_iteration ();
     macro_debug_1 ("iteration done")
 }
 
@@ -66,7 +65,7 @@ void ParticlesList::build_lists () {
     m_listed_velocities_z.resize (listed_size);
     
     unsigned long current_entries = 0;
-    m_particle_list_ranges = std::vector<unsigned long> (listed_size * 2);
+    m_particle_list_ranges        = std::vector<unsigned long> (listed_size * 2);
     std::vector<float> distances_squared (particle_cnt);
     for (unsigned long cur_idx = 0; cur_idx < particle_cnt; cur_idx++) {
         /* clang-format off */
@@ -100,6 +99,8 @@ void ParticlesList::build_lists () {
                 listed_size = listed_size * m_next_list_size_multiplier;
                 macro_debug("resizing lists to: ", listed_size)
 
+                std::cout << "lol " << current_entries << " " << listed_size << std::endl;
+                
                 m_particle_list_ranges.resize (listed_size * 2);
                 m_listed_positions_x.resize (listed_size);
                 m_listed_positions_y.resize (listed_size);
