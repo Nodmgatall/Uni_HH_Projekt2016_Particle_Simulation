@@ -9,10 +9,10 @@ ParticlesGrid::ParticlesGrid (s_simulator_options *p_options, glm::vec3 *p_bound
     m_stucture_name = "Grid";
     m_size_x = m_size_y = m_size_z = 0;
     m_max_id                       = 0;
-    m_size_x = m_bounds->x / m_options->m_cuttof_radius + 1;
-    m_size_y = m_bounds->y / m_options->m_cuttof_radius + 1;
-    m_size_z = m_bounds->z / m_options->m_cuttof_radius + 1;
-    m_cells  = std::vector<ParticleCell> (m_size_x * m_size_y * m_size_z);
+    m_size_x                       = m_bounds->x / m_options->m_cuttof_radius + 1;
+    m_size_y                       = m_bounds->y / m_options->m_cuttof_radius + 1;
+    m_size_z                       = m_bounds->z / m_options->m_cuttof_radius + 1;
+    m_cells                        = std::vector<ParticleCell> (m_size_x * m_size_y * m_size_z);
     for (int i = m_size_x * m_size_y * m_size_z; i >= 0; i--) {
         m_cells.push_back (ParticleCell ());
     }
@@ -43,15 +43,58 @@ void ParticlesGrid::serialize (std::shared_ptr<ParticleFileWriter> p_file_writer
                                  &(cell.m_ids));
     }
 }
-void
-ParticlesGrid::run_simulation_insideCell (int x, int y, int z) {
-	ParticleCell cell=getCellAt(x,y,z);
-	unsigned int i,j;
-	const unsigned int max=cell.m_ids.size();
-	for(i=0;i<max;i++)
-		for(j=i+1;j<max;j++){
-			m_algorithm();
-		}
+void ParticlesGrid::run_simulation_insideCell (ParticleCell cell) {
+    unsigned int       i, j;
+    const unsigned int max = cell.m_ids.size ();
+    for (i = 0; i < max; i++) {
+        for (j = i + 1; j < max; j++) {
+            m_algorithm (cell.m_positions_x[i],
+                         cell.m_positions_y[i],
+                         cell.m_positions_z[i],
+                         cell.m_velocities_x[i],
+                         cell.m_velocities_y[i],
+                         cell.m_velocities_z[i],
+                         cell.m_accelerations_x[i],
+                         cell.m_accelerations_y[i],
+                         cell.m_accelerations_z[i],
+                         cell.m_positions_x[j],
+                         cell.m_positions_y[j],
+                         cell.m_positions_z[j],
+                         cell.m_velocities_x[j],
+                         cell.m_velocities_y[j],
+                         cell.m_velocities_z[j],
+                         cell.m_accelerations_x[j],
+                         cell.m_accelerations_y[j],
+                         cell.m_accelerations_z[j]);
+        }
+    }
+}
+void ParticlesGrid::run_simulation_betweenCells (ParticleCell cell1, ParticleCell cell2) {
+    unsigned int       i, j;
+    const unsigned int max1 = cell1.m_ids.size ();
+    const unsigned int max2 = cell2.m_ids.size ();
+    for (i = 0; i < max1; i++) {
+        for (j = i + 1; j < max2; j++) {
+            m_algorithm (cell1.m_positions_x[i],
+                         cell1.m_positions_y[i],
+                         cell1.m_positions_z[i],
+                         cell1.m_velocities_x[i],
+                         cell1.m_velocities_y[i],
+                         cell1.m_velocities_z[i],
+                         cell1.m_accelerations_x[i],
+                         cell1.m_accelerations_y[i],
+                         cell1.m_accelerations_z[i],
+                         cell2.m_positions_x[j],
+                         cell2.m_positions_y[j],
+                         cell2.m_positions_z[j],
+                         cell2.m_velocities_x[j],
+                         cell2.m_velocities_y[j],
+                         cell2.m_velocities_z[j],
+                         cell2.m_accelerations_x[j],
+                         cell2.m_accelerations_y[j],
+                         cell2.m_accelerations_z[j]);
+        }
+    }
 }
 void ParticlesGrid::run_simulation_iteration () { /*
       unsigned long i, j;
@@ -68,8 +111,6 @@ ParticleCell ParticlesGrid::getCellAt (int x, int y, int z) {
     DEBUG_BEGIN << DEBUG_VAR (x + m_size_x * (y + m_size_y * z)) << DEBUG_END;
     return m_cells[x + m_size_x * (y + m_size_y * z)];
 }
-
-
 
 unsigned long ParticlesGrid::get_particle_count () {
     unsigned long particle_count = 0;
