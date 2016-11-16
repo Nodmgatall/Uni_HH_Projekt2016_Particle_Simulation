@@ -58,6 +58,7 @@ void OptionHandler::handle_options (int                  p_argc,
                                     { "timestep", required_argument, 0, 't' },
                                     { "dynamic", no_argument, 0, 'd' },
                                     { "write_fequency", required_argument, 0, 'f' },
+                                    { "cutoff_radius", required_argument, 0, 'r'},
 
                                     // Misc
                                     { "help", no_argument, 0, 'h' },
@@ -69,7 +70,7 @@ void OptionHandler::handle_options (int                  p_argc,
     /*clang-format on */
     opterr = 0;
     int long_options;
-    while ((argv_index = getopt_long (p_argc, p_argv, "vs:p:l:t:df:h", &options[0], &long_options)) != -1) {
+    while ((argv_index = getopt_long (p_argc, p_argv, "vs:p:l:t:dr:f:h", &options[0], &long_options)) != -1) {
         /*
          if (strcmp (optarg, "-h") == 0 || strcmp (optarg, "--help") == 0) {
          // TODO:  Display help from option
@@ -171,6 +172,9 @@ void OptionHandler::handle_options (int                  p_argc,
                 p_sim_options->m_write_fequency = std::stoi (optarg);
                 break;
             }
+            case 'r':
+                p_sim_options->m_cut_off_radius = std::stof (optarg);
+                break;
             case 'l': {
                 p_sim_options->m_run_time_limit = std::stoi (optarg);
                 break;
@@ -282,7 +286,6 @@ void OptionHandler::print_usage_particle_sim () {
     std::cout << "  --write_pos" << std::endl;
     std::cout << "  --write_accel" << std::endl;
     std::cout << "  --write_type" << std::endl << std::endl;
-    ;
 
     std::cout << "Particle generator modes:" << std::endl;
     std::cout << "  --multiple_objects" << std::endl;
