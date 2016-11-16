@@ -1,12 +1,11 @@
-#include <glm/glm.hpp>
-#include <glm/gtx/string_cast.hpp>
+#include "../vec3.hpp"
 #include <iostream>
 #include <omp.h>
 #include <vector>
 
 #include "ParticlesGrid.hpp"
 
-ParticlesGrid::ParticlesGrid (s_simulator_options *p_options, glm::vec3 *p_bounds)
+ParticlesGrid::ParticlesGrid (s_simulator_options *p_options, vec3 *p_bounds)
 : ParticlesBase (p_options, p_bounds) {
     m_stucture_name = "Grid";
     m_size_x = m_size_y = m_size_z = 0;
@@ -20,7 +19,7 @@ ParticlesGrid::ParticlesGrid (s_simulator_options *p_options, glm::vec3 *p_bound
     }
 }
 
-void ParticlesGrid::add_particle (glm::vec3 p_position, glm::vec3 p_velocity, glm::vec3 p_acceleration) {
+void ParticlesGrid::add_particle (vec3 p_position, vec3 p_velocity, vec3 p_acceleration) {
     int x, y, z;
     x = p_position.x / m_options->m_cut_off_radius;
     y = p_position.y / m_options->m_cut_off_radius;
@@ -181,8 +180,8 @@ unsigned long ParticlesGrid::get_particle_count () {
     }
     return particle_count;
 }
-void ParticleCell::add_particle (glm::vec3 p_position, glm::vec3 p_velocity, glm::vec3 p_acceleration, int p_id) {
-    std::cout << glm::to_string (p_position) << std::endl;
+void ParticleCell::add_particle (vec3 p_position, vec3 p_velocity, vec3 p_acceleration, int p_id) {
+    DEBUG_BEGIN << p_position << DEBUG_END;
     m_positions_x.push_back (p_position.x);
     m_positions_y.push_back (p_position.y);
     m_positions_z.push_back (p_position.z);

@@ -1,4 +1,4 @@
-#include <glm/glm.hpp>
+#include "../vec3.hpp"
 #include <iostream>
 #include <vector>
 
@@ -7,15 +7,18 @@
 #include "../tools/Debug.hpp"
 #include "ParticlesList.hpp"
 
-ParticlesList::ParticlesList (s_simulator_options *p_options, glm::vec3 *p_bounds)
+ParticlesList::ParticlesList (s_simulator_options *p_options, vec3 *p_bounds)
 : ParticlesBase (p_options, p_bounds), m_average_list_length (0.16), m_next_list_size_multiplier (1.1) {
     m_stucture_name = "List";
+    m_cutoff_radius = 0;
+    m_last_id       = 0;
+    m_duration_list = 0;
     macro_debug_1 ("constructor of ParticleList called")
 }
 ParticlesList::~ParticlesList () {
 }
 
-void ParticlesList::add_particle (glm::vec3 p_position, glm::vec3 p_velocity, glm::vec3 p_acceleration) {
+void ParticlesList::add_particle (vec3 p_position, vec3 p_velocity, vec3 p_acceleration) {
     (void) p_acceleration;
     if (!m_unused_ids.empty ()) {
         m_unused_ids.erase (m_unused_ids.begin ());

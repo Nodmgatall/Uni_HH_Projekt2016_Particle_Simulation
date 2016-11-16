@@ -30,6 +30,6 @@ void ParticlesBase::set_algorithm (const std::function<bool(float &position1x,
                                                             float &acceleration2z)> &algorithm) {
     m_algorithm = algorithm;
 }
-ParticlesBase::ParticlesBase (s_simulator_options *p_options, glm::vec3 *p_bounds)
+ParticlesBase::ParticlesBase (s_simulator_options *p_options, vec3 *p_bounds)
 : m_options (p_options), m_bounds (p_bounds) {
 }

@@ -13,7 +13,6 @@
 #include <cstdlib>
 #include <ctime>
 #include <fstream>
-#include <glm/glm.hpp>
 #include <iostream>
 #include <map>
 #include <memory>

@@ -14,7 +14,6 @@ symbolerklärung:
 
 0. erstes Treffen (definition Datenstrukturen/Vorgehen)
 
--——glm Mathe-bib
 
 	Vector
 	. x >> float

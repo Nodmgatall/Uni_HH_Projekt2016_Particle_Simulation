@@ -15,7 +15,7 @@ struct ParticleCell {
     std::vector<float>         m_accelerations_y;
     std::vector<float>         m_accelerations_z;
     std::vector<unsigned long> m_ids;
-    void add_particle (glm::vec3 p_position, glm::vec3 p_velocity, glm::vec3 p_acceleration, int p_id);
+    void add_particle (vec3 p_position, vec3 p_velocity, vec3 p_acceleration, int p_id);
 };
 
 class ParticlesGrid : public ParticlesBase {
@@ -28,12 +28,12 @@ class ParticlesGrid : public ParticlesBase {
     void run_simulation_betweenCells (ParticleCell &cell1, ParticleCell &cell2);
 
     public:
-    ParticlesGrid (s_simulator_options *p_options, glm::vec3 *p_bounds);
+    ParticlesGrid (s_simulator_options *p_options, vec3 *p_bounds);
     ~ParticlesGrid ();
 
     void serialize (std::shared_ptr<ParticleFileWriter> p_writer);
     void run_simulation_iteration ();
-    void add_particle (glm::vec3 p_position, glm::vec3 p_velocity, glm::vec3 p_acceleration);
+    void add_particle (vec3 p_position, vec3 p_velocity, vec3 p_acceleration);
     unsigned long get_particle_count ();
 };
 #endif

@@ -8,6 +8,7 @@
 #define DEBUG_HPP_
 
 #include "../Definitions.hpp"
+#include "../vec3.hpp"
 #include <fstream>
 #include <iostream>
 
@@ -40,7 +41,7 @@ struct s_debug_stream : std::ofstream {
         print (var ? "ON" : "OFF");
         return *this;
     }
-    s_debug_stream &operator<< (const glm::vec3 &var) {
+    s_debug_stream &operator<< (const vec3 &var) {
         print ("(");
         print (var.x);
         print (",");

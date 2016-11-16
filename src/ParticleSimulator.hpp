@@ -34,7 +34,7 @@ class ParticleSimulator {
                        float &acceleration2y,
                        float &acceleration2z)>
                                            m_algorithm;
-    glm::vec3                              m_bounds;
+    vec3                                   m_bounds;
     s_simulator_options *                  m_options;
     std::shared_ptr<ParticleFileWriter>    m_particle_file_writer;
     std::unique_ptr<ParticleGeneratorBase> m_particle_generator;
