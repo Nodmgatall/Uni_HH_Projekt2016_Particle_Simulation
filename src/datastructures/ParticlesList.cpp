@@ -72,12 +72,8 @@ void ParticlesList::build_lists () {
     std::vector<float> distances_squared (particle_cnt);
     for (unsigned long cur_idx = 0; cur_idx < particle_cnt; cur_idx++) {
         /* clang-format off */
-        calculate_distances_squared (cur_idx,
-                                    &distances_squared,
-                                    &m_positions_x,
-                                    &m_positions_y,
-                                    &m_positions_z, 
-                                    0, particle_cnt);
+		calculate_distances_squared(cur_idx, &distances_squared, &m_positions_x,
+				&m_positions_y, &m_positions_z, 0, particle_cnt);
         /* clang-format on */
         m_particle_list_ranges[current_list_idx] = next_free_list_entry;
         current_list_idx++;
@@ -223,22 +219,22 @@ void ParticlesList::serialize (std::shared_ptr<ParticleFileWriter> p_writer) {
     Benchmark::end ();
 }
 /* most likely not used
-void ParticlesList::update_original_vectors (unsigned long p_start_idx, unsigned long
-p_segment_length) {
+ void ParticlesList::update_original_vectors (unsigned long p_start_idx, unsigned long
+ p_segment_length) {
 
-    get_current_status (p_start_idx,
-                        p_segment_length,
-                        &m_positions_x,
-                        &m_positions_y,
-                        &m_positions_z,
-                        &m_velocities_x,
-                        &m_velocities_y,
-                        &m_velocities_z,
-                        &m_accelerations_x,
-                        &m_accelerations_y,
-                        &m_accelerations_z);
-}
-*/
+ get_current_status (p_start_idx,
+ p_segment_length,
+ &m_positions_x,
+ &m_positions_y,
+ &m_positions_z,
+ &m_velocities_x,
+ &m_velocities_y,
+ &m_velocities_z,
+ &m_accelerations_x,
+ &m_accelerations_y,
+ &m_accelerations_z);
+ }
+ */
 void ParticlesList::get_current_status (unsigned long p_idx_first,
                                         unsigned long p_segment_length,
 

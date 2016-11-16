@@ -18,7 +18,6 @@ ParticlesGrid::ParticlesGrid (s_simulator_options *p_options, vec3 *p_bounds)
         m_cells.push_back (ParticleCell ());
     }
 }
-
 void ParticlesGrid::add_particle (vec3 p_position, vec3 p_velocity, vec3 p_acceleration) {
     int x, y, z;
     x = p_position.x / m_options->m_cut_off_radius;
@@ -26,10 +25,8 @@ void ParticlesGrid::add_particle (vec3 p_position, vec3 p_velocity, vec3 p_accel
     z = p_position.z / m_options->m_cut_off_radius;
     (getCellAt (x, y, z)).add_particle (p_position, p_velocity, p_acceleration, m_max_id++);
 }
-
 ParticlesGrid::~ParticlesGrid () {
 }
-
 void ParticlesGrid::serialize (std::shared_ptr<ParticleFileWriter> p_file_writer) {
     Benchmark::begin ("saving the data", false);
     p_file_writer->start ();
@@ -113,10 +110,10 @@ void ParticlesGrid::run_simulation_iteration () {
         for (i = 0; i < m_size_x - 1; i += 2) {
             for (j = 0; j < m_size_y - 1; j++) {
                 for (k = 0; k < m_size_z - 1; k++) {
-                    /*   3*3*3=27 'neighbors'
+                    /* 3*3*3=27 'neighbors'
                      * -self => 26 'other cells'
                      * Symmetric /2 => 13 Pairs
-                    */
+                     */
                     run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j + 1, k + 1)); // 1
                     run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j, k)); // 2
                     run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j + 1, k)); // 3
@@ -137,10 +134,10 @@ void ParticlesGrid::run_simulation_iteration () {
         for (i = 1; i < m_size_x - 1; i += 2) {
             for (j = 0; j < m_size_y - 1; j++) {
                 for (k = 0; k < m_size_z - 1; k++) {
-                    /*   3*3*3=27 'neighbors'
-                                         * -self => 26 'other cells'
-                                         * Symmetric /2 => 13 Pairs
-                                        */
+                    /* 3*3*3=27 'neighbors'
+                     * -self => 26 'other cells'
+                     * Symmetric /2 => 13 Pairs
+                     */
                     run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j + 1, k + 1)); // 1
                     run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j, k)); // 2
                     run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j + 1, k)); // 3
@@ -167,12 +164,10 @@ void ParticlesGrid::run_simulation_iteration () {
         }
     }
 }
-
 ParticleCell &ParticlesGrid::getCellAt (int x, int y, int z) {
     DEBUG_BEGIN << DEBUG_VAR (x + m_size_x * (y + m_size_y * z)) << DEBUG_END;
     return m_cells[x + m_size_x * (y + m_size_y * z)];
 }
-
 unsigned long ParticlesGrid::get_particle_count () {
     unsigned long particle_count = 0;
     for (ParticleCell cell : m_cells) {
