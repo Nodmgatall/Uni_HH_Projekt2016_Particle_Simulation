@@ -1,6 +1,6 @@
 #include <glm/glm.hpp>
-#include <iostream>
 #include <glm/gtx/string_cast.hpp>
+#include <iostream>
 #include <vector>
 
 #include "ParticlesGrid.hpp"
@@ -36,7 +36,7 @@ void ParticlesGrid::serialize (std::shared_ptr<ParticleFileWriter> p_file_writer
     std::cout << m_cells.size () << std::endl;
     for (ParticleCell cell : m_cells) {
         if (!(cell.m_positions_x.empty ())) {
-        std::cout <<"FOUND ONE!" <<cell.m_positions_x.size () << std::endl;
+            std::cout << "FOUND ONE!" << cell.m_positions_x.size () << std::endl;
             p_file_writer->saveData (&(cell.m_positions_x),
                                      &(cell.m_positions_y),
                                      &(cell.m_positions_y),
@@ -181,7 +181,7 @@ unsigned long ParticlesGrid::get_particle_count () {
     return particle_count;
 }
 void ParticleCell::add_particle (glm::vec3 p_position, glm::vec3 p_velocity, glm::vec3 p_acceleration, int p_id) {
-    std::cout << glm::to_string(p_position) << std::endl;
+    std::cout << glm::to_string (p_position) << std::endl;
     m_positions_x.push_back (p_position.x);
     m_positions_y.push_back (p_position.y);
     m_positions_z.push_back (p_position.z);

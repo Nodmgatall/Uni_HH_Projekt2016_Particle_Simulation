@@ -10,8 +10,8 @@
 #include "../Definitions.hpp"
 class ParticleFileWriter {
     private:
-    int         m_timestep;
-    std::string m_file_name_base;
+    int           m_timestep;
+    std::string   m_file_name_base;
     std::ofstream m_file;
     std::map<e_particle_variable, bool> *m_write_modes;
 
@@ -29,8 +29,8 @@ class ParticleFileWriter {
 
     ParticleFileWriter (std::map<e_particle_variable, bool> *p_write_modes);
     void set_file_name_base (const std::string &file_name_base);
-    void start();
-    void end();
+    void start ();
+    void end ();
 };
 
 #endif /* SRC_PARTICLEFILEWRITER_HPP_ */
