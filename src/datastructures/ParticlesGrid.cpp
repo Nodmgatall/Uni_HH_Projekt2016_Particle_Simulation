@@ -1,8 +1,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/string_cast.hpp>
 #include <iostream>
-#include <vector>
 #include <omp.h>
+#include <vector>
 
 #include "ParticlesGrid.hpp"
 

@@ -21,11 +21,21 @@ void createOutputDirectory () {
     time (&current_time);
     time_info = localtime (&current_time);
     strftime (log_folder, sizeof (log_folder), "logdata/%Y-%m-%d_%H-%M-%S", time_info);
-    mkdir ("logdata", 0700);
-    mkdir (log_folder, 0700);
+    if (mkdir ("logdata", 0700)) {
+        // dont care ... but returnvalue ist used
+    }
+    if (mkdir (log_folder, 0700)) {
+        DEBUG_BEGIN << "createing Directory *" << log_folder << "* failed" << DEBUG_END;
+        exit (1);
+    }
     g_debug_stream.open (std::string (log_folder) + "/log.txt", std::fstream::out);
-    unlink ("logdata/latest");
-    symlink ((std::string ("../") + log_folder).c_str (), "logdata/latest");
+    if (unlink ("logdata/latest")) {
+        // dont care ... but returnvalue ist used
+    }
+    if (symlink ((std::string ("../") + log_folder).c_str (), "logdata/latest")) {
+        DEBUG_BEGIN << "linking *logdata/latest* failed" << DEBUG_END;
+        exit (1);
+    }
 }
 int main (int argc, char **argv) {
     createOutputDirectory ();
