@@ -111,11 +111,11 @@ void ParticlesGrid::run_simulation_iteration () {
                 run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j, k));
                 run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j + 1, k));
                 run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j, k + 1));
-                run_simulation_betweenCells(getCellAt (i, j, k),getCellAt (i+1, j+1, k)) ;
-                run_simulation_betweenCells(getCellAt (i, j, k),getCellAt (i+1, j, k+1)) ;
-                run_simulation_betweenCells(getCellAt (i, j, k),getCellAt (i, j+1, k+1)) ;
-                run_simulation_betweenCells(getCellAt (i, j, k),getCellAt (i+1, j+1, k+1)) ;
-                //missing some pairs !!!! TODO
+                run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j + 1, k));
+                run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j, k + 1));
+                run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i, j + 1, k + 1));
+                run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j + 1, k + 1));
+                // missing some pairs !!!! TODO
             }
         }
     }
