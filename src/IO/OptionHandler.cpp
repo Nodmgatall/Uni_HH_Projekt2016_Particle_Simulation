@@ -253,6 +253,7 @@ void OptionHandler::print_choosen_options (s_simulator_options *p_sim_options, s
     DEBUG_BEGIN << "timestep       : " << p_sim_options->m_timestep << DEBUG_END;
     DEBUG_BEGIN << "verbose        : " << p_sim_options->m_verbose << DEBUG_END;
     DEBUG_BEGIN << "write_fequency : " << p_sim_options->m_write_fequency << DEBUG_END;
+    DEBUG_BEGIN << "cut_off_radius : " << p_sim_options->m_cut_off_radius << DEBUG_END;
     DEBUG_BEGIN << "write_modes    : [ID";
     if (p_sim_options->m_write_modes[POSITION]) {
         g_debug_stream << ", POSITION";
@@ -308,9 +309,11 @@ void OptionHandler::print_usage_particle_sim () {
     std::cout << "  -s | --seed" << std::endl;
     std::cout << "  -p | --particle_count" << std::endl;
     std::cout << "  -l | --run_time_limit" << std::endl;
+    std::cout << "  -f | --write_fequency" << std::endl;
+    std::cout << "  -r | --cut_off_radius" << std::endl;
     std::cout << "  -t | --timestep" << std::endl;
     std::cout << "  -h | --help" << std::endl;
-    std::cout << "  -d        set dynamic algorithm" << std::endl << std::endl;
+    std::cout << "  -d | --dynamic" << std::endl << std::endl;
 
     std::cout << "Config options" << std::endl;
     std::cout << "  --load_confing " << std::endl;
