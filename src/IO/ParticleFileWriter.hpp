@@ -12,6 +12,7 @@ class ParticleFileWriter {
     private:
     int         m_timestep;
     std::string m_file_name_base;
+    std::ofstream m_file;
     std::map<e_particle_variable, bool> *m_write_modes;
 
     public:
@@ -28,6 +29,8 @@ class ParticleFileWriter {
 
     ParticleFileWriter (std::map<e_particle_variable, bool> *p_write_modes);
     void set_file_name_base (const std::string &file_name_base);
+    void start();
+    void end();
 };
 
 #endif /* SRC_PARTICLEFILEWRITER_HPP_ */

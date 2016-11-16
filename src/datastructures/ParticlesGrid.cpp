@@ -1,5 +1,6 @@
 #include <glm/glm.hpp>
 #include <iostream>
+#include <glm/gtx/string_cast.hpp>
 #include <vector>
 
 #include "ParticlesGrid.hpp"
@@ -34,18 +35,26 @@ ParticlesGrid::~ParticlesGrid () {
 }
 
 void ParticlesGrid::serialize (std::shared_ptr<ParticleFileWriter> p_file_writer) {
+    Benchmark::begin ("saving the data", false);
+    p_file_writer->start ();
+    std::cout << m_cells.size () << std::endl;
     for (ParticleCell cell : m_cells) {
-        p_file_writer->saveData (&(cell.m_positions_x),
-                                 &(cell.m_positions_y),
-                                 &(cell.m_positions_y),
-                                 &(cell.m_velocities_x),
-                                 &(cell.m_velocities_y),
-                                 &(cell.m_velocities_z),
-                                 &(cell.m_accelerations_x),
-                                 &(cell.m_accelerations_y),
-                                 &(cell.m_accelerations_z),
-                                 &(cell.m_ids));
+        if (!(cell.m_positions_x.empty ())) {
+        std::cout <<"FOUND ONE!" <<cell.m_positions_x.size () << std::endl;
+            p_file_writer->saveData (&(cell.m_positions_x),
+                                     &(cell.m_positions_y),
+                                     &(cell.m_positions_y),
+                                     &(cell.m_velocities_x),
+                                     &(cell.m_velocities_y),
+                                     &(cell.m_velocities_z),
+                                     &(cell.m_accelerations_x),
+                                     &(cell.m_accelerations_y),
+                                     &(cell.m_accelerations_z),
+                                     &(cell.m_ids));
+        }
     }
+    p_file_writer->end ();
+    Benchmark::end ();
 }
 
 void ParticlesGrid::run_simulation_iteration () { /*
@@ -64,6 +73,7 @@ ParticleCell ParticlesGrid::getCellAt (int x, int y, int z) {
     return m_cells[x + m_size_x * (y + m_size_y * z)];
 }
 void ParticleCell::add_particle (glm::vec3 p_position, glm::vec3 p_velocity, glm::vec3 p_acceleration, int p_id) {
+    std::cout << glm::to_string(p_position) << std::endl;
     m_positions_x.push_back (p_position.x);
     m_positions_y.push_back (p_position.y);
     m_positions_z.push_back (p_position.z);

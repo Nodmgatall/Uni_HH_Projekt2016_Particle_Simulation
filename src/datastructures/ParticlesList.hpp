@@ -30,6 +30,9 @@ class ParticlesList : public ParticlesBase {
     std::vector<float> m_positions_y;
     std::vector<float> m_positions_z;
 
+    std::vector<float> m_accelerations_x;
+    std::vector<float> m_accelerations_y;
+    std::vector<float> m_accelerations_z;
     // pairs of data: first is start second is end
     std::vector<unsigned long> m_particle_list_ranges;
 

@@ -22,17 +22,22 @@ void ParticlesList::add_particle (glm::vec3 p_position, glm::vec3 p_velocity, gl
     } else {
         m_particle_ids.push_back (m_last_id++);
     }
+    m_velocities_x.push_back (p_velocity.x);
     m_velocities_y.push_back (p_velocity.y);
     m_velocities_z.push_back (p_velocity.z);
 
     m_positions_x.push_back (p_position.x);
     m_positions_y.push_back (p_position.y);
     m_positions_z.push_back (p_position.z);
+
+    m_accelerations_x.push_back (0);
+    m_accelerations_y.push_back (0);
+    m_accelerations_z.push_back (0);
 }
 
 void ParticlesList::run_simulation_iteration () {
-    macro_debug_1 ("running iteration") build_lists ();
-    setup_iteration ();
+    macro_debug_1 ("running iteration") 
+        setup_iteration ();
     macro_debug_1 ("iteration done")
 }
 
@@ -41,18 +46,24 @@ unsigned long ParticlesList::get_particle_count () {
 }
 
 void ParticlesList::build_lists () {
-    unsigned long particle_cnt          = get_particle_count ();
-    float         cutoff_radius_squared = 2;
-    unsigned long current_list_idx      = 0;
-    unsigned long next_free_list_entry  = 0;
+    macro_debug_1 ("starting building neighbour lists") unsigned long particle_cnt = get_particle_count ();
+    float                                                             cutoff_radius_squared = 2;
+    unsigned long                                                     current_list_idx      = 0;
+    unsigned long                                                     next_free_list_entry  = 0;
 
     // TODO: Idea: dont let them be initialized each time we need to build the lists
     // instead make them a member; pro: minmal performance improvement, con: memory need * (4/3)
+    unsigned long listed_size = particle_cnt * (particle_cnt * (0.25));
+    std::cout << "listed size: " << listed_size << std::endl;
+    m_listed_positions_x.resize (listed_size);
+    m_listed_positions_y.resize (listed_size);
+    m_listed_positions_z.resize (listed_size);
 
-    unsigned long listed_size = particle_cnt * (particle_cnt * (m_average_list_length * 2)) + particle_cnt;
-    m_listed_positions_x   = std::vector<float> (listed_size);
-    m_listed_positions_y   = std::vector<float> (listed_size);
-    m_listed_positions_z   = std::vector<float> (listed_size);
+    m_listed_velocities_x.resize (listed_size);
+    m_listed_velocities_y.resize (listed_size);
+    m_listed_velocities_z.resize (listed_size);
+    std::cout << "1.4" << std::endl;
+    unsigned long current_entries = 0;
     m_particle_list_ranges = std::vector<unsigned long> (listed_size * 2);
     std::vector<float> distances_squared (particle_cnt);
     for (unsigned long cur_idx = 0; cur_idx < particle_cnt; cur_idx++) {
@@ -64,55 +75,58 @@ void ParticlesList::build_lists () {
                                     &m_positions_z, 
                                     0, particle_cnt);
         /* clang-format on */
-        m_particle_list_ranges[current_list_idx++] = next_free_list_entry;
-
-        // adding current particle to the list
-        m_listed_positions_x[next_free_list_entry] = m_positions_x[cur_idx];
-        m_listed_positions_y[next_free_list_entry] = m_positions_y[cur_idx];
-        m_listed_positions_z[next_free_list_entry] = m_positions_z[cur_idx];
-        next_free_list_entry++;
+        m_particle_list_ranges[current_list_idx] = next_free_list_entry;
+        current_list_idx++;
 
         for (unsigned long other_idx = 0; other_idx < particle_cnt; other_idx++) {
 
             if (distances_squared[other_idx] < cutoff_radius_squared) {
-                m_listed_positions_x[next_free_list_entry] = m_positions_x[other_idx];
-                m_listed_positions_y[next_free_list_entry] = m_positions_y[other_idx];
-                m_listed_positions_z[next_free_list_entry] = m_positions_z[other_idx];
-
+                m_listed_positions_x[next_free_list_entry]  = m_positions_x[other_idx];
+                m_listed_positions_y[next_free_list_entry]  = m_positions_y[other_idx];
+                m_listed_positions_z[next_free_list_entry]  = m_positions_z[other_idx];
                 m_listed_velocities_x[next_free_list_entry] = m_velocities_x[other_idx];
                 m_listed_velocities_y[next_free_list_entry] = m_velocities_y[other_idx];
                 m_listed_velocities_z[next_free_list_entry] = m_velocities_z[other_idx];
-
                 next_free_list_entry++;
+                current_entries++;
             }
 
-            if (listed_size == m_listed_positions_x.size ()) {
+            if (current_entries == m_listed_positions_x.size ()) {
                 listed_size = listed_size * m_next_list_size_multiplier;
+                std::cout << "lol " << current_entries<< " " << listed_size << std::endl;
                 m_particle_list_ranges.resize (listed_size * 2);
                 m_listed_positions_x.resize (listed_size);
                 m_listed_positions_y.resize (listed_size);
                 m_listed_positions_z.resize (listed_size);
+                m_listed_velocities_x.resize (listed_size);
+                m_listed_velocities_y.resize (listed_size);
+                m_listed_velocities_z.resize (listed_size);
             }
         }
+        macro_debug("found neigbours cnt:" , m_positions_x.size())
         m_particle_list_ranges[current_list_idx++] = next_free_list_entry;
     }
     m_particle_list_ranges.shrink_to_fit ();
+    std::cout << m_particle_list_ranges.size () << std::endl;
     m_listed_positions_x.shrink_to_fit ();
     m_listed_positions_y.shrink_to_fit ();
     m_listed_positions_z.shrink_to_fit ();
+    m_listed_velocities_x.shrink_to_fit ();
+    m_listed_velocities_y.shrink_to_fit ();
+    m_listed_velocities_z.shrink_to_fit ();
+    macro_debug_1 ("finished building neighbour lists")
 }
 
 void ParticlesList::setup_iteration () {
-    int size                 = m_listed_positions_x.size ();
-    m_listed_accelerations_x = std::vector<float> (size);
-    m_listed_accelerations_y = std::vector<float> (size);
-    m_listed_accelerations_z = std::vector<float> (size);
+    macro_debug_1 ("starting setting up iteration") int size = m_positions_x.size ();
+    m_listed_accelerations_x                                 = std::vector<float> (size);
+    m_listed_accelerations_y                                 = std::vector<float> (size);
+    m_listed_accelerations_z                                 = std::vector<float> (size);
 
-    // DUMMY DT
-    int dt = 0;
-    if (dt > m_duration_list) {
+    if (true) {
         build_lists ();
     }
+    macro_debug_1 ("finished setting up iteration")
 }
 
 void ParticlesList::calculate_distances_squared (unsigned long       particle_idx,
@@ -177,44 +191,23 @@ void ParticlesList::calculate_distances_squared (unsigned long       particle_id
 }
 
 void ParticlesList::serialize (std::shared_ptr<ParticleFileWriter> p_writer) {
-    unsigned long      size = m_particle_list_ranges.size () / 2;
-    std::vector<unsigned long> ids(size);
-    std::vector<float> positions_x (size);
-    std::vector<float> positions_y (size);
-    std::vector<float> positions_z (size);
-    std::vector<float> velocities_x (size);
-    std::vector<float> velocities_y (size);
-    std::vector<float> velocities_z (size);
-    std::vector<float> accelerations_x (size);
-    std::vector<float> accelerations_y (size);
-    std::vector<float> accelerations_z (size);
 
-    get_current_status (0,
-                        size,
-                        &m_particle_ids,
-                        &positions_x,
-                        &positions_y,
-                        &positions_z,
-                        &velocities_x,
-                        &velocities_y,
-                        &velocities_z,
-                        &accelerations_x,
-                        &accelerations_y,
-                        &accelerations_z);
-
-    p_writer->saveData (&positions_x,
-                        &positions_y,
-                        &positions_z,
-                        &velocities_x,
-                        &velocities_y,
-                        &velocities_z,
-                        &accelerations_x,
-                        &accelerations_y,
-                        &accelerations_z,
-                        &ids);
+    Benchmark::begin ("saving the data", false);
+    p_writer->saveData (&m_positions_x,
+                        &m_positions_y,
+                        &m_positions_z,
+                        &m_velocities_x,
+                        &m_velocities_y,
+                        &m_velocities_z,
+                        &m_accelerations_x,
+                        &m_accelerations_y,
+                        &m_accelerations_z,
+                        &m_particle_ids);
+    Benchmark::end ();
 }
 /* most likely not used
-void ParticlesList::update_original_vectors (unsigned long p_start_idx, unsigned long p_segment_length) {
+void ParticlesList::update_original_vectors (unsigned long p_start_idx, unsigned long
+p_segment_length) {
 
     get_current_status (p_start_idx,
                         p_segment_length,
@@ -228,7 +221,7 @@ void ParticlesList::update_original_vectors (unsigned long p_start_idx, unsigned
                         &m_accelerations_y,
                         &m_accelerations_z);
 }
-*/ 
+*/
 void ParticlesList::get_current_status (unsigned long p_idx_first,
                                         unsigned long p_segment_length,
 
