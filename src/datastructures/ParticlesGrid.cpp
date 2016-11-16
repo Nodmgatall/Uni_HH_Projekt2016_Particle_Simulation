@@ -74,7 +74,7 @@ void ParticlesGrid::run_simulation_betweenCells (ParticleCell cell1, ParticleCel
     const unsigned int max1 = cell1.m_ids.size ();
     const unsigned int max2 = cell2.m_ids.size ();
     for (i = 0; i < max1; i++) {
-        for (j = i + 1; j < max2; j++) {
+        for (j = 0; j < max2; j++) {
             m_algorithm (cell1.m_positions_x[i],
                          cell1.m_positions_y[i],
                          cell1.m_positions_z[i],
@@ -96,15 +96,29 @@ void ParticlesGrid::run_simulation_betweenCells (ParticleCell cell1, ParticleCel
         }
     }
 }
-void ParticlesGrid::run_simulation_iteration () { /*
-      unsigned long i, j;
-      for (i = 0; i < m_ids.size (); i++) {
-      for (j = i + 1; j < m_ids.size (); j++) {
-      m_algorithm (m_positions[i], m_velocities[i], m_accelerations[i], m_positions[j],
-      m_velocities[j], m_accelerations[j]);
-      }
-      }
-      */
+void ParticlesGrid::run_simulation_iteration () {
+    unsigned int i, j, k;
+    for (i = 0; i < m_size_x; i++) {
+        for (j = 0; j < m_size_y; j++) {
+            for (k = 0; k < m_size_z; k++) {
+                run_simulation_insideCell (getCellAt (i, j, k));
+            }
+        }
+    }
+    for (i = 0; i < m_size_x - 1; i++) {
+        for (j = 0; j < m_size_y - 1; j++) {
+            for (k = 0; k < m_size_z - 1; k++) {
+                run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j, k));
+                run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j + 1, k));
+                run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j, k + 1));
+                run_simulation_betweenCells(getCellAt (i, j, k),getCellAt (i+1, j+1, k)) ;
+                run_simulation_betweenCells(getCellAt (i, j, k),getCellAt (i+1, j, k+1)) ;
+                run_simulation_betweenCells(getCellAt (i, j, k),getCellAt (i, j+1, k+1)) ;
+                run_simulation_betweenCells(getCellAt (i, j, k),getCellAt (i+1, j+1, k+1)) ;
+                //missing some pairs !!!! TODO
+            }
+        }
+    }
 }
 
 ParticleCell ParticlesGrid::getCellAt (int x, int y, int z) {
