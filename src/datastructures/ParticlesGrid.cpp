@@ -97,43 +97,69 @@ void ParticlesGrid::run_simulation_betweenCells (ParticleCell &cell1, ParticleCe
     }
 }
 void ParticlesGrid::run_simulation_iteration () {
-    unsigned int i, j, k;
-    for (i = 0; i < m_size_x; i++) {
-        for (j = 0; j < m_size_y; j++) {
-            for (k = 0; k < m_size_z; k++) {
-                run_simulation_insideCell (getCellAt (i, j, k));
+#pragma omp parallel
+    {
+        unsigned int   i, j, k;
+#pragma omp for nowait schedule(static, 1)
+        for (i = 0; i < m_size_x - 1; i += 2) {
+            for (j = 0; j < m_size_y - 1; j++) {
+                for (k = 0; k < m_size_z - 1; k++) {
+                    /*   3*3*3=27 'neighbors'
+                     * -self => 26 'other cells'
+                     * Symmetric /2 => 13 Pairs
+                    */
+                    run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j + 1, k + 1)); // 1
+                    run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j, k)); // 2
+                    run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j + 1, k)); // 3
+                    run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j, k + 1)); // 4
+                    run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j + 1, k)); // 5
+                    run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j, k + 1)); // 6
+                    run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i, j + 1, k + 1)); // 7
+                    run_simulation_betweenCells (getCellAt (i + 1, j, k), getCellAt (i, j + 1, k)); // 8
+                    run_simulation_betweenCells (getCellAt (i + 1, j, k), getCellAt (i, j, k + 1)); // 9
+                    run_simulation_betweenCells (getCellAt (i, j + 1, k), getCellAt (i, j, k + 1)); // 10
+                    run_simulation_betweenCells (getCellAt (i + 1, j, k), getCellAt (i, j + 1, k + 1)); // 11
+                    run_simulation_betweenCells (getCellAt (i, j + 1, k), getCellAt (i + 1, j, k + 1)); // 12
+                    run_simulation_betweenCells (getCellAt (i, j, k + 1), getCellAt (i + 1, j + 1, k)); // 13
+                }
             }
         }
-    }
-    /*
-     * for parallelization :: each inner loop needs access only a 2x2x2 cube
-     * */
-    for (i = 0; i < m_size_x - 1; i++) {
-        for (j = 0; j < m_size_y - 1; j++) {
-            for (k = 0; k < m_size_z - 1; k++) {
-            	/*   3*3*3=27 'neighbors'
-            	 * -self => 26 'other cells'
-            	 * Symmetric /2 => 13 Pairs
-            	*/
-            	run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j + 1, k + 1));   //1
-                run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j, k));           //2
-                run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j + 1, k));       //3
-                run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j, k + 1));       //4
-                run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j + 1, k));       //5
-                run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j, k + 1));       //6
-                run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i, j + 1, k + 1));       //7
-                run_simulation_betweenCells (getCellAt (i + 1, j, k), getCellAt (i, j + 1, k));       //8
-                run_simulation_betweenCells (getCellAt (i + 1, j, k), getCellAt (i, j, k + 1));       //9
-                run_simulation_betweenCells (getCellAt (i, j + 1, k), getCellAt (i, j, k + 1));       //10
-                run_simulation_betweenCells (getCellAt (i + 1, j, k), getCellAt (i, j + 1, k + 1));   //11
-                run_simulation_betweenCells (getCellAt (i, j + 1, k), getCellAt (i + 1, j, k + 1));   //12
-                run_simulation_betweenCells (getCellAt (i, j, k + 1), getCellAt (i + 1, j + 1, k));   //13
+#pragma omp for nowait schedule(guided, 5)
+        for (i = 1; i < m_size_x - 1; i += 2) {
+            for (j = 0; j < m_size_y - 1; j++) {
+                for (k = 0; k < m_size_z - 1; k++) {
+                    /*   3*3*3=27 'neighbors'
+                                         * -self => 26 'other cells'
+                                         * Symmetric /2 => 13 Pairs
+                                        */
+                    run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j + 1, k + 1)); // 1
+                    run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j, k)); // 2
+                    run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j + 1, k)); // 3
+                    run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j, k + 1)); // 4
+                    run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j + 1, k)); // 5
+                    run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j, k + 1)); // 6
+                    run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i, j + 1, k + 1)); // 7
+                    run_simulation_betweenCells (getCellAt (i + 1, j, k), getCellAt (i, j + 1, k)); // 8
+                    run_simulation_betweenCells (getCellAt (i + 1, j, k), getCellAt (i, j, k + 1)); // 9
+                    run_simulation_betweenCells (getCellAt (i, j + 1, k), getCellAt (i, j, k + 1)); // 10
+                    run_simulation_betweenCells (getCellAt (i + 1, j, k), getCellAt (i, j + 1, k + 1)); // 11
+                    run_simulation_betweenCells (getCellAt (i, j + 1, k), getCellAt (i + 1, j, k + 1)); // 12
+                    run_simulation_betweenCells (getCellAt (i, j, k + 1), getCellAt (i + 1, j + 1, k)); // 13
+                }
+            }
+        }
+#pragma omp for schedule(guided, 5)
+        for (i = 0; i < m_size_x; i++) {
+            for (j = 0; j < m_size_y; j++) {
+                for (k = 0; k < m_size_z; k++) {
+                    run_simulation_insideCell (getCellAt (i, j, k));
+                }
             }
         }
     }
 }
 
-ParticleCell& ParticlesGrid::getCellAt (int x, int y, int z) {
+ParticleCell &ParticlesGrid::getCellAt (int x, int y, int z) {
     DEBUG_BEGIN << DEBUG_VAR (x + m_size_x * (y + m_size_y * z)) << DEBUG_END;
     return m_cells[x + m_size_x * (y + m_size_y * z)];
 }
