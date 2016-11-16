@@ -21,7 +21,7 @@ struct s_simulator_options {
     float            m_timestep       = 1;
     bool             m_verbose        = false;
     int              m_write_fequency = 1;
-    float            m_cuttof_radius  = 0.01;
+    float            m_cutof_radius  = 0.01;
     e_data_structure m_data_structure = GRID;
     std::map<e_particle_variable, bool> m_write_modes = { { ID, true },
                                                           { POSITION, true },
@@ -42,8 +42,7 @@ struct s_simulator_options {
         s_sim_options &BOOST_SERIALIZATION_NVP (m_timestep);
         s_sim_options &BOOST_SERIALIZATION_NVP (m_verbose);
         s_sim_options &BOOST_SERIALIZATION_NVP (m_write_fequency);
-        s_sim_options &BOOST_SERIALIZATION_NVP (m_cuttof_radius);
-        s_sim_options &BOOST_SERIALIZATION_NVP (m_cuttof_radius);
+        s_sim_options &BOOST_SERIALIZATION_NVP (m_cutof_radius);
         s_sim_options &BOOST_SERIALIZATION_NVP (m_data_structure);
         s_sim_options &BOOST_SERIALIZATION_NVP (m_write_modes);
     }

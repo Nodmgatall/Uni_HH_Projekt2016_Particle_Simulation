@@ -11,9 +11,9 @@ ParticlesGrid::ParticlesGrid (s_simulator_options *p_options, glm::vec3 *p_bound
     m_stucture_name = "Grid";
     m_size_x = m_size_y = m_size_z = 0;
     m_max_id                       = 0;
-    m_size_x                       = m_bounds->x / m_options->m_cuttof_radius + 1;
-    m_size_y                       = m_bounds->y / m_options->m_cuttof_radius + 1;
-    m_size_z                       = m_bounds->z / m_options->m_cuttof_radius + 1;
+    m_size_x                       = m_bounds->x / m_options->m_cutof_radius + 1;
+    m_size_y                       = m_bounds->y / m_options->m_cutof_radius + 1;
+    m_size_z                       = m_bounds->z / m_options->m_cutof_radius + 1;
     m_cells                        = std::vector<ParticleCell> (m_size_x * m_size_y * m_size_z);
     for (int i = m_size_x * m_size_y * m_size_z; i >= 0; i--) {
         m_cells.push_back (ParticleCell ());
@@ -22,9 +22,9 @@ ParticlesGrid::ParticlesGrid (s_simulator_options *p_options, glm::vec3 *p_bound
 
 void ParticlesGrid::add_particle (glm::vec3 p_position, glm::vec3 p_velocity, glm::vec3 p_acceleration) {
     int x, y, z;
-    x = p_position.x / m_options->m_cuttof_radius;
-    y = p_position.y / m_options->m_cuttof_radius;
-    z = p_position.z / m_options->m_cuttof_radius;
+    x = p_position.x / m_options->m_cutof_radius;
+    y = p_position.y / m_options->m_cutof_radius;
+    z = p_position.z / m_options->m_cutof_radius;
     (getCellAt (x, y, z)).add_particle (p_position, p_velocity, p_acceleration, m_max_id++);
 }
 
