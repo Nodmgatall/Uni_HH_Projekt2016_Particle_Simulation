@@ -5,8 +5,8 @@
  *      Author: benjamin
  */
 
-#ifndef SRC_PARTICLEGENERATOR_HPP_
-#define SRC_PARTICLEGENERATOR_HPP_
+#ifndef SRC_PARTICLEGENERATORFACTORY_HPP_
+#define SRC_PARTICLEGENERATORFACTORY_HPP_
 
 #include "../Definitions.hpp"
 #include "../IO/OptionsGenerator.hpp"

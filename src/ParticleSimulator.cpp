@@ -19,7 +19,7 @@
 #include <memory>
 #include <unistd.h>
 
-#include "generators/ParticleGeneratorFactoryFactory.hpp"
+#include "generators/ParticleGeneratorFactory.hpp"
 
 /*clang-format off */
 ParticleSimulator::ParticleSimulator (s_simulator_options *p_sim_options, s_generator_options *p_gen_options)

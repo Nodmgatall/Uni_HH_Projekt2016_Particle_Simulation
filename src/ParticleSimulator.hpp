@@ -11,7 +11,7 @@
 #include <map>
 #include <memory>
 
-#include "generators/ParticleGeneratorFactoryFactory.hpp"
+#include "generators/ParticleGeneratorFactory.hpp"
 
 class ParticleSimulator {
     private:

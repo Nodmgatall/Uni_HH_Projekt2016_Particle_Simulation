@@ -5,7 +5,7 @@
  *      Author: benjamin
  */
 
-#include "ParticleGeneratorFactoryFactory.hpp"
+#include "ParticleGeneratorFactory.hpp"
 
 std::unique_ptr<ParticleGeneratorBase> ParticleGeneratorFactory::build (s_generator_options *p_options) {
     std::unique_ptr<ParticleGeneratorBase> result = 0;
