@@ -9,26 +9,23 @@
 ParticleFileWriter::ParticleFileWriter (std::map<e_particle_variable, bool> *p_write_modes)
 : m_timestep (0), m_file_name_base (""), m_write_modes (p_write_modes) {
 }
-void ParticleFileWriter::start()
-{
+void ParticleFileWriter::start () {
     m_file = std::ofstream (m_file_name_base + std::to_string (m_timestep) + ".csv");
-
 }
-void ParticleFileWriter::saveData (std::vector<float> *p_positions_x,
-                                   std::vector<float> *p_positions_y,
-                                   std::vector<float> *p_positions_z,
-                                   std::vector<float> *p_velocities_x,
-                                   std::vector<float> *p_velocities_y,
-                                   std::vector<float> *p_velocities_z,
-                                   std::vector<float> *p_accelerations_x,
-                                   std::vector<float> *p_accelerations_y,
-                                   std::vector<float> *p_accelerations_z,
+void ParticleFileWriter::saveData (std::vector<float> *        p_positions_x,
+                                   std::vector<float> *        p_positions_y,
+                                   std::vector<float> *        p_positions_z,
+                                   std::vector<float> *        p_velocities_x,
+                                   std::vector<float> *        p_velocities_y,
+                                   std::vector<float> *        p_velocities_z,
+                                   std::vector<float> *        p_accelerations_x,
+                                   std::vector<float> *        p_accelerations_y,
+                                   std::vector<float> *        p_accelerations_z,
                                    std::vector<unsigned long> *ids) {
-    (void)(ids);
-    
-        m_file << "id";
-    if ((*m_write_modes)[e_particle_variable::POSITION])
-        m_file << ", x coordinate, y coordinate, z coordinate";
+    (void) (ids);
+
+    m_file << "id";
+    m_file << ", x coordinate, y coordinate, z coordinate";
     if ((*m_write_modes)[e_particle_variable::VELOCITY])
         m_file << ", x velocity, y velocity, z velocity";
     if ((*m_write_modes)[e_particle_variable::ACCELERATION])
@@ -41,15 +38,15 @@ void ParticleFileWriter::saveData (std::vector<float> *p_positions_x,
         m_file << i;
         if ((*m_write_modes)[e_particle_variable::POSITION]) {
             m_file << ", " << (*p_positions_x)[i] << ", " << (*p_positions_y)[i] << ", "
-                     << (*p_positions_z)[i];
+                   << (*p_positions_z)[i];
         }
         if ((*m_write_modes)[e_particle_variable::VELOCITY]) {
             m_file << ", " << (*p_velocities_x)[i] << ", " << (*p_velocities_y)[i] << ", "
-                     << (*p_velocities_z)[i];
+                   << (*p_velocities_z)[i];
         }
         if ((*m_write_modes)[e_particle_variable::ACCELERATION]) {
             m_file << ", " << (*p_accelerations_x)[i] << ", " << (*p_accelerations_y)[i] << ", "
-                     << (*p_accelerations_z)[i];
+                   << (*p_accelerations_z)[i];
         }
         if ((*m_write_modes)[e_particle_variable::PARTICLE_TYPE]) {
             DEBUG_BEGIN << "error not implemented" << DEBUG_END;
@@ -61,9 +58,8 @@ void ParticleFileWriter::saveData (std::vector<float> *p_positions_x,
     m_timestep++;
 }
 
-void ParticleFileWriter::end()
-{
-    m_file.close();
+void ParticleFileWriter::end () {
+    m_file.close ();
 }
 
 void ParticleFileWriter::set_file_name_base (const std::string &file_name_base) {

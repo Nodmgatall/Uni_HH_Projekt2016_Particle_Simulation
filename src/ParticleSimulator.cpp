@@ -24,7 +24,7 @@
 /*clang-format off */
 ParticleSimulator::ParticleSimulator (s_simulator_options *p_sim_options, s_generator_options *p_gen_options)
 : m_algorithm (dummy_algo), m_bounds (glm::vec3 (1, 1, 1)), m_options (p_sim_options),
-  m_particle_file_writer (std::make_shared<ParticleFileWriter>(&p_sim_options->m_write_modes)),
+  m_particle_file_writer (std::make_shared<ParticleFileWriter> (&p_sim_options->m_write_modes)),
   m_particle_generator (ParticleGeneratorFactory::build (p_gen_options)),
   m_particles (std::make_shared<ParticlesGrid> (m_options, &m_bounds)), m_save_config (false) {
     m_particle_file_writer->set_file_name_base (std::string (log_folder) + "/data");
@@ -34,7 +34,7 @@ ParticleSimulator::ParticleSimulator (s_simulator_options *p_sim_options, s_gene
 
 void ParticleSimulator::simulate () {
     Benchmark::begin ("Simulation");
-    m_particles->serialize(m_particle_file_writer);
+    m_particles->serialize (m_particle_file_writer);
     long current_time               = 0.0;
     int  timesteps_until_next_write = m_options->m_write_fequency;
     while (current_time <= m_options->m_run_time_limit) {
@@ -48,7 +48,7 @@ void ParticleSimulator::simulate () {
         timesteps_until_next_write--;
         std::cout << "this" << std::endl;
         if (!timesteps_until_next_write) {
-            m_particles->serialize(m_particle_file_writer);
+            m_particles->serialize (m_particle_file_writer);
             timesteps_until_next_write = m_options->m_write_fequency;
         }
     }
