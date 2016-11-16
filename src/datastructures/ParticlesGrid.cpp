@@ -43,7 +43,7 @@ void ParticlesGrid::serialize (std::shared_ptr<ParticleFileWriter> p_file_writer
                                  &(cell.m_ids));
     }
 }
-void ParticlesGrid::run_simulation_insideCell (ParticleCell cell) {
+void ParticlesGrid::run_simulation_insideCell (ParticleCell &cell) {
     unsigned int       i, j;
     const unsigned int max = cell.m_ids.size ();
     for (i = 0; i < max; i++) {
@@ -69,7 +69,7 @@ void ParticlesGrid::run_simulation_insideCell (ParticleCell cell) {
         }
     }
 }
-void ParticlesGrid::run_simulation_betweenCells (ParticleCell cell1, ParticleCell cell2) {
+void ParticlesGrid::run_simulation_betweenCells (ParticleCell &cell1, ParticleCell &cell2) {
     unsigned int       i, j;
     const unsigned int max1 = cell1.m_ids.size ();
     const unsigned int max2 = cell2.m_ids.size ();
@@ -133,7 +133,7 @@ void ParticlesGrid::run_simulation_iteration () {
     }
 }
 
-ParticleCell ParticlesGrid::getCellAt (int x, int y, int z) {
+ParticleCell& ParticlesGrid::getCellAt (int x, int y, int z) {
     DEBUG_BEGIN << DEBUG_VAR (x + m_size_x * (y + m_size_y * z)) << DEBUG_END;
     return m_cells[x + m_size_x * (y + m_size_y * z)];
 }
