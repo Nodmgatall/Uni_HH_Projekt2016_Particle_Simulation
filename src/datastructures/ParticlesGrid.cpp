@@ -7,12 +7,12 @@
 
 ParticlesGrid::ParticlesGrid (s_simulator_options *p_options, vec3 *p_bounds)
 : ParticlesBase (p_options, p_bounds) {
+	long max_usefull_size=pow(m_options->m_particle_count,1.0/3.0);
     m_stucture_name = "Grid";
-    m_size_x = m_size_y = m_size_z = 0;
     m_max_id                       = 0;
-    m_size_x                       = m_bounds->x / m_options->m_cut_off_radius + 1;
-    m_size_y                       = m_bounds->y / m_options->m_cut_off_radius + 1;
-    m_size_z                       = m_bounds->z / m_options->m_cut_off_radius + 1;
+    m_size_x=MAX(m_bounds->x / m_options->m_cut_off_radius,max_usefull_size)+1;
+    m_size_y=MAX(m_bounds->y / m_options->m_cut_off_radius,max_usefull_size)+1;
+    m_size_z=MAX(m_bounds->z / m_options->m_cut_off_radius,max_usefull_size)+1;
     m_cells                        = std::vector<ParticleCell> (m_size_x * m_size_y * m_size_z);
     for (int i = m_size_x * m_size_y * m_size_z; i >= 0; i--) {
         m_cells.push_back (ParticleCell ());

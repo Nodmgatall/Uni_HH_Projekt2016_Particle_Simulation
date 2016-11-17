@@ -25,7 +25,7 @@ void createOutputDirectory () {
         // dont care ... but returnvalue ist used
     }
     if (mkdir (log_folder, 0700)) {
-        DEBUG_BEGIN << "createing Directory *" << log_folder << "* failed" << DEBUG_END;
+        DEBUG_BEGIN << "createing Directory '" << log_folder << "' failed" << DEBUG_END;
         exit (1);
     }
     g_debug_stream.open (std::string (log_folder) + "/log.txt", std::fstream::out);
@@ -33,7 +33,7 @@ void createOutputDirectory () {
         // dont care ... but returnvalue ist used
     }
     if (symlink ((std::string ("../") + log_folder).c_str (), "logdata/latest")) {
-        DEBUG_BEGIN << "linking *logdata/latest* failed" << DEBUG_END;
+        DEBUG_BEGIN << "symlink @ 'logdata/latest' failed" << DEBUG_END;
         exit (1);
     }
 }
