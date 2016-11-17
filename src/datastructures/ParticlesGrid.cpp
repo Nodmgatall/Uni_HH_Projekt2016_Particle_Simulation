@@ -7,23 +7,20 @@
 
 ParticlesGrid::ParticlesGrid (s_simulator_options *p_options, vec3f *p_bounds)
 : ParticlesBase (p_options, p_bounds) {
+    int  abs_size;
     long max_usefull_size = pow (m_options->m_particle_count, 1.0 / 3.0);
     m_stucture_name       = "Grid";
     m_max_id              = 0;
-    m_size_x              = MAX (m_bounds->x / m_options->m_cut_off_radius, max_usefull_size) + 1;
-    m_size_y              = MAX (m_bounds->y / m_options->m_cut_off_radius, max_usefull_size) + 1;
-    m_size_z              = MAX (m_bounds->z / m_options->m_cut_off_radius, max_usefull_size) + 1;
-    m_cells               = std::vector<ParticleCell> (m_size_x * m_size_y * m_size_z);
-    for (int i = m_size_x * m_size_y * m_size_z; i >= 0; i--) {
+    m_size = vec3l::max (vec3l (*m_bounds / m_options->m_cut_off_radius), max_usefull_size) + vec3l (1L);
+    abs_size = m_size.x * m_size.y * m_size.z;
+    m_cells  = std::vector<ParticleCell> (abs_size);
+    for (int i = abs_size; i >= 0; i--) {
         m_cells.push_back (ParticleCell ());
     }
 }
 void ParticlesGrid::add_particle (vec3f p_position, vec3f p_velocity) {
-    int x, y, z;
-    x = p_position.x * (m_size_x - 1);
-    y = p_position.y * (m_size_y - 1);
-    z = p_position.z * (m_size_z - 1);
-    getCellAt (x, y, z).add_particle (p_position, p_velocity, m_max_id++);
+    vec3l coord = vec3l (p_position * vec3f (m_size - vec3l (1L)));
+    getCellAt (coord.x, coord.y, coord.z).add_particle (p_position, p_velocity, m_max_id++);
 }
 ParticlesGrid::~ParticlesGrid () {
 }
@@ -95,9 +92,9 @@ void ParticlesGrid::run_simulation_iteration () {
     {
         unsigned int   i, j, k;
 #pragma omp for nowait schedule(static, 1)
-        for (i = 0; i < m_size_x - 1; i += 2) {
-            for (j = 0; j < m_size_y - 1; j++) {
-                for (k = 0; k < m_size_z - 1; k++) {
+        for (i = 0; i < m_size.x - 1; i += 2) {
+            for (j = 0; j < m_size.y - 1; j++) {
+                for (k = 0; k < m_size.z - 1; k++) {
                     /* 3*3*3=27 'neighbors'
                      * -self => 26 'other cells'
                      * Symmetric /2 => 13 Pairs
@@ -119,9 +116,9 @@ void ParticlesGrid::run_simulation_iteration () {
             }
         }
 #pragma omp for nowait schedule(guided, 5)
-        for (i = 1; i < m_size_x - 1; i += 2) {
-            for (j = 0; j < m_size_y - 1; j++) {
-                for (k = 0; k < m_size_z - 1; k++) {
+        for (i = 1; i < m_size.x - 1; i += 2) {
+            for (j = 0; j < m_size.y - 1; j++) {
+                for (k = 0; k < m_size.z - 1; k++) {
                     /* 3*3*3=27 'neighbors'
                      * -self => 26 'other cells'
                      * Symmetric /2 => 13 Pairs
@@ -143,9 +140,9 @@ void ParticlesGrid::run_simulation_iteration () {
             }
         }
 #pragma omp for schedule(guided, 5)
-        for (i = 0; i < m_size_x; i++) {
-            for (j = 0; j < m_size_y; j++) {
-                for (k = 0; k < m_size_z; k++) {
+        for (i = 0; i < m_size.x; i++) {
+            for (j = 0; j < m_size.y; j++) {
+                for (k = 0; k < m_size.z; k++) {
                     run_simulation_insideCell (getCellAt (i, j, k));
                 }
             }
@@ -153,8 +150,7 @@ void ParticlesGrid::run_simulation_iteration () {
     }
 }
 ParticleCell &ParticlesGrid::getCellAt (int x, int y, int z) {
-    DEBUG_BEGIN << DEBUG_VAR (x + m_size_x * (y + m_size_y * z)) << DEBUG_END;
-    return m_cells[x + m_size_x * (y + m_size_y * z)];
+    return m_cells[x + m_size.x * (y + m_size.y * z)];
 }
 unsigned long ParticlesGrid::get_particle_count () {
     unsigned long particle_count = 0;
