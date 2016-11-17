@@ -47,16 +47,19 @@ struct vec3 {
         return *this;
     }
     inline vec3 operator- (const vec3 &other) {
-            return vec3 (x - other.x, y - other.y, z - other.z);
-        }
+        return vec3 (x - other.x, y - other.y, z - other.z);
+    }
     inline vec3 operator- (const T &s) {
-            return vec3 (x - s, y - s, z - s);
-        }
-        inline vec3 operator* (const vec3 &other) {
+        return vec3 (x - s, y - s, z - s);
+    }
+    inline vec3 operator* (const vec3 &other) {
         return vec3 (x * other.x, y * other.y, z * other.z);
     }
     inline vec3 operator/ (const T &s) {
         return vec3 (x / s, y / s, z / s);
+    }
+    inline vec3 operator/ (const vec3 &other) {
+        return vec3 (x / other.x, y / other.y, z / other.z);
     }
     inline static vec3 max (const vec3 &a, const vec3 &b) {
         return vec3 (a.x > b.x ? a.x : b.x, a.y > b.y ? a.y : b.y, a.z > b.z ? a.z : b.z);

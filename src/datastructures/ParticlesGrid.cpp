@@ -23,7 +23,7 @@ ParticlesGrid::ParticlesGrid (s_simulator_options *p_options, vec3f *p_bounds)
 ParticlesGrid::~ParticlesGrid () {
 }
 void ParticlesGrid::add_particle (vec3f p_position, vec3f p_velocity) {
-    getCellAt (vec3l (p_position/ *m_bounds * vec3f (m_size - 1L))).add_particle (p_position, p_velocity, m_max_id++);
+    getCellAt (vec3l (p_position / *m_bounds * vec3f (m_size - 1L))).add_particle (p_position, p_velocity, m_max_id++);
 }
 void ParticlesGrid::serialize (std::shared_ptr<ParticleFileWriter> p_file_writer) {
     Benchmark::begin ("saving the data", false);
@@ -152,7 +152,7 @@ ParticleCell &ParticlesGrid::getCellAt (int x, int y, int z) {
     return m_cells[x + m_size.x * (y + m_size.y * z)];
 }
 ParticleCell &ParticlesGrid::getCellAt (vec3l coord) {
-    return getCellAt(coord.y,coord.y,coord.z);
+    return getCellAt (coord.y, coord.y, coord.z);
 }
 unsigned long ParticlesGrid::get_particle_count () {
     unsigned long particle_count = 0;

@@ -21,7 +21,7 @@ class ParticlesGrid : public ParticlesBase {
     unsigned long             m_max_id;
     std::vector<ParticleCell> m_cells;
     vec3l                     m_size;
-    ParticleCell &ParticlesGrid::getCellAt (vec3l coord);
+    ParticleCell &getCellAt (vec3l coord);
     ParticleCell &getCellAt (int x, int y, int z);
     void run_simulation_insideCell (ParticleCell &cell);
     void run_simulation_betweenCells (ParticleCell &cell1, ParticleCell &cell2);
