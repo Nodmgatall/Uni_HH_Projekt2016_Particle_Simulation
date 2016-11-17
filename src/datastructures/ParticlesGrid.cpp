@@ -7,23 +7,23 @@
 
 ParticlesGrid::ParticlesGrid (s_simulator_options *p_options, vec3 *p_bounds)
 : ParticlesBase (p_options, p_bounds) {
-	long max_usefull_size=pow(m_options->m_particle_count,1.0/3.0);
-    m_stucture_name = "Grid";
-    m_max_id                       = 0;
-    m_size_x=MAX(m_bounds->x / m_options->m_cut_off_radius,max_usefull_size)+1;
-    m_size_y=MAX(m_bounds->y / m_options->m_cut_off_radius,max_usefull_size)+1;
-    m_size_z=MAX(m_bounds->z / m_options->m_cut_off_radius,max_usefull_size)+1;
-    m_cells                        = std::vector<ParticleCell> (m_size_x * m_size_y * m_size_z);
+    long max_usefull_size = pow (m_options->m_particle_count, 1.0 / 3.0);
+    m_stucture_name       = "Grid";
+    m_max_id              = 0;
+    m_size_x              = MAX (m_bounds->x / m_options->m_cut_off_radius, max_usefull_size) + 1;
+    m_size_y              = MAX (m_bounds->y / m_options->m_cut_off_radius, max_usefull_size) + 1;
+    m_size_z              = MAX (m_bounds->z / m_options->m_cut_off_radius, max_usefull_size) + 1;
+    m_cells               = std::vector<ParticleCell> (m_size_x * m_size_y * m_size_z);
     for (int i = m_size_x * m_size_y * m_size_z; i >= 0; i--) {
         m_cells.push_back (ParticleCell ());
     }
 }
-void ParticlesGrid::add_particle (vec3 p_position, vec3 p_velocity, vec3 p_acceleration) {
+void ParticlesGrid::add_particle (vec3 p_position, vec3 p_velocity) {
     int x, y, z;
     x = p_position.x / m_options->m_cut_off_radius;
     y = p_position.y / m_options->m_cut_off_radius;
     z = p_position.z / m_options->m_cut_off_radius;
-    (getCellAt (x, y, z)).add_particle (p_position, p_velocity, p_acceleration, m_max_id++);
+    (getCellAt (x, y, z)).add_particle (p_position, p_velocity, m_max_id++);
 }
 ParticlesGrid::~ParticlesGrid () {
 }
@@ -37,12 +37,12 @@ void ParticlesGrid::serialize (std::shared_ptr<ParticleFileWriter> p_file_writer
             p_file_writer->saveData (&(cell.m_positions_x),
                                      &(cell.m_positions_y),
                                      &(cell.m_positions_y),
-                                     &(cell.m_velocities_x),
-                                     &(cell.m_velocities_y),
-                                     &(cell.m_velocities_z),
-                                     &(cell.m_accelerations_x),
-                                     &(cell.m_accelerations_y),
-                                     &(cell.m_accelerations_z),
+                                     &(cell.m_positions_delta_x),
+                                     &(cell.m_positions_delta_y),
+                                     &(cell.m_positions_delta_z),
+                                     &(cell.m_positions_delta_x),
+                                     &(cell.m_positions_delta_y),
+                                     &(cell.m_positions_delta_z),
                                      &(cell.m_ids));
         }
     }
@@ -57,21 +57,15 @@ void ParticlesGrid::run_simulation_insideCell (ParticleCell &cell) {
             m_algorithm (cell.m_positions_x[i],
                          cell.m_positions_y[i],
                          cell.m_positions_z[i],
-                         cell.m_velocities_x[i],
-                         cell.m_velocities_y[i],
-                         cell.m_velocities_z[i],
-                         cell.m_accelerations_x[i],
-                         cell.m_accelerations_y[i],
-                         cell.m_accelerations_z[i],
+                         cell.m_positions_delta_x[i],
+                         cell.m_positions_delta_y[i],
+                         cell.m_positions_delta_z[i],
                          cell.m_positions_x[j],
                          cell.m_positions_y[j],
                          cell.m_positions_z[j],
-                         cell.m_velocities_x[j],
-                         cell.m_velocities_y[j],
-                         cell.m_velocities_z[j],
-                         cell.m_accelerations_x[j],
-                         cell.m_accelerations_y[j],
-                         cell.m_accelerations_z[j]);
+                         cell.m_positions_delta_x[j],
+                         cell.m_positions_delta_y[j],
+                         cell.m_positions_delta_z[j]);
         }
     }
 }
@@ -84,21 +78,15 @@ void ParticlesGrid::run_simulation_betweenCells (ParticleCell &cell1, ParticleCe
             m_algorithm (cell1.m_positions_x[i],
                          cell1.m_positions_y[i],
                          cell1.m_positions_z[i],
-                         cell1.m_velocities_x[i],
-                         cell1.m_velocities_y[i],
-                         cell1.m_velocities_z[i],
-                         cell1.m_accelerations_x[i],
-                         cell1.m_accelerations_y[i],
-                         cell1.m_accelerations_z[i],
+                         cell1.m_positions_delta_x[i],
+                         cell1.m_positions_delta_y[i],
+                         cell1.m_positions_delta_z[i],
                          cell2.m_positions_x[j],
                          cell2.m_positions_y[j],
                          cell2.m_positions_z[j],
-                         cell2.m_velocities_x[j],
-                         cell2.m_velocities_y[j],
-                         cell2.m_velocities_z[j],
-                         cell2.m_accelerations_x[j],
-                         cell2.m_accelerations_y[j],
-                         cell2.m_accelerations_z[j]);
+                         cell2.m_positions_delta_x[j],
+                         cell2.m_positions_delta_y[j],
+                         cell2.m_positions_delta_z[j]);
         }
     }
 }
@@ -175,16 +163,13 @@ unsigned long ParticlesGrid::get_particle_count () {
     }
     return particle_count;
 }
-void ParticleCell::add_particle (vec3 p_position, vec3 p_velocity, vec3 p_acceleration, int p_id) {
+void ParticleCell::add_particle (vec3 p_position, vec3 p_velocity, int p_id) {
     DEBUG_BEGIN << p_position << DEBUG_END;
     m_positions_x.push_back (p_position.x);
     m_positions_y.push_back (p_position.y);
     m_positions_z.push_back (p_position.z);
-    m_velocities_x.push_back (p_velocity.x);
-    m_velocities_y.push_back (p_velocity.y);
-    m_velocities_z.push_back (p_velocity.z);
-    m_accelerations_x.push_back (p_acceleration.x);
-    m_accelerations_y.push_back (p_acceleration.y);
-    m_accelerations_z.push_back (p_acceleration.z);
+    m_positions_delta_x.push_back (p_velocity.x);
+    m_positions_delta_y.push_back (p_velocity.y);
+    m_positions_delta_z.push_back (p_velocity.z);
     m_ids.push_back (p_id);
 }

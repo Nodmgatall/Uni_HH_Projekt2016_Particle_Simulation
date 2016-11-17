@@ -18,8 +18,7 @@ ParticlesList::ParticlesList (s_simulator_options *p_options, vec3 *p_bounds)
 ParticlesList::~ParticlesList () {
 }
 
-void ParticlesList::add_particle (vec3 p_position, vec3 p_velocity, vec3 p_acceleration) {
-    (void) p_acceleration;
+void ParticlesList::add_particle (vec3 p_position, vec3 p_velocity) {
     if (!m_unused_ids.empty ()) {
         m_unused_ids.erase (m_unused_ids.begin ());
         std::cout << "Not implemented: program will exit" << std::endl;

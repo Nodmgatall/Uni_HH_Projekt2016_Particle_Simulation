@@ -10,24 +10,18 @@ std::string ParticlesBase::get_structure_name () {
     return m_stucture_name;
 }
 
-void ParticlesBase::set_algorithm (const std::function<bool(float &position1x,
-                                                            float &position1y,
-                                                            float &position1z,
-                                                            float &velocity1x,
-                                                            float &velocity1y,
-                                                            float &velocity1z,
-                                                            float &acceleration1x,
-                                                            float &acceleration1y,
-                                                            float &acceleration1z,
-                                                            float &position2x,
-                                                            float &position2y,
-                                                            float &position2z,
-                                                            float &velocity2x,
-                                                            float &velocity2y,
-                                                            float &velocity2z,
-                                                            float &acceleration2x,
-                                                            float &acceleration2y,
-                                                            float &acceleration2z)> &algorithm) {
+void ParticlesBase::set_algorithm (const std::function<bool(float &p_position_1x,
+                                                            float &p_position_1y,
+                                                            float &p_position_1z,
+                                                            float &p_position_delta_1x,
+                                                            float &p_position_delta_1y,
+                                                            float &p_position_delta_1z,
+                                                            float &p_position_2x,
+                                                            float &p_position_2y,
+                                                            float &p_position_2z,
+                                                            float &p_position_delta_2x,
+                                                            float &p_position_delta_2y,
+                                                            float &p_position_delta_2z)> &algorithm) {
     m_algorithm = algorithm;
 }
 ParticlesBase::ParticlesBase (s_simulator_options *p_options, vec3 *p_bounds)

@@ -25,8 +25,8 @@
 ParticleSimulator::ParticleSimulator (s_simulator_options *p_sim_options, s_generator_options *p_gen_options)
 : m_algorithm (dummy_algo), m_bounds (vec3 (1, 1, 1)), m_options (p_sim_options),
   m_particle_file_writer (std::make_shared<ParticleFileWriter> (&p_sim_options->m_write_modes)),
-  m_particle_generator (ParticleGeneratorFactory::build (p_gen_options)),
-  m_particles (std::make_shared<ParticlesGrid> (m_options, &m_bounds)), m_save_config (false) {
+  m_particle_generator (ParticleGeneratorFactory::build (p_gen_options)), m_particles (0),
+  m_save_config (false) {
     m_particle_file_writer->set_file_name_base (std::string (log_folder) + "/data");
     m_save_config = false; // TODO remvove
 }

@@ -1,6 +1,7 @@
 #ifndef PARTICLESGRID_HPP
 #define PARTICLESGRID_HPP
 
+#include "../Definitions.hpp"
 #include "../tools/Debug.hpp"
 #include "ParticlesBase.hpp"
 
@@ -8,14 +9,11 @@ struct ParticleCell {
     std::vector<float>         m_positions_x;
     std::vector<float>         m_positions_y;
     std::vector<float>         m_positions_z;
-    std::vector<float>         m_velocities_x;
-    std::vector<float>         m_velocities_y;
-    std::vector<float>         m_velocities_z;
-    std::vector<float>         m_accelerations_x;
-    std::vector<float>         m_accelerations_y;
-    std::vector<float>         m_accelerations_z;
+    std::vector<float>         m_positions_delta_x;
+    std::vector<float>         m_positions_delta_y;
+    std::vector<float>         m_positions_delta_z;
     std::vector<unsigned long> m_ids;
-    void add_particle (vec3 p_position, vec3 p_velocity, vec3 p_acceleration, int p_id);
+    void add_particle (vec3 p_position, vec3 p_velocity, int p_id);
 };
 
 class ParticlesGrid : public ParticlesBase {
@@ -33,7 +31,7 @@ class ParticlesGrid : public ParticlesBase {
 
     void serialize (std::shared_ptr<ParticleFileWriter> p_writer);
     void run_simulation_iteration ();
-    void add_particle (vec3 p_position, vec3 p_velocity, vec3 p_acceleration);
+    void add_particle (vec3 p_position, vec3 p_velocity);
     unsigned long get_particle_count ();
 };
 #endif

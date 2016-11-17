@@ -15,6 +15,7 @@
 #include <fstream>
 #include <iostream>
 #include <map>
+#include <math.h>
 #include <memory>
 #include <string.h>
 #include <sys/stat.h>
@@ -22,8 +23,7 @@
 #include <unistd.h>
 #include <vector>
 
-#define MAX(a,b) ((a)>(b)?(a):(b))
-
+#define MAX(a, b) ((a) > (b) ? (a) : (b))
 
 #define ENUM_TO_STRING_ENTRY(enum_name, enum_member) \
     std::pair<enum_name, const char *> (enum_name::enum_member, #enum_member)
