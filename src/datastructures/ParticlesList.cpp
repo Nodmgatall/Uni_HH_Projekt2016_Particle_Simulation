@@ -7,7 +7,7 @@
 #include "../tools/Debug.hpp"
 #include "ParticlesList.hpp"
 
-ParticlesList::ParticlesList (s_simulator_options *p_options, vec3 *p_bounds)
+ParticlesList::ParticlesList (s_simulator_options *p_options, vec3f *p_bounds)
 : ParticlesBase (p_options, p_bounds), m_average_list_length (0.16), m_next_list_size_multiplier (1.1) {
     m_stucture_name = "List";
     m_cutoff_radius = 0;
@@ -18,7 +18,7 @@ ParticlesList::ParticlesList (s_simulator_options *p_options, vec3 *p_bounds)
 ParticlesList::~ParticlesList () {
 }
 
-void ParticlesList::add_particle (vec3 p_position, vec3 p_velocity) {
+void ParticlesList::add_particle (vec3f p_position, vec3f p_velocity) {
     if (!m_unused_ids.empty ()) {
         m_unused_ids.erase (m_unused_ids.begin ());
         std::cout << "Not implemented: program will exit" << std::endl;

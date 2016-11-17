@@ -28,7 +28,7 @@ class ParticleSimulator {
                        float &p_position_delta_2y,
                        float &p_position_delta_2z)>
                                            m_algorithm;
-    vec3                                   m_bounds;
+    vec3f                                  m_bounds;
     s_simulator_options *                  m_options;
     std::shared_ptr<ParticleFileWriter>    m_particle_file_writer;
     std::unique_ptr<ParticleGeneratorBase> m_particle_generator;

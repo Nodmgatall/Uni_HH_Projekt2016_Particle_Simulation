@@ -5,7 +5,7 @@
 
 #include "ParticlesGrid.hpp"
 
-ParticlesGrid::ParticlesGrid (s_simulator_options *p_options, vec3 *p_bounds)
+ParticlesGrid::ParticlesGrid (s_simulator_options *p_options, vec3f *p_bounds)
 : ParticlesBase (p_options, p_bounds) {
     long max_usefull_size = pow (m_options->m_particle_count, 1.0 / 3.0);
     m_stucture_name       = "Grid";
@@ -18,12 +18,12 @@ ParticlesGrid::ParticlesGrid (s_simulator_options *p_options, vec3 *p_bounds)
         m_cells.push_back (ParticleCell ());
     }
 }
-void ParticlesGrid::add_particle (vec3 p_position, vec3 p_velocity) {
+void ParticlesGrid::add_particle (vec3f p_position, vec3f p_velocity) {
     int x, y, z;
-    x = p_position.x / m_options->m_cut_off_radius;
-    y = p_position.y / m_options->m_cut_off_radius;
-    z = p_position.z / m_options->m_cut_off_radius;
-    (getCellAt (x, y, z)).add_particle (p_position, p_velocity, m_max_id++);
+    x = p_position.x * (m_size_x - 1);
+    y = p_position.y * (m_size_y - 1);
+    z = p_position.z * (m_size_z - 1);
+    getCellAt (x, y, z).add_particle (p_position, p_velocity, m_max_id++);
 }
 ParticlesGrid::~ParticlesGrid () {
 }
@@ -40,9 +40,9 @@ void ParticlesGrid::serialize (std::shared_ptr<ParticleFileWriter> p_file_writer
                                      &(cell.m_positions_delta_x),
                                      &(cell.m_positions_delta_y),
                                      &(cell.m_positions_delta_z),
-                                     &(cell.m_positions_delta_x),
-                                     &(cell.m_positions_delta_y),
-                                     &(cell.m_positions_delta_z),
+                                     &(cell.m_positions_delta_x), // TODO remove
+                                     &(cell.m_positions_delta_y), // TODO remove
+                                     &(cell.m_positions_delta_z), // TODO remove
                                      &(cell.m_ids));
         }
     }
@@ -163,7 +163,7 @@ unsigned long ParticlesGrid::get_particle_count () {
     }
     return particle_count;
 }
-void ParticleCell::add_particle (vec3 p_position, vec3 p_velocity, int p_id) {
+void ParticleCell::add_particle (vec3f p_position, vec3f p_velocity, int p_id) {
     DEBUG_BEGIN << p_position << DEBUG_END;
     m_positions_x.push_back (p_position.x);
     m_positions_y.push_back (p_position.y);

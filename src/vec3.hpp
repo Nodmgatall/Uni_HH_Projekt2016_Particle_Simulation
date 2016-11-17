@@ -8,9 +8,10 @@
 #ifndef SRC_VEC3_HPP_
 #define SRC_VEC3_HPP_
 
+template <typename T>
 struct vec3 {
-    float x, y, z;
-    vec3 (float p_x, float p_y, float p_z) : x (p_x), y (p_y), z (p_z) {
+    T x, y, z;
+    vec3 (T p_x, T p_y, T p_z) : x (p_x), y (p_y), z (p_z) {
     }
     vec3 () {
         x = y = z = 0;
@@ -26,10 +27,11 @@ struct vec3 {
 
         return vec3 (x * other.x, y * other.y, z * other.z);
     }
-    vec3 operator/ (const float &s) {
+    vec3 operator/ (const T &s) {
 
         return vec3 (x / s, y / s, z / s);
     }
 };
-
+typedef vec3<float> vec3f;
+typedef vec3<long>  vec3l;
 #endif /* SRC_VEC3_HPP_ */

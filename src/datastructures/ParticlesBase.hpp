@@ -25,14 +25,14 @@ class ParticlesBase {
                          m_algorithm;
     std::string          m_stucture_name;
     s_simulator_options *m_options;
-    vec3 *               m_bounds;
+    vec3f *              m_bounds;
 
     public:
     virtual ~ParticlesBase () {
     }
-    ParticlesBase (s_simulator_options *p_options, vec3 *p_bounds);
+    ParticlesBase (s_simulator_options *p_options, vec3f *p_bounds);
     virtual void run_simulation_iteration () = 0;
-    virtual void add_particle (vec3 p_position, vec3 p_velocity) = 0;
+    virtual void add_particle (vec3f p_position, vec3f p_velocity) = 0;
     void        print_structure_name ();
     std::string get_structure_name ();
     void set_algorithm (const std::function<bool(float &p_position_1x,

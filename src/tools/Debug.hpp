@@ -41,7 +41,7 @@ struct s_debug_stream : std::ofstream {
         print (var ? "ON" : "OFF");
         return *this;
     }
-    s_debug_stream &operator<< (const vec3 &var) {
+    s_debug_stream &operator<< (const vec3f &var) {
         print ("(");
         print (var.x);
         print (",");
