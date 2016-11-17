@@ -11,18 +11,20 @@ ParticlesGrid::ParticlesGrid (s_simulator_options *p_options, vec3f *p_bounds)
     long max_usefull_size = pow (m_options->m_particle_count, 1.0 / 3.0);
     m_stucture_name       = "Grid";
     m_max_id              = 0;
-    m_size = vec3l::max (vec3l (*m_bounds / m_options->m_cut_off_radius), max_usefull_size) + vec3l (1L);
+    // cut_off_radius*1.2 to allow particles to move before reconstruction of cells is needed
+    m_size = vec3l::max (vec3l (*m_bounds / (m_options->m_cut_off_radius * 1.2f)), max_usefull_size);
+    m_size += 1L; // round up to next natural number for cell-count
     abs_size = m_size.x * m_size.y * m_size.z;
-    m_cells  = std::vector<ParticleCell> (abs_size);
-    for (int i = abs_size; i >= 0; i--) {
+    m_cells.reserve (abs_size);
+    for (int i = 0; i < abs_size; i++) {
         m_cells.push_back (ParticleCell ());
     }
+}
+ParticlesGrid::~ParticlesGrid () {
 }
 void ParticlesGrid::add_particle (vec3f p_position, vec3f p_velocity) {
     vec3l coord = vec3l (p_position * vec3f (m_size - vec3l (1L)));
     getCellAt (coord.x, coord.y, coord.z).add_particle (p_position, p_velocity, m_max_id++);
-}
-ParticlesGrid::~ParticlesGrid () {
 }
 void ParticlesGrid::serialize (std::shared_ptr<ParticleFileWriter> p_file_writer) {
     Benchmark::begin ("saving the data", false);
