@@ -23,16 +23,13 @@ ParticlesGrid::ParticlesGrid (s_simulator_options *p_options, vec3f *p_bounds)
 ParticlesGrid::~ParticlesGrid () {
 }
 void ParticlesGrid::add_particle (vec3f p_position, vec3f p_velocity) {
-    vec3l coord = vec3l (p_position * vec3f (m_size - vec3l (1L)));
-    getCellAt (coord.x, coord.y, coord.z).add_particle (p_position, p_velocity, m_max_id++);
+    getCellAt (vec3l (p_position/ *m_bounds * vec3f (m_size - 1L))).add_particle (p_position, p_velocity, m_max_id++);
 }
 void ParticlesGrid::serialize (std::shared_ptr<ParticleFileWriter> p_file_writer) {
     Benchmark::begin ("saving the data", false);
     p_file_writer->start ();
-    std::cout << m_cells.size () << std::endl;
     for (ParticleCell cell : m_cells) {
-        if (!(cell.m_positions_x.empty ())) {
-            std::cout << "FOUND ONE!" << cell.m_positions_x.size () << std::endl;
+        if (!(cell.m_ids.empty ())) {
             p_file_writer->saveData (&(cell.m_positions_x),
                                      &(cell.m_positions_y),
                                      &(cell.m_positions_y),
@@ -154,15 +151,17 @@ void ParticlesGrid::run_simulation_iteration () {
 ParticleCell &ParticlesGrid::getCellAt (int x, int y, int z) {
     return m_cells[x + m_size.x * (y + m_size.y * z)];
 }
+ParticleCell &ParticlesGrid::getCellAt (vec3l coord) {
+    return getCellAt(coord.y,coord.y,coord.z);
+}
 unsigned long ParticlesGrid::get_particle_count () {
     unsigned long particle_count = 0;
     for (ParticleCell cell : m_cells) {
-        particle_count += cell.m_positions_x.size ();
+        particle_count += cell.m_ids.size ();
     }
     return particle_count;
 }
 void ParticleCell::add_particle (vec3f p_position, vec3f p_velocity, int p_id) {
-    DEBUG_BEGIN << p_position << DEBUG_END;
     m_positions_x.push_back (p_position.x);
     m_positions_y.push_back (p_position.y);
     m_positions_z.push_back (p_position.z);
