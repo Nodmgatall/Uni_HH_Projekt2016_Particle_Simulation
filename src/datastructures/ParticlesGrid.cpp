@@ -149,9 +149,9 @@ ParticleCell &ParticlesGrid::getCellAt (vec3l coord) {
 }
 
 void ParticlesGrid::removeWrongParticlesFromCell (ParticleCell &cell) {
-    int   i;
     vec3l delta (0);
-    for (i = cell.m_ids.size () - 1; i >= 0; i--) {
+    for (int i = cell.m_ids.size () - 1; i >= 0; i--) {
+        delta = vec3l (0);
         if (cell.m_positions_x[i] < cell.m_corner000.x) {
             delta.x = -1;
         } else if (cell.m_positions_x[i] > cell.m_corner000.x) {
@@ -167,7 +167,7 @@ void ParticlesGrid::removeWrongParticlesFromCell (ParticleCell &cell) {
         } else if (cell.m_positions_z[i] > cell.m_corner000.z) {
             delta.z = +1;
         }
-        if (delta.x | delta.y | delta.z) {
+        if (delta.x || delta.y || delta.z) {
             ParticleCell &other = getCellAt (cell.m_index + delta);
             other.m_ids.push_back (cell.m_ids[i]);
             other.m_positions_x.push_back (cell.m_positions_x[i]);
