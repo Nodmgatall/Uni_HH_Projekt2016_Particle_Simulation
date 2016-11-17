@@ -143,10 +143,59 @@ ParticleCell &ParticlesGrid::getCellAt (vec3l coord) {
 }
 
 void ParticlesGrid::removeWrongParticlesFromCell (ParticleCell &cell) {
-    /*unsigned int i;
+    unsigned int i;
+    vec3l        delta (0);
     for (int i = cell.m_ids.size () - 1; i >= 0; i--) {
-        // TODO
-    }*/
+        if (cell.m_positions_x[i] < cell.m_corner000.x) {
+            delta.x = -1;
+        } else if (cell.m_positions_x[i] > cell.m_corner000.x) {
+            delta.x = +1;
+        }
+        if (cell.m_positions_y[i] < cell.m_corner000.y) {
+            delta.y = -1;
+        } else if (cell.m_positions_y[i] > cell.m_corner000.y) {
+            delta.y = +1;
+        }
+        if (cell.m_positions_z[i] < cell.m_corner000.z) {
+            delta.z = -1;
+        } else if (cell.m_positions_z[i] > cell.m_corner000.z) {
+            delta.z = +1;
+        }
+        if (delta.x | delta.y | delta.z) {
+            ParticleCell &other = getCellAt (cell.m_index + delta);
+            other.m_ids.push_back (cell.m_ids[i]);
+            other.m_positions_x.push_back (cell.m_positions_x[i]);
+            other.m_positions_y.push_back (cell.m_positions_y[i]);
+            other.m_positions_z.push_back (cell.m_positions_z[i]);
+            other.m_positions_delta_x.push_back (cell.m_positions_delta_x[i]);
+            other.m_positions_delta_y.push_back (cell.m_positions_delta_y[i]);
+            other.m_positions_delta_z.push_back (cell.m_positions_delta_z[i]);
+            cell.m_ids.erase (cell.m_ids.begin () + i);
+            cell.m_positions_x.erase (cell.m_positions_x.begin () + i);
+            cell.m_positions_y.erase (cell.m_positions_y.begin () + i);
+            cell.m_positions_z.erase (cell.m_positions_z.begin () + i);
+            cell.m_positions_delta_x.erase (cell.m_positions_delta_x.begin () + i);
+            cell.m_positions_delta_y.erase (cell.m_positions_delta_y.begin () + i);
+            cell.m_positions_delta_z.erase (cell.m_positions_delta_z.begin () + i);
+        }
+    }
+}
+
+void ParticlesGrid::removeWrongParticlesFromCells () {
+#pragma omp parallel
+    {
+        unsigned int i, j, k, l;
+        for (l = 0; l <= 2; l++) {
+#pragma omp for schedule(static, 1) nowait
+            for (i = l; i < m_size.x; i += 3) {
+                for (j = 0; j < m_size.y; j++) {
+                    for (k = 0; k < m_size.z; k++) {
+                        removeWrongParticlesFromCell (getCellAt (i, j, k));
+                    }
+                }
+            }
+        }
+    }
 }
 
 unsigned long ParticlesGrid::get_particle_count () {
@@ -158,8 +207,9 @@ unsigned long ParticlesGrid::get_particle_count () {
 }
 
 ParticleCell::ParticleCell (vec3l p_index, vec3l p_size, vec3f &p_bounds) {
-    m_corner000 = vec3f (p_index) / vec3f (p_size) * p_bounds;
-    m_corner111 = vec3f (p_index + 1L) / vec3f (p_size) * p_bounds;
+    m_index     = p_index;
+    m_corner000 = vec3f (m_index) / vec3f (p_size) * p_bounds;
+    m_corner111 = vec3f (m_index + 1L) / vec3f (p_size) * p_bounds;
 }
 
 void ParticleCell::add_particle (vec3f p_position, vec3f p_velocity, int p_id) {

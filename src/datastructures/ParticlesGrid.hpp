@@ -17,6 +17,7 @@ struct ParticleCell {
     std::vector<float>         m_positions_delta_z;
     std::vector<unsigned long> m_ids;
     vec3f                      m_corner000, m_corner111;
+    vec3l                      m_index;
     ParticleCell (vec3l p_index, vec3l p_size, vec3f &p_bounds);
     void add_particle (vec3f p_position, vec3f p_velocity, int p_id);
 };
@@ -32,6 +33,7 @@ class ParticlesGrid : public ParticlesBase {
     inline void run_simulation_insideCell (ParticleCell &cell);
     inline void run_simulation_betweenCells (ParticleCell &cell1, ParticleCell &cell2);
     inline void removeWrongParticlesFromCell (ParticleCell &cell);
+    inline void removeWrongParticlesFromCells ();
 
     public:
     ParticlesGrid (s_simulator_options *p_options, vec3f *p_bounds);
