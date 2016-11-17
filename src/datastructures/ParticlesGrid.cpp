@@ -7,17 +7,20 @@
 
 ParticlesGrid::ParticlesGrid (s_simulator_options *p_options, vec3f *p_bounds)
 : ParticlesBase (p_options, p_bounds) {
-    int  abs_size;
     long max_usefull_size = pow (m_options->m_particle_count, 1.0 / 3.0);
     m_stucture_name       = "Grid";
     m_max_id              = 0;
     // cut_off_radius*1.2 to allow particles to move before reconstruction of cells is needed
     m_size = vec3l::max (vec3l (*m_bounds / (m_options->m_cut_off_radius * 1.2f)), max_usefull_size);
     m_size += 1L; // round up to next natural number for cell-count
-    abs_size = m_size.x * m_size.y * m_size.z;
-    m_cells.reserve (abs_size);
-    for (int i = 0; i < abs_size; i++) {
-        m_cells.push_back (ParticleCell ());
+    m_cells.reserve (m_size.x * m_size.y * m_size.z);
+    unsigned int i, j, k;
+    for (i = 0; i < m_size.x; i++) {
+        for (j = 0; j < m_size.y; j++) {
+            for (k = 0; k < m_size.z; k++) {
+                m_cells.push_back (ParticleCell (vec3l (i, j, k), m_size, *m_bounds));
+            }
+        }
     }
 }
 ParticlesGrid::~ParticlesGrid () {
@@ -89,52 +92,30 @@ void ParticlesGrid::run_simulation_betweenCells (ParticleCell &cell1, ParticleCe
 void ParticlesGrid::run_simulation_iteration () {
 #pragma omp parallel
     {
-        unsigned int   i, j, k;
-#pragma omp for nowait schedule(static, 1)
-        for (i = 0; i < m_size.x - 1; i += 2) {
-            for (j = 0; j < m_size.y - 1; j++) {
-                for (k = 0; k < m_size.z - 1; k++) {
-                    /* 3*3*3=27 'neighbors'
-                     * -self => 26 'other cells'
-                     * Symmetric /2 => 13 Pairs
-                     */
-                    run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j + 1, k + 1)); // 1
-                    run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j, k)); // 2
-                    run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j + 1, k)); // 3
-                    run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j, k + 1)); // 4
-                    run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j + 1, k)); // 5
-                    run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j, k + 1)); // 6
-                    run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i, j + 1, k + 1)); // 7
-                    run_simulation_betweenCells (getCellAt (i + 1, j, k), getCellAt (i, j + 1, k)); // 8
-                    run_simulation_betweenCells (getCellAt (i + 1, j, k), getCellAt (i, j, k + 1)); // 9
-                    run_simulation_betweenCells (getCellAt (i, j + 1, k), getCellAt (i, j, k + 1)); // 10
-                    run_simulation_betweenCells (getCellAt (i + 1, j, k), getCellAt (i, j + 1, k + 1)); // 11
-                    run_simulation_betweenCells (getCellAt (i, j + 1, k), getCellAt (i + 1, j, k + 1)); // 12
-                    run_simulation_betweenCells (getCellAt (i, j, k + 1), getCellAt (i + 1, j + 1, k)); // 13
-                }
-            }
-        }
-#pragma omp for nowait schedule(guided, 5)
-        for (i = 1; i < m_size.x - 1; i += 2) {
-            for (j = 0; j < m_size.y - 1; j++) {
-                for (k = 0; k < m_size.z - 1; k++) {
-                    /* 3*3*3=27 'neighbors'
-                     * -self => 26 'other cells'
-                     * Symmetric /2 => 13 Pairs
-                     */
-                    run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j + 1, k + 1)); // 1
-                    run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j, k)); // 2
-                    run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j + 1, k)); // 3
-                    run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j, k + 1)); // 4
-                    run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j + 1, k)); // 5
-                    run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j, k + 1)); // 6
-                    run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i, j + 1, k + 1)); // 7
-                    run_simulation_betweenCells (getCellAt (i + 1, j, k), getCellAt (i, j + 1, k)); // 8
-                    run_simulation_betweenCells (getCellAt (i + 1, j, k), getCellAt (i, j, k + 1)); // 9
-                    run_simulation_betweenCells (getCellAt (i, j + 1, k), getCellAt (i, j, k + 1)); // 10
-                    run_simulation_betweenCells (getCellAt (i + 1, j, k), getCellAt (i, j + 1, k + 1)); // 11
-                    run_simulation_betweenCells (getCellAt (i, j + 1, k), getCellAt (i + 1, j, k + 1)); // 12
-                    run_simulation_betweenCells (getCellAt (i, j, k + 1), getCellAt (i + 1, j + 1, k)); // 13
+        unsigned int i, j, k, l;
+        for (l = 0; l <= 1; l++) {
+#pragma omp for schedule(static, 1) nowait
+            for (i = l; i < m_size.x; i += 2) {
+                for (j = 0; j < m_size.y; j++) {
+                    for (k = 0; k < m_size.z; k++) {
+                        /* 3*3*3=27 'neighbors'
+                         * -self => 26 'other cells'
+                         * Symmetric /2 => 13 Pairs
+                         */
+                        run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j + 1, k + 1)); // 1
+                        run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j, k)); // 2
+                        run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j + 1, k)); // 3
+                        run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j, k + 1)); // 4
+                        run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j + 1, k)); // 5
+                        run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i + 1, j, k + 1)); // 6
+                        run_simulation_betweenCells (getCellAt (i, j, k), getCellAt (i, j + 1, k + 1)); // 7
+                        run_simulation_betweenCells (getCellAt (i + 1, j, k), getCellAt (i, j + 1, k)); // 8
+                        run_simulation_betweenCells (getCellAt (i + 1, j, k), getCellAt (i, j, k + 1)); // 9
+                        run_simulation_betweenCells (getCellAt (i, j + 1, k), getCellAt (i, j, k + 1)); // 10
+                        run_simulation_betweenCells (getCellAt (i + 1, j, k), getCellAt (i, j + 1, k + 1)); // 11
+                        run_simulation_betweenCells (getCellAt (i, j + 1, k), getCellAt (i + 1, j, k + 1)); // 12
+                        run_simulation_betweenCells (getCellAt (i, j, k + 1), getCellAt (i + 1, j + 1, k)); // 13
+                    }
                 }
             }
         }
@@ -148,12 +129,26 @@ void ParticlesGrid::run_simulation_iteration () {
         }
     }
 }
+unsigned int ParticlesGrid::getCellIndex (int x, int y, int z) {
+    return x + m_size.x * (y + m_size.y * z);
+}
 ParticleCell &ParticlesGrid::getCellAt (int x, int y, int z) {
-    return m_cells[x + m_size.x * (y + m_size.y * z)];
+    x = (x + m_size.x) % m_size.x;
+    y = (x + m_size.y) % m_size.y;
+    z = (x + m_size.z) % m_size.z;
+    return m_cells[getCellIndex (x, y, z)];
 }
 ParticleCell &ParticlesGrid::getCellAt (vec3l coord) {
     return getCellAt (coord.y, coord.y, coord.z);
 }
+
+void ParticlesGrid::removeWrongParticlesFromCell (ParticleCell &cell) {
+    /*unsigned int i;
+    for (int i = cell.m_ids.size () - 1; i >= 0; i--) {
+        // TODO
+    }*/
+}
+
 unsigned long ParticlesGrid::get_particle_count () {
     unsigned long particle_count = 0;
     for (ParticleCell cell : m_cells) {
@@ -161,6 +156,12 @@ unsigned long ParticlesGrid::get_particle_count () {
     }
     return particle_count;
 }
+
+ParticleCell::ParticleCell (vec3l p_index, vec3l p_size, vec3f &p_bounds) {
+    m_corner000 = vec3f (p_index) / vec3f (p_size) * p_bounds;
+    m_corner111 = vec3f (p_index + 1L) / vec3f (p_size) * p_bounds;
+}
+
 void ParticleCell::add_particle (vec3f p_position, vec3f p_velocity, int p_id) {
     m_positions_x.push_back (p_position.x);
     m_positions_y.push_back (p_position.y);

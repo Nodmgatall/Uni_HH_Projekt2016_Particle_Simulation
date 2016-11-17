@@ -5,6 +5,9 @@
 #include "../tools/Debug.hpp"
 #include "ParticlesBase.hpp"
 
+/*
+ * Partikel, die auf der einen Seite das Grid verlassen, kommen auf der anderen Seite wieder rein.
+ * */
 struct ParticleCell {
     std::vector<float>         m_positions_x;
     std::vector<float>         m_positions_y;
@@ -13,6 +16,8 @@ struct ParticleCell {
     std::vector<float>         m_positions_delta_y;
     std::vector<float>         m_positions_delta_z;
     std::vector<unsigned long> m_ids;
+    vec3f                      m_corner000, m_corner111;
+    ParticleCell (vec3l p_index, vec3l p_size, vec3f &p_bounds);
     void add_particle (vec3f p_position, vec3f p_velocity, int p_id);
 };
 
@@ -21,10 +26,12 @@ class ParticlesGrid : public ParticlesBase {
     unsigned long             m_max_id;
     std::vector<ParticleCell> m_cells;
     vec3l                     m_size;
-    ParticleCell &getCellAt (vec3l coord);
-    ParticleCell &getCellAt (int x, int y, int z);
-    void run_simulation_insideCell (ParticleCell &cell);
-    void run_simulation_betweenCells (ParticleCell &cell1, ParticleCell &cell2);
+    inline unsigned int getCellIndex (int x, int y, int z);
+    inline ParticleCell &getCellAt (vec3l coord);
+    inline ParticleCell &getCellAt (int x, int y, int z);
+    inline void run_simulation_insideCell (ParticleCell &cell);
+    inline void run_simulation_betweenCells (ParticleCell &cell1, ParticleCell &cell2);
+    inline void removeWrongParticlesFromCell (ParticleCell &cell);
 
     public:
     ParticlesGrid (s_simulator_options *p_options, vec3f *p_bounds);
