@@ -66,20 +66,22 @@ void ParticlesGrid::step_2_calculate_inside_cell (ParticleCell &cell) {
     unsigned int       i, j;
     const unsigned int max   = cell.m_ids.size ();
     const unsigned int max_1 = max - 1;
-    for (i = 0; i < max_1; i++) {
-        for (j = i + 1; j < max; j++) {
-            lennard_jones_algorithm_2 (cell.m_positions_x[m_idx_a][i],
-                                       cell.m_positions_y[m_idx_a][i],
-                                       cell.m_positions_z[m_idx_a][i],
-                                       cell.m_positions_x[m_idx_b][i],
-                                       cell.m_positions_y[m_idx_b][i],
-                                       cell.m_positions_z[m_idx_b][i],
-                                       cell.m_positions_x[m_idx_a][j],
-                                       cell.m_positions_y[m_idx_a][j],
-                                       cell.m_positions_z[m_idx_a][j],
-                                       cell.m_positions_x[m_idx_b][j],
-                                       cell.m_positions_y[m_idx_b][j],
-                                       cell.m_positions_z[m_idx_b][j]);
+    if (max > 0) {
+        for (i = 0; i < max_1; i++) {
+            for (j = i + 1; j < max; j++) {
+                lennard_jones_algorithm_2 (cell.m_positions_x[m_idx_a][i],
+                                           cell.m_positions_y[m_idx_a][i],
+                                           cell.m_positions_z[m_idx_a][i],
+                                           cell.m_positions_x[m_idx_b][i],
+                                           cell.m_positions_y[m_idx_b][i],
+                                           cell.m_positions_z[m_idx_b][i],
+                                           cell.m_positions_x[m_idx_a][j],
+                                           cell.m_positions_y[m_idx_a][j],
+                                           cell.m_positions_z[m_idx_a][j],
+                                           cell.m_positions_x[m_idx_b][j],
+                                           cell.m_positions_y[m_idx_b][j],
+                                           cell.m_positions_z[m_idx_b][j]);
+            }
         }
     }
 }
@@ -111,85 +113,88 @@ void ParticlesGrid::step_4_swap_old_new_position (ParticleCell &cell) {
 }
 void ParticlesGrid::run_simulation_iteration () {
     m_iterations_until_rearange_particles--;
-#pragma omp parallel
-    {
-        unsigned int idx_x, idx_y, idx_z, parallel_offset;
-#pragma omp for schedule(guided, 5)
+    unsigned int idx_x, idx_y, idx_z, parallel_offset;
+    Benchmark::begin ("step 1+2", false);
+    //#pragma omp parallel for
+    for (idx_x = 0; idx_x < m_size.x; idx_x++) {
+        for (idx_y = 0; idx_y < m_size.y; idx_y++) {
+            for (idx_z = 0; idx_z < m_size.z; idx_z++) {
+                ParticleCell &cell = get_cell_at (idx_x, idx_y, idx_z);
+                step_1_prepare_cell (cell);
+                step_2_calculate_inside_cell (cell);
+            }
+        }
+    }
+    Benchmark::end ();
+    Benchmark::begin ("step 3", false);
+    for (parallel_offset = 0; parallel_offset < 2; parallel_offset++) {
+#pragma omp parallel for
+        for (idx_x = parallel_offset; idx_x < m_size.x; idx_x += 2) {
+            for (idx_y = 0; idx_y < m_size.y; idx_y++) {
+                for (idx_z = 0; idx_z < m_size.z; idx_z++) {
+                    /* 3*3*3=27 'neighbors'
+                     * -self => 26 'other cells'
+                     * Symmetric /2 => 13 Pairs
+                     */
+                    step_3_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
+                                                   get_cell_at (idx_x + 1, idx_y + 1, idx_z + 1)); // 1
+                    step_3_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
+                                                   get_cell_at (idx_x + 1, idx_y, idx_z)); // 2
+                    step_3_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
+                                                   get_cell_at (idx_x + 1, idx_y + 1, idx_z)); // 3
+                    step_3_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
+                                                   get_cell_at (idx_x + 1, idx_y, idx_z + 1)); // 4
+                    step_3_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
+                                                   get_cell_at (idx_x + 1, idx_y + 1, idx_z)); // 5
+                    step_3_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
+                                                   get_cell_at (idx_x + 1, idx_y, idx_z + 1)); // 6
+                    step_3_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
+                                                   get_cell_at (idx_x, idx_y + 1, idx_z + 1)); // 7
+                    step_3_calculate_betweenCells (get_cell_at (idx_x + 1, idx_y, idx_z),
+                                                   get_cell_at (idx_x, idx_y + 1, idx_z)); // 8
+                    step_3_calculate_betweenCells (get_cell_at (idx_x + 1, idx_y, idx_z),
+                                                   get_cell_at (idx_x, idx_y, idx_z + 1)); // 9
+                    step_3_calculate_betweenCells (get_cell_at (idx_x, idx_y + 1, idx_z),
+                                                   get_cell_at (idx_x, idx_y, idx_z + 1)); // 10
+                    step_3_calculate_betweenCells (get_cell_at (idx_x + 1, idx_y, idx_z),
+                                                   get_cell_at (idx_x, idx_y + 1, idx_z + 1)); // 11
+                    step_3_calculate_betweenCells (get_cell_at (idx_x, idx_y + 1, idx_z),
+                                                   get_cell_at (idx_x + 1, idx_y, idx_z + 1)); // 12
+                    step_3_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z + 1),
+                                                   get_cell_at (idx_x + 1, idx_y + 1, idx_z)); // 13
+                }
+            }
+        }
+    }
+    Benchmark::end ();
+    if (m_iterations_until_rearange_particles) {
+        Benchmark::begin ("step 4", false);
+#pragma omp parallel for
         for (idx_x = 0; idx_x < m_size.x; idx_x++) {
             for (idx_y = 0; idx_y < m_size.y; idx_y++) {
                 for (idx_z = 0; idx_z < m_size.z; idx_z++) {
-                    ParticleCell &cell = get_cell_at (idx_x, idx_y, idx_z);
-                    step_1_prepare_cell (cell);
-                    step_2_calculate_inside_cell (cell);
+                    step_4_swap_old_new_position (get_cell_at (idx_x, idx_y, idx_z));
                 }
             }
         }
-        for (parallel_offset = 0; parallel_offset < 2; parallel_offset++) {
-#pragma omp for schedule(static, 1) nowait
-            for (idx_x = parallel_offset; idx_x < m_size.x; idx_x += 2) {
+        Benchmark::end ();
+    } else {
+        Benchmark::begin ("step 4+5", false);
+        for (parallel_offset = 0; parallel_offset < 3; parallel_offset++) {
+#pragma omp parallel for
+            for (idx_x = parallel_offset; idx_x < m_size.x; idx_x += 3) {
                 for (idx_y = 0; idx_y < m_size.y; idx_y++) {
                     for (idx_z = 0; idx_z < m_size.z; idx_z++) {
-                        /* 3*3*3=27 'neighbors'
-                         * -self => 26 'other cells'
-                         * Symmetric /2 => 13 Pairs
-                         */
-                        step_3_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
-                                                       get_cell_at (idx_x + 1, idx_y + 1, idx_z + 1)); // 1
-                        step_3_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
-                                                       get_cell_at (idx_x + 1, idx_y, idx_z)); // 2
-                        step_3_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
-                                                       get_cell_at (idx_x + 1, idx_y + 1, idx_z)); // 3
-                        step_3_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
-                                                       get_cell_at (idx_x + 1, idx_y, idx_z + 1)); // 4
-                        step_3_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
-                                                       get_cell_at (idx_x + 1, idx_y + 1, idx_z)); // 5
-                        step_3_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
-                                                       get_cell_at (idx_x + 1, idx_y, idx_z + 1)); // 6
-                        step_3_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
-                                                       get_cell_at (idx_x, idx_y + 1, idx_z + 1)); // 7
-                        step_3_calculate_betweenCells (get_cell_at (idx_x + 1, idx_y, idx_z),
-                                                       get_cell_at (idx_x, idx_y + 1, idx_z)); // 8
-                        step_3_calculate_betweenCells (get_cell_at (idx_x + 1, idx_y, idx_z),
-                                                       get_cell_at (idx_x, idx_y, idx_z + 1)); // 9
-                        step_3_calculate_betweenCells (get_cell_at (idx_x, idx_y + 1, idx_z),
-                                                       get_cell_at (idx_x, idx_y, idx_z + 1)); // 10
-                        step_3_calculate_betweenCells (get_cell_at (idx_x + 1, idx_y, idx_z),
-                                                       get_cell_at (idx_x, idx_y + 1, idx_z + 1)); // 11
-                        step_3_calculate_betweenCells (get_cell_at (idx_x, idx_y + 1, idx_z),
-                                                       get_cell_at (idx_x + 1, idx_y, idx_z + 1)); // 12
-                        step_3_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z + 1),
-                                                       get_cell_at (idx_x + 1, idx_y + 1, idx_z)); // 13
+                        ParticleCell &cell = get_cell_at (idx_x, idx_y, idx_z);
+                        step_4_swap_old_new_position (cell);
+                        step_5_remove_wrong_particles_from_cell (cell);
                     }
                 }
             }
         }
-#pragma omp barrier
-        if (m_iterations_until_rearange_particles) {
-#pragma omp for schedule(guided, 5)
-            for (idx_x = 0; idx_x < m_size.x; idx_x++) {
-                for (idx_y = 0; idx_y < m_size.y; idx_y++) {
-                    for (idx_z = 0; idx_z < m_size.z; idx_z++) {
-                        step_4_swap_old_new_position (get_cell_at (idx_x, idx_y, idx_z));
-                    }
-                }
-            }
-        } else {
-            for (parallel_offset = 0; parallel_offset < 3; parallel_offset++) {
-#pragma omp for schedule(guided, 5) nowait
-                for (idx_x = parallel_offset; idx_x < m_size.x; idx_x += 3) {
-                    for (idx_y = 0; idx_y < m_size.y; idx_y++) {
-                        for (idx_z = 0; idx_z < m_size.z; idx_z++) {
-                            ParticleCell &cell = get_cell_at (idx_x, idx_y, idx_z);
-                            step_4_swap_old_new_position (cell);
-                            step_5_remove_wrong_particles_from_cell (cell);
-                        }
-                    }
-                }
-            }
-#pragma omp barrier
-            m_iterations_until_rearange_particles = m_iterations_between_rearange_particles;
-        }
+        Benchmark::end ();
     }
+    m_iterations_until_rearange_particles = m_iterations_between_rearange_particles;
     m_idx_b = !(m_idx_a = m_idx_b);
 }
 unsigned long ParticlesGrid::get_cell_index (long x, long y, long z) {
