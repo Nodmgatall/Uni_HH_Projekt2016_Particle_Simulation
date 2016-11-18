@@ -205,16 +205,7 @@ void ParticlesList::calculate_distances_squared (unsigned long       particle_id
 void ParticlesList::serialize (std::shared_ptr<ParticleFileWriter> p_writer) {
 
     Benchmark::begin ("saving the data", false);
-    p_writer->saveData (&m_positions_x,
-                        &m_positions_y,
-                        &m_positions_z,
-                        &m_velocities_x,
-                        &m_velocities_y,
-                        &m_velocities_z,
-                        &m_accelerations_x,
-                        &m_accelerations_y,
-                        &m_accelerations_z,
-                        &m_particle_ids);
+    p_writer->saveData (&m_positions_x, &m_positions_y, &m_positions_z, &m_particle_ids);
     Benchmark::end ();
 }
 /* most likely not used

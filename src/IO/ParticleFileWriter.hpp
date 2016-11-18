@@ -19,12 +19,6 @@ class ParticleFileWriter {
     void saveData (std::vector<float> *        p_positions_x,
                    std::vector<float> *        p_positions_y,
                    std::vector<float> *        p_positions_z,
-                   std::vector<float> *        p_velocities_x,
-                   std::vector<float> *        p_velocities_y,
-                   std::vector<float> *        p_velocities_z,
-                   std::vector<float> *        p_accelerations_x,
-                   std::vector<float> *        p_accelerations_y,
-                   std::vector<float> *        p_accelerations_z,
                    std::vector<unsigned long> *ids);
 
     ParticleFileWriter (std::map<e_particle_variable, bool> *p_write_modes);
