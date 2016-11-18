@@ -21,7 +21,7 @@ cmake:
 	cd .. && cmake .
 
 build: format
-	cd .. && $(MAKE)
+	cd .. && $(MAKE) -j 8
 
 rmlog: format
 	rm -rf ../logdata
