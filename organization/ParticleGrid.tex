@@ -8,11 +8,13 @@
 \usepackage{listings}
 \usepackage{amsmath}
 \usepackage{pxfonts}
+\usepackage{verbatim}
+\usepackage{commath}
 \usepackage{pgfplots}
- \usepackage{pgfplotstable}
- \usepackage{hyperref}
- \usepackage{filecontents}
-\title{ParticleGrid}
+\usepackage{pgfplotstable}
+\usepackage{hyperref}
+\usepackage{filecontents}
+\title{Partikel Simulation Notizen von}
 \author{Benjamin Warnke}
 \date{\today}
 
@@ -26,7 +28,7 @@
 \begin{document}
 
 \maketitle
-
+\begin{comment}
 \section*{Skizze 1}
 
 \setlength{\unitlength}{50pt}
@@ -60,26 +62,47 @@
 \put(4.5,-3.5){\line(1,-1){1}}
 \end{picture}
 \newpage
+\end{comment}
 
 
 
 
 
+\section*{Eigene Definitionen Basis-Variablen}
+\begin{itemize}
+	\item $i\rightarrow$ Partikel i
+	\item $j\rightarrow$ Partikel j
+	\item $x\rightarrow$ Position
+	\item $v\rightarrow$ Geschwindigkeit
+	\item $a\rightarrow$ Beschleunigung
+	\item $m\rightarrow$ Masse
+	\item $n\rightarrow$ Zeitschrittnummer
+	\item $\Delta t\rightarrow$ Zeitschrittgröße
+	\item $\sigma\rightarrow$ ???
+	\item $\epsilon\rightarrow$ ???
+\end{itemize}
+\section*{Eigene Definitionen Initialisierungen}
+\begin{align}
+\vec{x}_0&=random\\
+	\vec{v}_0&=\vec{0}\\
+	\vec{a}_0&=\vec{0}\\
+	r_{i,j}&=\norm{\left(\vec{x}_{j}-\vec{x}_{i}\right)}\\
+	\sigma&=1\\
+	\epsilon&=1\\
+	A_{i,j}&=48\epsilon_{i,j}\sigma_{i,j}^{12}\\
+	B_{i,j}&=24\epsilon_{i,j}\sigma_{i,j}^{6}\\
+\end{align}
 
-
-
+es gilt aufgrund folgender Definitionen
+\begin{align}
+	\vec{x}_1&=\vec{x}_0\\
+\end{align}
 
 
 \section*{Lennard Jones}
 Siehe Rapport The Art of Molecular Dynamics Simulation Seite 12 unten.\\
-\begin{itemize}
-	\item $i,j$ Partikel Indices
-	\item $r_{ij}$ Abstand der Partikel i und j
-	\item $\sigma$ ???
-	\item $\epsilon$ ???
-\end{itemize}
 \begin{align*}
-	f_{ij}&=\left(\frac{48\epsilon}{\sigma^2}\right)\left[\left(\frac{\sigma}{r_{ij}}\right)^{14}-\frac{1}{2}\left(\frac{\sigma}{r_{ij}}\right)^8\right]r_{ij}
+	f_{n,i,j}&=\left(\frac{48\epsilon_{i,j}}{\sigma_{i,j}^2}\right)\left[\left(\frac{\sigma_{i,j}}{r_{n,i,j}}\right)^{14}-\frac{1}{2}\left(\frac{\sigma_{i,j}}{r_{n,i,j}}\right)^8\right]r_{n,i,j}
 \end{align*}
 \section*{Verlet Algorithmus}
 \begin{itemize}
@@ -89,10 +112,9 @@ Siehe Rapport The Art of Molecular Dynamics Simulation Seite 12 unten.\\
 \end{itemize}
 Siehe Wikipedia \url{https://de.wikipedia.org/wiki/Verlet-Algorithmus}\\
 \begin{align*}
-	\vec{x}_1&=\vec{x}_0+\vec{v}_0t+\frac{1}{2}\vec{a}_0\Delta t^2\\
-	\vec{x}_{n+1}&=2\vec{x}_n-\vec{x}_{n-1}+\vec{a}_n\Delta t^2
+	\vec{x}_{1,i}&=\vec{x}_{0,i}+\vec{v}_{0,i}\Delta t+\frac{1}{2}\vec{a}_{0,i}\Delta t^2\\
+	\vec{x}_{n+1,i}&=2\vec{x}_{n,i}-\vec{x}_{n-1,i}+\vec{a}_{n,i}\Delta t^2
 \end{align*}
-
 \section*{Kraft $\leftrightarrow$ Beschleunigung}
 \begin{align*}
 	f&=ma\\
@@ -100,33 +122,25 @@ Siehe Wikipedia \url{https://de.wikipedia.org/wiki/Verlet-Algorithmus}\\
 \end{align*}
 
 \section*{gerichtete Kraft von i nach j}
-\begin{itemize}
-	\item $x_{i}$ Position des Partikels i
-	\item $x_{j}$ Position des Partikels j
-	\item $a$ Kraft
-\end{itemize}
-Achtung Normieren der Richtung !!\\
 \begin{align*}
-	\vec{a}=\frac{a}{r_{ij}}\left(\vec{x}_{j}-\vec{x}_{i}\right)
+	\vec{a}_{n,i,j}=\frac{a_{n,i,j}}{r_{n,i,j}}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)
 \end{align*}
 \newpage
 \section*{Alles Zusammen}
 \begin{align}
-	\vec{x}_{n+1}&=2\vec{x}_n-\vec{x}_{n-1}+\vec{a}_n\Delta t^2\\
-	&=2\vec{x}_{ni}-\vec{x}_{ni-1}+\frac{a_n}{r_{nij}}\left(\vec{x}_{n,j}-\vec{x}_{ni}\right)\Delta t^2\\
-	&=2\vec{x}_{ni}-\vec{x}_{ni-1}+\frac{\frac{f_{nij}}{m_i}}{r_{nij}}\left(\vec{x}_{n,j}-\vec{x}_{ni}\right)\Delta t^2\\
-	&=2\vec{x}_{ni}-\vec{x}_{ni-1}+\frac{f_{nij}}{m_ir_{nij}}\left(\vec{x}_{n,j}-\vec{x}_{ni}\right)\Delta t^2\\
-	&=2\vec{x}_{ni}-\vec{x}_{ni-1}+\frac{\left(\frac{48\epsilon_{ij}}{\sigma_{ij}^2}\right)\left[\left(\frac{\sigma_{ij}}{r_{nij}}\right)^{14}-\frac{1}{2}\left(\frac{\sigma_{ij}}{r_{nij}}\right)^8\right]r_{nij}}{m_ir_{nij}}\left(\vec{x}_{n,j}-\vec{x}_{ni}\right)\Delta t^2\\
-	&=2\vec{x}_{ni}-\vec{x}_{ni-1}+\frac{\left(\frac{48\epsilon_{ij}}{\sigma_{ij}^2}\right)\left[\left(\frac{\sigma_{ij}}{r_{nij}}\right)^{14}-\frac{1}{2}\left(\frac{\sigma_{ij}}{r_{nij}}\right)^8\right]}{m_i}\left(\vec{x}_{n,j}-\vec{x}_{ni}\right)\Delta t^2\\
-	&=2\vec{x}_{ni}-\vec{x}_{ni-1}+\frac{\left(\frac{48\epsilon_{ij}}{\sigma_{ij}^2}\right)\left[\left(\frac{\sigma_{ij}^{14}}{r_{nij}^{14}}\right)-\frac{1}{2}\left(\frac{\sigma_{ij}^8}{r_{nij}^8}\right)\right]}{m_i}\left(\vec{x}_{n,j}-\vec{x}_{ni}\right)\Delta t^2\\
-	&=2\vec{x}_{ni}-\vec{x}_{ni-1}+\frac{\left(48\epsilon_{ij}\sigma_{ij}^{6}\right)\left[\left(\frac{\sigma_{ij}^{6}}{r_{nij}^{14}}\right)-\left(\frac{0.5}{r_{nij}^8}\right)\right]}{m_i}\left(\vec{x}_{n,j}-\vec{x}_{ni}\right)\Delta t^2\\
-	&=2\vec{x}_{ni}-\vec{x}_{ni-1}+\frac{\left(48\epsilon_{ij}\sigma_{ij}^{6}\right)\left[\left(\frac{\sigma_{ij}^{6}}{r_{nij}^{14}}\right)-\left(\frac{0.5r_{nij}^6}{r_{nij}^{14}}\right)\right]}{m_i}\left(\vec{x}_{n,j}-\vec{x}_{ni}\right)\Delta t^2\\
-	&=2\vec{x}_{ni}-\vec{x}_{ni-1}+\frac{\left(48\epsilon_{ij}\sigma_{ij}^{6}\right)\left[\frac{\sigma_{ij}^{6}-0.5r_{nij}^6}{r_{nij}^{14}}\right]}{m_i}\left(\vec{x}_{n,j}-\vec{x}_{ni}\right)\Delta t^2\\
-	&=2\vec{x}_{ni}-\vec{x}_{ni-1}+\frac{\frac{48\epsilon_{ij}\sigma_{ij}^{6}\sigma_{ij}^{6}-24\epsilon_{ij}\sigma_{ij}^{6}r_{nij}^6}{r_{nij}^{14}}}{m_i}\left(\vec{x}_{n,j}-\vec{x}_{ni}\right)\Delta t^2\\
-	&=2\vec{x}_{ni}-\vec{x}_{ni-1}+\frac{48\epsilon_{ij}\sigma_{ij}^{12}-24\epsilon_{ij}\sigma_{ij}^{6}r_{nij}^6}{r_{nij}^{14}m_i}\left(\vec{x}_{n,j}-\vec{x}_{ni}\right)\Delta t^2\\
-	A&=48\epsilon_{ij}\sigma_{ij}^{12}\\
-	B&=24\epsilon_{ij}\sigma_{ij}^{6}\\
-&=2\vec{x}_{ni}-\vec{x}_{ni-1}+\frac{A-Br_{nij}^6}{r_{nij}^{14}m_i}\left(\vec{x}_{n,j}-\vec{x}_{ni}\right)\Delta t^2\\
+	\vec{x}_{n+1,i}&=2\vec{x}_{n,i}-\vec{x}_{n-1,i}+\vec{a}_{n,i,j}\Delta t^2\\
+	&=2\vec{x}_{n,i}-\vec{x}_{n-1,i}+\frac{a_{n,i,j}}{r_{n,i,j}}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\
+	&=2\vec{x}_{n,i}-\vec{x}_{n-1,i}+\frac{\frac{f_{n,i,j}}{m_i}}{r_{n,i,j}}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\
+	&=2\vec{x}_{n,i}-\vec{x}_{n-1,i}+\frac{f_{n,i,j}}{m_ir_{n,i,j}}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\
+	&=2\vec{x}_{n,i}-\vec{x}_{n-1,i}+\frac{\left(\frac{48\epsilon_{i,j}}{\sigma_{i,j}^2}\right)\left[\left(\frac{\sigma_{i,j}}{r_{n,i,j}}\right)^{14}-\frac{1}{2}\left(\frac{\sigma_{i,j}}{r_{n,i,j}}\right)^8\right]r_{n,i,j}}{m_ir_{n,i,j}}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\
+	&=2\vec{x}_{n,i}-\vec{x}_{n-1,i}+\frac{\left(\frac{48\epsilon_{i,j}}{\sigma_{i,j}^2}\right)\left[\left(\frac{\sigma_{i,j}}{r_{n,i,j}}\right)^{14}-\frac{1}{2}\left(\frac{\sigma_{i,j}}{r_{n,i,j}}\right)^8\right]}{m_i}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\
+	&=2\vec{x}_{n,i}-\vec{x}_{n-1,i}+\frac{\left(\frac{48\epsilon_{i,j}}{\sigma_{i,j}^2}\right)\left[\left(\frac{\sigma_{i,j}^{14}}{r_{n,i,j}^{14}}\right)-\frac{1}{2}\left(\frac{\sigma_{i,j}^8}{r_{n,i,j}^8}\right)\right]}{m_i}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\
+	&=2\vec{x}_{n,i}-\vec{x}_{n-1,i}+\frac{\left(48\epsilon_{i,j}\sigma_{i,j}^{6}\right)\left[\left(\frac{\sigma_{i,j}^{6}}{r_{n,i,j}^{14}}\right)-\left(\frac{0.5}{r_{n,i,j}^8}\right)\right]}{m_i}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\
+	&=2\vec{x}_{n,i}-\vec{x}_{n-1,i}+\frac{\left(48\epsilon_{i,j}\sigma_{i,j}^{6}\right)\left[\left(\frac{\sigma_{i,j}^{6}}{r_{n,i,j}^{14}}\right)-\left(\frac{0.5r_{n,i,j}^6}{r_{n,i,j}^{14}}\right)\right]}{m_i}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\
+	&=2\vec{x}_{n,i}-\vec{x}_{n-1,i}+\frac{\left(48\epsilon_{i,j}\sigma_{i,j}^{6}\right)\left[\frac{\sigma_{i,j}^{6}-0.5r_{n,i,j}^6}{r_{n,i,j}^{14}}\right]}{m_i}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\
+	&=2\vec{x}_{n,i}-\vec{x}_{n-1,i}+\frac{\frac{48\epsilon_{i,j}\sigma_{i,j}^{6}\sigma_{i,j}^{6}-24\epsilon_{i,j}\sigma_{i,j}^{6}r_{n,i,j}^6}{r_{n,i,j}^{14}}}{m_i}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\
+	&=2\vec{x}_{n,i}-\vec{x}_{n-1,i}+\frac{48\epsilon_{i,j}\sigma_{i,j}^{12}-24\epsilon_{i,j}\sigma_{i,j}^{6}r_{n,i,j}^6}{r_{n,i,j}^{14}m_i}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\
+	&=2\vec{x}_{n,i}-\vec{x}_{n-1,i}+\frac{A_{i,j}-B_{i,j}r_{n,i,j}^6}{r_{n,i,j}^{14}m_i}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\
 \end{align}
 
 
