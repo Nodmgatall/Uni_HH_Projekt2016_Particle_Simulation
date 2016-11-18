@@ -4,6 +4,7 @@
 #include "../IO/OptionsSimulation.hpp"
 #include "../IO/ParticleFileLoader.hpp"
 #include "../IO/ParticleFileWriter.hpp"
+#include "../algorithms/LennardJonesAlgorithm.hpp"
 #include "../vec3.hpp"
 #include <iostream>
 #include <vector>
