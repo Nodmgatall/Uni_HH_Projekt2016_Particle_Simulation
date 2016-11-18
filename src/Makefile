@@ -10,6 +10,12 @@ clean: format
 	rm -f ../CMakeCache.txt
 	rm -f ../Makefile
 	rm -f ../cmake_install.cmake
+	rm -rf ../xml
+	rm -rf ../html
+	rm -rf ../latex
+
+doxygen:
+	cd .. && doxygen
 
 cmake:
 	cd .. && cmake .
