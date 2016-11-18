@@ -10,3 +10,5 @@
 /logdata/
 .config_sim
 /.DS_Store
+/html/
+/latex/
