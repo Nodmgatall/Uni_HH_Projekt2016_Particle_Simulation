@@ -3,6 +3,7 @@
 #include "Definitions.hpp"
 #include "IO/OptionHandler.hpp"
 #include "ParticleSimulator.hpp"
+#include "algorithms/LennardJonesAlgorithm.hpp"
 
 void print_header () {
     DEBUG_BEGIN << DEBUG_END;
@@ -48,6 +49,8 @@ int main (int argc, char **argv) {
 
     std::unique_ptr<ParticleSimulator> particle_simulator (
         new ParticleSimulator (&simulator_options, &generator_options));
+
+    LennardJonesAlgorithm::init (&simulator_options);
 
     Benchmark::begin ("everything", false);
     particle_simulator->init_particle_data ();
