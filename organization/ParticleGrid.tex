@@ -114,24 +114,13 @@ Achtung Normieren der Richtung !!\\
 \begin{align}
 	\vec{x}_{n+1}&=2\vec{x}_n-\vec{x}_{n-1}+\vec{a}_n\Delta t^2\\
 	&=2\vec{x}_{i,n}-\vec{x}_{i,n-1}+\frac{a_n}{r_{n,ij}}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\
-	&=2\vec{x}_{i,n}-\vec{x}_{i,n-1}+\frac{\frac{f_{n,ij}}{m_i}}{r_{n,ij}}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\	
-	&=2\vec{x}_{i,n}-\vec{x}_{i,n-1}+\frac{m_i}{f_{n,ij}r_{n,ij}}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\	
-	&=2\vec{x}_{i,n}-\vec{x}_{i,n-1}+\frac{m_i}{\left(\frac{48\epsilon_{ij}}{\sigma_{ij}^2}\right)\left[\left(\frac{\sigma_{ij}}{r_{n,ij}}\right)^{14}-\frac{1}{2}\left(\frac{\sigma_{ij}}{r_{n,ij}}\right)^8\right]r_{n,ij}r_{n,ij}}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\	
-	&=2\vec{x}_{i,n}-\vec{x}_{i,n-1}+\frac{m_i}{\left(\frac{48\epsilon_{ij}}{\sigma_{ij}^2}\right)\left[\left(\frac{\sigma_{ij}^{14}}{r_{n,ij}^{14}}\right)-\frac{1}{2}\left(\frac{\sigma_{ij}^8}{r_{n,ij}^8}\right)\right]r_{n,ij}r_{n,ij}}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\	
-	&=2\vec{x}_{i,n}-\vec{x}_{i,n-1}+\frac{m_i}{\left(\frac{48\epsilon_{ij}}{\sigma_{ij}^2}\right)\left[\left(\frac{\sigma_{ij}^{14}}{r_{n,ij}^{14}}\right)-\left(\frac{\sigma_{ij}^8}{2r_{n,ij}^8}\right)\right]r_{n,ij}r_{n,ij}}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\	
-	&=2\vec{x}_{i,n}-\vec{x}_{i,n-1}+\frac{m_i}{\left(\frac{48\epsilon_{ij}}{\sigma_{ij}^2}\right)\left[\left(\frac{\sigma_{ij}^{14}}{r_{n,ij}^{12}}\right)-\left(\frac{\sigma_{ij}^8}{2r_{n,ij}^6}\right)\right]}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\	
-	&=2\vec{x}_{i,n}-\vec{x}_{i,n-1}+\frac{m_i}{\left(\frac{48\epsilon_{ij}}{\sigma_{ij}^2}\right)\left[\frac{\sigma_{ij}^{14}}{r_{n,ij}^{12}}-\frac{\sigma_{ij}^8}{2r_{n,ij}^6}\right]}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\	
-\end{align}
-
-\begin{align}
-	\vec{x}_{n+1}&=2\vec{x}_n-\vec{x}_{n-1}+\vec{a}_n\Delta t^2\\
-	&=2\vec{x}_{i,n}-\vec{x}_{i,n-1}+\frac{a_n}{r_{n,ij}}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\
 	&=2\vec{x}_{i,n}-\vec{x}_{i,n-1}+\frac{\frac{f_{n,ij}}{m_i}}{r_{n,ij}}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\
 	&=2\vec{x}_{i,n}-\vec{x}_{i,n-1}+\frac{f_{n,ij}}{m_ir_{n,ij}}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\
 	&=2\vec{x}_{i,n}-\vec{x}_{i,n-1}+\frac{\left(\frac{48\epsilon_{n,ij}}{\sigma_{n,ij}^2}\right)\left[\left(\frac{\sigma_{n,ij}}{r_{n,ij}}\right)^{14}-\frac{1}{2}\left(\frac{\sigma_{n,ij}}{r_{n,ij}}\right)^8\right]r_{n,ij}}{m_ir_{n,ij}}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\
 	&=2\vec{x}_{i,n}-\vec{x}_{i,n-1}+\frac{\left(\frac{48\epsilon_{n,ij}}{\sigma_{n,ij}^2}\right)\left[\left(\frac{\sigma_{n,ij}}{r_{n,ij}}\right)^{14}-\frac{1}{2}\left(\frac{\sigma_{n,ij}}{r_{n,ij}}\right)^8\right]}{m_i}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\
 	&=2\vec{x}_{i,n}-\vec{x}_{i,n-1}+\frac{\left(\frac{48\epsilon_{n,ij}}{\sigma_{n,ij}^2}\right)\left[\left(\frac{\sigma_{n,ij}^{14}}{r_{n,ij}^{14}}\right)-\frac{1}{2}\left(\frac{\sigma_{n,ij}^8}{r_{n,ij}^8}\right)\right]}{m_i}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\
 \end{align}
+
 
 \section*{Datenstrukturen}
 \begin{itemize}
