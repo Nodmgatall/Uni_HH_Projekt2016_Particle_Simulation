@@ -10,6 +10,7 @@
 \usepackage{pxfonts}
 \usepackage{pgfplots}
  \usepackage{pgfplotstable}
+ \usepackage{hyperref}
  \usepackage{filecontents}
 \title{ParticleGrid}
 \author{Benjamin Warnke}
@@ -58,4 +59,100 @@
 \put(4.5,-4.5){\line(1,+0){1}}
 \put(4.5,-3.5){\line(1,-1){1}}
 \end{picture}
+\newpage
+
+
+
+
+
+
+
+
+
+
+\section*{Lennard Jones}
+Siehe Rapport The Art of Molecular Dynamics Simulation Seite 12 unten.\\
+\begin{itemize}
+	\item $i,j$ Partikel Indices
+	\item $r_{ij}$ Abstand der Partikel i und j
+	\item $\sigma$ ???
+	\item $\epsilon$ ???
+\end{itemize}
+\begin{align*}
+	f_{ij}&=\left(\frac{48\epsilon}{\sigma^2}\right)\left[\left(\frac{\sigma}{r_{ij}}\right)^{14}-\frac{1}{2}\left(\frac{\sigma}{r_{ij}}\right)^8\right]r_{ij}
+\end{align*}
+\section*{Verlet Algorithmus}
+\begin{itemize}
+	\item $n$ Zeitschritt Nummer
+	\item $x_{n}$ Position zum Zeitpunkt n
+	\item $\Delta t$ Zeitschritt Größe
+\end{itemize}
+Siehe Wikipedia \url{https://de.wikipedia.org/wiki/Verlet-Algorithmus}\\
+\begin{align*}
+	\vec{x}_1&=\vec{x}_0+\vec{v}_0t+\frac{1}{2}\vec{a}_0\Delta t^2\\
+	\vec{x}_{n+1}&=2\vec{x}_n-\vec{x}_{n-1}+\vec{a}_n\Delta t^2
+\end{align*}
+
+\section*{Kraft $\leftrightarrow$ Beschleunigung}
+\begin{align*}
+	f&=ma\\
+	a&=\frac{f}{m}
+\end{align*}
+
+\section*{gerichtete Kraft von i nach j}
+\begin{itemize}
+	\item $x_{i}$ Position des Partikels i
+	\item $x_{j}$ Position des Partikels j
+	\item $a$ Kraft
+\end{itemize}
+Achtung Normieren der Richtung !!\\
+\begin{align*}
+	\vec{a}=\frac{a}{r_{ij}}\left(\vec{x}_{j}-\vec{x}_{i}\right)
+\end{align*}
+\newpage
+\section*{Alles Zusammen}
+\begin{align}
+	\vec{x}_{n+1}&=2\vec{x}_n-\vec{x}_{n-1}+\vec{a}_n\Delta t^2\\
+	&=2\vec{x}_{i,n}-\vec{x}_{i,n-1}+\frac{a_n}{r_{n,ij}}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\
+	&=2\vec{x}_{i,n}-\vec{x}_{i,n-1}+\frac{\frac{f_{n,ij}}{m_i}}{r_{n,ij}}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\	
+	&=2\vec{x}_{i,n}-\vec{x}_{i,n-1}+\frac{m_i}{f_{n,ij}r_{n,ij}}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\	
+	&=2\vec{x}_{i,n}-\vec{x}_{i,n-1}+\frac{m_i}{\left(\frac{48\epsilon_{ij}}{\sigma_{ij}^2}\right)\left[\left(\frac{\sigma_{ij}}{r_{n,ij}}\right)^{14}-\frac{1}{2}\left(\frac{\sigma_{ij}}{r_{n,ij}}\right)^8\right]r_{n,ij}r_{n,ij}}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\	
+	&=2\vec{x}_{i,n}-\vec{x}_{i,n-1}+\frac{m_i}{\left(\frac{48\epsilon_{ij}}{\sigma_{ij}^2}\right)\left[\left(\frac{\sigma_{ij}^{14}}{r_{n,ij}^{14}}\right)-\frac{1}{2}\left(\frac{\sigma_{ij}^8}{r_{n,ij}^8}\right)\right]r_{n,ij}r_{n,ij}}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\	
+	&=2\vec{x}_{i,n}-\vec{x}_{i,n-1}+\frac{m_i}{\left(\frac{48\epsilon_{ij}}{\sigma_{ij}^2}\right)\left[\left(\frac{\sigma_{ij}^{14}}{r_{n,ij}^{14}}\right)-\left(\frac{\sigma_{ij}^8}{2r_{n,ij}^8}\right)\right]r_{n,ij}r_{n,ij}}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\	
+	&=2\vec{x}_{i,n}-\vec{x}_{i,n-1}+\frac{m_i}{\left(\frac{48\epsilon_{ij}}{\sigma_{ij}^2}\right)\left[\left(\frac{\sigma_{ij}^{14}}{r_{n,ij}^{12}}\right)-\left(\frac{\sigma_{ij}^8}{2r_{n,ij}^6}\right)\right]}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\	
+	&=2\vec{x}_{i,n}-\vec{x}_{i,n-1}+\frac{m_i}{\left(\frac{48\epsilon_{ij}}{\sigma_{ij}^2}\right)\left[\frac{\sigma_{ij}^{14}}{r_{n,ij}^{12}}-\frac{\sigma_{ij}^8}{2r_{n,ij}^6}\right]}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\	
+\end{align}
+
+\begin{align}
+	\vec{x}_{n+1}&=2\vec{x}_n-\vec{x}_{n-1}+\vec{a}_n\Delta t^2\\
+	&=2\vec{x}_{i,n}-\vec{x}_{i,n-1}+\frac{a_n}{r_{n,ij}}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\
+	&=2\vec{x}_{i,n}-\vec{x}_{i,n-1}+\frac{\frac{f_{n,ij}}{m_i}}{r_{n,ij}}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\
+	&=2\vec{x}_{i,n}-\vec{x}_{i,n-1}+\frac{f_{n,ij}}{m_ir_{n,ij}}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\
+	&=2\vec{x}_{i,n}-\vec{x}_{i,n-1}+\frac{\left(\frac{48\epsilon_{n,ij}}{\sigma_{n,ij}^2}\right)\left[\left(\frac{\sigma_{n,ij}}{r_{n,ij}}\right)^{14}-\frac{1}{2}\left(\frac{\sigma_{n,ij}}{r_{n,ij}}\right)^8\right]r_{n,ij}}{m_ir_{n,ij}}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\
+	&=2\vec{x}_{i,n}-\vec{x}_{i,n-1}+\frac{\left(\frac{48\epsilon_{n,ij}}{\sigma_{n,ij}^2}\right)\left[\left(\frac{\sigma_{n,ij}}{r_{n,ij}}\right)^{14}-\frac{1}{2}\left(\frac{\sigma_{n,ij}}{r_{n,ij}}\right)^8\right]}{m_i}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\
+	&=2\vec{x}_{i,n}-\vec{x}_{i,n-1}+\frac{\left(\frac{48\epsilon_{n,ij}}{\sigma_{n,ij}^2}\right)\left[\left(\frac{\sigma_{n,ij}^{14}}{r_{n,ij}^{14}}\right)-\frac{1}{2}\left(\frac{\sigma_{n,ij}^8}{r_{n,ij}^8}\right)\right]}{m_i}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\
+\end{align}
+
+\section*{Datenstrukturen}
+\begin{itemize}
+	\item Partikel
+	\begin{itemize}
+		\item letzte     Position
+		\item aktuelle Position
+		\item nächste Position
+		\item Partikel-Typ
+	\end{itemize}
+	\item Partikel-Typ
+	\begin{itemize}
+		\item Masse
+		\item $\sigma$ in Verbindung mit jedem beliebigen anderen Partikel-Typ
+		\item $\epsilon$ in Verbindung mit jedem beliebigen anderen Partikel-Typ
+	\end{itemize}
+\end{itemize}
+
+
+
+
+
+
 \end{document}
