@@ -45,12 +45,12 @@ void ParticlesGrid::step_1_prepare_cell (ParticleCell &cell) {
     unsigned int       i;
     const unsigned int max = cell.m_ids.size ();
     for (i = 0; i < max; i++) {
-        lennard_jones_algorithm_1 (cell.m_positions_x[m_idx_a][i],
-                                   cell.m_positions_y[m_idx_a][i],
-                                   cell.m_positions_z[m_idx_a][i],
-                                   cell.m_positions_x[m_idx_b][i],
-                                   cell.m_positions_y[m_idx_b][i],
-                                   cell.m_positions_z[m_idx_b][i]);
+        LennardJonesAlgorithm::step_1 (cell.m_positions_x[m_idx_a][i],
+                                       cell.m_positions_y[m_idx_a][i],
+                                       cell.m_positions_z[m_idx_a][i],
+                                       cell.m_positions_x[m_idx_b][i],
+                                       cell.m_positions_y[m_idx_b][i],
+                                       cell.m_positions_z[m_idx_b][i]);
     }
 }
 void ParticlesGrid::step_2_calculate_inside_cell (ParticleCell &cell) {
@@ -60,18 +60,18 @@ void ParticlesGrid::step_2_calculate_inside_cell (ParticleCell &cell) {
     if (max > 0) {
         for (i = 0; i < max_1; i++) {
             for (j = i + 1; j < max; j++) {
-                lennard_jones_algorithm_2 (cell.m_positions_x[m_idx_a][i],
-                                           cell.m_positions_y[m_idx_a][i],
-                                           cell.m_positions_z[m_idx_a][i],
-                                           cell.m_positions_x[m_idx_b][i],
-                                           cell.m_positions_y[m_idx_b][i],
-                                           cell.m_positions_z[m_idx_b][i],
-                                           cell.m_positions_x[m_idx_a][j],
-                                           cell.m_positions_y[m_idx_a][j],
-                                           cell.m_positions_z[m_idx_a][j],
-                                           cell.m_positions_x[m_idx_b][j],
-                                           cell.m_positions_y[m_idx_b][j],
-                                           cell.m_positions_z[m_idx_b][j]);
+                LennardJonesAlgorithm::step_2 (cell.m_positions_x[m_idx_a][i],
+                                               cell.m_positions_y[m_idx_a][i],
+                                               cell.m_positions_z[m_idx_a][i],
+                                               cell.m_positions_x[m_idx_b][i],
+                                               cell.m_positions_y[m_idx_b][i],
+                                               cell.m_positions_z[m_idx_b][i],
+                                               cell.m_positions_x[m_idx_a][j],
+                                               cell.m_positions_y[m_idx_a][j],
+                                               cell.m_positions_z[m_idx_a][j],
+                                               cell.m_positions_x[m_idx_b][j],
+                                               cell.m_positions_y[m_idx_b][j],
+                                               cell.m_positions_z[m_idx_b][j]);
             }
         }
     }
@@ -82,18 +82,18 @@ void ParticlesGrid::step_3_calculate_betweenCells (ParticleCell &cell1, Particle
     const unsigned int max2 = cell2.m_ids.size ();
     for (i = 0; i < max1; i++) {
         for (j = 0; j < max2; j++) {
-            lennard_jones_algorithm_2 (cell1.m_positions_x[m_idx_a][i],
-                                       cell1.m_positions_y[m_idx_a][i],
-                                       cell1.m_positions_z[m_idx_a][i],
-                                       cell1.m_positions_x[m_idx_b][i],
-                                       cell1.m_positions_y[m_idx_b][i],
-                                       cell1.m_positions_z[m_idx_b][i],
-                                       cell2.m_positions_x[m_idx_a][j],
-                                       cell2.m_positions_y[m_idx_a][j],
-                                       cell2.m_positions_z[m_idx_a][j],
-                                       cell2.m_positions_x[m_idx_b][j],
-                                       cell2.m_positions_y[m_idx_b][j],
-                                       cell2.m_positions_z[m_idx_b][j]);
+            LennardJonesAlgorithm::step_2 (cell1.m_positions_x[m_idx_a][i],
+                                           cell1.m_positions_y[m_idx_a][i],
+                                           cell1.m_positions_z[m_idx_a][i],
+                                           cell1.m_positions_x[m_idx_b][i],
+                                           cell1.m_positions_y[m_idx_b][i],
+                                           cell1.m_positions_z[m_idx_b][i],
+                                           cell2.m_positions_x[m_idx_a][j],
+                                           cell2.m_positions_y[m_idx_a][j],
+                                           cell2.m_positions_z[m_idx_a][j],
+                                           cell2.m_positions_x[m_idx_b][j],
+                                           cell2.m_positions_y[m_idx_b][j],
+                                           cell2.m_positions_z[m_idx_b][j]);
         }
     }
 }
