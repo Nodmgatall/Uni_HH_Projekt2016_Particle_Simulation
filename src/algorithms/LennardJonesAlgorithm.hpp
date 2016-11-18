@@ -9,7 +9,11 @@
 #define SRC_ALGORITHMS_LENNARDJONESALGORITHM_HPP_
 
 #include "../IO/OptionsSimulation.hpp"
-
+/*
+ * definitions are in the latex-document with the same name as this class
+ * _a -> actual Value
+ * _b -> last/next Value
+ * */
 class LennardJonesAlgorithm {
     private:
     static float       A_ij;
@@ -44,20 +48,28 @@ class LennardJonesAlgorithm {
                                float &p_position_bjx,
                                float &p_position_bjy,
                                float &p_position_bjz) {
-        // definition im PDF (A_ij = B_ij = m_i = m_j = 1) solange nur eine Partikelsorte verwendet
-        // wird
-        float delta_ax = p_position_ajx - p_position_aix;
-        float delta_ay = p_position_ajy - p_position_aiy;
-        float delta_az = p_position_ajz - p_position_aiz;
-        // r_ij_* -> * für den exponenten des abstands
-        float r_ij_2  = delta_ax * delta_ax + delta_ay * delta_ay + delta_az * delta_az;
-        float r_ij_4  = r_ij_2 * r_ij_2;
-        float r_ij_6  = r_ij_2 * r_ij_4;
-        float r_ij_i4 = r_ij_6 * r_ij_6 * r_ij_2;
-        float s_ij_   = (A_ij - B_ij * r_ij_6) / (r_ij_i4);
-        float s_ij_x  = s_ij_ * delta_ax;
-        float s_ij_y  = s_ij_ * delta_ay;
-        float s_ij_z  = s_ij_ * delta_az;
+        const float d_x;
+        const float d_y;
+        const float d_z;
+        const float r_ij_2;  // r_ij_2=r_ij^2
+        const float r_ij_4;  // r_ij_4=r_ij^4
+        const float r_ij_6;  // r_ij_6=r_ij^6
+        const float r_ij_14; // r_ij_14=r_ij^14
+        const float s_ij;
+        const float s_ij_x;
+        const float s_ij_y;
+        const float s_ij_z;
+        d_x = p_position_ajx - p_position_aix;
+        d_y = p_position_ajy - p_position_aiy;
+        d_z = p_position_ajz - p_position_aiz;
+        r_ij_2   = d_x * d_x + d_y * d_y + d_z * d_z;
+        r_ij_4   = r_ij_2 * r_ij_2;
+        r_ij_6   = r_ij_2 * r_ij_4;
+        r_ij_14  = r_ij_6 * r_ij_6 * r_ij_2;
+        s_ij     = (A_ij - B_ij * r_ij_6) / (r_ij_14);
+        s_ij_x   = s_ij * d_x;
+        s_ij_y   = s_ij * d_y;
+        s_ij_z   = s_ij * d_z;
         p_position_bix += s_ij_x / m_i;
         p_position_biy += s_ij_y / m_i;
         p_position_biz += s_ij_z / m_i;
