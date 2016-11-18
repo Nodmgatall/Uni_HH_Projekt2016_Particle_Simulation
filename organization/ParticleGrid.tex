@@ -86,11 +86,13 @@
 \vec{x}_0&=random\\
 	\vec{v}_0&=\vec{0}\\
 	\vec{a}_0&=\vec{0}\\
-	r_{i,j}&=\norm{\left(\vec{x}_{j}-\vec{x}_{i}\right)}\\
 	\sigma&=1\\
 	\epsilon&=1\\
-	A_{i,j}&=48\epsilon_{i,j}\sigma_{i,j}^{12}\\
-	B_{i,j}&=24\epsilon_{i,j}\sigma_{i,j}^{6}\\
+	A_{i,j}&=48\epsilon_{i,j}\sigma_{i,j}^{12}\Delta t^2\\
+	B_{i,j}&=24\epsilon_{i,j}\sigma_{i,j}^{6}\Delta t^2\\
+	s_{n,i,j}&=\frac{A_{i,j}-B_{i,j}r_{n,i,j}^6}{r_{n,i,j}^{14}}\\
+	\vec{d}_{n,i,j}&=\vec{x}_{n,j}-\vec{x}_{n,i}\\
+	r_{n,i,j}&=\norm{\vec{d}_{n,i,j}}\\
 \end{align}
 
 es gilt aufgrund folgender Definitionen
@@ -105,11 +107,6 @@ Siehe Rapport The Art of Molecular Dynamics Simulation Seite 12 unten.\\
 	f_{n,i,j}&=\left(\frac{48\epsilon_{i,j}}{\sigma_{i,j}^2}\right)\left[\left(\frac{\sigma_{i,j}}{r_{n,i,j}}\right)^{14}-\frac{1}{2}\left(\frac{\sigma_{i,j}}{r_{n,i,j}}\right)^8\right]r_{n,i,j}
 \end{align*}
 \section*{Verlet Algorithmus}
-\begin{itemize}
-	\item $n$ Zeitschritt Nummer
-	\item $x_{n}$ Position zum Zeitpunkt n
-	\item $\Delta t$ Zeitschritt Größe
-\end{itemize}
 Siehe Wikipedia \url{https://de.wikipedia.org/wiki/Verlet-Algorithmus}\\
 \begin{align*}
 	\vec{x}_{1,i}&=\vec{x}_{0,i}+\vec{v}_{0,i}\Delta t+\frac{1}{2}\vec{a}_{0,i}\Delta t^2\\
@@ -140,29 +137,10 @@ Siehe Wikipedia \url{https://de.wikipedia.org/wiki/Verlet-Algorithmus}\\
 	&=2\vec{x}_{n,i}-\vec{x}_{n-1,i}+\frac{\left(48\epsilon_{i,j}\sigma_{i,j}^{6}\right)\left[\frac{\sigma_{i,j}^{6}-0.5r_{n,i,j}^6}{r_{n,i,j}^{14}}\right]}{m_i}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\
 	&=2\vec{x}_{n,i}-\vec{x}_{n-1,i}+\frac{\frac{48\epsilon_{i,j}\sigma_{i,j}^{6}\sigma_{i,j}^{6}-24\epsilon_{i,j}\sigma_{i,j}^{6}r_{n,i,j}^6}{r_{n,i,j}^{14}}}{m_i}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\
 	&=2\vec{x}_{n,i}-\vec{x}_{n-1,i}+\frac{48\epsilon_{i,j}\sigma_{i,j}^{12}-24\epsilon_{i,j}\sigma_{i,j}^{6}r_{n,i,j}^6}{r_{n,i,j}^{14}m_i}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\
-	&=2\vec{x}_{n,i}-\vec{x}_{n-1,i}+\frac{A_{i,j}-B_{i,j}r_{n,i,j}^6}{r_{n,i,j}^{14}m_i}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\Delta t^2\\
+	&=2\vec{x}_{n,i}-\vec{x}_{n-1,i}+\frac{A_{i,j}-B_{i,j}r_{n,i,j}^6}{r_{n,i,j}^{14}m_i}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\\
+	&=2\vec{x}_{n,i}-\vec{x}_{n-1,i}+\frac{s_{n,i,j}}{m_i}\left(\vec{x}_{n,j}-\vec{x}_{n,i}\right)\\
+	&=2\vec{x}_{n,i}-\vec{x}_{n-1,i}+\frac{s_{n,i,j}}{m_i}\vec{d}_{n,i,j}\\
 \end{align}
-
-
-\section*{Datenstrukturen}
-\begin{itemize}
-	\item Partikel
-	\begin{itemize}
-		\item letzte     Position
-		\item aktuelle Position
-		\item nächste Position
-		\item Partikel-Typ
-	\end{itemize}
-	\item Partikel-Typ
-	\begin{itemize}
-		\item Masse
-		\item $\sigma$ in Verbindung mit jedem beliebigen anderen Partikel-Typ
-		\item $\epsilon$ in Verbindung mit jedem beliebigen anderen Partikel-Typ
-	\end{itemize}
-\end{itemize}
-
-
-
 
 
 
