@@ -14,7 +14,7 @@ class ParticleGeneratorRandom : public ParticleGeneratorBase {
     public:
     ParticleGeneratorRandom (s_generator_options *p_gen_options);
     virtual ~ParticleGeneratorRandom ();
-    void generate (std::shared_ptr<ParticlesBase> p_particles, vec3f p_bounds, unsigned long p_particle_count);
+    void generate (std::shared_ptr<ParticlesBase> p_particles, vec3f &p_bounds, unsigned long &p_particle_count);
 };
 
 #endif /* SRC_GENERATORS_PARTICLEGENERATORRANDOM_HPP_ */

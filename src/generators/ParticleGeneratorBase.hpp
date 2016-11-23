@@ -17,8 +17,8 @@ class ParticleGeneratorBase {
 
     public:
     virtual void generate (std::shared_ptr<ParticlesBase> p_particles,
-                           vec3f                          p_bounds,
-                           unsigned long                  p_particle_count) = 0;
+                           vec3f                          &p_bounds,
+                           unsigned long                  &p_particle_count) = 0;
     e_generator_mode get_generator_mode ();
     ParticleGeneratorBase (s_generator_options *p_gen_options);
     virtual ~ParticleGeneratorBase ();
