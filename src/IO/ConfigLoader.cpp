@@ -1,12 +1,12 @@
 #include "../Definitions.hpp"
 #include <fstream>
 #include <iostream>
-
+#ifdef BOOST
 #include <boost/archive/xml_iarchive.hpp>
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/serialization/map.hpp>
 #include <boost/serialization/nvp.hpp>
-
+#endif
 #include "Config.hpp"
 #include "ConfigLoader.hpp"
 #include "OptionsGenerator.hpp"
@@ -21,6 +21,7 @@ ConfigLoader::~ConfigLoader () {
 }
 
 void ConfigLoader::serialize_configs () {
+#ifdef BOOST
     std::ofstream out_file_stream (m_config_file_name);
     if (out_file_stream.is_open ()) {
         boost::archive::xml_oarchive out_archive (out_file_stream);
@@ -29,9 +30,11 @@ void ConfigLoader::serialize_configs () {
         std::cout << "Error: could not open file: " << m_config_file_name << std::endl;
         exit (EXIT_FAILURE);
     }
+#endif
 }
 
 void ConfigLoader::deserialize_configs () {
+#ifdef BOOST
     std::string   input;
     std::ifstream in_file_stream (m_config_file_name);
     if (in_file_stream.is_open ()) {
@@ -67,6 +70,7 @@ void ConfigLoader::deserialize_configs () {
             exit (EXIT_FAILURE);
         }
     }
+#endif
 }
 
 void ConfigLoader::load_config (std::string          p_config_name,
