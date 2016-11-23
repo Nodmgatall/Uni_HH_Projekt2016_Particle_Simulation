@@ -47,7 +47,7 @@ void ParticlesGrid::serialize (std::shared_ptr<ParticleFileWriter> p_file_writer
     p_file_writer->start ();
     for (ParticleCell cell : m_cells) {
         if (!(cell.m_ids.empty ())) {
-            p_file_writer->saveData (cell.m_positions_x, cell.m_positions_y, cell.m_positions_y, &(cell.m_ids));
+            p_file_writer->saveData (cell.m_positions_x, cell.m_positions_y, cell.m_positions_z, &(cell.m_ids));
         }
     }
     p_file_writer->end ();
@@ -118,7 +118,7 @@ void ParticlesGrid::run_simulation_iteration () {
     m_iterations_until_rearange_particles--;
     unsigned int idx_x, idx_y, idx_z, parallel_offset;
     Benchmark::begin ("step 1+2", false);
-    //omp_set_num_threads (1);
+// omp_set_num_threads (1);
 #pragma omp parallel for
     for (idx_x = 0; idx_x < m_size.x; idx_x++) {
         for (idx_y = 0; idx_y < m_size.y; idx_y++) {

@@ -6,6 +6,7 @@
  */
 
 #include "ParticleGeneratorGridDistribution.hpp"
+#include "../tools/Debug.hpp"
 
 ParticleGeneratorGridDistribution::ParticleGeneratorGridDistribution (s_generator_options *p_gen_options)
 : ParticleGeneratorBase (p_gen_options) {
@@ -20,7 +21,7 @@ void ParticleGeneratorGridDistribution::generate (std::shared_ptr<ParticlesBase>
 
     Benchmark::begin ("ParticleGeneratorGridDistribution");
     float        temp    = pow (p_particle_count, 1.0f / 3.0f);
-    vec3f        delta   = p_bounds / (temp - 1);
+    vec3f        delta   = p_bounds / (temp - 1.0f);
     unsigned int tempInt = temp;
     unsigned int x, y, z;
     for (x = 0; x <= tempInt; x++) {
