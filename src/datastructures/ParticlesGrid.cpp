@@ -5,10 +5,12 @@
 
 #include "ParticlesGrid.hpp"
 
+#define MIN(a, b) (((a) < (b) ? (a) : (b)))
+
 ParticlesGrid::ParticlesGrid (s_simulator_options *p_options, vec3f *p_bounds)
 : ParticlesBase (p_options, p_bounds), m_iterations_between_rearange_particles (20) {
     DEBUG_BEGIN << "ParticlesGrid a" << DEBUG_END;
-    long max_usefull_size                 = pow (m_options->m_particle_count, 1.0 / 3.0);
+    long max_usefull_size                 = MIN (2, pow (m_options->m_particle_count, 1.0 / 3.0));
     m_iterations_until_rearange_particles = m_iterations_between_rearange_particles;
     m_stucture_name                       = "Grid";
     m_max_id                              = 0;
@@ -116,6 +118,7 @@ void ParticlesGrid::run_simulation_iteration () {
     m_iterations_until_rearange_particles--;
     unsigned int idx_x, idx_y, idx_z, parallel_offset;
     Benchmark::begin ("step 1+2", false);
+    //omp_set_num_threads (1);
 #pragma omp parallel for
     for (idx_x = 0; idx_x < m_size.x; idx_x++) {
         for (idx_y = 0; idx_y < m_size.y; idx_y++) {
@@ -203,8 +206,8 @@ unsigned long ParticlesGrid::get_cell_index (long x, long y, long z) {
 }
 ParticleCell &ParticlesGrid::get_cell_at (long x, long y, long z) {
     x = (x + m_size.x) % m_size.x;
-    y = (x + m_size.y) % m_size.y;
-    z = (x + m_size.z) % m_size.z;
+    y = (y + m_size.y) % m_size.y;
+    z = (z + m_size.z) % m_size.z;
     return m_cells[get_cell_index (x, y, z)];
 }
 ParticleCell &ParticlesGrid::get_cell_at (vec3l coord) {

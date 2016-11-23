@@ -9,6 +9,7 @@
 #define SRC_ALGORITHMS_LENNARDJONESALGORITHM_HPP_
 
 #include "../IO/OptionsSimulation.hpp"
+#include "../tools/Debug.hpp"
 /*
  * definitions are in the latex-document with the same name as this class
  * _a -> actual Value
