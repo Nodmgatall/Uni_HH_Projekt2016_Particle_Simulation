@@ -1,5 +1,7 @@
 all: format cmake build run
 
+platform=$(shell uname)
+
 format:
 	find . -maxdepth 10 -name "*.cpp" | xargs clang-format -i -sort-includes
 	find . -maxdepth 10 -name "*.hpp" | xargs clang-format -i -sort-includes
@@ -18,8 +20,12 @@ doxygen:
 	cd .. && doxygen
 
 cmake:
+ifeq ($(platform),Darwin)
+	cd .. && CC=clang-omp CXX=clang-omp++ cmake .
+else
 	cd .. && cmake .
-
+endif
+	
 build: format
 	cd .. && $(MAKE) -j 8
 

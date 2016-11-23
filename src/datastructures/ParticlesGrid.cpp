@@ -20,7 +20,7 @@ ParticlesGrid::ParticlesGrid (s_simulator_options *p_options, vec3f *p_bounds)
     DEBUG_BEGIN << DEBUG_VAR (*m_bounds) << DEBUG_END;
     DEBUG_BEGIN << DEBUG_VAR (m_options->m_cut_off_radius * 1.2f) << DEBUG_END;
     DEBUG_BEGIN << DEBUG_VAR (vec3l (*m_bounds / (m_options->m_cut_off_radius * 1.2f))) << DEBUG_END;
-        DEBUG_BEGIN << DEBUG_VAR (max_usefull_size) << DEBUG_END;
+    DEBUG_BEGIN << DEBUG_VAR (max_usefull_size) << DEBUG_END;
     DEBUG_BEGIN << DEBUG_VAR (m_size) << DEBUG_END;
     DEBUG_BEGIN << "ParticlesGrid c" << DEBUG_END;
     m_cells.reserve (m_size.x * m_size.y * m_size.z);
