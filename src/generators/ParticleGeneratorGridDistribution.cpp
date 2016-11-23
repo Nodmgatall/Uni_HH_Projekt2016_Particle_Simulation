@@ -27,7 +27,7 @@ void ParticleGeneratorGridDistribution::generate (std::shared_ptr<ParticlesBase>
         for (y = 0; y <= tempInt; y++) {
             for (z = 0; z <= tempInt; z++) {
                 if (((x * tempInt) + y) * tempInt + z < p_particle_count) {
-                    p_particles->add_particle (vec3f (x, y, z) * delta, vec3f (0, 0, 0));
+                    p_particles->add_particle (vec3f (x, y, z) * delta);
                 }
             }
         }

@@ -30,7 +30,7 @@ void ParticleGeneratorSingleObjectMiddle::generate (std::shared_ptr<ParticlesBas
                 if (((x * tempInt) + y) * tempInt + z < p_particle_count) {
                     vec3f direction = vec3f (x, y, z) / vec3f (tempInt * 0.5) - vec3f (1);
                     direction       = direction * sqrt (direction.length ());
-                    p_particles->add_particle ((bounds_2 + direction * bounds_2) * delta, vec3f (0, 0, 0));
+                    p_particles->add_particle ((bounds_2 + direction * bounds_2) * delta);
                 }
             }
         }

@@ -15,6 +15,6 @@ float LennardJonesAlgorithm::m_j  = 1;
 void LennardJonesAlgorithm::init (s_simulator_options *options) {
     A_ij = options->m_timestep * options->m_timestep;
     B_ij = options->m_timestep * options->m_timestep;
-    m_i  = 0;
-    m_j  = 0;
+    m_i  = 1;
+    m_j  = 1;
 }

@@ -16,7 +16,7 @@ struct ParticleCell {
     vec3f                      m_corner000, m_corner111;
     vec3l                      m_idx; // bezug auf ParticlesGrid::m_cells
     ParticleCell (vec3l p_idx, vec3l p_size, vec3f &p_bounds);
-    void add_particle (vec3f p_position, vec3f p_velocity, int p_id);
+    void add_particle (vec3f p_position, int p_id);
 };
 
 class ParticlesGrid : public ParticlesBase {
@@ -42,7 +42,7 @@ class ParticlesGrid : public ParticlesBase {
     ~ParticlesGrid ();
     void serialize (std::shared_ptr<ParticleFileWriter> p_writer);
     void run_simulation_iteration ();
-    void add_particle (vec3f p_position, vec3f p_velocity);
+    void add_particle (vec3f p_position);
     unsigned long get_particle_count ();
 };
 #endif

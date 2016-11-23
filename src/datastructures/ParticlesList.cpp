@@ -18,16 +18,16 @@ ParticlesList::ParticlesList (s_simulator_options *p_options, vec3f *p_bounds)
 ParticlesList::~ParticlesList () {
 }
 
-void ParticlesList::add_particle (vec3f p_position, vec3f p_velocity) {
+void ParticlesList::add_particle (vec3f p_position) {
     if (!m_unused_ids.empty ()) {
         m_unused_ids.erase (m_unused_ids.begin ());
         std::cout << "Not implemented: program will exit" << std::endl;
         exit (EXIT_SUCCESS);
     } else {
         m_particle_ids.push_back (m_last_id++);
-        m_velocities_x.push_back (p_velocity.x);
-        m_velocities_y.push_back (p_velocity.y);
-        m_velocities_z.push_back (p_velocity.z);
+        m_velocities_x.push_back (0);
+        m_velocities_y.push_back (0);
+        m_velocities_z.push_back (0);
 
         m_positions_x.push_back (p_position.x);
         m_positions_y.push_back (p_position.y);
