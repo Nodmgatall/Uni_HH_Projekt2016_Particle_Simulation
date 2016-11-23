@@ -17,7 +17,6 @@ ParticlesGrid::ParticlesGrid (s_simulator_options *p_options, vec3f *p_bounds)
     // cut_off_radius*1.2 to allow particles to move before reconstruction of cells is needed
     m_size = vec3l::max (vec3l (*m_bounds / (m_options->m_cut_off_radius * 1.2f)), max_usefull_size);
     m_size += 1L; // round up to next natural number for cell-count
-
     DEBUG_BEGIN << DEBUG_VAR (*m_bounds) << DEBUG_END;
     DEBUG_BEGIN << DEBUG_VAR (vec3l (*m_bounds / (m_options->m_cut_off_radius * 1.2f))) << DEBUG_END;
     DEBUG_BEGIN << DEBUG_VAR (max_usefull_size) << DEBUG_END;
