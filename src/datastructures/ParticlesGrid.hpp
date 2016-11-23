@@ -32,10 +32,10 @@ class ParticlesGrid : public ParticlesBase {
     inline ParticleCell &get_cell_at (vec3l coord);
     inline ParticleCell &get_cell_at (long x, long y, long z);
     inline void step_1_prepare_cell (ParticleCell &cell);
-    inline void step_2_calculate_inside_cell (ParticleCell &cell);
-    inline void step_3_calculate_betweenCells (ParticleCell &cell1, ParticleCell &cell2);
-    inline void step_4_swap_old_new_position (ParticleCell &cell);
-    inline void step_5_remove_wrong_particles_from_cell (ParticleCell &cell);
+    inline void step_2a_calculate_inside_cell (ParticleCell &cell);
+    inline void step_2b_calculate_betweenCells (ParticleCell &cell1, ParticleCell &cell2);
+    inline void step_3_swap_old_new_position (ParticleCell &cell);
+    inline void step_4_remove_wrong_particles_from_cell (ParticleCell &cell);
 
     public:
     ParticlesGrid (s_simulator_options *p_options, vec3f *p_bounds);

@@ -53,7 +53,7 @@ void ParticlesGrid::step_1_prepare_cell (ParticleCell &cell) {
                                        cell.m_positions_z[m_idx_b][i]);
     }
 }
-void ParticlesGrid::step_2_calculate_inside_cell (ParticleCell &cell) {
+void ParticlesGrid::step_2a_calculate_inside_cell (ParticleCell &cell) {
     unsigned int       i, j;
     const unsigned int max   = cell.m_ids.size ();
     const unsigned int max_1 = max - 1;
@@ -76,7 +76,7 @@ void ParticlesGrid::step_2_calculate_inside_cell (ParticleCell &cell) {
         }
     }
 }
-void ParticlesGrid::step_3_calculate_betweenCells (ParticleCell &cell1, ParticleCell &cell2) {
+void ParticlesGrid::step_2b_calculate_betweenCells (ParticleCell &cell1, ParticleCell &cell2) {
     unsigned int       i, j;
     const unsigned int max1 = cell1.m_ids.size ();
     const unsigned int max2 = cell2.m_ids.size ();
@@ -97,7 +97,7 @@ void ParticlesGrid::step_3_calculate_betweenCells (ParticleCell &cell1, Particle
         }
     }
 }
-void ParticlesGrid::step_4_swap_old_new_position (ParticleCell &cell) {
+void ParticlesGrid::step_3_swap_old_new_position (ParticleCell &cell) {
     cell.m_positions_x[0].swap (cell.m_positions_x[1]);
     cell.m_positions_y[0].swap (cell.m_positions_y[1]);
     cell.m_positions_z[0].swap (cell.m_positions_z[1]);
@@ -112,7 +112,7 @@ void ParticlesGrid::run_simulation_iteration () {
             for (idx_z = 0; idx_z < m_size.z; idx_z++) {
                 ParticleCell &cell = get_cell_at (idx_x, idx_y, idx_z);
                 step_1_prepare_cell (cell);
-                step_2_calculate_inside_cell (cell);
+                step_2a_calculate_inside_cell (cell);
             }
         }
     }
@@ -127,31 +127,31 @@ void ParticlesGrid::run_simulation_iteration () {
                      * -self => 26 'other cells'
                      * Symmetric /2 => 13 Pairs
                      */
-                    step_3_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
+                    step_2b_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
                                                    get_cell_at (idx_x + 1, idx_y + 1, idx_z + 1)); // 1
-                    step_3_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
+                    step_2b_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
                                                    get_cell_at (idx_x + 1, idx_y, idx_z)); // 2
-                    step_3_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
+                    step_2b_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
                                                    get_cell_at (idx_x + 1, idx_y + 1, idx_z)); // 3
-                    step_3_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
+                    step_2b_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
                                                    get_cell_at (idx_x + 1, idx_y, idx_z + 1)); // 4
-                    step_3_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
+                    step_2b_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
                                                    get_cell_at (idx_x + 1, idx_y + 1, idx_z)); // 5
-                    step_3_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
+                    step_2b_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
                                                    get_cell_at (idx_x + 1, idx_y, idx_z + 1)); // 6
-                    step_3_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
+                    step_2b_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
                                                    get_cell_at (idx_x, idx_y + 1, idx_z + 1)); // 7
-                    step_3_calculate_betweenCells (get_cell_at (idx_x + 1, idx_y, idx_z),
+                    step_2b_calculate_betweenCells (get_cell_at (idx_x + 1, idx_y, idx_z),
                                                    get_cell_at (idx_x, idx_y + 1, idx_z)); // 8
-                    step_3_calculate_betweenCells (get_cell_at (idx_x + 1, idx_y, idx_z),
+                    step_2b_calculate_betweenCells (get_cell_at (idx_x + 1, idx_y, idx_z),
                                                    get_cell_at (idx_x, idx_y, idx_z + 1)); // 9
-                    step_3_calculate_betweenCells (get_cell_at (idx_x, idx_y + 1, idx_z),
+                    step_2b_calculate_betweenCells (get_cell_at (idx_x, idx_y + 1, idx_z),
                                                    get_cell_at (idx_x, idx_y, idx_z + 1)); // 10
-                    step_3_calculate_betweenCells (get_cell_at (idx_x + 1, idx_y, idx_z),
+                    step_2b_calculate_betweenCells (get_cell_at (idx_x + 1, idx_y, idx_z),
                                                    get_cell_at (idx_x, idx_y + 1, idx_z + 1)); // 11
-                    step_3_calculate_betweenCells (get_cell_at (idx_x, idx_y + 1, idx_z),
+                    step_2b_calculate_betweenCells (get_cell_at (idx_x, idx_y + 1, idx_z),
                                                    get_cell_at (idx_x + 1, idx_y, idx_z + 1)); // 12
-                    step_3_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z + 1),
+                    step_2b_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z + 1),
                                                    get_cell_at (idx_x + 1, idx_y + 1, idx_z)); // 13
                 }
             }
@@ -164,7 +164,7 @@ void ParticlesGrid::run_simulation_iteration () {
         for (idx_x = 0; idx_x < m_size.x; idx_x++) {
             for (idx_y = 0; idx_y < m_size.y; idx_y++) {
                 for (idx_z = 0; idx_z < m_size.z; idx_z++) {
-                    step_4_swap_old_new_position (get_cell_at (idx_x, idx_y, idx_z));
+                    step_3_swap_old_new_position (get_cell_at (idx_x, idx_y, idx_z));
                 }
             }
         }
@@ -177,8 +177,8 @@ void ParticlesGrid::run_simulation_iteration () {
                 for (idx_y = 0; idx_y < m_size.y; idx_y++) {
                     for (idx_z = 0; idx_z < m_size.z; idx_z++) {
                         ParticleCell &cell = get_cell_at (idx_x, idx_y, idx_z);
-                        step_4_swap_old_new_position (cell);
-                        step_5_remove_wrong_particles_from_cell (cell);
+                        step_3_swap_old_new_position (cell);
+                        step_4_remove_wrong_particles_from_cell (cell);
                     }
                 }
             }
@@ -200,7 +200,7 @@ ParticleCell &ParticlesGrid::get_cell_at (long x, long y, long z) {
 ParticleCell &ParticlesGrid::get_cell_at (vec3l coord) {
     return get_cell_at (coord.y, coord.y, coord.z);
 }
-void ParticlesGrid::step_5_remove_wrong_particles_from_cell (ParticleCell &cell) {
+void ParticlesGrid::step_4_remove_wrong_particles_from_cell (ParticleCell &cell) {
     vec3l        delta (0);
     int          i;
     unsigned int j;
