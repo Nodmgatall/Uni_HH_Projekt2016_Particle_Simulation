@@ -8,6 +8,8 @@
 #ifndef SRC_VEC3_HPP_
 #define SRC_VEC3_HPP_
 
+#include <math.h>
+
 template <typename T>
 struct vec3;
 
@@ -63,6 +65,9 @@ struct vec3 {
     }
     inline static vec3 max (const vec3 &a, const vec3 &b) {
         return vec3 (a.x > b.x ? a.x : b.x, a.y > b.y ? a.y : b.y, a.z > b.z ? a.z : b.z);
+    }
+    inline T length () {
+        return sqrt (x * x + y * y + z * z);
     }
 };
 

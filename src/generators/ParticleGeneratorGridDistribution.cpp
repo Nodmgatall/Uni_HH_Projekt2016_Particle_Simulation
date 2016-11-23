@@ -15,8 +15,8 @@ ParticleGeneratorGridDistribution::~ParticleGeneratorGridDistribution () {
 }
 
 void ParticleGeneratorGridDistribution::generate (std::shared_ptr<ParticlesBase> p_particles,
-                                                  vec3f                          &p_bounds,
-                                                  unsigned long                  &p_particle_count) {
+                                                  vec3f &                        p_bounds,
+                                                  unsigned long &                p_particle_count) {
 
     Benchmark::begin ("ParticleGeneratorGridDistribution");
     float        temp    = pow (p_particle_count, 1.0f / 3.0f);

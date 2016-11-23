@@ -12,6 +12,7 @@ ParticleFileWriter::ParticleFileWriter (std::map<e_particle_variable, bool> *p_w
 void ParticleFileWriter::start () {
     m_file = std::ofstream (m_file_name_base + std::to_string (m_timestep) + ".csv");
     m_file << "id, x coordinate, y coordinate, z coordinate\n"; // absichtlich NICHT std::endl !!!!!
+    (void) m_write_modes;
 }
 void ParticleFileWriter::saveData (std::vector<float> *        p_positions_x,
                                    std::vector<float> *        p_positions_y,
