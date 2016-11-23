@@ -48,7 +48,6 @@ class LennardJonesAlgorithm {
                                float &p_position_bjx,
                                float &p_position_bjy,
                                float &p_position_bjz) {
-
         float d_x     = p_position_ajx - p_position_aix;
         float d_y     = p_position_ajy - p_position_aiy;
         float d_z     = p_position_ajz - p_position_aiz;
