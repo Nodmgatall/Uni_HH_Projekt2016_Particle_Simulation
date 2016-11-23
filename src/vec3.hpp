@@ -64,9 +64,12 @@ struct vec3 {
         return vec3 (x / other.x, y / other.y, z / other.z);
     }
     inline static vec3 max (const vec3 &a, const vec3 &b) {
-        return vec3 (a.x > b.x ? a.x : b.x, a.y > b.y ? a.y : b.y, a.z > b.z ? a.z : b.z);
-    }
-    inline T length () {
+            return vec3 (a.x > b.x ? a.x : b.x, a.y > b.y ? a.y : b.y, a.z > b.z ? a.z : b.z);
+        }
+    inline static vec3 min (const vec3 &a, const vec3 &b) {
+            return vec3 (a.x < b.x ? a.x : b.x, a.y < b.y ? a.y : b.y, a.z < b.z ? a.z : b.z);
+        }
+        inline T length () {
         return sqrt (x * x + y * y + z * z);
     }
 };
