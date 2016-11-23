@@ -62,7 +62,7 @@ void ConfigLoader::deserialize_configs () {
 #ifndef DESKTOP_VERSION
         std::cin >> input;
 #else
-        input = "n";
+        input         = "n";
 #endif
         if (input[0] == 'y') {
             std::cout << "created new config file" << std::endl;

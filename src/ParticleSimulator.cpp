@@ -23,10 +23,11 @@
 
 /*clang-format off */
 ParticleSimulator::ParticleSimulator (s_simulator_options *p_sim_options, s_generator_options *p_gen_options)
-: m_algorithm (dummy_algo), m_bounds (vec3f (10, 10, 10)), m_options (p_sim_options),
+: m_algorithm (dummy_algo), m_bounds (vec3f (10.0f, 10.0f, 10.0f)), m_options (p_sim_options),
   m_particle_file_writer (std::make_shared<ParticleFileWriter> (&p_sim_options->m_write_modes)),
   m_particle_generator (ParticleGeneratorFactory::build (p_gen_options)), m_particles (0),
   m_save_config (false) {
+    DEBUG_BEGIN << "ParticleSimulator()" << DEBUG_END;
     m_particle_file_writer->set_file_name_base (std::string (log_folder) + "/data");
     m_save_config = false; // TODO remvove
 }
@@ -53,6 +54,7 @@ void ParticleSimulator::simulate () {
 }
 
 void ParticleSimulator::init_particle_data () {
+    Benchmark::begin ("init_particle_data");
     switch (m_options->m_data_structure) {
         case GRID:
             m_particles = std::make_shared<ParticlesGrid> (m_options, &m_bounds);
@@ -69,6 +71,7 @@ void ParticleSimulator::init_particle_data () {
     } else {
         m_particle_generator->generate (m_particles, m_bounds, m_options->m_particle_count);
     }
+    Benchmark::end ();
 }
 
 void ParticleSimulator::find_simulation_algorithm () {
