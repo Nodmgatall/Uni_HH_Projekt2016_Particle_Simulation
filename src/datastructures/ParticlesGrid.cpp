@@ -9,24 +9,15 @@
 
 ParticlesGrid::ParticlesGrid (s_simulator_options *p_options, vec3f *p_bounds)
 : ParticlesBase (p_options, p_bounds), m_iterations_between_rearange_particles (20) {
-    DEBUG_BEGIN << "ParticlesGrid a" << DEBUG_END;
     long max_usefull_size                 = MIN (2, pow (m_options->m_particle_count, 1.0 / 3.0));
     m_iterations_until_rearange_particles = m_iterations_between_rearange_particles;
     m_stucture_name                       = "Grid";
     m_max_id                              = 0;
     m_idx_a = !(m_idx_b = 0);
-    DEBUG_BEGIN << "ParticlesGrid b" << DEBUG_END;
     // cut_off_radius*1.2 to allow particles to move before reconstruction of cells is needed
     m_size = vec3l::min (vec3l (*m_bounds / (m_options->m_cut_off_radius * 1.2f)), max_usefull_size);
     m_size += 1L; // round up to next natural number for cell-count
-    DEBUG_BEGIN << DEBUG_VAR (*m_bounds) << DEBUG_END;
-    DEBUG_BEGIN << DEBUG_VAR (m_options->m_cut_off_radius * 1.2f) << DEBUG_END;
-    DEBUG_BEGIN << DEBUG_VAR (vec3l (*m_bounds / (m_options->m_cut_off_radius * 1.2f))) << DEBUG_END;
-    DEBUG_BEGIN << DEBUG_VAR (max_usefull_size) << DEBUG_END;
-    DEBUG_BEGIN << DEBUG_VAR (m_size) << DEBUG_END;
-    DEBUG_BEGIN << "ParticlesGrid c" << DEBUG_END;
     m_cells.reserve (m_size.x * m_size.y * m_size.z);
-    DEBUG_BEGIN << "ParticlesGrid d" << DEBUG_END;
     unsigned int idx_x, idx_y, idx_z;
     for (idx_x = 0; idx_x < m_size.x; idx_x++) {
         for (idx_y = 0; idx_y < m_size.y; idx_y++) {
@@ -35,7 +26,6 @@ ParticlesGrid::ParticlesGrid (s_simulator_options *p_options, vec3f *p_bounds)
             }
         }
     }
-    DEBUG_BEGIN << "ParticlesGrid e" << DEBUG_END;
 }
 ParticlesGrid::~ParticlesGrid () {
 }
