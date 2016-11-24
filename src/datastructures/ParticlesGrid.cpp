@@ -9,14 +9,21 @@
 
 ParticlesGrid::ParticlesGrid (s_simulator_options *p_options, vec3f *p_bounds)
 : ParticlesBase (p_options, p_bounds), m_iterations_between_rearange_particles (20) {
-    long max_usefull_size                 = MIN (2, pow (m_options->m_particle_count, 1.0 / 3.0));
+    long max_usefull_size                 = pow (m_options->m_particle_count, 1.0 / 3.0);
     m_iterations_until_rearange_particles = m_iterations_between_rearange_particles;
     m_stucture_name                       = "Grid";
     m_max_id                              = 0;
     m_idx_a = !(m_idx_b = 0);
     // cut_off_radius*1.2 to allow particles to move before reconstruction of cells is needed
     m_size = vec3l::min (vec3l (*m_bounds / (m_options->m_cut_off_radius * 1.2f)), max_usefull_size);
-    m_size += 1L; // round up to next natural number for cell-count
+    m_size = m_size + 1L; // round up to next natural number for cell-count
+    m_size = vec3l::max (m_size, vec3l (4L));
+    DEBUG_BEGIN << DEBUG_VAR (m_idx_a) << DEBUG_VAR (m_idx_b) << DEBUG_END;
+    DEBUG_BEGIN << DEBUG_VAR (max_usefull_size) << DEBUG_END;
+    DEBUG_BEGIN << DEBUG_VAR (m_options->m_cut_off_radius) << DEBUG_END;
+    DEBUG_BEGIN << DEBUG_VAR (m_options->m_cut_off_radius * 1.2f) << DEBUG_END;
+    DEBUG_BEGIN << DEBUG_VAR (*m_bounds / (m_options->m_cut_off_radius * 1.2f)) << DEBUG_END;
+    DEBUG_BEGIN << DEBUG_VAR (m_size) << DEBUG_END;
     m_cells.reserve (m_size.x * m_size.y * m_size.z);
     unsigned int idx_x, idx_y, idx_z;
     for (idx_x = 0; idx_x < m_size.x; idx_x++) {
@@ -102,16 +109,11 @@ void ParticlesGrid::step_2b_calculate_betweenCells (ParticleCell &p_cell1, Parti
         }
     }
 }
-void ParticlesGrid::step_3_swap_old_new_position (ParticleCell &p_cell) {
-    p_cell.m_positions_x[0].swap (p_cell.m_positions_x[1]);
-    p_cell.m_positions_y[0].swap (p_cell.m_positions_y[1]);
-    p_cell.m_positions_z[0].swap (p_cell.m_positions_z[1]);
-}
 void ParticlesGrid::run_simulation_iteration () {
     m_iterations_until_rearange_particles--;
     unsigned int idx_x, idx_y, idx_z, parallel_offset;
-    Benchmark::begin ("step 1+2", false);
-// omp_set_num_threads (1);
+    Benchmark::begin ("step 1+2a", false);
+    omp_set_num_threads (1);
 #pragma omp parallel for
     for (idx_x = 0; idx_x < m_size.x; idx_x++) {
         for (idx_y = 0; idx_y < m_size.y; idx_y++) {
@@ -123,16 +125,12 @@ void ParticlesGrid::run_simulation_iteration () {
         }
     }
     Benchmark::end ();
-    Benchmark::begin ("step 3", false);
+    Benchmark::begin ("step 2b", false);
     for (parallel_offset = 0; parallel_offset < 2; parallel_offset++) {
 #pragma omp parallel for
         for (idx_x = parallel_offset; idx_x < m_size.x; idx_x += 2) {
             for (idx_y = 0; idx_y < m_size.y; idx_y++) {
                 for (idx_z = 0; idx_z < m_size.z; idx_z++) {
-                    /* 3*3*3=27 'neighbors'
-                     * -self => 26 'other cells'
-                     * Symmetric /2 => 13 Pairs
-                     */
                     step_2b_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
                                                     get_cell_at (idx_x + 1, idx_y + 1, idx_z + 1)); // 1
                     step_2b_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
@@ -164,27 +162,15 @@ void ParticlesGrid::run_simulation_iteration () {
         }
     }
     Benchmark::end ();
-    if (m_iterations_until_rearange_particles) {
-        Benchmark::begin ("step 4", false);
-#pragma omp parallel for
-        for (idx_x = 0; idx_x < m_size.x; idx_x++) {
-            for (idx_y = 0; idx_y < m_size.y; idx_y++) {
-                for (idx_z = 0; idx_z < m_size.z; idx_z++) {
-                    step_3_swap_old_new_position (get_cell_at (idx_x, idx_y, idx_z));
-                }
-            }
-        }
-        Benchmark::end ();
-    } else {
-        Benchmark::begin ("step 4+5", false);
+    if (!m_iterations_until_rearange_particles) {
+        Benchmark::begin ("step 3", false);
         for (parallel_offset = 0; parallel_offset < 3; parallel_offset++) {
 #pragma omp parallel for
             for (idx_x = parallel_offset; idx_x < m_size.x; idx_x += 3) {
                 for (idx_y = 0; idx_y < m_size.y; idx_y++) {
                     for (idx_z = 0; idx_z < m_size.z; idx_z++) {
                         ParticleCell &cell = get_cell_at (idx_x, idx_y, idx_z);
-                        step_3_swap_old_new_position (cell);
-                        step_4_remove_wrong_particles_from_cell (cell);
+                        step_3_remove_wrong_particles_from_cell (cell);
                     }
                 }
             }
@@ -206,7 +192,7 @@ ParticleCell &ParticlesGrid::get_cell_at (long x, long y, long z) {
 ParticleCell &ParticlesGrid::get_cell_at (vec3l coord) {
     return get_cell_at (coord.y, coord.y, coord.z);
 }
-void ParticlesGrid::step_4_remove_wrong_particles_from_cell (ParticleCell &p_cell) {
+void ParticlesGrid::step_3_remove_wrong_particles_from_cell (ParticleCell &p_cell) {
     vec3l delta (0);
     int   i;
     for (i = p_cell.m_ids.size () - 1; i >= 0; i--) {

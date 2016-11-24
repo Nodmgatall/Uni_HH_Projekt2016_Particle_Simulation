@@ -64,6 +64,18 @@ class LennardJonesAlgorithm {
         float s_ij_x  = s_ij * d_x;
         float s_ij_y  = s_ij * d_y;
         float s_ij_z  = s_ij * d_z;
+        /*
+        DEBUG_BEGIN << DEBUG_VAR (&p_position_aix) << DEBUG_VAR (&p_position_ajx) << DEBUG_END;
+        DEBUG_BEGIN << DEBUG_VAR (m_i) << DEBUG_VAR (m_j) << DEBUG_END;
+        DEBUG_BEGIN << DEBUG_VAR (d_x) << DEBUG_VAR (d_y) << DEBUG_VAR (d_z) << DEBUG_END;
+        DEBUG_BEGIN << DEBUG_VAR (r_ij_2) << DEBUG_END;
+        DEBUG_BEGIN << DEBUG_VAR (r_ij_4) << DEBUG_END;
+        DEBUG_BEGIN << DEBUG_VAR (r_ij_6) << DEBUG_END;
+        DEBUG_BEGIN << DEBUG_VAR (r_ij_14) << DEBUG_END;
+        DEBUG_BEGIN << DEBUG_VAR (s_ij) << DEBUG_END;
+        DEBUG_BEGIN << DEBUG_VAR (s_ij_x) << DEBUG_VAR (s_ij_y) << DEBUG_VAR (s_ij_z) << DEBUG_END;
+         exit (1);
+         */
         p_position_bix += s_ij_x / m_i;
         p_position_biy += s_ij_y / m_i;
         p_position_biz += s_ij_z / m_i;
