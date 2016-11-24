@@ -213,42 +213,42 @@ void ParticlesGrid::step_4_remove_wrong_particles_from_cell (ParticleCell &p_cel
         delta = vec3l (0);
         if (p_cell.m_positions_x[m_idx_a][i] < p_cell.m_corner000.x) {
             delta.x = -1;
+            while (p_cell.m_positions_x[m_idx_a][i] < 0) {
+                p_cell.m_positions_x[m_idx_a][i] += m_bounds->x;
+            }
         } else if (p_cell.m_positions_x[m_idx_a][i] > p_cell.m_corner111.x) {
             delta.x = +1;
+            while (p_cell.m_positions_x[m_idx_a][i] > m_bounds->x) {
+                p_cell.m_positions_x[m_idx_a][i] -= m_bounds->x;
+            }
         }
         if (p_cell.m_positions_y[m_idx_a][i] < p_cell.m_corner000.y) {
             delta.y = -1;
+            while (p_cell.m_positions_y[m_idx_a][i] < 0) {
+                p_cell.m_positions_y[m_idx_a][i] += m_bounds->y;
+            }
         } else if (p_cell.m_positions_y[m_idx_a][i] > p_cell.m_corner111.y) {
             delta.y = +1;
+            while (p_cell.m_positions_y[m_idx_a][i] > m_bounds->y) {
+                p_cell.m_positions_y[m_idx_a][i] -= m_bounds->y;
+            }
         }
         if (p_cell.m_positions_z[m_idx_a][i] < p_cell.m_corner000.z) {
             delta.z = -1;
+            while (p_cell.m_positions_z[m_idx_a][i] < 0) {
+                p_cell.m_positions_z[m_idx_a][i] += m_bounds->z;
+            }
         } else if (p_cell.m_positions_z[m_idx_a][i] > p_cell.m_corner111.z) {
             delta.z = +1;
+            while (p_cell.m_positions_z[m_idx_a][i] > m_bounds->z) {
+                p_cell.m_positions_z[m_idx_a][i] -= m_bounds->z;
+            }
         }
         if (delta.x || delta.y || delta.z) {
-            vec3l         index      = p_cell.m_idx + delta;
-            ParticleCell &other_cell = get_cell_at (index);
-            if (other_cell.m_idx != index) { // apply periodic border
-                while (p_cell.m_positions_x[m_idx_a][i] < 0) {
-                    p_cell.m_positions_x[m_idx_a][i] += m_bounds->x;
-                }
-                while (p_cell.m_positions_y[m_idx_a][i] < 0) {
-                    p_cell.m_positions_y[m_idx_a][i] += m_bounds->y;
-                }
-                while (p_cell.m_positions_z[m_idx_a][i] < 0) {
-                    p_cell.m_positions_z[m_idx_a][i] += m_bounds->z;
-                }
-                while (p_cell.m_positions_x[m_idx_a][i] > m_bounds->x) {
-                    p_cell.m_positions_x[m_idx_a][i] -= m_bounds->x;
-                }
-                while (p_cell.m_positions_y[m_idx_a][i] > m_bounds->y) {
-                    p_cell.m_positions_y[m_idx_a][i] -= m_bounds->y;
-                }
-                while (p_cell.m_positions_z[m_idx_a][i] > m_bounds->z) {
-                    p_cell.m_positions_z[m_idx_a][i] -= m_bounds->z;
-                }
-            }
+            vec3f position (p_cell.m_positions_x[m_idx_a][i],
+                            p_cell.m_positions_y[m_idx_a][i],
+                            p_cell.m_positions_z[m_idx_a][i]);
+            ParticleCell &other_cell = get_cell_at (vec3l (position / *m_bounds * vec3f (m_size - 1L)));
             moveParticle (p_cell, other_cell, i);
         }
     }
