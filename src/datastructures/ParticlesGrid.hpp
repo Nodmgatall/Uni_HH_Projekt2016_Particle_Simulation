@@ -21,6 +21,7 @@ struct ParticleCell {
 
 class ParticlesGrid : public ParticlesBase {
     private:
+
     unsigned long             m_max_id;
     std::vector<ParticleCell> m_cells;
     vec3l                     m_size;
@@ -31,11 +32,11 @@ class ParticlesGrid : public ParticlesBase {
     inline unsigned long get_cell_index (long x, long y, long z);
     inline ParticleCell &get_cell_at (vec3l coord);
     inline ParticleCell &get_cell_at (long x, long y, long z);
-    inline void step_1_prepare_cell (ParticleCell &cell);
-    inline void step_2a_calculate_inside_cell (ParticleCell &cell);
-    inline void step_2b_calculate_betweenCells (ParticleCell &cell1, ParticleCell &cell2);
-    inline void step_3_swap_old_new_position (ParticleCell &cell);
-    inline void step_4_remove_wrong_particles_from_cell (ParticleCell &cell);
+    inline void step_1_prepare_cell (ParticleCell &p_cell);
+    inline void step_2a_calculate_inside_cell (ParticleCell &p_cell);
+    inline void step_2b_calculate_betweenCells (ParticleCell &p_cell1, ParticleCell &p_cell2);
+    inline void step_3_swap_old_new_position (ParticleCell &p_cell);
+    inline void step_4_remove_wrong_particles_from_cell (ParticleCell &p_cell);
     inline void moveParticle (ParticleCell &p_cell_from, ParticleCell &p_cell_to, long p_index_from);
 
     public:
