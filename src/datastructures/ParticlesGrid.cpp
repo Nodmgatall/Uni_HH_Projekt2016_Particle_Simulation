@@ -205,7 +205,7 @@ unsigned long ParticlesGrid::get_cell_index (long x, long y, long z) {
     return x + m_size.x * (y + m_size.y * z);
 }
 ParticleCell &ParticlesGrid::get_cell_at (long x, long y, long z) {
-    x = (x + m_size.x) % m_size.x;
+    x = (x + m_size.x) % m_size.x;//apply periodic border
     y = (y + m_size.y) % m_size.y;
     z = (z + m_size.z) % m_size.z;
     return m_cells[get_cell_index (x, y, z)];
@@ -214,40 +214,66 @@ ParticleCell &ParticlesGrid::get_cell_at (vec3l coord) {
     return get_cell_at (coord.y, coord.y, coord.z);
 }
 void ParticlesGrid::step_4_remove_wrong_particles_from_cell (ParticleCell &cell) {
-    vec3l        delta (0);
-    int          i;
-    unsigned int j;
+    vec3l delta (0);
+    int   i;
     for (i = cell.m_ids.size () - 1; i >= 0; i--) {
         delta = vec3l (0);
         if (cell.m_positions_x[m_idx_a][i] < cell.m_corner000.x) {
             delta.x = -1;
-        } else if (cell.m_positions_x[m_idx_a][i] > cell.m_corner000.x) {
+        } else if (cell.m_positions_x[m_idx_a][i] > cell.m_corner111.x) {
             delta.x = +1;
         }
         if (cell.m_positions_y[m_idx_a][i] < cell.m_corner000.y) {
             delta.y = -1;
-        } else if (cell.m_positions_y[m_idx_a][i] > cell.m_corner000.y) {
+        } else if (cell.m_positions_y[m_idx_a][i] > cell.m_corner111.y) {
             delta.y = +1;
         }
         if (cell.m_positions_z[m_idx_a][i] < cell.m_corner000.z) {
             delta.z = -1;
-        } else if (cell.m_positions_z[m_idx_a][i] > cell.m_corner000.z) {
+        } else if (cell.m_positions_z[m_idx_a][i] > cell.m_corner111.z) {
             delta.z = +1;
         }
         if (delta.x || delta.y || delta.z) {
-            ParticleCell &other = get_cell_at (cell.m_idx + delta);
-            other.m_ids.push_back (cell.m_ids[i]);
-            cell.m_ids.erase (cell.m_ids.begin () + i);
-            for (j = 0; j <= 1; j++) {
-                other.m_positions_x[j].push_back (cell.m_positions_x[j][i]);
-                other.m_positions_y[j].push_back (cell.m_positions_y[j][i]);
-                other.m_positions_z[j].push_back (cell.m_positions_z[j][i]);
-                cell.m_positions_y[j].erase (cell.m_positions_y[j].begin () + i);
-                cell.m_positions_z[j].erase (cell.m_positions_z[j].begin () + i);
+            vec3l         index      = cell.m_idx + delta;
+            ParticleCell &other_cell = get_cell_at (index);
+            if (other_cell.m_idx != index) {//apply periodic border
+                while (cell.m_positions_x[m_idx_a][i] < 0) {
+                    cell.m_positions_x[m_idx_a][i] += m_bounds->x;
+                }
+                while (cell.m_positions_y[m_idx_a][i] < 0) {
+                    cell.m_positions_y[m_idx_a][i] += m_bounds->y;
+                }
+                while (cell.m_positions_z[m_idx_a][i] < 0) {
+                    cell.m_positions_z[m_idx_a][i] += m_bounds->z;
+                }
+                while (cell.m_positions_x[m_idx_a][i] > m_bounds->x) {
+                    cell.m_positions_x[m_idx_a][i] -= m_bounds->x;
+                }
+                while (cell.m_positions_y[m_idx_a][i] > m_bounds->y) {
+                    cell.m_positions_y[m_idx_a][i] -= m_bounds->y;
+                }
+                while (cell.m_positions_z[m_idx_a][i] > m_bounds->z) {
+                    cell.m_positions_z[m_idx_a][i] -= m_bounds->z;
+                }
             }
+            moveParticle (cell, other_cell, i);
         }
     }
 }
+
+inline void ParticlesGrid::moveParticle (ParticleCell &p_cell_from, ParticleCell &p_cell_to, long p_index_from) {
+    unsigned int j;
+    p_cell_to.m_ids.push_back (p_cell_from.m_ids[p_index_from]);
+    p_cell_from.m_ids.erase (p_cell_from.m_ids.begin () + p_index_from);
+    for (j = 0; j <= 1; j++) {
+        p_cell_to.m_positions_x[j].push_back (p_cell_from.m_positions_x[j][p_index_from]);
+        p_cell_to.m_positions_y[j].push_back (p_cell_from.m_positions_y[j][p_index_from]);
+        p_cell_to.m_positions_z[j].push_back (p_cell_from.m_positions_z[j][p_index_from]);
+        p_cell_from.m_positions_y[j].erase (p_cell_from.m_positions_y[j].begin () + p_index_from);
+        p_cell_from.m_positions_z[j].erase (p_cell_from.m_positions_z[j].begin () + p_index_from);
+    }
+}
+
 unsigned long ParticlesGrid::get_particle_count () {
     unsigned long particle_count = 0;
     for (ParticleCell cell : m_cells) {
