@@ -26,5 +26,5 @@ std::unique_ptr<ParticleGeneratorBase> ParticleGeneratorFactory::build (s_genera
             DEBUG_BEGIN << "ParticleGenerator :: error" << DEBUG_END;
             exit (1);
     }
-    return result;
+    return (result);
 }

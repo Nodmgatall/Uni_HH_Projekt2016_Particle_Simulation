@@ -23,7 +23,7 @@
 
 /*clang-format off */
 ParticleSimulator::ParticleSimulator (s_simulator_options *p_sim_options, s_generator_options *p_gen_options)
-: m_algorithm (dummy_algo), m_bounds (vec3f (10.0f, 10.0f, 10.0f)), m_options (p_sim_options),
+: m_algorithm (dummy_algo), m_bounds (vec3f (5.0f, 5.0f, 5.0f)), m_options (p_sim_options),
   m_particle_file_writer (std::make_shared<ParticleFileWriter> (&p_sim_options->m_write_modes)),
   m_particle_generator (ParticleGeneratorFactory::build (p_gen_options)), m_particles (0),
   m_save_config (false) {
