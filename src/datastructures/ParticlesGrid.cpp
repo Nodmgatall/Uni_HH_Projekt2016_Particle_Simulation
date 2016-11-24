@@ -205,7 +205,7 @@ unsigned long ParticlesGrid::get_cell_index (long x, long y, long z) {
     return x + m_size.x * (y + m_size.y * z);
 }
 ParticleCell &ParticlesGrid::get_cell_at (long x, long y, long z) {
-    x = (x + m_size.x) % m_size.x;//apply periodic border
+    x = (x + m_size.x) % m_size.x; // apply periodic border
     y = (y + m_size.y) % m_size.y;
     z = (z + m_size.z) % m_size.z;
     return m_cells[get_cell_index (x, y, z)];
@@ -236,7 +236,7 @@ void ParticlesGrid::step_4_remove_wrong_particles_from_cell (ParticleCell &cell)
         if (delta.x || delta.y || delta.z) {
             vec3l         index      = cell.m_idx + delta;
             ParticleCell &other_cell = get_cell_at (index);
-            if (other_cell.m_idx != index) {//apply periodic border
+            if (other_cell.m_idx != index) { // apply periodic border
                 while (cell.m_positions_x[m_idx_a][i] < 0) {
                     cell.m_positions_x[m_idx_a][i] += m_bounds->x;
                 }
