@@ -37,7 +37,10 @@ void ParticlesGrid::serialize (std::shared_ptr<ParticleFileWriter> p_file_writer
     p_file_writer->start ();
     for (ParticleCell cell : m_cells) {
         if (!(cell.m_ids.empty ())) {
-            p_file_writer->saveData (cell.m_positions_x, cell.m_positions_y, cell.m_positions_z, &(cell.m_ids));
+            p_file_writer->saveData (&(cell.m_positions_x[m_idx_a]),
+                                     &(cell.m_positions_y[m_idx_a]),
+                                     &(cell.m_positions_z[m_idx_a]),
+                                     &(cell.m_ids));
         }
     }
     p_file_writer->end ();

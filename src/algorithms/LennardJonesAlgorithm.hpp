@@ -13,7 +13,7 @@
 /*
  * definitions are in the latex-document with the same name as this class
  * _a -> actual Value
- * _b -> last/next Value
+ * _b -> next Value
  * step_1 manipulations on only one cell. swap value of last iteration against value of next
  * iteration
  * step 2 calculate forces between particles
