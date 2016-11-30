@@ -33,4 +33,4 @@ rmlog: format
 	rm -rf ../logdata
 	
 run: build
-	cd .. && ./particle_simulation.x -p 1000 -l 10 -f 2 -r 4 -t 0.5
+	cd .. && ./particle_simulation.x -p 100 -l 0.1 -f 1 -r 2.5 -t 0.005

@@ -178,7 +178,7 @@ void OptionHandler::handle_options (int                  p_argc,
                 p_sim_options->m_cut_off_radius = std::stof (optarg);
                 break;
             case 'l': {
-                p_sim_options->m_run_time_limit = std::stoi (optarg);
+                p_sim_options->m_run_time_limit = std::stof (optarg);
                 break;
             }
             case 't': {
