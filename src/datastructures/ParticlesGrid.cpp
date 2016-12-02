@@ -109,7 +109,8 @@ void ParticlesGrid::step_2b_calculate_betweenCells (ParticleCell &p_cell1, Parti
         }
     }
 }
-void ParticlesGrid::run_simulation_iteration () {
+void ParticlesGrid::run_simulation_iteration (unsigned long p_iteration_number) {
+    (void) p_iteration_number;
     m_iterations_until_rearange_particles--;
     unsigned int idx_x, idx_y, idx_z, parallel_offset;
     Benchmark::begin ("step 1+2a", false);

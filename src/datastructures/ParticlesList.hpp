@@ -11,6 +11,7 @@ class ParticlesList : public ParticlesBase {
     float m_average_list_length;
     float m_next_list_size_multiplier;
     short m_duration_list;
+    short m_cnt_iterations_without_rebuild;
 
     float calculate_cnt_average_neighbours ();
     void  calculate_duration_list ();
@@ -33,7 +34,9 @@ class ParticlesList : public ParticlesBase {
     std::vector<float> m_accelerations_x;
     std::vector<float> m_accelerations_y;
     std::vector<float> m_accelerations_z;
+    // used in first implementaion of build lists and run iteration
     // pairs of data: first is start second is end
+
     std::vector<unsigned long> m_particle_list_ranges;
 
     std::vector<float> m_listed_velocities_x;
@@ -47,22 +50,46 @@ class ParticlesList : public ParticlesBase {
     std::vector<float> m_listed_accelerations_x;
     std::vector<float> m_listed_accelerations_y;
     std::vector<float> m_listed_accelerations_z;
+    // used in build_lists_smarter and run_iteration 2nd implementation
+    std::vector<std::vector<float>> m_mat_velocities_x;
+    std::vector<std::vector<float>> m_mat_velocities_y;
+    std::vector<std::vector<float>> m_mat_velocities_z;
+
+    std::vector<std::vector<float>> m_mat_positions_x;
+    std::vector<std::vector<float>> m_mat_positions_y;
+    std::vector<std::vector<float>> m_mat_positions_z;
+
+    std::vector<std::vector<float>> m_mat_accelerations_x;
+    std::vector<std::vector<float>> m_mat_accelerations_y;
+    std::vector<std::vector<float>> m_mat_accelerations_z;
 
     ParticlesList (s_simulator_options *p_options, vec3f *p_bounds);
 
     ~ParticlesList ();
     void add_particle (vec3f p_position);
     unsigned long get_particle_count ();
-    void          run_simulation_iteration ();
-    void          build_lists ();
-    void calculate_distances_squared (unsigned long       partice_idx,
-                                      std::vector<float> *distances,
-                                      std::vector<float> *x_distances,
-                                      std::vector<float> *y_distances,
-                                      std::vector<float> *z_distances,
-                                      unsigned long       start_idx,
-                                      unsigned long       end_idx);
+    void run_simulation_iteration (unsigned long p_iteration_number);
+    void build_lists ();
+    void build_lists_smarter (float *       p_distances_x,
+                              float *       p_distances_y,
+                              float *       p_distances_z,
+                              float *       p_distances_squared,
+                              unsigned long p_size_distance_vectors);
+    void calculate_distance_vectors (unsigned long p_particle_idx,
+                                     float *       p_distances_x,
+                                     float *       p_distances_y,
+                                     float *       p_distances_z,
+                                     float *       p_positions_x,
+                                     float *       p_positions_y,
+                                     float *       p_positions_z,
+                                     unsigned long start_idx,
+                                     unsigned long end_idx);
     float get_cnt_average_neighbours ();
+    void calculate_distances_squared (float *       p_distances_squared,
+                                      float *       p_distances_x,
+                                      float *       p_distances_y,
+                                      float *       p_distances_z,
+                                      unsigned long size);
     void serialize (std::shared_ptr<ParticleFileWriter> p_writer);
     void get_current_status (unsigned long               p_idx_first,
                              unsigned long               p_segment_length,
