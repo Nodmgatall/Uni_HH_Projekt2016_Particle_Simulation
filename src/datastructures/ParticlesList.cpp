@@ -43,7 +43,7 @@ void ParticlesList::run_simulation_iteration (unsigned long p_iteration_number) 
     macro_debug_1 ("running iteration") setup_iteration ();
     unsigned long particle_count = m_positions_x.size ();
     unsigned long last_particle  = particle_count - 1;
-//    unsigned long neighbour_cnt;
+    //    unsigned long neighbour_cnt;
     unsigned long size_distances_vector = ((particle_count * particle_count) - particle_count) / 2;
     std::vector<float> distances_x (size_distances_vector);
     std::vector<float> distances_y (size_distances_vector);
@@ -84,10 +84,10 @@ void ParticlesList::run_simulation_iteration (unsigned long p_iteration_number) 
         }
     }
 
-//    for (unsigned long neighbour_idx = 0; neighbour_idx < neighbour_cnt; neighbour_idx++) {
-        // calculate force
-        //
-  //  }
+    //    for (unsigned long neighbour_idx = 0; neighbour_idx < neighbour_cnt; neighbour_idx++) {
+    // calculate force
+    //
+    //  }
     // summ
     macro_debug_1 ("iteration done")
 }

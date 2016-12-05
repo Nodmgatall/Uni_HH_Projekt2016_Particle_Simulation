@@ -1,5 +1,13 @@
 cmake_minimum_required(VERSION 3.0)
-project(particle_simulation)
+
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+if (${CMAKE_EXTRA_GENERATOR} MATCHES "Eclipse CDT4")
+	add_definitions (-DCMAKE_ECLIPSE_GENERATE_SOURCE_PROJECT=TRUE)
+endif()
+
+project(particle_simulation CXX)
 
 if(APPLE)
 	set(CMAKE_C_COMPILER clang-omp CACHE STRING "C compiler" FORCE)
@@ -8,7 +16,7 @@ endif()
 
 file(GLOB_RECURSE sources src/*.cpp src/*.hpp)
 
-add_definitions(" -g -Wall -Wextra -pedantic -Werror -std=c++14 -Wno-unused-parameter -fassociative-math -ftree-vectorize -Ofast ")
+add_definitions("-g -Wall -Wextra -pedantic -Werror -Wno-unused-parameter -fassociative-math -ftree-vectorize -Ofast")
 
 find_package(Boost 1.62 COMPONENTS system serialization)
 if(Boost_FOUND)

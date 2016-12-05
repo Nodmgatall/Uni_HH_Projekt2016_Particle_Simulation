@@ -21,16 +21,17 @@ doxygen:
 
 cmake:
 ifeq ($(platform),Darwin)
-	cd .. && CC=clang-omp CXX=clang-omp++ cmake .
+	cd .. && CC=clang-omp CXX=clang-omp++ cmake -G "Eclipse CDT4 - Unix Makefiles"
 else
-	cd .. && cmake .
+	cd .. && cmake -G "Eclipse CDT4 - Unix Makefiles"
+	sed -i 's/199711L/201402L/g' ../.cproject
 endif
-	
+
 build: format
 	cd .. && $(MAKE) -j 8
 
 rmlog: format
 	rm -rf ../logdata
-	
+
 run: build
 	cd .. && ./particle_simulation.x -p 100 -l 0.1 -f 1 -r 2.5 -t 0.005
