@@ -16,7 +16,8 @@ endif()
 
 file(GLOB_RECURSE sources src/*.cpp src/*.hpp)
 
-add_definitions("-g -Wall -Wextra -pedantic -Werror -Wno-unused-parameter -fassociative-math -ftree-vectorize -Ofast")
+add_definitions("-Wall -Wextra -Werror -Wno-unused-parameter -pedantic -g")
+add_definitions("-fassociative-math -Ofast")
 
 find_package(Boost 1.62 COMPONENTS system serialization)
 if(Boost_FOUND)
