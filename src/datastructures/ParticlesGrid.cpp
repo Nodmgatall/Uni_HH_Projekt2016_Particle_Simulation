@@ -6,6 +6,9 @@
 #include "ParticlesGrid.hpp"
 
 #define MIN(a, b) (((a) < (b) ? (a) : (b)))
+#define POSITIONS(cell, a_b, i_j) \
+    cell.m_positions_x[a_b][i_j], cell.m_positions_y[a_b][i_j], cell.m_positions_z[a_b][i_j]
+
 /**
  *
  * @param p_options options for the simulation
@@ -79,12 +82,7 @@ void ParticlesGrid::step_1_prepare_cell (ParticleCell &p_cell) {
     unsigned int       i;
     const unsigned int max = p_cell.m_ids.size ();
     for (i = 0; i < max; i++) {
-        LennardJonesAlgorithm::step_1 (p_cell.m_positions_x[m_idx_a][i],
-                                       p_cell.m_positions_y[m_idx_a][i],
-                                       p_cell.m_positions_z[m_idx_a][i],
-                                       p_cell.m_positions_x[m_idx_b][i],
-                                       p_cell.m_positions_y[m_idx_b][i],
-                                       p_cell.m_positions_z[m_idx_b][i]);
+        LennardJonesAlgorithm::step_1 (POSITIONS (p_cell, m_idx_a, i), POSITIONS (p_cell, m_idx_b, i));
     }
 }
 /**
@@ -99,18 +97,10 @@ void ParticlesGrid::step_2a_calculate_inside_cell (ParticleCell &p_cell) {
     if (max > 0) {
         for (i = 0; i < max_1; i++) {
             for (j = i + 1; j < max; j++) {
-                LennardJonesAlgorithm::step_2 (p_cell.m_positions_x[m_idx_a][i],
-                                               p_cell.m_positions_y[m_idx_a][i],
-                                               p_cell.m_positions_z[m_idx_a][i],
-                                               p_cell.m_positions_x[m_idx_b][i],
-                                               p_cell.m_positions_y[m_idx_b][i],
-                                               p_cell.m_positions_z[m_idx_b][i],
-                                               p_cell.m_positions_x[m_idx_a][j],
-                                               p_cell.m_positions_y[m_idx_a][j],
-                                               p_cell.m_positions_z[m_idx_a][j],
-                                               p_cell.m_positions_x[m_idx_b][j],
-                                               p_cell.m_positions_y[m_idx_b][j],
-                                               p_cell.m_positions_z[m_idx_b][j]);
+                LennardJonesAlgorithm::step_2 (POSITIONS (p_cell, m_idx_a, i),
+                                               POSITIONS (p_cell, m_idx_b, i),
+                                               POSITIONS (p_cell, m_idx_a, j),
+                                               POSITIONS (p_cell, m_idx_b, j));
             }
         }
     }
@@ -127,18 +117,10 @@ void ParticlesGrid::step_2b_calculate_betweenCells (ParticleCell &p_cell1, Parti
     const unsigned int max2 = p_cell2.m_ids.size ();
     for (i = 0; i < max1; i++) {
         for (j = 0; j < max2; j++) {
-            LennardJonesAlgorithm::step_2 (p_cell1.m_positions_x[m_idx_a][i],
-                                           p_cell1.m_positions_y[m_idx_a][i],
-                                           p_cell1.m_positions_z[m_idx_a][i],
-                                           p_cell1.m_positions_x[m_idx_b][i],
-                                           p_cell1.m_positions_y[m_idx_b][i],
-                                           p_cell1.m_positions_z[m_idx_b][i],
-                                           p_cell2.m_positions_x[m_idx_a][j],
-                                           p_cell2.m_positions_y[m_idx_a][j],
-                                           p_cell2.m_positions_z[m_idx_a][j],
-                                           p_cell2.m_positions_x[m_idx_b][j],
-                                           p_cell2.m_positions_y[m_idx_b][j],
-                                           p_cell2.m_positions_z[m_idx_b][j]);
+            LennardJonesAlgorithm::step_2 (POSITIONS (p_cell1, m_idx_a, i),
+                                           POSITIONS (p_cell1, m_idx_b, i),
+                                           POSITIONS (p_cell2, m_idx_a, j),
+                                           POSITIONS (p_cell2, m_idx_b, j));
         }
     }
 }
