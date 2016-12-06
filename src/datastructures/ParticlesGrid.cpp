@@ -165,9 +165,10 @@ void ParticlesGrid::run_simulation_iteration (unsigned long p_iteration_number) 
     }
     Benchmark::end ();
     Benchmark::begin ("step 2b", false);
+    //TODO wraparount cell combinations never evaluated -> upper_loop_limit!!
     for (parallel_offset = 0; parallel_offset < 2; parallel_offset++) {
 #pragma omp parallel for
-        for (idx_x = parallel_offset; idx_x < m_size.x - 1; idx_x += 2) { // TODO upper_limit
+        for (idx_x = parallel_offset; idx_x < m_size.x - 1; idx_x += 2) {
             for (idx_y = 0; idx_y < m_size.y - 1; idx_y++) {
                 for (idx_z = 0; idx_z < m_size.z - 1; idx_z++) {
                     step_2b_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
