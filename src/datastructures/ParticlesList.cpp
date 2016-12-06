@@ -13,6 +13,7 @@ ParticlesList::ParticlesList (s_simulator_options *p_options, vec3f *p_bounds)
     m_cutoff_radius = 0;
     m_last_id       = 0;
     m_duration_list = 0;
+    m_cnt_iterations_without_rebuild=0;
     macro_debug_1 ("constructor of ParticleList called")
 }
 ParticlesList::~ParticlesList () {
