@@ -23,7 +23,7 @@ void createOutputDirectory () {
     time_info = localtime (&current_time);
     strftime (log_folder, sizeof (log_folder), "logdata/%Y-%m-%d_%H-%M-%S", time_info);
     if (mkdir ("logdata", 0700)) {
-        // dont care ... but returnvalue ist used
+        // don't care ... but return value is used
     }
     if (mkdir (log_folder, 0700)) {
         DEBUG_BEGIN << "createing Directory '" << log_folder << "' failed" << DEBUG_END;
@@ -31,7 +31,7 @@ void createOutputDirectory () {
     }
     g_debug_stream.open (std::string (log_folder) + "/log.txt", std::fstream::out);
     if (unlink ("logdata/latest")) {
-        // dont care ... but returnvalue ist used
+        // don't care ... but return value is used
     }
     if (symlink ((std::string ("../") + log_folder).c_str (), "logdata/latest")) {
         DEBUG_BEGIN << "symlink @ 'logdata/latest' failed" << DEBUG_END;

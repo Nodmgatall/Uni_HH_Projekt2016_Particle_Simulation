@@ -14,10 +14,13 @@ if(APPLE)
 	set(CMAKE_CXX_COMPILER clang-omp++ CACHE STRING "C++ compiler" FORCE)
 endif()
 
-file(GLOB_RECURSE sources src/*.cpp src/*.hpp)
+file(GLOB_RECURSE sources src/main/*.cpp src/main/*.hpp)
+file(GLOB_RECURSE test_sources src/*.cpp src/*.hpp)
+list(REMOVE_ITEM test_sources "${CMAKE_SOURCE_DIR}/src/main/main.cpp")
 
 add_definitions("-Wall -Wextra -Werror -Wno-unused-parameter -pedantic -g")
 add_definitions("-fassociative-math -Ofast")
+add_definitions("-I${CMAKE_SOURCE_DIR}/src/main")
 
 find_package(Boost 1.62 COMPONENTS system serialization)
 if(Boost_FOUND)
@@ -32,7 +35,14 @@ if (OPENMP_FOUND)
     set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
 endif()
 
-add_executable(particle_simulation.x ${sources})
+add_executable(particle_simulation.x src/main/main.cpp ${sources})
+
+enable_testing ()
+
+add_executable (particle_simulation_test.x src/test/main.cpp ${test_sources})
+
+add_test (particle_simulation_test.x ${EXECUTABLE_OUTPUT_PATH}/particle_simulation_test.x)
 if(Boost_FOUND)
 	target_link_libraries(particle_simulation.x ${Boost_LIBRARIES})
+	target_link_libraries(particle_simulation_test.x ${Boost_LIBRARIES})
 endif()

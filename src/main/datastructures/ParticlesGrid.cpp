@@ -153,7 +153,8 @@ void ParticlesGrid::step_2b_calculate_betweenCells (ParticleCell &p_cell1, Parti
     }
 }
 /**
- * verify that all particles in cell are in the correct cell. if there are particles which should be in an other cell, these particles get moved
+ * verify that all particles in cell are in the correct cell. if there are particles which should be
+ * in an other cell, these particles get moved
  * @param p_cell
  */
 void ParticlesGrid::step_3_remove_wrong_particles_from_cell (ParticleCell &p_cell) {

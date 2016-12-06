@@ -9,11 +9,11 @@
 
 ParticlesList::ParticlesList (s_simulator_options *p_options, vec3f *p_bounds)
 : ParticlesBase (p_options, p_bounds), m_average_list_length (0.16), m_next_list_size_multiplier (1.1) {
-    m_stucture_name = "List";
-    m_cutoff_radius = 0;
-    m_last_id       = 0;
-    m_duration_list = 0;
-    m_cnt_iterations_without_rebuild=0;
+    m_stucture_name                  = "List";
+    m_cutoff_radius                  = 0;
+    m_last_id                        = 0;
+    m_duration_list                  = 0;
+    m_cnt_iterations_without_rebuild = 0;
     macro_debug_1 ("constructor of ParticleList called")
 }
 ParticlesList::~ParticlesList () {
