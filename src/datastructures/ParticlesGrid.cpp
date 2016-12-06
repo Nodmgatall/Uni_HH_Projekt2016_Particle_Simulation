@@ -6,9 +6,14 @@
 #include "ParticlesGrid.hpp"
 
 #define MIN(a, b) (((a) < (b) ? (a) : (b)))
-
+/**
+ *
+ * @param p_options options for the simulation
+ * @param p_bounds boundary for the particles in which they can move
+ */
 ParticlesGrid::ParticlesGrid (s_simulator_options *p_options, vec3f *p_bounds)
 : ParticlesBase (p_options, p_bounds), m_iterations_between_rearange_particles (20) {
+    m_particle_bounds_correction          = new ParticleBoundsCorrectionWraparound (p_bounds);
     long max_usefull_size                 = pow (m_options->m_particle_count, 1.0 / 3.0);
     m_iterations_until_rearange_particles = m_iterations_between_rearange_particles;
     m_stucture_name                       = "Grid";
@@ -34,11 +39,22 @@ ParticlesGrid::ParticlesGrid (s_simulator_options *p_options, vec3f *p_bounds)
         }
     }
 }
+/**
+ * destructor
+ */
 ParticlesGrid::~ParticlesGrid () {
 }
+/**
+ * adds an particle to the current simulation
+ * @param p_position the position of the new particle
+ */
 void ParticlesGrid::add_particle (vec3f p_position) {
     get_cell_at (vec3l (p_position / *m_bounds * vec3f (m_size - 1L))).add_particle (p_position, m_max_id++);
 }
+/**
+ * saves all particles to an file
+ * @param p_file_writer the wrapper which holds the file and formats the output
+ */
 void ParticlesGrid::serialize (std::shared_ptr<ParticleFileWriter> p_file_writer) {
     Benchmark::begin ("saving the data", false);
     p_file_writer->start ();
@@ -53,6 +69,10 @@ void ParticlesGrid::serialize (std::shared_ptr<ParticleFileWriter> p_file_writer
     p_file_writer->end ();
     Benchmark::end ();
 }
+/**
+ * first step in each iteration. Calculates the new particle position based on its own speed
+ * @param p_cell the cell contains the particles which are calculated
+ */
 void ParticlesGrid::step_1_prepare_cell (ParticleCell &p_cell) {
     unsigned int       i;
     const unsigned int max = p_cell.m_ids.size ();
@@ -65,6 +85,11 @@ void ParticlesGrid::step_1_prepare_cell (ParticleCell &p_cell) {
                                        p_cell.m_positions_z[m_idx_b][i]);
     }
 }
+/**
+ * calculates the movement of particles based on the forces between every particle-pair in the given
+ * cell
+ * @param p_cell the cell which contains the particles
+ */
 void ParticlesGrid::step_2a_calculate_inside_cell (ParticleCell &p_cell) {
     unsigned int       i, j;
     const unsigned int max   = p_cell.m_ids.size ();
@@ -88,6 +113,12 @@ void ParticlesGrid::step_2a_calculate_inside_cell (ParticleCell &p_cell) {
         }
     }
 }
+/**
+ * calculates the movement based on forces between particles which are in different cells each
+ * particle-pair consists of one particle from each cell given as parameters
+ * @param p_cell1
+ * @param p_cell2
+ */
 void ParticlesGrid::step_2b_calculate_betweenCells (ParticleCell &p_cell1, ParticleCell &p_cell2) {
     unsigned int       i, j;
     const unsigned int max1 = p_cell1.m_ids.size ();
@@ -109,6 +140,10 @@ void ParticlesGrid::step_2b_calculate_betweenCells (ParticleCell &p_cell1, Parti
         }
     }
 }
+/**
+ * runs a complete timestep simulation on all particles contained in this datastructure
+ * @param p_iteration_number unused? TODO remove?!?
+ */
 void ParticlesGrid::run_simulation_iteration (unsigned long p_iteration_number) {
     (void) p_iteration_number;
     m_iterations_until_rearange_particles--;
@@ -181,11 +216,18 @@ void ParticlesGrid::run_simulation_iteration (unsigned long p_iteration_number) 
     m_iterations_until_rearange_particles = m_iterations_between_rearange_particles;
     m_idx_b = !(m_idx_a = m_idx_b);
 }
+/**
+ * returns the coordinates of the cell for the given coordinates. no bounds check included!
+ * @param x
+ * @param y
+ * @param z
+ */
 unsigned long ParticlesGrid::get_cell_index (long x, long y, long z) {
     return x + m_size.x * (y + m_size.y * z);
 }
+
 ParticleCell &ParticlesGrid::get_cell_at (long x, long y, long z) {
-    x = (x + m_size.x) % m_size.x; // apply periodic border
+    x = (x + m_size.x) % m_size.x; // apply periodic border //TODO REMOVE
     y = (y + m_size.y) % m_size.y;
     z = (z + m_size.z) % m_size.z;
     return m_cells[get_cell_index (x, y, z)];
@@ -197,41 +239,14 @@ void ParticlesGrid::step_3_remove_wrong_particles_from_cell (ParticleCell &p_cel
     vec3l delta (0);
     int   i;
     for (i = p_cell.m_ids.size () - 1; i >= 0; i--) {
-        delta = vec3l (0);
-        if (p_cell.m_positions_x[m_idx_a][i] < p_cell.m_corner000.x) {
-            delta.x = -1;
-            while (p_cell.m_positions_x[m_idx_a][i] < 0) {
-                p_cell.m_positions_x[m_idx_a][i] += m_bounds->x;
-            }
-        } else if (p_cell.m_positions_x[m_idx_a][i] > p_cell.m_corner111.x) {
-            delta.x = +1;
-            while (p_cell.m_positions_x[m_idx_a][i] > m_bounds->x) {
-                p_cell.m_positions_x[m_idx_a][i] -= m_bounds->x;
-            }
-        }
-        if (p_cell.m_positions_y[m_idx_a][i] < p_cell.m_corner000.y) {
-            delta.y = -1;
-            while (p_cell.m_positions_y[m_idx_a][i] < 0) {
-                p_cell.m_positions_y[m_idx_a][i] += m_bounds->y;
-            }
-        } else if (p_cell.m_positions_y[m_idx_a][i] > p_cell.m_corner111.y) {
-            delta.y = +1;
-            while (p_cell.m_positions_y[m_idx_a][i] > m_bounds->y) {
-                p_cell.m_positions_y[m_idx_a][i] -= m_bounds->y;
-            }
-        }
-        if (p_cell.m_positions_z[m_idx_a][i] < p_cell.m_corner000.z) {
-            delta.z = -1;
-            while (p_cell.m_positions_z[m_idx_a][i] < 0) {
-                p_cell.m_positions_z[m_idx_a][i] += m_bounds->z;
-            }
-        } else if (p_cell.m_positions_z[m_idx_a][i] > p_cell.m_corner111.z) {
-            delta.z = +1;
-            while (p_cell.m_positions_z[m_idx_a][i] > m_bounds->z) {
-                p_cell.m_positions_z[m_idx_a][i] -= m_bounds->z;
-            }
-        }
-        if (delta.x || delta.y || delta.z) {
+        if (m_particle_bounds_correction->updatePosition (p_cell.m_positions_x[m_idx_a][i],
+                                                          p_cell.m_positions_y[m_idx_a][i],
+                                                          p_cell.m_positions_z[m_idx_a][i],
+                                                          p_cell.m_positions_x[m_idx_b][i],
+                                                          p_cell.m_positions_y[m_idx_b][i],
+                                                          p_cell.m_positions_z[m_idx_b][i],
+                                                          p_cell.m_corner000,
+                                                          p_cell.m_corner111)) {
             vec3f position (p_cell.m_positions_x[m_idx_a][i],
                             p_cell.m_positions_y[m_idx_a][i],
                             p_cell.m_positions_z[m_idx_a][i]);

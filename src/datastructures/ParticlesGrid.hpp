@@ -2,6 +2,8 @@
 #define PARTICLESGRID_HPP
 
 #include "../Definitions.hpp"
+#include "../algorithms/ParticleBoundsCorrection.hpp"
+#include "../algorithms/ParticleBoundsCorrectionWraparound.hpp"
 #include "../tools/Debug.hpp"
 #include "ParticlesBase.hpp"
 
@@ -21,6 +23,7 @@ struct ParticleCell {
 
 class ParticlesGrid : public ParticlesBase {
     private:
+    ParticleBoundsCorrection *m_particle_bounds_correction;
     unsigned long             m_max_id;
     std::vector<ParticleCell> m_cells;
     vec3l                     m_size;
