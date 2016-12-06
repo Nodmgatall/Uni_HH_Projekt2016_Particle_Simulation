@@ -27,6 +27,7 @@ class ParticlesGrid : public ParticlesBase {
     unsigned long             m_max_id;
     std::vector<ParticleCell> m_cells;
     vec3l                     m_size;
+    vec3f                     m_size_per_cell;
     unsigned const int        m_iterations_between_rearange_particles;
     unsigned int              m_iterations_until_rearange_particles;
     unsigned int              m_idx_a; // aktueller index
