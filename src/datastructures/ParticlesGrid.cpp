@@ -245,17 +245,11 @@ ParticleCell &ParticlesGrid::get_cell_forParticle (vec3f m_position) {
 void ParticlesGrid::step_3_remove_wrong_particles_from_cell (ParticleCell &p_cell) {
     int i;
     for (i = p_cell.m_ids.size () - 1; i >= 0; i--) {
-        if (m_particle_bounds_correction->updatePosition (p_cell.m_positions_x[m_idx_a][i],
-                                                          p_cell.m_positions_y[m_idx_a][i],
-                                                          p_cell.m_positions_z[m_idx_a][i],
-                                                          p_cell.m_positions_x[m_idx_b][i],
-                                                          p_cell.m_positions_y[m_idx_b][i],
-                                                          p_cell.m_positions_z[m_idx_b][i],
+        if (m_particle_bounds_correction->updatePosition (CURR_POSITION (p_cell, i),
+                                                          NEXT_POSITION (p_cell, i),
                                                           p_cell.m_corner000,
                                                           p_cell.m_corner111)) {
-            ParticleCell &other_cell = get_cell_at (p_cell.m_positions_x[m_idx_a][i],
-                                                    p_cell.m_positions_y[m_idx_a][i],
-                                                    p_cell.m_positions_z[m_idx_a][i]);
+            ParticleCell &other_cell = get_cell_at (CURR_POSITION (p_cell, i));
             moveParticle (p_cell, other_cell, i);
         }
     }
