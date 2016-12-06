@@ -67,6 +67,7 @@ class ParticlesList : public ParticlesBase {
 
     ~ParticlesList ();
     void add_particle (vec3f p_position);
+    void add_particle (vec3f p_position, vec3f p_velocity);
     unsigned long get_particle_count ();
     void run_simulation_iteration (unsigned long p_iteration_number);
     void build_lists ();

@@ -16,7 +16,8 @@
  */
 ParticlesGrid::ParticlesGrid (s_simulator_options *p_options, vec3f *p_bounds)
 : ParticlesBase (p_options, p_bounds), m_iterations_between_rearange_particles (20) {
-    m_particle_bounds_correction          = new ParticleBoundsCorrectionWraparound (*p_bounds);
+	unsigned int idx_x, idx_y, idx_z;
+	     m_particle_bounds_correction          = new ParticleBoundsCorrectionWraparound (*m_bounds);
     long max_usefull_size                 = pow (m_options->m_particle_count, 1.0 / 3.0);
     m_iterations_until_rearange_particles = m_iterations_between_rearange_particles;
     m_stucture_name                       = "Grid";
@@ -33,7 +34,6 @@ ParticlesGrid::ParticlesGrid (s_simulator_options *p_options, vec3f *p_bounds)
     DEBUG_BEGIN << DEBUG_VAR (*m_bounds / (m_options->m_cut_off_radius * 1.2f)) << DEBUG_END;
     DEBUG_BEGIN << DEBUG_VAR (m_size) << DEBUG_END;
     m_cells.reserve (m_size.x * m_size.y * m_size.z);
-    unsigned int idx_x, idx_y, idx_z;
     for (idx_x = 0; idx_x < m_size.x; idx_x++) {
         for (idx_y = 0; idx_y < m_size.y; idx_y++) {
             for (idx_z = 0; idx_z < m_size.z; idx_z++) {
@@ -51,10 +51,24 @@ ParticlesGrid::~ParticlesGrid () {
  * adds an particle to the current simulation
  * @param p_position the position of the new particle
  */
-void ParticlesGrid::add_particle (vec3f p_position) {
-    float a, b, c; // TODO remove
-    m_particle_bounds_correction->updatePosition (p_position.x, p_position.y, p_position.z, a, b, c);
-    get_cell_forParticle (p_position).add_particle (p_position, m_max_id++);
+void ParticlesGrid::add_particle (vec3f p_current_position) {
+    add_particle (p_current_position, vec3f (0));
+}
+/**
+ *
+ * adds an particle to the current simulation
+ * @param p_position the position of the new particle
+ * @param p_velocity the initial velocity
+ */
+void ParticlesGrid::add_particle (vec3f p_current_position, vec3f p_current_velocity) {
+    vec3f old_position = p_current_position - p_current_velocity * m_options->m_timestep;
+    m_particle_bounds_correction->updatePosition (p_current_position.x,
+                                                  p_current_position.y,
+                                                  p_current_position.z,
+                                                  old_position.x,
+                                                  old_position.y,
+                                                  old_position.z);
+    get_cell_forParticle (p_current_position).add_particle (p_current_position, m_max_id++);
 }
 /**
  * saves all particles to an file

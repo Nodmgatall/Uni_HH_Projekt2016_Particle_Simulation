@@ -34,6 +34,7 @@ class ParticlesBase {
     ParticlesBase (s_simulator_options *p_options, vec3f *p_bounds);
     virtual void run_simulation_iteration (unsigned long p_iteration_number = 0) = 0;
     virtual void add_particle (vec3f p_position)                                 = 0;
+    virtual void add_particle (vec3f p_position, vec3f p_velocity) = 0;
     void        print_structure_name ();
     std::string get_structure_name ();
     void set_algorithm (const std::function<bool(float &p_position_1x,

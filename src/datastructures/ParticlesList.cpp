@@ -38,6 +38,9 @@ void ParticlesList::add_particle (vec3f p_position) {
         m_accelerations_z.push_back (0);
     }
 }
+void ParticlesList::add_particle (vec3f p_position, vec3f p_velocity) {
+    add_particle (p_position); // TODO
+}
 
 void ParticlesList::run_simulation_iteration (unsigned long p_iteration_number) {
     macro_debug_1 ("running iteration") setup_iteration ();
