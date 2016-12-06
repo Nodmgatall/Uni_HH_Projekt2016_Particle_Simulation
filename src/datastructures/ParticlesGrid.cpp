@@ -13,7 +13,7 @@
  */
 ParticlesGrid::ParticlesGrid (s_simulator_options *p_options, vec3f *p_bounds)
 : ParticlesBase (p_options, p_bounds), m_iterations_between_rearange_particles (20) {
-    m_particle_bounds_correction          = new ParticleBoundsCorrectionWraparound (p_bounds);
+    m_particle_bounds_correction          = new ParticleBoundsCorrectionWraparound (*p_bounds);
     long max_usefull_size                 = pow (m_options->m_particle_count, 1.0 / 3.0);
     m_iterations_until_rearange_particles = m_iterations_between_rearange_particles;
     m_stucture_name                       = "Grid";
@@ -49,7 +49,9 @@ ParticlesGrid::~ParticlesGrid () {
  * @param p_position the position of the new particle
  */
 void ParticlesGrid::add_particle (vec3f p_position) {
-    get_cell_at (vec3l (p_position / *m_bounds * vec3f (m_size - 1L))).add_particle (p_position, m_max_id++);
+    float a, b, c; // TODO remove
+    m_particle_bounds_correction->updatePosition (p_position.x, p_position.y, p_position.z, a, b, c);
+    get_cell_forParticle (p_position).add_particle (p_position, m_max_id++);
 }
 /**
  * saves all particles to an file
@@ -225,19 +227,23 @@ void ParticlesGrid::run_simulation_iteration (unsigned long p_iteration_number) 
 unsigned long ParticlesGrid::get_cell_index (long x, long y, long z) {
     return x + m_size.x * (y + m_size.y * z);
 }
-
 ParticleCell &ParticlesGrid::get_cell_at (long x, long y, long z) {
-    x = (x + m_size.x) % m_size.x; // apply periodic border //TODO REMOVE
-    y = (y + m_size.y) % m_size.y;
-    z = (z + m_size.z) % m_size.z;
     return m_cells[get_cell_index (x, y, z)];
 }
 ParticleCell &ParticlesGrid::get_cell_at (vec3l coord) {
     return get_cell_at (coord.y, coord.y, coord.z);
 }
+ParticleCell &ParticlesGrid::get_cell_forParticle (float x, float y, float z) {
+    int a = x / m_bounds->x * (m_size.x - 1);
+    int b = x / m_bounds->y * (m_size.y - 1);
+    int c = x / m_bounds->z * (m_size.z - 1);
+    return get_cell_at (a, b, c);
+}
+ParticleCell &ParticlesGrid::get_cell_forParticle (vec3f m_position) {
+    return get_cell_forParticle (m_position.x, m_position.y, m_position.z);
+}
 void ParticlesGrid::step_3_remove_wrong_particles_from_cell (ParticleCell &p_cell) {
-    vec3l delta (0);
-    int   i;
+    int i;
     for (i = p_cell.m_ids.size () - 1; i >= 0; i--) {
         if (m_particle_bounds_correction->updatePosition (p_cell.m_positions_x[m_idx_a][i],
                                                           p_cell.m_positions_y[m_idx_a][i],
@@ -247,10 +253,9 @@ void ParticlesGrid::step_3_remove_wrong_particles_from_cell (ParticleCell &p_cel
                                                           p_cell.m_positions_z[m_idx_b][i],
                                                           p_cell.m_corner000,
                                                           p_cell.m_corner111)) {
-            vec3f position (p_cell.m_positions_x[m_idx_a][i],
-                            p_cell.m_positions_y[m_idx_a][i],
-                            p_cell.m_positions_z[m_idx_a][i]);
-            ParticleCell &other_cell = get_cell_at (vec3l (position / *m_bounds * vec3f (m_size - 1L)));
+            ParticleCell &other_cell = get_cell_at (p_cell.m_positions_x[m_idx_a][i],
+                                                    p_cell.m_positions_y[m_idx_a][i],
+                                                    p_cell.m_positions_z[m_idx_a][i]);
             moveParticle (p_cell, other_cell, i);
         }
     }
