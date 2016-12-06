@@ -47,7 +47,8 @@ class ParticlesGrid : public ParticlesBase {
     ~ParticlesGrid ();
     void serialize (std::shared_ptr<ParticleFileWriter> p_writer);
     void run_simulation_iteration (unsigned long p_iteration_number = 0);
-    void add_particle (vec3f p_position);
+    void add_particle (vec3f p_current_position);
+    void add_particle (vec3f p_current_position, vec3f p_current_velocity);
     unsigned long get_particle_count ();
 };
 #endif
