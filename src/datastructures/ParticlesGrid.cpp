@@ -30,7 +30,7 @@ ParticlesGrid::ParticlesGrid (s_simulator_options *p_options, vec3f *p_bounds)
     m_size = vec3l::min (vec3l (*m_bounds / (m_options->m_cut_off_radius * 1.2f)), max_usefull_size);
     m_size          = m_size + 1L; // round up to next natural number for cell-count
     m_size          = vec3l::max (m_size, vec3l (4L));
-    m_size_per_cell = vec3f (m_size - 1) / *m_bounds;
+    m_size_per_cell = vec3f (m_size - 1L) / *m_bounds;
     DEBUG_BEGIN << DEBUG_VAR (m_idx_a) << DEBUG_VAR (m_idx_b) << DEBUG_END;
     DEBUG_BEGIN << DEBUG_VAR (max_usefull_size) << DEBUG_END;
     DEBUG_BEGIN << DEBUG_VAR (m_options->m_cut_off_radius) << DEBUG_END;
@@ -233,14 +233,16 @@ ParticleCell &ParticlesGrid::get_cell_at (long x, long y, long z) {
 ParticleCell &ParticlesGrid::get_cell_at (vec3l coord) {
     return get_cell_at (coord.y, coord.y, coord.z);
 }
-ParticleCell &ParticlesGrid::get_cell_forParticle (float x, float y, float z) {
+ParticleCell &ParticlesGrid::get_cell_for_particle (float x, float y, float z) {
     int a = x / m_bounds->x * (m_size.x - 1);
-    int b = x / m_bounds->y * (m_size.y - 1);
-    int c = x / m_bounds->z * (m_size.z - 1);
+    int b = y / m_bounds->y * (m_size.y - 1);
+    int c = z / m_bounds->z * (m_size.z - 1);
     return get_cell_at (a, b, c);
 }
 ParticleCell &ParticlesGrid::get_cell_forParticle (vec3f m_position) {
-    return get_cell_forParticle (m_position.x, m_position.y, m_position.z);
+    return get_cell_at (m_position.x * m_size_per_cell.x,
+                        m_position.y * m_size_per_cell.y,
+                        m_position.z * m_size_per_cell.z);
 }
 void ParticlesGrid::step_3_remove_wrong_particles_from_cell (ParticleCell &p_cell) {
     int i;
@@ -249,7 +251,7 @@ void ParticlesGrid::step_3_remove_wrong_particles_from_cell (ParticleCell &p_cel
                                                           NEXT_POSITION (p_cell, i),
                                                           p_cell.m_corner000,
                                                           p_cell.m_corner111)) {
-            ParticleCell &other_cell = get_cell_at (CURR_POSITION (p_cell, i));
+            ParticleCell &other_cell = get_cell_for_particle (CURR_POSITION (p_cell, i));
             moveParticle (p_cell, other_cell, i);
         }
     }
