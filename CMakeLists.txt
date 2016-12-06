@@ -15,20 +15,19 @@ if(APPLE)
 endif()
 
 file(GLOB_RECURSE sources src/main/*.cpp src/main/*.hpp)
-file(GLOB_RECURSE test_sources src/*.cpp src/*.hpp)
-list(REMOVE_ITEM test_sources "${CMAKE_SOURCE_DIR}/src/main/main.cpp")
 
 add_definitions("-Wall -Wextra -Werror -Wno-unused-parameter -pedantic -g")
 add_definitions("-fassociative-math -Ofast")
 add_definitions("-I${CMAKE_SOURCE_DIR}/src/main")
 
-find_package(Boost 1.62 COMPONENTS system serialization)
+find_package(Boost 1.62 COMPONENTS system serialization unit_test_framework)
 if(Boost_FOUND)
 	include_directories(${Boost_INCLUDE_DIRS})
 	set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DBOOST")
+	message("compiling with the -DBOOST flag")
 endif()
 
-find_package(OpenMP)
+find_package(OpenMP REQUIRED)
 if (OPENMP_FOUND)
     set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
@@ -36,13 +35,23 @@ if (OPENMP_FOUND)
 endif()
 
 add_executable(particle_simulation.x src/main/main.cpp ${sources})
-
-enable_testing ()
-
-add_executable (particle_simulation_test.x src/test/main.cpp ${test_sources})
-
-add_test (particle_simulation_test.x ${EXECUTABLE_OUTPUT_PATH}/particle_simulation_test.x)
 if(Boost_FOUND)
 	target_link_libraries(particle_simulation.x ${Boost_LIBRARIES})
-	target_link_libraries(particle_simulation_test.x ${Boost_LIBRARIES})
+endif()
+if(Boost_FOUND)
+	enable_testing ()
+	file(GLOB_RECURSE test_sources src/test*.cpp)
+	foreach(testSrc ${test_sources})	        
+		get_filename_component(testName ${testSrc} NAME_WE)
+        add_executable(${testName} ${testSrc})
+        target_link_libraries(${testName} ${Boost_LIBRARIES})
+        set_target_properties(${testName} PROPERTIES 
+            RUNTIME_OUTPUT_DIRECTORY  ${CMAKE_CURRENT_SOURCE_DIR}/testBin)
+
+        #Finally add it to test execution - 
+        #Notice the WORKING_DIRECTORY and COMMAND
+        add_test(NAME ${testName} 
+                 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/testBin 
+                 COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/testBin/${testName} )
+	endforeach()
 endif()
