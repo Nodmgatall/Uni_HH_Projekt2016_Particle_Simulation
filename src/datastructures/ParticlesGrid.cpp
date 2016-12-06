@@ -9,6 +9,7 @@
 #define NEXT_POSITION(cell, particle)                                             \
     cell.m_positions_x[m_idx_b][particle], cell.m_positions_y[m_idx_b][particle], \
         cell.m_positions_z[m_idx_b][particle]
+#define OLD_POSITION(cell, particle) NEXT_POSITION (cell, particle)
 #define CURR_POSITION(cell, particle)                                             \
     cell.m_positions_x[m_idx_a][particle], cell.m_positions_y[m_idx_a][particle], \
         cell.m_positions_z[m_idx_a][particle]
@@ -72,7 +73,7 @@ void ParticlesGrid::add_particle (vec3f p_current_position, vec3f p_current_velo
                                                   old_position.x,
                                                   old_position.y,
                                                   old_position.z);
-    get_cell_forParticle (p_current_position).add_particle (p_current_position, m_max_id++);
+    get_cell_forParticle (p_current_position).add_particle (p_current_position, old_position, m_idx_a, m_max_id++);
 }
 /**
  * saves all particles to an file
@@ -156,7 +157,6 @@ void ParticlesGrid::run_simulation_iteration (unsigned long p_iteration_number) 
     for (idx_x = 0; idx_x < m_size.x; idx_x++) {
         for (idx_y = 0; idx_y < m_size.y; idx_y++) {
             for (idx_z = 0; idx_z < m_size.z; idx_z++) {
-                DEBUG_BEGIN << "call4" << DEBUG_END;
                 ParticleCell &cell = get_cell_at (idx_x, idx_y, idx_z);
                 step_1_prepare_cell (cell);
                 step_2a_calculate_inside_cell (cell);
@@ -165,7 +165,7 @@ void ParticlesGrid::run_simulation_iteration (unsigned long p_iteration_number) 
     }
     Benchmark::end ();
     Benchmark::begin ("step 2b", false);
-    //TODO wraparount cell combinations never evaluated -> upper_loop_limit!!
+    // TODO wraparount cell combinations never evaluated -> upper_loop_limit!!
     for (parallel_offset = 0; parallel_offset < 2; parallel_offset++) {
 #pragma omp parallel for
         for (idx_x = parallel_offset; idx_x < m_size.x - 1; idx_x += 2) {
@@ -221,32 +221,16 @@ void ParticlesGrid::run_simulation_iteration (unsigned long p_iteration_number) 
     m_idx_b = !(m_idx_a = m_idx_b);
 }
 unsigned long ParticlesGrid::get_cell_index (long x, long y, long z) {
-    if (x + m_size.x * (y + m_size.y * z) < 0) {
-        DEBUG_BEGIN << "a" << DEBUG_VAR (x) << DEBUG_VAR (y) << DEBUG_VAR (z) << DEBUG_END;
-    }
-    if (x + m_size.x * (y + m_size.y * z) >= (signed) m_cells.size ()) {
-        DEBUG_BEGIN << "b" << DEBUG_VAR (x) << DEBUG_VAR (y) << DEBUG_VAR (z)
-                    << DEBUG_VAR (m_cells.size ()) << DEBUG_VAR (x + m_size.x * (y + m_size.y * z))
-                    << DEBUG_END;
-        exit (0);
-    }
     return x + m_size.x * (y + m_size.y * z);
 }
 ParticleCell &ParticlesGrid::get_cell_at (long x, long y, long z) {
     return m_cells[get_cell_index (x, y, z)];
 }
 ParticleCell &ParticlesGrid::get_cell_for_particle (float x, float y, float z) {
-    int a = x / m_bounds->x * (m_size.x - 1);
-    int b = y / m_bounds->y * (m_size.y - 1);
-    int c = z / m_bounds->z * (m_size.z - 1);
-    DEBUG_BEGIN << "call2" << DEBUG_END;
-    return get_cell_at (a, b, c);
+    return get_cell_at (x * m_size_per_cell.x, y * m_size_per_cell.y, z * m_size_per_cell.z);
 }
 ParticleCell &ParticlesGrid::get_cell_forParticle (vec3f m_position) {
-    DEBUG_BEGIN << "call3" << DEBUG_END;
-    return get_cell_at (m_position.x * m_size_per_cell.x,
-                        m_position.y * m_size_per_cell.y,
-                        m_position.z * m_size_per_cell.z);
+    return get_cell_at (m_position.x, m_position.y, m_position.z);
 }
 void ParticlesGrid::step_3_remove_wrong_particles_from_cell (ParticleCell &p_cell) {
     int i;
@@ -256,25 +240,6 @@ void ParticlesGrid::step_3_remove_wrong_particles_from_cell (ParticleCell &p_cel
                                                           p_cell.m_corner000,
                                                           p_cell.m_corner111)) {
             ParticleCell &other_cell = get_cell_for_particle (CURR_POSITION (p_cell, i));
-            DEBUG_BEGIN << "here" << DEBUG_END;
-            if (p_cell.m_positions_x[m_idx_a][i] < 0) {
-                DEBUG_BEGIN << "a" << DEBUG_END;
-            }
-            if (p_cell.m_positions_y[m_idx_a][i] < 0) {
-                DEBUG_BEGIN << "b" << DEBUG_END;
-            }
-            if (p_cell.m_positions_z[m_idx_a][i] < 0) {
-                DEBUG_BEGIN << "c" << DEBUG_END;
-            }
-            if (p_cell.m_positions_x[m_idx_a][i] > m_bounds->x) {
-                DEBUG_BEGIN << "d" << DEBUG_END;
-            }
-            if (p_cell.m_positions_y[m_idx_a][i] > m_bounds->y) {
-                DEBUG_BEGIN << "e" << DEBUG_END;
-            }
-            if (p_cell.m_positions_z[m_idx_a][i] > m_bounds->z) {
-                DEBUG_BEGIN << "f" << DEBUG_END;
-            }
             moveParticle (p_cell, other_cell, i);
         }
     }
@@ -305,12 +270,12 @@ ParticleCell::ParticleCell (vec3l p_idx, vec3l p_size, vec3f &p_bounds) {
     m_corner000 = vec3f (m_idx) / vec3f (p_size) * p_bounds;
     m_corner111 = vec3f (m_idx + 1L) / vec3f (p_size) * p_bounds;
 }
-void ParticleCell::add_particle (vec3f p_position, int p_id) {
-    unsigned int i;
-    for (i = 0; i <= 1; i++) {
-        m_positions_x[i].push_back (p_position.x);
-        m_positions_y[i].push_back (p_position.y);
-        m_positions_z[i].push_back (p_position.z);
-    }
+void ParticleCell::add_particle (vec3f p_current_position, vec3f p_old_position, int p_current_index, int p_id) {
+    m_positions_x[p_current_index].push_back (p_current_position.x);
+    m_positions_y[p_current_index].push_back (p_current_position.y);
+    m_positions_z[p_current_index].push_back (p_current_position.z);
+    m_positions_x[!p_current_index].push_back (p_old_position.x);
+    m_positions_y[!p_current_index].push_back (p_old_position.y);
+    m_positions_z[!p_current_index].push_back (p_old_position.z);
     m_ids.push_back (p_id);
 }
