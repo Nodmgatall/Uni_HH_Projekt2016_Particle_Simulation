@@ -29,6 +29,7 @@ else
 endif
 
 build: format
+	cd .. && $(MAKE) clean
 	cd .. && $(MAKE) -j 8
 
 rmlog: format
@@ -36,3 +37,5 @@ rmlog: format
 
 run: build
 	cd .. && ./particle_simulation.x -p 100 -l 0.1 -f 1 -r 2.5 -t 0.005
+test: build
+	cd .. && $(MAKE) test
