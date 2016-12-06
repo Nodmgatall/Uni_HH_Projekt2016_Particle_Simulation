@@ -35,7 +35,7 @@ class ParticlesGrid : public ParticlesBase {
     inline unsigned long get_cell_index (long x, long y, long z);
     inline ParticleCell &get_cell_at (long x, long y, long z);
     ParticleCell &get_cell_for_particle (float x, float y, float z);
-    ParticleCell &get_cell_forParticle (vec3f m_position);
+    ParticleCell &get_cell_for_particle (vec3f m_position);
     inline void moveParticle (ParticleCell &p_cell_from, ParticleCell &p_cell_to, long p_index_from);
     inline void step_1_prepare_cell (ParticleCell &p_cell);
     inline void step_2a_calculate_inside_cell (ParticleCell &p_cell);

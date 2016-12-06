@@ -47,10 +47,19 @@ ParticlesGrid::ParticlesGrid (s_simulator_options *p_options, vec3f *p_bounds)
         }
     }
 }
-/**
- * destructor
- */
 ParticlesGrid::~ParticlesGrid () {
+}
+unsigned long ParticlesGrid::get_cell_index (long x, long y, long z) {
+    return x + m_size.x * (y + m_size.y * z);
+}
+ParticleCell &ParticlesGrid::get_cell_at (long x, long y, long z) {
+    return m_cells[get_cell_index (x, y, z)];
+}
+ParticleCell &ParticlesGrid::get_cell_for_particle (float x, float y, float z) {
+    return get_cell_at (x * m_size_per_cell.x, y * m_size_per_cell.y, z * m_size_per_cell.z);
+}
+ParticleCell &ParticlesGrid::get_cell_for_particle (vec3f m_position) {
+    return get_cell_at (m_position.x, m_position.y, m_position.z);
 }
 /**
  * adds an particle to the current simulation
@@ -73,7 +82,7 @@ void ParticlesGrid::add_particle (vec3f p_current_position, vec3f p_current_velo
                                                   old_position.x,
                                                   old_position.y,
                                                   old_position.z);
-    get_cell_forParticle (p_current_position).add_particle (p_current_position, old_position, m_idx_a, m_max_id++);
+    get_cell_for_particle (p_current_position).add_particle (p_current_position, old_position, m_idx_a, m_max_id++);
 }
 /**
  * saves all particles to an file
@@ -140,6 +149,22 @@ void ParticlesGrid::step_2b_calculate_betweenCells (ParticleCell &p_cell1, Parti
                                            NEXT_POSITION (p_cell1, i),
                                            CURR_POSITION (p_cell2, j),
                                            NEXT_POSITION (p_cell2, j));
+        }
+    }
+}
+/**
+ * verify that all particles in cell are in the correct cell. if there are particles which should be in an other cell, these particles get moved
+ * @param p_cell
+ */
+void ParticlesGrid::step_3_remove_wrong_particles_from_cell (ParticleCell &p_cell) {
+    int i;
+    for (i = p_cell.m_ids.size () - 1; i >= 0; i--) {
+        if (m_particle_bounds_correction->updatePosition (CURR_POSITION (p_cell, i),
+                                                          NEXT_POSITION (p_cell, i),
+                                                          p_cell.m_corner000,
+                                                          p_cell.m_corner111)) {
+            ParticleCell &other_cell = get_cell_for_particle (CURR_POSITION (p_cell, i));
+            moveParticle (p_cell, other_cell, i);
         }
     }
 }
@@ -220,31 +245,12 @@ void ParticlesGrid::run_simulation_iteration (unsigned long p_iteration_number) 
     m_iterations_until_rearange_particles = m_iterations_between_rearange_particles;
     m_idx_b = !(m_idx_a = m_idx_b);
 }
-unsigned long ParticlesGrid::get_cell_index (long x, long y, long z) {
-    return x + m_size.x * (y + m_size.y * z);
-}
-ParticleCell &ParticlesGrid::get_cell_at (long x, long y, long z) {
-    return m_cells[get_cell_index (x, y, z)];
-}
-ParticleCell &ParticlesGrid::get_cell_for_particle (float x, float y, float z) {
-    return get_cell_at (x * m_size_per_cell.x, y * m_size_per_cell.y, z * m_size_per_cell.z);
-}
-ParticleCell &ParticlesGrid::get_cell_forParticle (vec3f m_position) {
-    return get_cell_at (m_position.x, m_position.y, m_position.z);
-}
-void ParticlesGrid::step_3_remove_wrong_particles_from_cell (ParticleCell &p_cell) {
-    int i;
-    for (i = p_cell.m_ids.size () - 1; i >= 0; i--) {
-        if (m_particle_bounds_correction->updatePosition (CURR_POSITION (p_cell, i),
-                                                          NEXT_POSITION (p_cell, i),
-                                                          p_cell.m_corner000,
-                                                          p_cell.m_corner111)) {
-            ParticleCell &other_cell = get_cell_for_particle (CURR_POSITION (p_cell, i));
-            moveParticle (p_cell, other_cell, i);
-        }
-    }
-}
-
+/**
+ * moves an particle from one cell to another
+ * @param p_cell_from
+ * @param p_cell_to
+ * @param p_index_from
+ */
 inline void ParticlesGrid::moveParticle (ParticleCell &p_cell_from, ParticleCell &p_cell_to, long p_index_from) {
     unsigned int j;
     p_cell_to.m_ids.push_back (p_cell_from.m_ids[p_index_from]);
@@ -257,7 +263,9 @@ inline void ParticlesGrid::moveParticle (ParticleCell &p_cell_from, ParticleCell
         p_cell_from.m_positions_z[j].erase (p_cell_from.m_positions_z[j].begin () + p_index_from);
     }
 }
-
+/**
+ * @return the total number of particles in all cells
+ */
 unsigned long ParticlesGrid::get_particle_count () {
     unsigned long particle_count = 0;
     for (ParticleCell cell : m_cells) {
