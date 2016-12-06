@@ -156,6 +156,7 @@ void ParticlesGrid::run_simulation_iteration (unsigned long p_iteration_number) 
     for (idx_x = 0; idx_x < m_size.x; idx_x++) {
         for (idx_y = 0; idx_y < m_size.y; idx_y++) {
             for (idx_z = 0; idx_z < m_size.z; idx_z++) {
+                DEBUG_BEGIN << "call4" << DEBUG_END;
                 ParticleCell &cell = get_cell_at (idx_x, idx_y, idx_z);
                 step_1_prepare_cell (cell);
                 step_2a_calculate_inside_cell (cell);
@@ -166,9 +167,9 @@ void ParticlesGrid::run_simulation_iteration (unsigned long p_iteration_number) 
     Benchmark::begin ("step 2b", false);
     for (parallel_offset = 0; parallel_offset < 2; parallel_offset++) {
 #pragma omp parallel for
-        for (idx_x = parallel_offset; idx_x < m_size.x; idx_x += 2) {
-            for (idx_y = 0; idx_y < m_size.y; idx_y++) {
-                for (idx_z = 0; idx_z < m_size.z; idx_z++) {
+        for (idx_x = parallel_offset; idx_x < m_size.x - 1; idx_x += 2) { // TODO upper_limit
+            for (idx_y = 0; idx_y < m_size.y - 1; idx_y++) {
+                for (idx_z = 0; idx_z < m_size.z - 1; idx_z++) {
                     step_2b_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
                                                     get_cell_at (idx_x + 1, idx_y + 1, idx_z + 1)); // 1
                     step_2b_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
@@ -218,28 +219,30 @@ void ParticlesGrid::run_simulation_iteration (unsigned long p_iteration_number) 
     m_iterations_until_rearange_particles = m_iterations_between_rearange_particles;
     m_idx_b = !(m_idx_a = m_idx_b);
 }
-/**
- * returns the coordinates of the cell for the given coordinates. no bounds check included!
- * @param x
- * @param y
- * @param z
- */
 unsigned long ParticlesGrid::get_cell_index (long x, long y, long z) {
+    if (x + m_size.x * (y + m_size.y * z) < 0) {
+        DEBUG_BEGIN << "a" << DEBUG_VAR (x) << DEBUG_VAR (y) << DEBUG_VAR (z) << DEBUG_END;
+    }
+    if (x + m_size.x * (y + m_size.y * z) >= (signed) m_cells.size ()) {
+        DEBUG_BEGIN << "b" << DEBUG_VAR (x) << DEBUG_VAR (y) << DEBUG_VAR (z)
+                    << DEBUG_VAR (m_cells.size ()) << DEBUG_VAR (x + m_size.x * (y + m_size.y * z))
+                    << DEBUG_END;
+        exit (0);
+    }
     return x + m_size.x * (y + m_size.y * z);
 }
 ParticleCell &ParticlesGrid::get_cell_at (long x, long y, long z) {
     return m_cells[get_cell_index (x, y, z)];
 }
-ParticleCell &ParticlesGrid::get_cell_at (vec3l coord) {
-    return get_cell_at (coord.y, coord.y, coord.z);
-}
 ParticleCell &ParticlesGrid::get_cell_for_particle (float x, float y, float z) {
     int a = x / m_bounds->x * (m_size.x - 1);
     int b = y / m_bounds->y * (m_size.y - 1);
     int c = z / m_bounds->z * (m_size.z - 1);
+    DEBUG_BEGIN << "call2" << DEBUG_END;
     return get_cell_at (a, b, c);
 }
 ParticleCell &ParticlesGrid::get_cell_forParticle (vec3f m_position) {
+    DEBUG_BEGIN << "call3" << DEBUG_END;
     return get_cell_at (m_position.x * m_size_per_cell.x,
                         m_position.y * m_size_per_cell.y,
                         m_position.z * m_size_per_cell.z);
@@ -252,6 +255,25 @@ void ParticlesGrid::step_3_remove_wrong_particles_from_cell (ParticleCell &p_cel
                                                           p_cell.m_corner000,
                                                           p_cell.m_corner111)) {
             ParticleCell &other_cell = get_cell_for_particle (CURR_POSITION (p_cell, i));
+            DEBUG_BEGIN << "here" << DEBUG_END;
+            if (p_cell.m_positions_x[m_idx_a][i] < 0) {
+                DEBUG_BEGIN << "a" << DEBUG_END;
+            }
+            if (p_cell.m_positions_y[m_idx_a][i] < 0) {
+                DEBUG_BEGIN << "b" << DEBUG_END;
+            }
+            if (p_cell.m_positions_z[m_idx_a][i] < 0) {
+                DEBUG_BEGIN << "c" << DEBUG_END;
+            }
+            if (p_cell.m_positions_x[m_idx_a][i] > m_bounds->x) {
+                DEBUG_BEGIN << "d" << DEBUG_END;
+            }
+            if (p_cell.m_positions_y[m_idx_a][i] > m_bounds->y) {
+                DEBUG_BEGIN << "e" << DEBUG_END;
+            }
+            if (p_cell.m_positions_z[m_idx_a][i] > m_bounds->z) {
+                DEBUG_BEGIN << "f" << DEBUG_END;
+            }
             moveParticle (p_cell, other_cell, i);
         }
     }

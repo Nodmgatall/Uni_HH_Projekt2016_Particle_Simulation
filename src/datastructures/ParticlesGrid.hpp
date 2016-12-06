@@ -33,7 +33,6 @@ class ParticlesGrid : public ParticlesBase {
     unsigned int              m_idx_a; // aktueller index
     unsigned int              m_idx_b; // neuer/alter index :: es gilt immer m_idx_a=!m_idx_b
     inline unsigned long get_cell_index (long x, long y, long z);
-    inline ParticleCell &get_cell_at (vec3l coord);
     inline ParticleCell &get_cell_at (long x, long y, long z);
     ParticleCell &get_cell_for_particle (float x, float y, float z);
     ParticleCell &get_cell_forParticle (vec3f m_position);
