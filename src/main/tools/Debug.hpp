@@ -41,17 +41,6 @@ struct s_debug_stream : std::ofstream {
         print (var ? "ON" : "OFF");
         return *this;
     }
-    template <typename T>
-    s_debug_stream &operator<< (const vec3<T> &var) {
-        print ("(");
-        print (var.x);
-        print (",");
-        print (var.y);
-        print (",");
-        print (var.z);
-        print (")");
-        return *this;
-    }
     s_debug_stream &operator<< (const e_generator_mode &var) {
         print (g_enum_generator_mode_to_string_map[var]);
         return *this;

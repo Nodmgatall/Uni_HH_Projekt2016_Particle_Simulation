@@ -27,9 +27,13 @@ class LennardJonesAlgorithm {
     static inline void step_1_local (float &p_position_a, float &p_position_b) {
         p_position_b = p_position_a * 2 - p_position_b;
     }
-
     public:
-    static void init (s_simulator_options *options);
+    static void init (s_simulator_options *options){
+        A_ij = 48 * options->m_timestep * options->m_timestep;
+        B_ij = 24 * options->m_timestep * options->m_timestep;
+        m_i  = 1;
+        m_j  = 1;
+    }
     static inline void step_1 (float &p_position_ax,
                                float &p_position_ay,
                                float &p_position_az,
@@ -63,18 +67,6 @@ class LennardJonesAlgorithm {
         float s_ij_x  = s_ij * d_x;
         float s_ij_y  = s_ij * d_y;
         float s_ij_z  = s_ij * d_z;
-        /*
-        DEBUG_BEGIN << DEBUG_VAR (&p_position_aix) << DEBUG_VAR (&p_position_ajx) << DEBUG_END;
-        DEBUG_BEGIN << DEBUG_VAR (m_i) << DEBUG_VAR (m_j) << DEBUG_END;
-        DEBUG_BEGIN << DEBUG_VAR (d_x) << DEBUG_VAR (d_y) << DEBUG_VAR (d_z) << DEBUG_END;
-        DEBUG_BEGIN << DEBUG_VAR (r_ij_2) << DEBUG_END;
-        DEBUG_BEGIN << DEBUG_VAR (r_ij_4) << DEBUG_END;
-        DEBUG_BEGIN << DEBUG_VAR (r_ij_6) << DEBUG_END;
-        DEBUG_BEGIN << DEBUG_VAR (r_ij_14) << DEBUG_END;
-        DEBUG_BEGIN << DEBUG_VAR (s_ij) << DEBUG_END;
-        DEBUG_BEGIN << DEBUG_VAR (s_ij_x) << DEBUG_VAR (s_ij_y) << DEBUG_VAR (s_ij_z) << DEBUG_END;
-         exit (1);
-         */
         p_position_bix += s_ij_x / m_i;
         p_position_biy += s_ij_y / m_i;
         p_position_biz += s_ij_z / m_i;

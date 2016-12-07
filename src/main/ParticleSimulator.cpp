@@ -8,7 +8,6 @@
 
 #include "Definitions.hpp"
 #include "ParticleSimulator.hpp"
-#include "algorithms/DummyAlgorithm.hpp"
 #include "datastructures/ParticlesBase.hpp"
 #include "datastructures/ParticlesGrid.hpp"
 #include "datastructures/ParticlesList.hpp"
@@ -23,7 +22,7 @@
 
 /*clang-format off */
 ParticleSimulator::ParticleSimulator (s_simulator_options *p_sim_options, s_generator_options *p_gen_options)
-: m_algorithm (dummy_algo), m_bounds (vec3f (5.0f, 5.0f, 5.0f)), m_options (p_sim_options),
+:  m_bounds (vec3f (5.0f, 5.0f, 5.0f)), m_options (p_sim_options),
   m_particle_file_writer (std::make_shared<ParticleFileWriter> (&p_sim_options->m_write_modes)),
   m_particle_generator (ParticleGeneratorFactory::build (p_gen_options)), m_particles (0),
   m_save_config (false) {
@@ -71,13 +70,5 @@ void ParticleSimulator::init_particle_data () {
     } else {
         m_particle_generator->generate (m_particles, m_bounds, m_options->m_particle_count);
     }
-    Benchmark::end ();
-}
-
-void ParticleSimulator::find_simulation_algorithm () {
-    Benchmark::begin ("find_simulation_algorithm");
-    DEBUG_BEGIN << "useing 'dummy_algo'" << DEBUG_END;
-    m_algorithm = dummy_algo;
-    m_particles->set_algorithm (m_algorithm);
     Benchmark::end ();
 }
