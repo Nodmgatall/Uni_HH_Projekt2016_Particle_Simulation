@@ -16,9 +16,7 @@ endif()
 
 file(GLOB_RECURSE sources src/main/*.cpp src/main/*.hpp)
 
-add_definitions("-Wall -Wextra -Werror -Wno-unused-parameter -pedantic -g")
-add_definitions("-fassociative-math -Ofast")
-
+add_definitions("-Wall -Wextra -Werror -Wno-unused-parameter -pedantic")
 
 find_package(Boost 1.62 COMPONENTS system serialization unit_test_framework)
 if(Boost_FOUND)
@@ -35,7 +33,7 @@ if (OPENMP_FOUND)
 endif()
 
 add_executable(particle_simulation.x src/main/main.cpp ${sources})
-SET_TARGET_PROPERTIES(particle_simulation.x PROPERTIES COMPILE_FLAGS "-fassociative-math -Ofast")
+SET_TARGET_PROPERTIES(particle_simulation.x PROPERTIES COMPILE_FLAGS "-Ofast")
 
 if(Boost_FOUND)
 	target_link_libraries(particle_simulation.x ${Boost_LIBRARIES})

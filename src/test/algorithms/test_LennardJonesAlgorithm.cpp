@@ -32,6 +32,6 @@ BOOST_AUTO_TEST_CASE (step2) {
         BOOST_CHECK_EQUAL (v[i], 1 + i);
     }
     for (int i = 0; i < 6; i++) {
-        BOOST_CHECK_CLOSE (v[6 + i], i + 1, 0.1);//TODO this check is useless!!
+        BOOST_CHECK_CLOSE (v[6 + i], i + 1, 0.1); // TODO this check is useless!!
     }
 }
