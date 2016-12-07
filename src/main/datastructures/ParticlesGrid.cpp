@@ -59,7 +59,7 @@ ParticleCell &ParticlesGrid::get_cell_for_particle (float x, float y, float z) {
     return get_cell_at (x * m_size_per_cell.x, y * m_size_per_cell.y, z * m_size_per_cell.z);
 }
 ParticleCell &ParticlesGrid::get_cell_for_particle (Vec3f m_position) {
-    return get_cell_at (m_position.x, m_position.y, m_position.z);
+    return get_cell_for_particle (m_position.x, m_position.y, m_position.z);
 }
 /**
  * adds an particle to the current simulation
@@ -82,6 +82,7 @@ void ParticlesGrid::add_particle (Vec3f p_current_position, Vec3f p_current_velo
                                                   old_position.x,
                                                   old_position.y,
                                                   old_position.z);
+
     get_cell_for_particle (p_current_position).add_particle (p_current_position, old_position, m_idx_a, m_max_id++);
 }
 /**

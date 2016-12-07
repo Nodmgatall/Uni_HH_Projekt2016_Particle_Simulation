@@ -35,7 +35,7 @@ if (OPENMP_FOUND)
 endif()
 
 add_executable(particle_simulation.x src/main/main.cpp ${sources})
-SET_TARGET_PROPERTIES(particle_simulation.x PROPERTIES COMPILE_FLAGS "-Ofast")
+set_target_properties(particle_simulation.x PROPERTIES COMPILE_FLAGS "-Ofast")
 
 if(Boost_FOUND)
 	target_link_libraries(particle_simulation.x ${Boost_LIBRARIES})
@@ -58,5 +58,6 @@ if(Boost_FOUND)
                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Testing/Binary 
                  COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/Testing/Binary/${testName}.x)
 	endforeach()
+	
 	add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} --verbose)
 endif()
