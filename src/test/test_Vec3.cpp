@@ -1,4 +1,9 @@
-
+/*
+ * test_Vec3.cpp
+ *
+ *  Created on: 07.12.2016
+ *      Author: benjamin
+ */
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "Vec3f"
 #include "../main/Vec3.hpp"
