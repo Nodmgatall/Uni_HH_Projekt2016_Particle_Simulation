@@ -16,7 +16,9 @@ endif()
 
 file(GLOB_RECURSE sources src/main/*.cpp src/main/*.hpp)
 
-add_definitions("-Wall -Wextra -Werror -Wno-unused-parameter -pedantic")
+add_definitions("-Wall -Wextra -Werror -W -Wshadow -Wunused-variable \
+ -Wunused-parameter -Wunused-function -Wunused -Wno-system-headers \
+ -Wno-deprecated -Woverloaded-virtual -Wwrite-strings -pedantic")
 
 find_package(Boost 1.62 COMPONENTS system serialization unit_test_framework)
 if(Boost_FOUND)

@@ -40,6 +40,7 @@ void ParticlesList::add_particle (Vec3f p_position) {
     }
 }
 void ParticlesList::add_particle (Vec3f p_position, Vec3f p_velocity) {
+    (void) p_velocity;
     add_particle (p_position); // TODO
 }
 
