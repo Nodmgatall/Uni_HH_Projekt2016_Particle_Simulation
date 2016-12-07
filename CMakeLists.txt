@@ -40,18 +40,17 @@ if(Boost_FOUND)
 endif()
 if(Boost_FOUND)
 	enable_testing ()
+	set(ENV{CTEST_OUTPUT_ON_FAILURE} TRUE)
 	file(GLOB_RECURSE test_sources src/test*.cpp)
 	foreach(testSrc ${test_sources})	        
 		get_filename_component(testName ${testSrc} NAME_WE)
         add_executable(${testName} ${testSrc})
         target_link_libraries(${testName} ${Boost_LIBRARIES})
-        set_target_properties(${testName} PROPERTIES 
-            RUNTIME_OUTPUT_DIRECTORY  ${CMAKE_CURRENT_SOURCE_DIR}/testBin)
-
-        #Finally add it to test execution - 
-        #Notice the WORKING_DIRECTORY and COMMAND
+        set_target_properties(${testName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY  ${CMAKE_CURRENT_SOURCE_DIR}/Testing/Binary)
         add_test(NAME ${testName} 
-                 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/testBin 
-                 COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/testBin/${testName} )
+                 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Testing/Binary 
+                 COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/Testing/Binary/${testName}
+                 --show_progress=yes)
 	endforeach()
+	add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} --verbose)
 endif()

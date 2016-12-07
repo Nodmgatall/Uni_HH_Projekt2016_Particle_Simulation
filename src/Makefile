@@ -8,13 +8,7 @@ format:
 
 clean: format
 	cd .. && $(MAKE) clean
-	rm -rf ../CMakeFiles
-	rm -f ../CMakeCache.txt
-	rm -f ../Makefile
-	rm -f ../cmake_install.cmake
-	rm -rf ../xml
-	rm -rf ../html
-	rm -rf ../latex
+	rm -rf ../CMakeFiles ../CMakeCache.txt ../Makefile ../cmake_install.cmake CTestTestfile.cmake ../xml ../html ../latex 
 
 doxygen:
 	cd .. && doxygen
@@ -38,4 +32,4 @@ rmlog: format
 run: build
 	cd .. && ./particle_simulation.x -p 100 -l 0.1 -f 1 -r 2.5 -t 0.005
 test: build
-	cd .. && $(MAKE) test
+	cd .. && $(MAKE) check
