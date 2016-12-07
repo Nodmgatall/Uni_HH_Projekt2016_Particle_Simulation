@@ -2,6 +2,7 @@
 #define BOOST_TEST_MODULE "vec3f"
 #include "vec3.hpp"
 #include <boost/test/unit_test.hpp>
+#include <sstream>
 
 BOOST_AUTO_TEST_CASE (constructors1) {
     vec3<int> obj = vec3<int> (3);
@@ -84,7 +85,7 @@ BOOST_AUTO_TEST_CASE (operator_division1) {
 BOOST_AUTO_TEST_CASE (operator_division2) {
     vec3<int> obja = vec3<int> (10, 18, 45);
     vec3<int> objb = vec3<int> (2, 3, 5);
-    vec3<int> objc = objb / obja;
+    vec3<int> objc = obja / objb;
     BOOST_CHECK_EQUAL (objc.x, 5);
     BOOST_CHECK_EQUAL (objc.y, 6);
     BOOST_CHECK_EQUAL (objc.z, 9);
@@ -118,4 +119,15 @@ BOOST_AUTO_TEST_CASE (operator_min) {
     BOOST_CHECK_EQUAL (objc.x, 2);
     BOOST_CHECK_EQUAL (objc.y, 18);
     BOOST_CHECK_EQUAL (objc.z, 5);
+}
+BOOST_AUTO_TEST_CASE (length) {
+    BOOST_CHECK_EQUAL (vec3<float> (3, 4, 0).length (), 5);
+    BOOST_CHECK_EQUAL (vec3<float> (0, 3, 4).length (), 5);
+    BOOST_CHECK_EQUAL (vec3<float> (4, 0, 3).length (), 5);
+}
+BOOST_AUTO_TEST_CASE (print) {
+    vec3<float>       obja = vec3<float> (2, 3, 4);
+    std::stringstream s;
+    s << obja;
+    BOOST_CHECK_EQUAL (s.str (), std::string ("vec3(2,3,4)"));
 }

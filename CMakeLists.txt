@@ -49,8 +49,7 @@ if(Boost_FOUND)
         set_target_properties(${testName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY  ${CMAKE_CURRENT_SOURCE_DIR}/Testing/Binary)
         add_test(NAME ${testName} 
                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Testing/Binary 
-                 COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/Testing/Binary/${testName}
-                 --show_progress=yes)
+                 COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/Testing/Binary/${testName})
 	endforeach()
 	add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} --verbose)
 endif()

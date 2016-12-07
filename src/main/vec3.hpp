@@ -9,6 +9,7 @@
 #define SRC_VEC3_HPP_
 
 #include <math.h>
+#include <ostream>
 
 template <typename T>
 struct vec3;
@@ -78,6 +79,9 @@ struct vec3 {
     }
     inline T length () {
         return sqrt (x * x + y * y + z * z);
+    }
+    inline friend std::ostream &operator<< (std::ostream &stream, const vec3 vec) {
+        return stream << "vec3(" << vec.x << "," << vec.y << "," << vec.z << ")";
     }
 };
 
