@@ -1,3 +1,5 @@
+.PHONY: all format clean doxygen cmake build rmlog run test
+
 all: format cmake build run
 
 platform=$(shell uname)
@@ -31,5 +33,8 @@ rmlog: format
 
 run: build
 	cd .. && ./particle_simulation.x -p 100 -l 0.1 -f 1 -r 2.5 -t 0.005
-test: build
+
+test: 
+	rm -rf ../Testing
+	$(MAKE) cmake build
 	cd .. && $(MAKE) check
