@@ -24,49 +24,50 @@ class LennardJonesAlgorithm {
     static float       B_ij;
     static float       m_i;
     static float       m_j;
-    static inline void step_1_local (float &p_position_a, float &p_position_b) {
+    static inline void step_1_local (const float &p_position_a, float &p_position_b) {
         p_position_b = p_position_a * 2 - p_position_b;
     }
+
     public:
-    static void init (s_simulator_options *options){
-        A_ij = 48 * options->m_timestep * options->m_timestep;
-        B_ij = 24 * options->m_timestep * options->m_timestep;
+    static void init (const s_simulator_options &options) {
+        A_ij = 48 * options.m_timestep * options.m_timestep;
+        B_ij = 24 * options.m_timestep * options.m_timestep;
         m_i  = 1;
         m_j  = 1;
     }
-    static inline void step_1 (float &p_position_ax,
-                               float &p_position_ay,
-                               float &p_position_az,
-                               float &p_position_bx,
-                               float &p_position_by,
-                               float &p_position_bz) {
+    static inline void step_1 (const float &p_position_ax,
+                               const float &p_position_ay,
+                               const float &p_position_az,
+                               float &      p_position_bx,
+                               float &      p_position_by,
+                               float &      p_position_bz) {
         step_1_local (p_position_ax, p_position_bx);
         step_1_local (p_position_ay, p_position_by);
         step_1_local (p_position_az, p_position_bz);
     }
-    static inline void step_2 (float &p_position_aix,
-                               float &p_position_aiy,
-                               float &p_position_aiz,
-                               float &p_position_bix,
-                               float &p_position_biy,
-                               float &p_position_biz,
-                               float &p_position_ajx,
-                               float &p_position_ajy,
-                               float &p_position_ajz,
-                               float &p_position_bjx,
-                               float &p_position_bjy,
-                               float &p_position_bjz) {
-        float d_x     = p_position_ajx - p_position_aix;
-        float d_y     = p_position_ajy - p_position_aiy;
-        float d_z     = p_position_ajz - p_position_aiz;
-        float r_ij_2  = d_x * d_x + d_y * d_y + d_z * d_z;
-        float r_ij_4  = r_ij_2 * r_ij_2;
-        float r_ij_6  = r_ij_2 * r_ij_4;
-        float r_ij_14 = r_ij_6 * r_ij_6 * r_ij_2;
-        float s_ij    = (A_ij - B_ij * r_ij_6) / (r_ij_14);
-        float s_ij_x  = s_ij * d_x;
-        float s_ij_y  = s_ij * d_y;
-        float s_ij_z  = s_ij * d_z;
+    static inline void step_2 (const float &p_position_aix,
+                               const float &p_position_aiy,
+                               const float &p_position_aiz,
+                               float &      p_position_bix,
+                               float &      p_position_biy,
+                               float &      p_position_biz,
+                               const float &p_position_ajx,
+                               const float &p_position_ajy,
+                               const float &p_position_ajz,
+                               float &      p_position_bjx,
+                               float &      p_position_bjy,
+                               float &      p_position_bjz) {
+        const float d_x     = p_position_ajx - p_position_aix;
+        const float d_y     = p_position_ajy - p_position_aiy;
+        const float d_z     = p_position_ajz - p_position_aiz;
+        const float r_ij_2  = d_x * d_x + d_y * d_y + d_z * d_z;
+        const float r_ij_4  = r_ij_2 * r_ij_2;
+        const float r_ij_6  = r_ij_2 * r_ij_4;
+        const float r_ij_14 = r_ij_6 * r_ij_6 * r_ij_2;
+        const float s_ij    = (A_ij - B_ij * r_ij_6) / (r_ij_14);
+        const float s_ij_x  = s_ij * d_x;
+        const float s_ij_y  = s_ij * d_y;
+        const float s_ij_z  = s_ij * d_z;
         p_position_bix += s_ij_x / m_i;
         p_position_biy += s_ij_y / m_i;
         p_position_biz += s_ij_z / m_i;

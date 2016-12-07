@@ -63,11 +63,11 @@ class ParticlesList : public ParticlesBase {
     std::vector<std::vector<float>> m_mat_accelerations_y;
     std::vector<std::vector<float>> m_mat_accelerations_z;
 
-    ParticlesList (s_simulator_options *p_options, vec3f *p_bounds);
+    ParticlesList (s_simulator_options *p_options, Vec3f *p_bounds);
 
     ~ParticlesList ();
-    void add_particle (vec3f p_position);
-    void add_particle (vec3f p_position, vec3f p_velocity);
+    void add_particle (Vec3f p_position);
+    void add_particle (Vec3f p_position, Vec3f p_velocity);
     unsigned long get_particle_count ();
     void run_simulation_iteration (unsigned long p_iteration_number);
     void build_lists ();

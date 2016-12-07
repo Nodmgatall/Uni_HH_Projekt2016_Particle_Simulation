@@ -50,7 +50,7 @@ int main (int argc, char **argv) {
     std::unique_ptr<ParticleSimulator> particle_simulator (
         new ParticleSimulator (&simulator_options, &generator_options));
 
-    LennardJonesAlgorithm::init (&simulator_options);
+    LennardJonesAlgorithm::init (simulator_options);
 
     Benchmark::begin ("everything", false);
     particle_simulator->init_particle_data ();

@@ -15,8 +15,7 @@
 
 class ParticleSimulator {
     private:
-
-    vec3f                                  m_bounds;
+    Vec3f                                  m_bounds;
     s_simulator_options *                  m_options;
     std::shared_ptr<ParticleFileWriter>    m_particle_file_writer;
     std::unique_ptr<ParticleGeneratorBase> m_particle_generator;

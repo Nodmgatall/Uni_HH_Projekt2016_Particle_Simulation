@@ -12,7 +12,7 @@
 
 class ParticleBoundsCorrectionWraparound : public ParticleBoundsCorrection {
     public:
-    ParticleBoundsCorrectionWraparound (vec3f &p_bounds);
+    ParticleBoundsCorrectionWraparound (Vec3f &p_bounds);
     virtual ~ParticleBoundsCorrectionWraparound ();
     bool updatePosition (float &m_x,
                          float &m_y,
@@ -20,8 +20,8 @@ class ParticleBoundsCorrectionWraparound : public ParticleBoundsCorrection {
                          float &m_other_x,
                          float &m_other_y,
                          float &m_other_z,
-                         vec3f &m_corner000,
-                         vec3f &m_corner111);
+                         Vec3f &m_corner000,
+                         Vec3f &m_corner111);
     bool updatePosition (float &m_x, float &m_y, float &m_z, float &m_other_x, float &m_other_y, float &m_other_z);
 };
 
