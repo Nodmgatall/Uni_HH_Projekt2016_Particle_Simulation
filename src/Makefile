@@ -24,14 +24,18 @@ else
 	sed -i 's/199711L/201402L/g' ../.cproject
 endif
 
-build: format
+	
+build_release: format
 	cd .. && $(MAKE) clean
+	cd .. && $(MAKE) particle_simulation.x -j 8
+
+build: build_release
 	cd .. && $(MAKE) -j 8
 
 rmlog: format
 	rm -rf ../logdata
 
-run: build
+run: build_release
 	cd .. && ./particle_simulation.x -p 100 -l 0.1 -f 1 -r 2.5 -t 0.005
 
 test: 
