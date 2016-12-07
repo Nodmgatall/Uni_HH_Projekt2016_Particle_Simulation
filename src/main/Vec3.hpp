@@ -12,12 +12,6 @@
 #include <ostream>
 
 template <typename T>
-struct Vec3;
-
-typedef Vec3<float> Vec3f;
-typedef Vec3<long>  Vec3l;
-
-template <typename T>
 struct Vec3 {
     T x, y, z;
     inline Vec3 (T p_x, T p_y, T p_z) : x (p_x), y (p_y), z (p_z) {
@@ -49,7 +43,6 @@ struct Vec3 {
         z += s;
         return *this;
     }
-
     inline Vec3 operator- (const Vec3 &other) {
         return Vec3 (x - other.x, y - other.y, z - other.z);
     }
@@ -85,4 +78,6 @@ struct Vec3 {
     }
 };
 
+typedef Vec3<float> Vec3f;
+typedef Vec3<long>  Vec3l;
 #endif /* SRC_Vec3_HPP_ */
