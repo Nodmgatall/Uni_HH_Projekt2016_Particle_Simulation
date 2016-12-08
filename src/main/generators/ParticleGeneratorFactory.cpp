@@ -23,24 +23,12 @@ std::unique_ptr<ParticleGeneratorBase> ParticleGeneratorFactory::build (s_option
             break;
         }
         case e_generator_mode::MULTIPLE_OBJECTS: {
-            GeneratorInvalidException exception;
-            exception.set_generator_mode (p_options.m_mode);
-            exception.reason_not_implemented ();
-            throw exception;
-            break;
+            throw GeneratorNotImplementedException (p_options.m_mode);
         }
         case e_generator_mode::RANDOM_UNIFORM: {
-            GeneratorInvalidException exception;
-            exception.set_generator_mode (p_options.m_mode);
-            exception.reason_not_implemented ();
-            throw exception;
-            break;
+            throw GeneratorNotImplementedException (p_options.m_mode);
         }
-        default: {
-            GeneratorInvalidException exception;
-            exception.set_generator_mode (p_options.m_mode);
-            throw exception;
-        }
+        default: { throw GeneratorInvalidException (p_options.m_mode); }
     }
     return result;
 }

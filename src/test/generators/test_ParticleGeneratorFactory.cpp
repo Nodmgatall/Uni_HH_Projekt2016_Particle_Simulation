@@ -35,3 +35,18 @@ BOOST_AUTO_TEST_CASE (testParticleGeneratorGridDistribution) {
     BOOST_CHECK_NO_THROW (generator = ParticleGeneratorFactory::build (options));
     BOOST_CHECK_EQUAL (generator->get_stucture_name (), "ParticleGeneratorGridDistribution");
 }
+
+BOOST_AUTO_TEST_CASE (testParticleGeneratorMulipleObjects) {
+    s_options options;
+    memset (&options, 0, sizeof (s_options));
+    options.m_mode                                   = e_generator_mode::MULTIPLE_OBJECTS;
+    std::unique_ptr<ParticleGeneratorBase> generator = 0;
+    BOOST_CHECK_THROW (generator = ParticleGeneratorFactory::build (options), GeneratorNotImplementedException);
+}
+BOOST_AUTO_TEST_CASE (testParticleGeneratorRandomUniform) {
+    s_options options;
+    memset (&options, 0, sizeof (s_options));
+    options.m_mode                                   = e_generator_mode::RANDOM_UNIFORM;
+    std::unique_ptr<ParticleGeneratorBase> generator = 0;
+    BOOST_CHECK_THROW (generator = ParticleGeneratorFactory::build (options), GeneratorNotImplementedException);
+}

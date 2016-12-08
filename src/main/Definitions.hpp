@@ -46,35 +46,6 @@ static std::map<e_generator_mode, const char *> g_enum_generator_mode_to_string_
     ENUM_TO_STRING_ENTRY (e_generator_mode, SINGLE_OBJECT_MIDDLE),
     ENUM_TO_STRING_ENTRY (e_generator_mode, GRID_DISTRIBUTION),
 };
-class GeneratorInvalidException : public std::exception {
-    private:
-    int  m_generator_mode;
-    bool m_reason_not_implemented;
-
-    public:
-    GeneratorInvalidException () : m_generator_mode (-1), m_reason_not_implemented (false) {
-    }
-
-    virtual const char *what () const throw () {
-        if (m_reason_not_implemented) {
-            return (std::string ("generator mode ( ") + std::to_string (m_generator_mode) +
-                    " ) is not (fully) implemented")
-                .c_str ();
-        } else {
-            return (std::string ("generator mode ( ") + std::to_string (m_generator_mode) +
-                    " ) is undefined")
-                .c_str ();
-        }
-    }
-
-    void set_generator_mode (int generator_mode) {
-        m_generator_mode = generator_mode;
-    }
-
-    void reason_not_implemented () {
-        m_reason_not_implemented = true;
-    }
-};
 /////////////////////////////////////////////////////////////////////////////////////////////
 enum e_algorithm_type {
     LENNARD_JONES,                  //
