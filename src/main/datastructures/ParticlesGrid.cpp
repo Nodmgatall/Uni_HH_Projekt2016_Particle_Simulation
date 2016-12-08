@@ -1,10 +1,3 @@
-#include <iostream>
-#ifdef OMP_AVAILABLE
-#include <omp.h>
-#endif
-#include <vector>
-
-#include "../Vec3.hpp"
 #include "ParticlesGrid.hpp"
 
 #define MIN(a, b) (((a) < (b) ? (a) : (b)))
@@ -34,12 +27,6 @@ ParticlesGrid::ParticlesGrid (s_simulator_options *p_options, Vec3f *p_bounds)
     m_size          = m_size + 1L; // round up to next natural number for cell-count
     m_size          = Vec3l::max (m_size, Vec3l (4L));
     m_size_per_cell = Vec3f (m_size - 1L) / *m_bounds;
-    DEBUG_BEGIN << DEBUG_VAR (m_idx_a) << DEBUG_VAR (m_idx_b) << DEBUG_END;
-    DEBUG_BEGIN << DEBUG_VAR (max_usefull_size) << DEBUG_END;
-    DEBUG_BEGIN << DEBUG_VAR (m_options->m_cut_off_radius) << DEBUG_END;
-    DEBUG_BEGIN << DEBUG_VAR (m_options->m_cut_off_radius * 1.2f) << DEBUG_END;
-    DEBUG_BEGIN << DEBUG_VAR (*m_bounds / (m_options->m_cut_off_radius * 1.2f)) << DEBUG_END;
-    DEBUG_BEGIN << DEBUG_VAR (m_size) << DEBUG_END;
     m_cells.reserve (m_size.x * m_size.y * m_size.z);
     for (idx_x = 0; idx_x < m_size.x; idx_x++) {
         for (idx_y = 0; idx_y < m_size.y; idx_y++) {

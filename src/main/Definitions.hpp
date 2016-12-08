@@ -9,7 +9,9 @@
 #ifndef EXTERN
 #define EXTERN extern
 #endif
-
+#ifdef OMP_AVAILABLE
+#include <omp.h>
+#endif
 #include <cstdlib>
 #include <ctime>
 #include <fstream>
