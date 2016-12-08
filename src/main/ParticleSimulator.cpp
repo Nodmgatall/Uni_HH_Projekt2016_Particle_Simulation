@@ -13,18 +13,19 @@
 #include "datastructures/ParticlesList.hpp"
 #include "tools/Usage.hpp"
 
-#include "IO/OptionsGenerator.hpp"
-#include "IO/OptionsSimulation.hpp"
+#include "IO/Options.hpp"
 #include <memory>
 #include <unistd.h>
 
 #include "generators/ParticleGeneratorFactory.hpp"
 
 /*clang-format off */
-ParticleSimulator::ParticleSimulator (s_simulator_options &p_sim_options, s_generator_options &p_gen_options)
-: m_bounds (Vec3f (5.0f, 5.0f, 5.0f)), m_options (p_sim_options),
-  m_particle_file_writer (std::make_shared<ParticleFileWriter> (p_sim_options.m_write_modes)),
-  m_particle_generator (ParticleGeneratorFactory::build (p_gen_options)), m_particles (0),
+ParticleSimulator::ParticleSimulator (s_options &p_options)
+: m_bounds (Vec3f (5.0f, 5.0f, 5.0f)),
+
+  m_options (p_options),
+  m_particle_file_writer (std::make_shared<ParticleFileWriter> (p_options.m_write_modes)),
+  m_particle_generator (ParticleGeneratorFactory::build (p_options)), m_particles (0),
   m_save_config (false) {
     DEBUG_BEGIN << "ParticleSimulator()" << DEBUG_END;
     m_particle_file_writer->set_file_name_base (std::string (log_folder) + "/data");
@@ -56,8 +57,7 @@ void ParticleSimulator::simulate () {
 
 void ParticleSimulator::init_particle_data () {
     Benchmark::begin ("init_particle_data");
-    ParticleBoundsCorrectionWraparound particleBoundsCorrectionWraparound =
-        ParticleBoundsCorrectionWraparound (m_bounds);
+    ParticleBoundsCorrectionWraparound particleBoundsCorrectionWraparound (m_bounds);
     switch (m_options.m_data_structure) {
         case GRID:
             m_particles = std::make_shared<ParticlesGrid> (m_options, m_bounds, particleBoundsCorrectionWraparound);
@@ -72,7 +72,7 @@ void ParticleSimulator::init_particle_data () {
     if (m_options.m_in_file_name.length () > 0) {
         DEBUG_BEGIN << "loading from file: " << m_options.m_in_file_name << DEBUG_END;
     } else {
-        m_particle_generator->generate (m_particles, m_bounds, m_options.m_particle_count);
+        m_particle_generator->generate (m_particles, m_bounds);
     }
     Benchmark::end ();
 }

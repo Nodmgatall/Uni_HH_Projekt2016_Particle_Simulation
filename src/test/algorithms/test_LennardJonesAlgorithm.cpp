@@ -10,8 +10,8 @@
 #include <boost/test/unit_test.hpp>
 #include <cstring>
 BOOST_AUTO_TEST_CASE (step1) {
-    s_simulator_options options;
-    memset (&options, 0, sizeof (s_simulator_options));
+    s_options options;
+    memset (&options, 0, sizeof (s_options));
     options.m_timestep = 1;
     LennardJonesAlgorithm::init (options);
     data_type v[] = { 1, 2, 3, 4, 5, 6 };
@@ -22,8 +22,8 @@ BOOST_AUTO_TEST_CASE (step1) {
         BOOST_CHECK_EQUAL (v[3 + i], i - 2);
 }
 BOOST_AUTO_TEST_CASE (step2_1) {
-    s_simulator_options options;
-    memset (&options, 0, sizeof (s_simulator_options));
+    s_options options;
+    memset (&options, 0, sizeof (s_options));
     options.m_timestep = 1;
     LennardJonesAlgorithm::init (options);
     data_type v[] = { 1, 2, 3, 2, 2, 3, 1, 2, 3, 2, 2, 3 };
@@ -32,8 +32,8 @@ BOOST_AUTO_TEST_CASE (step2_1) {
     BOOST_CHECK_EQUAL (v[9] - v[3], -24);
 }
 BOOST_AUTO_TEST_CASE (step2_2) {
-    s_simulator_options options;
-    memset (&options, 0, sizeof (s_simulator_options));
+    s_options options;
+    memset (&options, 0, sizeof (s_options));
     options.m_timestep = 1;
     LennardJonesAlgorithm::init (options);
     data_type v[] = { 1, 2, 3, 1, 3, 3, 1, 2, 3, 1, 3, 3 };
@@ -42,8 +42,8 @@ BOOST_AUTO_TEST_CASE (step2_2) {
     BOOST_CHECK_EQUAL (v[10] - v[4], -24);
 }
 BOOST_AUTO_TEST_CASE (step2_3) {
-    s_simulator_options options;
-    memset (&options, 0, sizeof (s_simulator_options));
+    s_options options;
+    memset (&options, 0, sizeof (s_options));
     options.m_timestep = 1;
     LennardJonesAlgorithm::init (options);
     data_type v[] = { 1, 2, 3, 1, 2, 4, 1, 2, 3, 1, 2, 4 };

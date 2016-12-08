@@ -7,7 +7,7 @@
 #include "../tools/Debug.hpp"
 #include "ParticlesList.hpp"
 
-ParticlesList::ParticlesList (s_simulator_options &p_options, Vec3f &p_bounds, ParticleBoundsCorrection &p_particle_bounds_correction)
+ParticlesList::ParticlesList (s_options &p_options, Vec3f &p_bounds, ParticleBoundsCorrection &p_particle_bounds_correction)
 : ParticlesBase (p_options, p_bounds, p_particle_bounds_correction), m_average_list_length (0.16),
   m_next_list_size_multiplier (1.1) {
     m_stucture_name                  = "List";

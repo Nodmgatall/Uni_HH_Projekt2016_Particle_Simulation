@@ -9,14 +9,13 @@
 #include <boost/serialization/map.hpp>
 #include <boost/serialization/nvp.hpp>
 
-struct s_simulator_options {
+struct s_options {
     friend class boost::serialization::access;
     e_algorithm_type m_algorithm_type = LENNARD_JONES;
     bool             m_autotuneing    = false;
     e_data_format    m_data_format    = CSV;
     std::string      m_in_file_name   = "";
     std::string      m_out_file_name  = "";
-    unsigned long    m_particle_count = 0;
     data_type        m_run_time_limit = 1000;
     data_type        m_timestep       = 1;
     bool             m_verbose        = false;
@@ -28,23 +27,28 @@ struct s_simulator_options {
                                                           { VELOCITY, true },
                                                           { ACCELERATION, true },
                                                           { PARTICLE_TYPE, false } };
+    e_generator_mode m_mode           = GRID_DISTRIBUTION;
+    unsigned int     m_seed           = 123456789;
+    unsigned long    m_particle_count = 0;
 
     template <class Archive>
-    void serialize (Archive &s_sim_options, const unsigned int version) {
+    void serialize (Archive &archive, const unsigned int version) {
         (void) version;
-        s_sim_options &BOOST_SERIALIZATION_NVP (m_algorithm_type);
-        s_sim_options &BOOST_SERIALIZATION_NVP (m_autotuneing);
-        s_sim_options &BOOST_SERIALIZATION_NVP (m_data_format);
-        s_sim_options &BOOST_SERIALIZATION_NVP (m_in_file_name);
-        s_sim_options &BOOST_SERIALIZATION_NVP (m_out_file_name);
-        s_sim_options &BOOST_SERIALIZATION_NVP (m_particle_count);
-        s_sim_options &BOOST_SERIALIZATION_NVP (m_run_time_limit);
-        s_sim_options &BOOST_SERIALIZATION_NVP (m_timestep);
-        s_sim_options &BOOST_SERIALIZATION_NVP (m_verbose);
-        s_sim_options &BOOST_SERIALIZATION_NVP (m_write_fequency);
-        s_sim_options &BOOST_SERIALIZATION_NVP (m_cut_off_radius);
-        s_sim_options &BOOST_SERIALIZATION_NVP (m_data_structure);
-        s_sim_options &BOOST_SERIALIZATION_NVP (m_write_modes);
+        archive &BOOST_SERIALIZATION_NVP (m_algorithm_type);
+        archive &BOOST_SERIALIZATION_NVP (m_autotuneing);
+        archive &BOOST_SERIALIZATION_NVP (m_data_format);
+        archive &BOOST_SERIALIZATION_NVP (m_in_file_name);
+        archive &BOOST_SERIALIZATION_NVP (m_out_file_name);
+        archive &BOOST_SERIALIZATION_NVP (m_run_time_limit);
+        archive &BOOST_SERIALIZATION_NVP (m_timestep);
+        archive &BOOST_SERIALIZATION_NVP (m_verbose);
+        archive &BOOST_SERIALIZATION_NVP (m_write_fequency);
+        archive &BOOST_SERIALIZATION_NVP (m_cut_off_radius);
+        archive &BOOST_SERIALIZATION_NVP (m_data_structure);
+        archive &BOOST_SERIALIZATION_NVP (m_write_modes);
+        archive &BOOST_SERIALIZATION_NVP (m_mode);
+        archive &BOOST_SERIALIZATION_NVP (m_seed);
+        archive &BOOST_SERIALIZATION_NVP (m_particle_count);
     }
 };
 #endif

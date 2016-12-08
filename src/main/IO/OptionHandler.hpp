@@ -6,15 +6,15 @@
 
 #include "../Definitions.hpp"
 #include "ConfigLoader.hpp"
-#include "OptionsGenerator.hpp"
-#include "OptionsSimulation.hpp"
+#include "Options.hpp"
+#include "Options.hpp"
 
 class OptionHandler {
     public:
-    void handle_options (int p_argc, char **p_argv, s_simulator_options *p_sim_options, s_generator_options *p_gen_options);
+    void handle_options (int p_argc, char **p_argv, s_options &p_options);
 
     private:
-    void print_choosen_options (s_simulator_options *p_sim_options, s_generator_options *p_gen_options);
+    void print_choosen_options (s_options &p_options);
     void print_usage_particle_sim ();
     void print_usage_generation_mode ();
 };

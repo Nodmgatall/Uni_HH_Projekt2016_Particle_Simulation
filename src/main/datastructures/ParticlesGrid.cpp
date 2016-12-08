@@ -8,7 +8,7 @@
     cell.m_positions_x[m_idx_a][particle], cell.m_positions_y[m_idx_a][particle], \
         cell.m_positions_z[m_idx_a][particle]
 
-ParticlesGrid::ParticlesGrid (s_simulator_options &p_options, Vec3f &p_bounds, ParticleBoundsCorrection &p_particle_bounds_correction)
+ParticlesGrid::ParticlesGrid (s_options &p_options, Vec3f &p_bounds, ParticleBoundsCorrection &p_particle_bounds_correction)
 : ParticlesBase (p_options, p_bounds, p_particle_bounds_correction),
   m_iterations_between_rearange_particles (20) {
     unsigned int idx_x, idx_y, idx_z;

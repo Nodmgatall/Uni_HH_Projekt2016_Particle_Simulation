@@ -1,14 +1,11 @@
 #include "OptionHandler.hpp"
 #include "ConfigLoader.hpp"
-#include "OptionsGenerator.hpp"
-#include "OptionsSimulation.hpp"
 #include <getopt.h>
 #include <map>
 #include <vector>
-void OptionHandler::handle_options (int                  p_argc,
-                                    char **              p_argv,
-                                    s_simulator_options *p_sim_options,
-                                    s_generator_options *p_gen_options) {
+
+#include "Options.hpp"
+void OptionHandler::handle_options (int p_argc, char **p_argv, s_options &p_options) {
     Benchmark::begin ("OptionHandler");
 
     int argv_index;
@@ -81,61 +78,59 @@ void OptionHandler::handle_options (int                  p_argc,
         switch (argv_index) {
             // Write modes
             case 0:
-                p_sim_options->m_write_modes[VELOCITY] = !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
+                p_options.m_write_modes[VELOCITY] = !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
                 break;
             case 1:
-                p_sim_options->m_write_modes[POSITION] = !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
+                p_options.m_write_modes[POSITION] = !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
                 break;
             case 2:
-                p_sim_options->m_write_modes[ACCELERATION] =
-                    !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
+                p_options.m_write_modes[ACCELERATION] = !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
                 break;
 
             case 3:
-                p_sim_options->m_write_modes[PARTICLE_TYPE] =
-                    !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
+                p_options.m_write_modes[PARTICLE_TYPE] = !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
                 break;
 
             // Generator modes
             case 4:
-                p_gen_options->m_mode = MULTIPLE_OBJECTS;
+                p_options.m_mode = MULTIPLE_OBJECTS;
                 generator_mode_set++;
                 break;
             case 5:
-                p_gen_options->m_mode = RANDOM;
+                p_options.m_mode = RANDOM;
                 generator_mode_set++;
                 break;
             case 6:
-                p_gen_options->m_mode = RANDOM_UNIFORM;
+                p_options.m_mode = RANDOM_UNIFORM;
                 generator_mode_set++;
                 break;
             case 7:
-                p_gen_options->m_mode = SINGLE_OBJECT_MIDDLE;
+                p_options.m_mode = SINGLE_OBJECT_MIDDLE;
                 generator_mode_set++;
                 break;
             case 8:
-                p_gen_options->m_mode = GRID_DISTRIBUTION;
+                p_options.m_mode = GRID_DISTRIBUTION;
                 generator_mode_set++;
                 break;
 
             // Algorithm types
             case 9:
-                p_sim_options->m_algorithm_type = LENNARD_JONES;
+                p_options.m_algorithm_type = LENNARD_JONES;
 
                 break;
             case 10:
-                p_sim_options->m_algorithm_type = SMOTHED_PARTICLE_HYDRODYNAMICS;
+                p_options.m_algorithm_type = SMOTHED_PARTICLE_HYDRODYNAMICS;
                 break;
             case 11:
-                p_sim_options->m_algorithm_type = DISSIPATIVE_PARTICLE_DYNAMICS;
+                p_options.m_algorithm_type = DISSIPATIVE_PARTICLE_DYNAMICS;
                 break;
 
             // Data structures
             case 12:
-                p_sim_options->m_data_structure = GRID;
+                p_options.m_data_structure = GRID;
                 break;
             case 13:
-                p_sim_options->m_data_structure = LIST;
+                p_options.m_data_structure = LIST;
                 break;
             // config options
             case 28:
@@ -159,34 +154,34 @@ void OptionHandler::handle_options (int                  p_argc,
                 config_name         = std::string (optarg);
                 break;
             case 'v': {
-                p_sim_options->m_verbose = true;
+                p_options.m_verbose = true;
                 break;
             }
             case 's': {
-                p_gen_options->m_seed = std::stoi (optarg);
+                p_options.m_seed = std::stoi (optarg);
                 break;
             }
             case 'p': {
-                p_sim_options->m_particle_count = std::stoi (optarg);
+                p_options.m_particle_count = std::stoi (optarg);
                 break;
             }
             case 'f': {
-                p_sim_options->m_write_fequency = std::stoi (optarg);
+                p_options.m_write_fequency = std::stoi (optarg);
                 break;
             }
             case 'r':
-                p_sim_options->m_cut_off_radius = std::stof (optarg);
+                p_options.m_cut_off_radius = std::stof (optarg);
                 break;
             case 'l': {
-                p_sim_options->m_run_time_limit = std::stof (optarg);
+                p_options.m_run_time_limit = std::stof (optarg);
                 break;
             }
             case 't': {
-                p_sim_options->m_timestep = std::stof (optarg);
+                p_options.m_timestep = std::stof (optarg);
                 break;
             }
             case 'd': {
-                p_sim_options->m_autotuneing = true;
+                p_options.m_autotuneing = true;
                 break;
             }
             case 'h': {
@@ -221,58 +216,58 @@ void OptionHandler::handle_options (int                  p_argc,
             exit (EXIT_SUCCESS);
         }
         if (save_config == true) {
-            config_loader.save_config (config_name, p_sim_options, p_gen_options);
+            config_loader.save_config (config_name, p_options);
         }
         if (load_config == true) {
-            config_loader.load_config (config_name, p_sim_options, p_gen_options);
+            config_loader.load_config (config_name, p_options);
         }
         if (print_saved_config == true) {
-            config_loader.load_config (config_name, p_sim_options, p_gen_options);
+            config_loader.load_config (config_name, p_options);
         }
     }
     Benchmark::end ();
     if (print_config) {
-        print_choosen_options (p_sim_options, p_gen_options);
+        print_choosen_options (p_options);
         if (print_saved_config == true) {
             exit (EXIT_SUCCESS);
         }
     }
 }
-void OptionHandler::print_choosen_options (s_simulator_options *p_sim_options, s_generator_options *p_gen_options) {
+void OptionHandler::print_choosen_options (s_options &p_options) {
     Benchmark::begin ("Print-Options");
-    (void) p_gen_options;
+    (void) p_options;
     // DEBUG_BEGIN << "algorithm     :" << m_algorithm << DEBUG_END;
     // DEBUG_BEGIN << "particles:" << m_particles << DEBUG_END;
-    DEBUG_BEGIN << "generator seed : " << p_gen_options->m_seed << DEBUG_END;
-    DEBUG_BEGIN << "generator mode : " << p_gen_options->m_mode << DEBUG_END;
-    DEBUG_BEGIN << "algorithm_type : " << p_sim_options->m_algorithm_type << DEBUG_END;
-    DEBUG_BEGIN << "autotuneing    : " << p_sim_options->m_autotuneing << DEBUG_END;
-    DEBUG_BEGIN << "data_format    : " << p_sim_options->m_data_format << DEBUG_END;
-    DEBUG_BEGIN << "file_in_name   : " << p_sim_options->m_in_file_name << DEBUG_END;
-    DEBUG_BEGIN << "file_out_name  : " << p_sim_options->m_out_file_name << DEBUG_END;
-    DEBUG_BEGIN << "particle_count : " << p_sim_options->m_particle_count << DEBUG_END;
-    DEBUG_BEGIN << "run_time_limit : " << p_sim_options->m_run_time_limit << DEBUG_END;
-    DEBUG_BEGIN << "timestep       : " << p_sim_options->m_timestep << DEBUG_END;
-    DEBUG_BEGIN << "verbose        : " << p_sim_options->m_verbose << DEBUG_END;
-    DEBUG_BEGIN << "write_fequency : " << p_sim_options->m_write_fequency << DEBUG_END;
-    DEBUG_BEGIN << "cut_off_radius : " << p_sim_options->m_cut_off_radius << DEBUG_END;
+    DEBUG_BEGIN << "generator seed : " << p_options.m_seed << DEBUG_END;
+    DEBUG_BEGIN << "generator mode : " << p_options.m_mode << DEBUG_END;
+    DEBUG_BEGIN << "algorithm_type : " << p_options.m_algorithm_type << DEBUG_END;
+    DEBUG_BEGIN << "autotuneing    : " << p_options.m_autotuneing << DEBUG_END;
+    DEBUG_BEGIN << "data_format    : " << p_options.m_data_format << DEBUG_END;
+    DEBUG_BEGIN << "file_in_name   : " << p_options.m_in_file_name << DEBUG_END;
+    DEBUG_BEGIN << "file_out_name  : " << p_options.m_out_file_name << DEBUG_END;
+    DEBUG_BEGIN << "particle_count : " << p_options.m_particle_count << DEBUG_END;
+    DEBUG_BEGIN << "run_time_limit : " << p_options.m_run_time_limit << DEBUG_END;
+    DEBUG_BEGIN << "timestep       : " << p_options.m_timestep << DEBUG_END;
+    DEBUG_BEGIN << "verbose        : " << p_options.m_verbose << DEBUG_END;
+    DEBUG_BEGIN << "write_fequency : " << p_options.m_write_fequency << DEBUG_END;
+    DEBUG_BEGIN << "cut_off_radius : " << p_options.m_cut_off_radius << DEBUG_END;
     DEBUG_BEGIN << "write_modes    : [ID";
-    if (p_sim_options->m_write_modes[POSITION]) {
+    if (p_options.m_write_modes[POSITION]) {
         g_debug_stream << ", POSITION";
     }
-    if (p_sim_options->m_write_modes[VELOCITY]) {
+    if (p_options.m_write_modes[VELOCITY]) {
         g_debug_stream << ", VELOCITY";
     }
-    if (p_sim_options->m_write_modes[ACCELERATION]) {
+    if (p_options.m_write_modes[ACCELERATION]) {
         g_debug_stream << ", ACCELERATION";
     }
-    if (p_sim_options->m_write_modes[PARTICLE_TYPE]) {
+    if (p_options.m_write_modes[PARTICLE_TYPE]) {
         g_debug_stream << ", PARTICLE_TYPE";
     }
     g_debug_stream << "]" << DEBUG_END;
     /*
-     macro_debug("generator_mode :" , p_sim_options->particle_generator->get_generator_mode());
-     macro_debug("data_structure :" , p_sim_options->particles->get_structure_name());
+     macro_debug("generator_mode :" , p_options.particle_generator->get_generator_mode());
+     macro_debug("data_structure :" , p_options.particles->get_structure_name());
      */
     Benchmark::end ();
 }

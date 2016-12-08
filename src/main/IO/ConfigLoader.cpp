@@ -9,8 +9,7 @@
 #endif
 #include "Config.hpp"
 #include "ConfigLoader.hpp"
-#include "OptionsGenerator.hpp"
-#include "OptionsSimulation.hpp"
+#include "Options.hpp"
 
 ConfigLoader::ConfigLoader () : m_config_file_name (".config_sim") {
     deserialize_configs ();
@@ -73,21 +72,17 @@ void ConfigLoader::deserialize_configs () {
 #endif
 }
 
-void ConfigLoader::load_config (std::string          p_config_name,
-                                s_simulator_options *p_sim_options,
-                                s_generator_options *p_gen_options) {
-    *p_sim_options = m_configs[p_config_name].m_sim_options;
-    *p_gen_options = m_configs[p_config_name].m_gen_options;
+void ConfigLoader::load_config(std::string p_config_name,
+		s_options &p_options) {
+	p_options = m_configs[p_config_name].m_options;
 }
 
-void ConfigLoader::save_config (std::string          p_config_name,
-                                s_simulator_options *p_sim_options,
-                                s_generator_options *p_gen_options) {
+void ConfigLoader::save_config(std::string p_config_name,
+		s_options &p_options) {
     if (m_configs.find (p_config_name) == m_configs.end ()) {
         Config new_config;
         new_config.m_config_name = p_config_name;
-        new_config.m_gen_options = *p_gen_options;
-        new_config.m_sim_options = *p_sim_options;
+		new_config.m_options = p_options;
         m_configs[p_config_name] = new_config;
     } else {
         std::cout << "Error: config name " << p_config_name << "already in use" << std::endl;

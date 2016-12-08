@@ -40,7 +40,7 @@ class ParticlesGrid : public ParticlesBase {
     inline void step_3_remove_wrong_particles_from_cell (ParticleCell &p_cell);
 
     public:
-    ParticlesGrid (s_simulator_options &p_options, Vec3f &p_bounds, ParticleBoundsCorrection &p_particle_bounds_correction);
+    ParticlesGrid (s_options &p_options, Vec3f &p_bounds, ParticleBoundsCorrection &p_particle_bounds_correction);
     ~ParticlesGrid ();
     void serialize (std::shared_ptr<ParticleFileWriter> p_writer);
     void run_simulation_iteration (unsigned long p_iteration_number = 0);

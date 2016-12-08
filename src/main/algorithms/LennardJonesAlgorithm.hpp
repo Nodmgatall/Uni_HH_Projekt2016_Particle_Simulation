@@ -9,7 +9,7 @@
 #define SRC_ALGORITHMS_LENNARDJONESALGORITHM_HPP_
 
 #include "../Definitions.hpp"
-#include "../IO/OptionsSimulation.hpp"
+#include "../IO/Options.hpp"
 /*
  * definitions are in the latex-document with the same name as this class
  * _a -> actual Value
@@ -29,7 +29,7 @@ class LennardJonesAlgorithm {
     }
 
     public:
-    static void init (const s_simulator_options &options) {
+    static void init (const s_options &options) {
         A_ij = 48 * options.m_timestep * options.m_timestep;
         B_ij = 24 * options.m_timestep * options.m_timestep;
         m_i  = 1;

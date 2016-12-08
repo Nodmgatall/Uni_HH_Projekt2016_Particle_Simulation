@@ -9,7 +9,7 @@
 #define SRC_PARTICLEGENERATORFACTORY_HPP_
 
 #include "../Definitions.hpp"
-#include "../IO/OptionsGenerator.hpp"
+#include "../IO/Options.hpp"
 #include "../datastructures/ParticlesBase.hpp"
 #include "ParticleGeneratorBase.hpp"
 #include "ParticleGeneratorGridDistribution.hpp"
@@ -21,7 +21,7 @@
 class ParticleGeneratorFactory {
 
     public:
-    static std::unique_ptr<ParticleGeneratorBase> build (s_generator_options &p_options);
+    static std::unique_ptr<ParticleGeneratorBase> build (s_options &p_options);
 };
 
 #endif /* SRC_PARTICLEGENERATOR_HPP_ */

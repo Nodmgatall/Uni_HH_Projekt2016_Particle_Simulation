@@ -4,8 +4,7 @@
 #include <map>
 
 #include "Config.hpp"
-#include "OptionsGenerator.hpp"
-#include "OptionsSimulation.hpp"
+#include "Options.hpp"
 
 class ConfigLoader {
     public:
@@ -14,8 +13,8 @@ class ConfigLoader {
 
     ConfigLoader ();
     ~ConfigLoader ();
-    void load_config (std::string p_config_name, s_simulator_options *p_sim_options, s_generator_options *p_gen_options);
-    void save_config (std::string p_config_name, s_simulator_options *p_sim_options, s_generator_options *p_gen_options);
+	void load_config(std::string p_config_name, s_options &p_options);
+	void save_config(std::string p_config_name, s_options &p_options);
     void serialize_configs ();
     void deserialize_configs ();
     void list_configs ();

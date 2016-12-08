@@ -38,16 +38,14 @@ void createOutputDirectory () {
 int main (int argc, char **argv) {
     createOutputDirectory ();
     print_header ();
-    s_generator_options generator_options;
-    s_simulator_options simulator_options;
+    s_options options;
 
     std::unique_ptr<OptionHandler> option_handler (new OptionHandler ());
-    option_handler->handle_options (argc, argv, &simulator_options, &generator_options);
+    option_handler->handle_options (argc, argv, options);
 
-    std::unique_ptr<ParticleSimulator> particle_simulator (
-        new ParticleSimulator (simulator_options, generator_options));
+    std::unique_ptr<ParticleSimulator> particle_simulator (new ParticleSimulator (options));
 
-    LennardJonesAlgorithm::init (simulator_options);
+    LennardJonesAlgorithm::init (options);
 
     Benchmark::begin ("everything", false);
     particle_simulator->init_particle_data ();

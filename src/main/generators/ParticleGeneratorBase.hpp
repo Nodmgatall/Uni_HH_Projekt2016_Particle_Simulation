@@ -9,17 +9,15 @@
 #define SRC_GENERATORS_PARTICLEGENERATORBASE_HPP_
 
 #include "../Definitions.hpp"
-#include "../IO/OptionsGenerator.hpp"
+#include "../IO/Options.hpp"
 #include "../datastructures/ParticlesBase.hpp"
 class ParticleGeneratorBase {
     protected:
-    s_generator_options &m_options;
+    s_options &m_options;
 
     public:
-    virtual void generate (std::shared_ptr<ParticlesBase> p_particles,
-                           Vec3f &                        p_bounds,
-                           unsigned long &                p_particle_count) = 0;
-    ParticleGeneratorBase (s_generator_options &p_gen_options);
+    virtual void generate (std::shared_ptr<ParticlesBase> p_particles, Vec3f &p_bounds) = 0;
+    ParticleGeneratorBase (s_options &p_options);
     virtual ~ParticleGeneratorBase ();
 };
 
