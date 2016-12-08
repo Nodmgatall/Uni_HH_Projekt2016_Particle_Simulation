@@ -79,8 +79,8 @@ struct s_debug_stream : std::ofstream {
             m_indent_count--;
     }
 };
-EXTERN char log_folder[29];
-EXTERN s_debug_stream g_debug_stream;
+extern char           log_folder[29];
+extern s_debug_stream g_debug_stream;
 
 #ifndef RELEASE
 #define macro_debug_1(x) g_debug_stream >> __FILE__ >> ":" >> __LINE__ >> " : " << x << std::endl;

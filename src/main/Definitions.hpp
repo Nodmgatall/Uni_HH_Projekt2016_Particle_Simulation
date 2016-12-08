@@ -7,9 +7,6 @@
 #ifndef DEFINITIONS_HPP_
 #define DEFINITIONS_HPP_
 #include "DataType.hpp"
-#ifndef EXTERN
-#define EXTERN extern
-#endif
 #ifdef OMP_AVAILABLE
 #include <omp.h>
 #endif

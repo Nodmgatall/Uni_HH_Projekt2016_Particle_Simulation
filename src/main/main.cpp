@@ -1,5 +1,3 @@
-#define EXTERN
-#define MAIN_CPP
 #include "Definitions.hpp"
 #include "IO/OptionHandler.hpp"
 #include "ParticleSimulator.hpp"
