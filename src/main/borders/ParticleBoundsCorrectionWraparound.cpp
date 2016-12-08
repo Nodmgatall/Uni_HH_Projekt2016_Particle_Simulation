@@ -21,14 +21,14 @@ bool ParticleBoundsCorrectionWraparound::updatePosition (float &m_x,
                                                          float &m_other_z) {
     return updatePosition (m_x, m_y, m_z, m_other_x, m_other_y, m_other_z, g_vec3f_0, m_bounds);
 }
-bool ParticleBoundsCorrectionWraparound::updatePosition (float &m_x,
-                                                         float &m_y,
-                                                         float &m_z,
-                                                         float &m_other_x,
-                                                         float &m_other_y,
-                                                         float &m_other_z,
-                                                         Vec3f &m_corner000,
-                                                         Vec3f &m_corner111) {
+bool ParticleBoundsCorrectionWraparound::updatePosition (float &      m_x,
+                                                         float &      m_y,
+                                                         float &      m_z,
+                                                         float &      m_other_x,
+                                                         float &      m_other_y,
+                                                         float &      m_other_z,
+                                                         const Vec3f &m_corner000,
+                                                         const Vec3f &m_corner111) {
     Vec3l delta (0);
     if (m_x < m_corner000.x) {
         delta.x = -1;

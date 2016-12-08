@@ -7,5 +7,5 @@
 
 #include "Vec3.hpp"
 
-Vec3f g_vec3f_0;
-Vec3l g_vec3l_0;
+Vec3f const g_vec3f_0;
+Vec3l const g_vec3l_0;

@@ -29,14 +29,14 @@ class ParticleBoundsCorrection {
      * @param m_corner111
      * @return
      */
-    virtual bool updatePosition (float &m_x,
-                                 float &m_y,
-                                 float &m_z,
-                                 float &m_other_x,
-                                 float &m_other_y,
-                                 float &m_other_z,
-                                 Vec3f &m_corner000,
-                                 Vec3f &m_corner111) = 0;
+    virtual bool updatePosition (float &      m_x,
+                                 float &      m_y,
+                                 float &      m_z,
+                                 float &      m_other_x,
+                                 float &      m_other_y,
+                                 float &      m_other_z,
+                                 const Vec3f &m_corner000,
+                                 const Vec3f &m_corner111) = 0;
     virtual bool
         updatePosition (float &m_x, float &m_y, float &m_z, float &m_other_x, float &m_other_y, float &m_other_z) = 0;
 };
