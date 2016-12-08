@@ -11,7 +11,7 @@ class ParticlesList : public ParticlesBase {
     float m_average_list_length;
     float m_next_list_size_multiplier;
     short m_duration_list;
-    short m_cnt_iterations_without_rebuild;
+    unsigned long m_cnt_iterations_without_rebuild = 1;
 
     float calculate_cnt_average_neighbours ();
     void  calculate_duration_list ();
