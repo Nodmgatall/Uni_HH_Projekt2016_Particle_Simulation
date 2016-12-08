@@ -43,6 +43,16 @@ if(Boost_FOUND)
 	enable_testing ()
 	add_definitions("-I${CMAKE_SOURCE_DIR}/src/main")
 	add_library(particle_simulation_test_lib STATIC ${sources} )
+	
+	add_test(NAME particle_simulation.x 
+                 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Testing/Binary 
+                 COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/particle_simulation.x
+                 -p 100 
+                 -l 0.1 
+                 -f 1 
+                 -r 2.5
+                 -t 0.005)
+                 
 	if(APPLE)
 		set_target_properties(particle_simulation_test_lib PROPERTIES LINK_FLAGS "--coverage")
 		target_link_libraries(particle_simulation_test_lib ${Boost_LIBRARIES})
@@ -69,16 +79,6 @@ if(Boost_FOUND)
                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Testing/Binary 
                  COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/Testing/Binary/${testName}.x)
 	endforeach()
-	
-	add_test(NAME particle_simulation.x 
-                 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Testing/Binary 
-                 COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/particle_simulation.x
-                 -p 100 
-                 -l 0.1 
-                 -f 1 
-                 -r 2.5
-                 -t 0.005)
-	
 	add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} 
 	--verbose
 	)

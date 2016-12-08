@@ -10,6 +10,7 @@
 
 ParticleGeneratorGridDistribution::ParticleGeneratorGridDistribution (s_options &p_options)
 : ParticleGeneratorBase (p_options) {
+    m_stucture_name = "ParticleGeneratorGridDistribution";
 }
 
 ParticleGeneratorGridDistribution::~ParticleGeneratorGridDistribution () {

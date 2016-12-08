@@ -10,14 +10,11 @@
 std::unique_ptr<ParticleGeneratorBase> ParticleGeneratorFactory::build (s_options &p_options) {
     std::unique_ptr<ParticleGeneratorBase> result = 0;
     switch (p_options.m_mode) {
-        case MULTIPLE_OBJECTS:
-            break;
         case RANDOM:
             result = std::make_unique<ParticleGeneratorRandom> (p_options);
             break;
-        case RANDOM_UNIFORM:
-            break;
         case SINGLE_OBJECT_MIDDLE:
+            result = std::make_unique<ParticleGeneratorSingleObjectMiddle> (p_options);
             break;
         case GRID_DISTRIBUTION:
             result = std::make_unique<ParticleGeneratorGridDistribution> (p_options);

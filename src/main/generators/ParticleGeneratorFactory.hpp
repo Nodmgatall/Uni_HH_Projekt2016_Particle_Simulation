@@ -14,6 +14,7 @@
 #include "ParticleGeneratorBase.hpp"
 #include "ParticleGeneratorGridDistribution.hpp"
 #include "ParticleGeneratorRandom.hpp"
+#include "ParticleGeneratorSingleObjectMiddle.hpp"
 
 #include <memory>
 #include <unistd.h>

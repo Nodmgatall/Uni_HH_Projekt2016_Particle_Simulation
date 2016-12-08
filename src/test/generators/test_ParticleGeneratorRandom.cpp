@@ -51,7 +51,7 @@ class Particles : public ParticlesBase {
     }
 };
 
-BOOST_AUTO_TEST_CASE (step1) {
+BOOST_AUTO_TEST_CASE (test1) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
     options.m_particle_count = 10;

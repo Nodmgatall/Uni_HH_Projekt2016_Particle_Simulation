@@ -9,6 +9,7 @@
 
 ParticleGeneratorRandom::ParticleGeneratorRandom (s_options &p_options)
 : ParticleGeneratorBase (p_options) {
+    m_stucture_name = "ParticleGeneratorRandom";
 }
 
 ParticleGeneratorRandom::~ParticleGeneratorRandom () {
