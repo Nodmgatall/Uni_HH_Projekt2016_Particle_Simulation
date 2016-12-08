@@ -9,6 +9,7 @@
 #include "../main/Vec3.hpp"
 #include <boost/test/unit_test.hpp>
 #include <sstream>
+#include <string>
 
 BOOST_AUTO_TEST_CASE (constructors1) {
     Vec3<int> obj = Vec3<int> (3);
@@ -133,7 +134,8 @@ BOOST_AUTO_TEST_CASE (length) {
 }
 BOOST_AUTO_TEST_CASE (print) {
     Vec3<data_type>   obja = Vec3<data_type> (2, 3, 4);
-    std::stringstream s;
-    s << obja;
-    BOOST_CHECK_EQUAL (s.str (), std::string ("Vec3(2,3,4)"));
+    std::stringstream stream;
+    stream << obja;
+    std::string string = stream.str ();
+    BOOST_CHECK_EQUAL (string, std::string ("Vec3(2,3,4)"));
 }
