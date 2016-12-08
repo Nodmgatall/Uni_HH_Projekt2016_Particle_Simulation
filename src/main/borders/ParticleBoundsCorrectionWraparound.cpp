@@ -13,20 +13,20 @@ ParticleBoundsCorrectionWraparound::ParticleBoundsCorrectionWraparound (Vec3f &p
 
 ParticleBoundsCorrectionWraparound::~ParticleBoundsCorrectionWraparound () {
 }
-bool ParticleBoundsCorrectionWraparound::updatePosition (float &m_x,
-                                                         float &m_y,
-                                                         float &m_z,
-                                                         float &m_other_x,
-                                                         float &m_other_y,
-                                                         float &m_other_z) {
+bool ParticleBoundsCorrectionWraparound::updatePosition (data_type &m_x,
+                                                         data_type &m_y,
+                                                         data_type &m_z,
+                                                         data_type &m_other_x,
+                                                         data_type &m_other_y,
+                                                         data_type &m_other_z) {
     return updatePosition (m_x, m_y, m_z, m_other_x, m_other_y, m_other_z, g_vec3f_0, m_bounds);
 }
-bool ParticleBoundsCorrectionWraparound::updatePosition (float &      m_x,
-                                                         float &      m_y,
-                                                         float &      m_z,
-                                                         float &      m_other_x,
-                                                         float &      m_other_y,
-                                                         float &      m_other_z,
+bool ParticleBoundsCorrectionWraparound::updatePosition (data_type &  m_x,
+                                                         data_type &  m_y,
+                                                         data_type &  m_z,
+                                                         data_type &  m_other_x,
+                                                         data_type &  m_other_y,
+                                                         data_type &  m_other_z,
                                                          const Vec3f &m_corner000,
                                                          const Vec3f &m_corner111) {
     Vec3l delta (0);

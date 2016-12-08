@@ -1,6 +1,5 @@
 #include "ParticlesGrid.hpp"
 
-#define MIN(a, b) (((a) < (b) ? (a) : (b)))
 #define NEXT_POSITION(cell, particle)                                             \
     cell.m_positions_x[m_idx_b][particle], cell.m_positions_y[m_idx_b][particle], \
         cell.m_positions_z[m_idx_b][particle]
@@ -40,7 +39,7 @@ unsigned long ParticlesGrid::get_cell_index (long x, long y, long z) {
 ParticleCell &ParticlesGrid::get_cell_at (long x, long y, long z) {
     return m_cells[get_cell_index (x, y, z)];
 }
-ParticleCell &ParticlesGrid::get_cell_for_particle (float x, float y, float z) {
+ParticleCell &ParticlesGrid::get_cell_for_particle (data_type x, data_type y, data_type z) {
     return get_cell_at (x * m_size_per_cell.x, y * m_size_per_cell.y, z * m_size_per_cell.z);
 }
 ParticleCell &ParticlesGrid::get_cell_for_particle (Vec3f m_position) {

@@ -8,6 +8,7 @@
 #ifndef SRC_VEC3_HPP_
 #define SRC_VEC3_HPP_
 
+#include "DataType.hpp"
 #include <math.h>
 #include <ostream>
 
@@ -78,8 +79,8 @@ struct Vec3 {
     }
 };
 
-typedef Vec3<float> Vec3f;
-typedef Vec3<long>  Vec3l;
+typedef Vec3<data_type> Vec3f;
+typedef Vec3<long>      Vec3l;
 
 extern const Vec3f g_vec3f_0;
 extern const Vec3l g_vec3l_0;

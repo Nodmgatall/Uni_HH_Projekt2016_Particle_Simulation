@@ -29,8 +29,8 @@ BOOST_AUTO_TEST_CASE (constructors3) {
     BOOST_CHECK_EQUAL (obj.z, 0);
 }
 BOOST_AUTO_TEST_CASE (constructors4) {
-    Vec3<float> objf = Vec3<float> (3.5, 4.6, 5.5);
-    Vec3<int>   obj  = Vec3<int> (objf);
+    Vec3<data_type> objf = Vec3<data_type> (3.5, 4.6, 5.5);
+    Vec3<int>       obj  = Vec3<int> (objf);
     BOOST_CHECK_EQUAL (obj.x, 3);
     BOOST_CHECK_EQUAL (obj.y, 4);
     BOOST_CHECK_EQUAL (obj.z, 5);
@@ -127,12 +127,12 @@ BOOST_AUTO_TEST_CASE (operator_min) {
     BOOST_CHECK_EQUAL (objc.z, 5);
 }
 BOOST_AUTO_TEST_CASE (length) {
-    BOOST_CHECK_EQUAL (Vec3<float> (3, 4, 0).length (), 5);
-    BOOST_CHECK_EQUAL (Vec3<float> (0, 3, 4).length (), 5);
-    BOOST_CHECK_EQUAL (Vec3<float> (4, 0, 3).length (), 5);
+    BOOST_CHECK_EQUAL (Vec3<data_type> (3, 4, 0).length (), 5);
+    BOOST_CHECK_EQUAL (Vec3<data_type> (0, 3, 4).length (), 5);
+    BOOST_CHECK_EQUAL (Vec3<data_type> (4, 0, 3).length (), 5);
 }
 BOOST_AUTO_TEST_CASE (print) {
-    Vec3<float>       obja = Vec3<float> (2, 3, 4);
+    Vec3<data_type>   obja = Vec3<data_type> (2, 3, 4);
     std::stringstream s;
     s << obja;
     BOOST_CHECK_EQUAL (s.str (), std::string ("Vec3(2,3,4)"));

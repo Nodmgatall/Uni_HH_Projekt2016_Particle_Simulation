@@ -53,10 +53,10 @@ void ParticlesList::run_simulation_iteration (unsigned long p_iteration_number) 
     unsigned long last_particle  = particle_count - 1;
     //    unsigned long neighbour_cnt;
     unsigned long size_distances_vector = ((particle_count * particle_count) - particle_count) / 2;
-    std::vector<float> distances_x (size_distances_vector);
-    std::vector<float> distances_y (size_distances_vector);
-    std::vector<float> distances_z (size_distances_vector);
-    std::vector<float> distances_squared (size_distances_vector);
+    std::vector<data_type> distances_x (size_distances_vector);
+    std::vector<data_type> distances_y (size_distances_vector);
+    std::vector<data_type> distances_z (size_distances_vector);
+    std::vector<data_type> distances_squared (size_distances_vector);
     // for each particle go over list
     if (p_iteration_number % m_cnt_iterations_without_rebuild == 0) {
         /* clang-format off */
@@ -104,17 +104,17 @@ unsigned long ParticlesList::get_particle_count () {
     return m_positions_x.size ();
 }
 
-void ParticlesList::build_lists_smarter (float *       p_distances_x,
-                                         float *       p_distances_y,
-                                         float *       p_distances_z,
-                                         float *       p_distances_squared,
+void ParticlesList::build_lists_smarter (data_type *   p_distances_x,
+                                         data_type *   p_distances_y,
+                                         data_type *   p_distances_z,
+                                         data_type *   p_distances_squared,
                                          unsigned long p_size_distance_vectors) {
     unsigned long particle_count        = m_positions_x.size ();
     unsigned long size_distances_vector = ((particle_count * particle_count) - particle_count) / 2;
     unsigned long start_pos_distance_vector = 0;
-    float         cutoff_radius_squared     = 0.8;
-    std::vector<float> distances (size_distances_vector);
-    unsigned long      listed_size = particle_count * (particle_count * (0.25));
+    data_type     cutoff_radius_squared     = 0.8;
+    std::vector<data_type> distances (size_distances_vector);
+    unsigned long          listed_size = particle_count * (particle_count * (0.25));
     std::cout << "listed size: " << listed_size << std::endl;
     m_listed_positions_x.reserve (listed_size);
     m_listed_positions_y.reserve (listed_size);
@@ -124,7 +124,7 @@ void ParticlesList::build_lists_smarter (float *       p_distances_x,
     m_listed_velocities_y.reserve (listed_size);
     m_listed_velocities_z.reserve (listed_size);
 
-    std::vector<float> distances_squared (p_size_distance_vectors);
+    std::vector<data_type> distances_squared (p_size_distance_vectors);
 
     // calculating distance vectors for (n^2 -n)/2 pairs
     for (unsigned long particle_idx = 0; particle_idx < particle_count - 1; particle_idx++) {
@@ -198,7 +198,7 @@ void ParticlesList::build_lists_smarter (float *       p_distances_x,
 void ParticlesList::build_lists () {
     macro_debug_1 ("starting building neighbour lists");
     unsigned long particle_cnt          = get_particle_count ();
-    float         cutoff_radius_squared = 0.8;
+    data_type     cutoff_radius_squared = 0.8;
     unsigned long current_list_idx      = 0;
     unsigned long next_free_list_entry  = 0;
 
@@ -214,13 +214,13 @@ void ParticlesList::build_lists () {
     m_listed_velocities_y.resize (listed_size);
     m_listed_velocities_z.resize (listed_size);
 
-    std::vector<float> distances_x (particle_cnt);
-    std::vector<float> distances_y (particle_cnt);
-    std::vector<float> distances_z (particle_cnt);
+    std::vector<data_type> distances_x (particle_cnt);
+    std::vector<data_type> distances_y (particle_cnt);
+    std::vector<data_type> distances_z (particle_cnt);
 
     unsigned long current_entries = 0;
     m_particle_list_ranges        = std::vector<unsigned long> (listed_size * 2);
-    std::vector<float> distances_squared (particle_cnt - 1);
+    std::vector<data_type> distances_squared (particle_cnt - 1);
     for (unsigned long cur_idx = 0; cur_idx < particle_cnt; cur_idx++) {
         // in front of idx;
         calculate_distance_vectors (cur_idx,
@@ -297,9 +297,9 @@ void ParticlesList::build_lists () {
 
 void ParticlesList::setup_iteration () {
     macro_debug_1 ("starting setting up iteration") int size = m_positions_x.size ();
-    m_listed_accelerations_x                                 = std::vector<float> (size);
-    m_listed_accelerations_y                                 = std::vector<float> (size);
-    m_listed_accelerations_z                                 = std::vector<float> (size);
+    m_listed_accelerations_x                                 = std::vector<data_type> (size);
+    m_listed_accelerations_y                                 = std::vector<data_type> (size);
+    m_listed_accelerations_z                                 = std::vector<data_type> (size);
 
     if (true) {
         build_lists ();
@@ -313,19 +313,19 @@ void ParticlesList::setup_iteration () {
 
 void ParticlesList::calculate_distance_vectors (unsigned long p_particle_idx,
 
-                                                float *       p_distances_x,
-                                                float *       p_distances_y,
-                                                float *       p_distances_z,
-                                                float *       p_positions_x,
-                                                float *       p_positions_y,
-                                                float *       p_positions_z,
+                                                data_type *   p_distances_x,
+                                                data_type *   p_distances_y,
+                                                data_type *   p_distances_z,
+                                                data_type *   p_positions_x,
+                                                data_type *   p_positions_y,
+                                                data_type *   p_positions_z,
                                                 unsigned long start_idx,
                                                 unsigned long end_idx) {
     unsigned long cur_dist_idx;
     unsigned long other_part_idx;
-    float         x = m_positions_x[p_particle_idx];
-    float         y = m_positions_y[p_particle_idx];
-    float         z = m_positions_z[p_particle_idx];
+    data_type     x = m_positions_x[p_particle_idx];
+    data_type     y = m_positions_y[p_particle_idx];
+    data_type     z = m_positions_z[p_particle_idx];
 
     for (cur_dist_idx = 0, other_part_idx = start_idx; other_part_idx < end_idx; cur_dist_idx++, other_part_idx++) {
         p_distances_x[cur_dist_idx] = x - p_positions_x[other_part_idx];
@@ -339,15 +339,15 @@ void ParticlesList::calculate_distance_vectors (unsigned long p_particle_idx,
         p_distances_z[cur_dist_idx] = z - p_positions_z[other_part_idx];
     }
 }
-void ParticlesList::calculate_distances_squared (float *       p_distances_squared,
-                                                 float *       p_distances_x,
-                                                 float *       p_distances_y,
-                                                 float *       p_distances_z,
+void ParticlesList::calculate_distances_squared (data_type *   p_distances_squared,
+                                                 data_type *   p_distances_x,
+                                                 data_type *   p_distances_y,
+                                                 data_type *   p_distances_z,
                                                  unsigned long size) {
     Benchmark::begin ("Calculating Distances", false);
 
     unsigned long cur_part_idx;
-    float         cur_pos_part;
+    data_type     cur_pos_part;
 
     // square every entry in vector:
     // x
@@ -406,15 +406,15 @@ void ParticlesList::get_current_status (unsigned long p_idx_first,
                                         unsigned long p_segment_length,
 
                                         std::vector<unsigned long> *p_ids,
-                                        std::vector<float> *        p_positions_x,
-                                        std::vector<float> *        p_positions_y,
-                                        std::vector<float> *        p_positions_z,
-                                        std::vector<float> *        p_velocities_x,
-                                        std::vector<float> *        p_velocities_y,
-                                        std::vector<float> *        p_velocities_z,
-                                        std::vector<float> *        p_accelerations_x,
-                                        std::vector<float> *        p_accelerations_y,
-                                        std::vector<float> *        p_accelerations_z) {
+                                        std::vector<data_type> *    p_positions_x,
+                                        std::vector<data_type> *    p_positions_y,
+                                        std::vector<data_type> *    p_positions_z,
+                                        std::vector<data_type> *    p_velocities_x,
+                                        std::vector<data_type> *    p_velocities_y,
+                                        std::vector<data_type> *    p_velocities_z,
+                                        std::vector<data_type> *    p_accelerations_x,
+                                        std::vector<data_type> *    p_accelerations_y,
+                                        std::vector<data_type> *    p_accelerations_z) {
     unsigned long end = p_segment_length + p_idx_first;
     int           current_list_idx;
     for (unsigned long range_idx = p_idx_first; range_idx < end; range_idx++) {
@@ -432,8 +432,8 @@ void ParticlesList::get_current_status (unsigned long p_idx_first,
     }
 }
 
-float ParticlesList::calculate_cnt_average_neighbours () {
-    float accum_neighbours = 0;
+data_type ParticlesList::calculate_cnt_average_neighbours () {
+    data_type accum_neighbours = 0;
     for (unsigned long i = 1; i < m_particle_list_ranges.size (); i += 2) {
         accum_neighbours += m_particle_list_ranges[i];
     }
@@ -441,6 +441,6 @@ float ParticlesList::calculate_cnt_average_neighbours () {
     return accum_neighbours;
 }
 
-float ParticlesList::get_cnt_average_neighbours () {
+data_type ParticlesList::get_cnt_average_neighbours () {
     return m_average_list_length;
 }

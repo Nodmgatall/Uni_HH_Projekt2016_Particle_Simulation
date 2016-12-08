@@ -19,7 +19,7 @@ void ParticleGeneratorSingleObjectMiddle::generate (std::shared_ptr<ParticlesBas
                                                     unsigned long &p_particle_count) {
 
     Benchmark::begin ("ParticleGeneratorSingleObjectMiddle");
-    float        temp     = pow (p_particle_count, 1.0f / 3.0f);
+    data_type    temp     = pow (p_particle_count, 1.0f / 3.0f);
     Vec3f        delta    = p_bounds / (temp - 1);
     Vec3f        bounds_2 = p_bounds / 2;
     unsigned int tempInt  = temp;

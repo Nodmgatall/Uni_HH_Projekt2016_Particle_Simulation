@@ -26,7 +26,7 @@ void Benchmark::begin (std::string p_section_name, bool p_print) {
 void Benchmark::end () {
     std::string    section_name;
     struct timeval time_begin, time_now;
-    float          time_diff;
+    data_type      time_diff;
     bool           print;
     section_name = m_section_names.top ();
     time_begin   = m_section_starttimes.top ();

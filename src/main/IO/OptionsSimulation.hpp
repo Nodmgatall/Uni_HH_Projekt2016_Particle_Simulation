@@ -17,11 +17,11 @@ struct s_simulator_options {
     std::string      m_in_file_name   = "";
     std::string      m_out_file_name  = "";
     unsigned long    m_particle_count = 0;
-    float            m_run_time_limit = 1000;
-    float            m_timestep       = 1;
+    data_type        m_run_time_limit = 1000;
+    data_type        m_timestep       = 1;
     bool             m_verbose        = false;
     int              m_write_fequency = 1;
-    float            m_cut_off_radius = 0.01;
+    data_type        m_cut_off_radius = 0.01;
     e_data_structure m_data_structure = GRID;
     std::map<e_particle_variable, bool> m_write_modes = { { ID, true },
                                                           { POSITION, true },

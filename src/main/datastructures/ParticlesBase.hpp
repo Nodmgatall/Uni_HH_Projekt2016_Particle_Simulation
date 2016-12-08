@@ -12,18 +12,18 @@
 
 class ParticlesBase {
     protected:
-    std::function<bool(float &p_position_1x,
-                       float &p_position_1y,
-                       float &p_position_1z,
-                       float &p_position_delta_1x,
-                       float &p_position_delta_1y,
-                       float &p_position_delta_1z,
-                       float &p_position_2x,
-                       float &p_position_2y,
-                       float &p_position_2z,
-                       float &p_position_delta_2x,
-                       float &p_position_delta_2y,
-                       float &p_position_delta_2z)>
+    std::function<bool(data_type &p_position_1x,
+                       data_type &p_position_1y,
+                       data_type &p_position_1z,
+                       data_type &p_position_delta_1x,
+                       data_type &p_position_delta_1y,
+                       data_type &p_position_delta_1z,
+                       data_type &p_position_2x,
+                       data_type &p_position_2y,
+                       data_type &p_position_2z,
+                       data_type &p_position_delta_2x,
+                       data_type &p_position_delta_2y,
+                       data_type &p_position_delta_2z)>
                               m_algorithm;
     std::string               m_stucture_name;
     s_simulator_options &     m_options;
@@ -39,18 +39,18 @@ class ParticlesBase {
     virtual void add_particle (Vec3f p_position, Vec3f p_velocity) = 0;
     void        print_structure_name ();
     std::string get_structure_name ();
-    void set_algorithm (const std::function<bool(float &p_position_1x,
-                                                 float &p_position_1y,
-                                                 float &p_position_1z,
-                                                 float &p_position_delta_1x,
-                                                 float &p_position_delta_1y,
-                                                 float &p_position_delta_1z,
-                                                 float &p_position_2x,
-                                                 float &p_position_2y,
-                                                 float &p_position_2z,
-                                                 float &p_position_delta_2x,
-                                                 float &p_position_delta_2y,
-                                                 float &p_position_delta_2z)> &algorithm);
+    void set_algorithm (const std::function<bool(data_type &p_position_1x,
+                                                 data_type &p_position_1y,
+                                                 data_type &p_position_1z,
+                                                 data_type &p_position_delta_1x,
+                                                 data_type &p_position_delta_1y,
+                                                 data_type &p_position_delta_1z,
+                                                 data_type &p_position_2x,
+                                                 data_type &p_position_2y,
+                                                 data_type &p_position_2z,
+                                                 data_type &p_position_delta_2x,
+                                                 data_type &p_position_delta_2y,
+                                                 data_type &p_position_delta_2z)> &algorithm);
     virtual unsigned long get_particle_count ()                           = 0;
     virtual void serialize (std::shared_ptr<ParticleFileWriter> p_writer) = 0;
 };

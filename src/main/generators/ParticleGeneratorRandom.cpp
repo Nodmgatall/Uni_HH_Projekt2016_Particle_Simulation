@@ -20,8 +20,9 @@ void ParticleGeneratorRandom::generate (std::shared_ptr<ParticlesBase> p_particl
     Benchmark::begin ("ParticleGeneratorRandom");
     std::srand (m_options->m_seed);
     for (unsigned long id = 0; id < p_particle_count; id++) {
-        p_particles->add_particle (Vec3f ((float) std::rand (), (float) std::rand (), (float) std::rand ()) /
-                                   (float) RAND_MAX * p_bounds);
+        p_particles->add_particle (
+            Vec3f ((data_type) std::rand (), (data_type) std::rand (), (data_type) std::rand ()) /
+            (data_type) RAND_MAX * p_bounds);
     }
     Benchmark::end ();
 }

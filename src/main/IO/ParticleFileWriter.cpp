@@ -14,9 +14,9 @@ void ParticleFileWriter::start () {
     m_file << "id, x coordinate, y coordinate, z coordinate\n"; // absichtlich NICHT std::endl !!!!!
     (void) m_write_modes;
 }
-void ParticleFileWriter::saveData (std::vector<float> *        p_positions_x,
-                                   std::vector<float> *        p_positions_y,
-                                   std::vector<float> *        p_positions_z,
+void ParticleFileWriter::saveData (std::vector<data_type> *    p_positions_x,
+                                   std::vector<data_type> *    p_positions_y,
+                                   std::vector<data_type> *    p_positions_z,
                                    std::vector<unsigned long> *ids) {
     unsigned long count = ids[0].size ();
     for (unsigned long i = 0; i < count; i++) {
