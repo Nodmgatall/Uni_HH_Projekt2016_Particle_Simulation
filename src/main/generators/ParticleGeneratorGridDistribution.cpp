@@ -20,18 +20,24 @@ void ParticleGeneratorGridDistribution::generate (std::shared_ptr<ParticlesBase>
                                                   unsigned long &                p_particle_count) {
 
     Benchmark::begin ("ParticleGeneratorGridDistribution");
-    data_type    temp    = pow (p_particle_count, 1.0f / 3.0f);
+
+    data_type temp = pow (p_particle_count, 1.0f / 3.0f);
+    std::cout << temp << std::endl;
     Vec3f        delta   = p_bounds / (temp - 1.0f);
     unsigned int tempInt = temp;
+    std::cout << tempInt << std::endl;
     unsigned int x, y, z;
-    for (x = 0; x <= tempInt; x++) {
-        for (y = 0; y <= tempInt; y++) {
-            for (z = 0; z <= tempInt; z++) {
+    int          added_stuff = 0;
+    for (x = 0; x < tempInt; x++) {
+        for (y = 0; y < tempInt; y++) {
+            for (z = 0; z < tempInt; z++) {
                 if (((x * tempInt) + y) * tempInt + z < p_particle_count) {
                     p_particles->add_particle (Vec3f (x, y, z) * delta);
+                    added_stuff++;
                 }
             }
         }
     }
+    std::cout << added_stuff << std::endl;
     Benchmark::end ();
 }

@@ -35,10 +35,18 @@ ParticleSimulator::ParticleSimulator (s_simulator_options &p_sim_options, s_gene
 void ParticleSimulator::simulate () {
     Benchmark::begin ("Simulation");
     m_particles->serialize (m_particle_file_writer);
-    data_type current_time               = 0.0;
-    int       timesteps_until_next_write = m_options.m_write_fequency;
-    int       iteration_number           = 0;
-    while (current_time <= m_options.m_run_time_limit) {
+    data_type     current_time               = 0.0;
+    data_type     max_run_time;
+    int           timesteps_until_next_write = m_options.m_write_fequency;
+    unsigned long iteration_number           = 0;
+    if (m_options.m_max_iterations > 0) {
+         max_run_time = m_options.m_max_iterations * m_options.m_timestep;
+    }
+    else
+    {
+        max_run_time = m_options.m_run_time_limit;
+    }
+    while (current_time < max_run_time && current_time < m_options.m_run_time_limit) {
         Benchmark::begin ("Simulating the time-step");
         DEBUG_BEGIN << DEBUG_VAR (current_time) << DEBUG_END;
         m_particles->run_simulation_iteration (iteration_number);
@@ -52,6 +60,8 @@ void ParticleSimulator::simulate () {
         Benchmark::end ();
     }
     Benchmark::end ();
+    std::cout << "Simulated " << iteration_number << " iterations in " << current_time
+              << "miliseconds" << std::endl;
 }
 
 void ParticleSimulator::init_particle_data () {

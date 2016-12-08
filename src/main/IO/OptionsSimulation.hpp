@@ -15,6 +15,7 @@ struct s_simulator_options {
     bool             m_autotuneing    = false;
     e_data_format    m_data_format    = CSV;
     std::string      m_in_file_name   = "";
+    unsigned long    m_max_iterations = 0;
     std::string      m_out_file_name  = "";
     unsigned long    m_particle_count = 0;
     data_type        m_run_time_limit = 1000;
@@ -36,6 +37,7 @@ struct s_simulator_options {
         s_sim_options &BOOST_SERIALIZATION_NVP (m_autotuneing);
         s_sim_options &BOOST_SERIALIZATION_NVP (m_data_format);
         s_sim_options &BOOST_SERIALIZATION_NVP (m_in_file_name);
+        s_sim_options &BOOST_SERIALIZATION_NVP (m_max_iterations);
         s_sim_options &BOOST_SERIALIZATION_NVP (m_out_file_name);
         s_sim_options &BOOST_SERIALIZATION_NVP (m_particle_count);
         s_sim_options &BOOST_SERIALIZATION_NVP (m_run_time_limit);
