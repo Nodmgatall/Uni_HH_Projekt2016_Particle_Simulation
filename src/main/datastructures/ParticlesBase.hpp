@@ -23,9 +23,7 @@ class ParticlesBase {
     virtual void run_simulation_iteration (unsigned long p_iteration_number = 0) = 0;
     virtual void add_particle (Vec3f p_position)                                 = 0;
     virtual void add_particle (Vec3f p_position, Vec3f p_velocity) = 0;
-    void        print_structure_name ();
-    std::string get_structure_name ();
-
+    std::string           get_structure_name ();
     virtual unsigned long get_particle_count ()                           = 0;
     virtual void serialize (std::shared_ptr<ParticleFileWriter> p_writer) = 0;
 };

@@ -20,7 +20,7 @@ struct ParticleCell {
 };
 
 class ParticlesGrid : public ParticlesBase {
-    private:
+    protected:
     unsigned long             m_max_id;
     std::vector<ParticleCell> m_cells;
     Vec3l                     m_size;
