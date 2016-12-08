@@ -80,4 +80,7 @@ struct Vec3 {
 
 typedef Vec3<float> Vec3f;
 typedef Vec3<long>  Vec3l;
+
+extern Vec3f g_vec3f_0;
+extern Vec3l g_vec3l_0;
 #endif /* SRC_Vec3_HPP_ */
