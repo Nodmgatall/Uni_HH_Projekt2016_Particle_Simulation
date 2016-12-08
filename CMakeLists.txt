@@ -79,6 +79,6 @@ if(Boost_FOUND)
                  -t 0.005)
 	
 	add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} 
-#	--verbose
+	--verbose
 	)
 endif()
