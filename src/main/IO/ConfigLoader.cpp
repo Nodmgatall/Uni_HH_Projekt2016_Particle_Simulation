@@ -1,7 +1,7 @@
 #include "../Definitions.hpp"
 #include <fstream>
 #include <iostream>
-#ifdef BOOST
+#ifdef BOOST_AVAILABLE
 #include <boost/archive/xml_iarchive.hpp>
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/serialization/map.hpp>
@@ -21,7 +21,7 @@ ConfigLoader::~ConfigLoader () {
 }
 
 void ConfigLoader::serialize_configs () {
-#ifdef BOOST
+#ifdef BOOST_AVAILABLE
     std::ofstream out_file_stream (m_config_file_name);
     if (out_file_stream.is_open ()) {
         boost::archive::xml_oarchive out_archive (out_file_stream);
@@ -34,7 +34,7 @@ void ConfigLoader::serialize_configs () {
 }
 
 void ConfigLoader::deserialize_configs () {
-#ifdef BOOST
+#ifdef BOOST_AVAILABLE
     std::string   input;
     std::ifstream in_file_stream (m_config_file_name);
     if (in_file_stream.is_open ()) {

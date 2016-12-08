@@ -9,11 +9,6 @@ endif()
 
 project(particle_simulation CXX)
 
-if(APPLE)
-	set(CMAKE_C_COMPILER clang-omp CACHE STRING "C compiler" FORCE)
-	set(CMAKE_CXX_COMPILER clang-omp++ CACHE STRING "C++ compiler" FORCE)
-endif()
-
 file(GLOB_RECURSE sources src/main/*.cpp src/main/*.hpp)
 
 add_definitions("-Wall -Wextra -Werror -W -Wshadow -Wunused-variable \
@@ -23,15 +18,17 @@ add_definitions("-Wall -Wextra -Werror -W -Wshadow -Wunused-variable \
 find_package(Boost 1.62 COMPONENTS system serialization unit_test_framework)
 if(Boost_FOUND)
 	include_directories(${Boost_INCLUDE_DIRS})
-	set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DBOOST")
-	message("compiling with the -DBOOST flag")
+	set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DBOOST_AVAILABLE")
+	message("compiling with the -DBOOST_AVAILABLE flag")
 endif()
 
-find_package(OpenMP REQUIRED)
+find_package(OpenMP)
 if (OPENMP_FOUND)
     set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
     set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+	set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DOMP_AVAILABLE")
+	message("compiling with the -DOMP_AVAILABLE flag")
 endif()
 
 add_executable(particle_simulation.x src/main/main.cpp ${sources})
@@ -72,5 +69,7 @@ if(Boost_FOUND)
                  COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/Testing/Binary/${testName}.x)
 	endforeach()
 	
-	add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} --verbose)
+	add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} 
+#	--verbose
+	)
 endif()
