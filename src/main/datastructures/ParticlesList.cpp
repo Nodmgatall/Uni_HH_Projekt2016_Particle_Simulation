@@ -48,9 +48,8 @@ void ParticlesList::add_particle (Vec3f p_position, Vec3f p_velocity) {
 }
 
 void ParticlesList::run_simulation_iteration (unsigned long p_iteration_number) {
-    macro_debug_1 ("running iteration") 
-    unsigned long particle_count = m_positions_x.size ();
-    unsigned long last_particle  = particle_count - 1;
+    macro_debug_1 ("running iteration") unsigned long particle_count = m_positions_x.size ();
+    unsigned long                                     last_particle  = particle_count - 1;
     //    unsigned long neighbour_cnt;
     unsigned long size_distances_vector = ((particle_count * particle_count) - particle_count) / 2;
     std::vector<data_type> distances_x (size_distances_vector);
@@ -58,9 +57,9 @@ void ParticlesList::run_simulation_iteration (unsigned long p_iteration_number) 
     std::vector<data_type> distances_z (size_distances_vector);
     std::vector<data_type> distances_squared (size_distances_vector);
     // for each particle go over list
-    macro_debug_1("Starting iteration (list)");
+    macro_debug_1 ("Starting iteration (list)");
     if (p_iteration_number % m_cnt_iterations_without_rebuild == 0) {
-        macro_debug_1(" rebuilding list");
+        macro_debug_1 (" rebuilding list");
         /* clang-format off */
         build_lists_smarter (&distances_x[0],
                              &distances_y[0],
@@ -68,7 +67,7 @@ void ParticlesList::run_simulation_iteration (unsigned long p_iteration_number) 
                              &distances_squared[0], size_distances_vector);
         /* clang-format on */
     } else {
-        macro_debug_1(" using old lists");
+        macro_debug_1 (" using old lists");
         unsigned long start_pos_distance_vector = 0;
         for (unsigned long particle_idx = 0; particle_idx < last_particle; particle_idx++) {
             calculate_distance_vectors (particle_idx,
@@ -100,10 +99,10 @@ void ParticlesList::run_simulation_iteration (unsigned long p_iteration_number) 
     //
     //  }
     // summ
-macro_debug_1 ("iteration done")
+    macro_debug_1 ("iteration done")
 }
 
-    unsigned long ParticlesList::get_particle_count () {
+unsigned long ParticlesList::get_particle_count () {
     return m_positions_x.size ();
 }
 
@@ -131,8 +130,8 @@ void ParticlesList::build_lists_smarter (data_type *   p_distances_x,
 
     // calculating distance vectors for (n^2 -n)/2 pairs
     for (unsigned long particle_idx = 0; particle_idx < particle_count - 1; particle_idx++) {
-        macro_debug("calculating distances of ", particle_idx);
-        macro_debug("range: ", (particle_count - (particle_idx + 1)));
+        macro_debug ("calculating distances of ", particle_idx);
+        macro_debug ("range: ", (particle_count - (particle_idx + 1)));
         calculate_distance_vectors (particle_idx,
                                     &p_distances_x[start_pos_distance_vector],
                                     &p_distances_y[start_pos_distance_vector],
@@ -146,22 +145,22 @@ void ParticlesList::build_lists_smarter (data_type *   p_distances_x,
     }
 
     // calculating distance skalar from the distance vectors
-    macro_debug("cnt_distances",size_distances_vector);
+    macro_debug ("cnt_distances", size_distances_vector);
     for (unsigned long distances_idx = 0; distances_idx < size_distances_vector; distances_idx++) {
-        macro_debug("distances_idx",distances_idx);
-        macro_debug("size_distances_vector",size_distances_vector);
+        macro_debug ("distances_idx", distances_idx);
+        macro_debug ("size_distances_vector", size_distances_vector);
         calculate_distances_squared (&p_distances_squared[0],
                                      &p_distances_x[0],
                                      &p_distances_y[0],
                                      &p_distances_z[0],
                                      size_distances_vector);
     }
-    macro_debug_1("start sorting into lists");
+    macro_debug_1 ("start sorting into lists");
 
     // building list
-    m_mat_accelerations_x.resize(particle_count);
-    m_mat_accelerations_y.resize(particle_count);
-    m_mat_accelerations_z.resize(particle_count);
+    m_mat_accelerations_x.resize (particle_count);
+    m_mat_accelerations_y.resize (particle_count);
+    m_mat_accelerations_z.resize (particle_count);
     for (unsigned long distance_section_start = 0, range = particle_count - 1;
          distance_section_start < size_distances_vector;
          distance_section_start += range, range--) {

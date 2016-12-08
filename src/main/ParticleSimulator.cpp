@@ -37,7 +37,7 @@ void ParticleSimulator::simulate () {
     m_particles->serialize (m_particle_file_writer);
     data_type current_time               = 0.0;
     int       timesteps_until_next_write = m_options.m_write_fequency;
-    int iteration_number = 0;
+    int       iteration_number           = 0;
     while (current_time <= m_options.m_run_time_limit) {
         Benchmark::begin ("Simulating the time-step");
         DEBUG_BEGIN << DEBUG_VAR (current_time) << DEBUG_END;
