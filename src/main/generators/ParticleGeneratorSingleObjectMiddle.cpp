@@ -7,7 +7,7 @@
 
 #include "ParticleGeneratorSingleObjectMiddle.hpp"
 
-ParticleGeneratorSingleObjectMiddle::ParticleGeneratorSingleObjectMiddle (s_generator_options *p_gen_options)
+ParticleGeneratorSingleObjectMiddle::ParticleGeneratorSingleObjectMiddle (s_generator_options &p_gen_options)
 : ParticleGeneratorBase (p_gen_options) {
 }
 
