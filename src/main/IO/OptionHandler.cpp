@@ -56,6 +56,7 @@ void OptionHandler::handle_options (int p_argc, char **p_argv, s_options &p_opti
                                     { "dynamic", no_argument, 0, 'd' },
                                     { "write_fequency", required_argument, 0, 'f' },
                                     { "cutoff_radius", required_argument, 0, 'r' },
+                                    { "iterations", required_argument, 0, 'i' },
 
                                     // Misc
                                     { "help", no_argument, 0, 'h' },
@@ -67,7 +68,7 @@ void OptionHandler::handle_options (int p_argc, char **p_argv, s_options &p_opti
     /*clang-format on */
     opterr = 0;
     int long_options;
-    while ((argv_index = getopt_long (p_argc, p_argv, "vs:p:l:t:dr:f:h", &options[0], &long_options)) != -1) {
+    while ((argv_index = getopt_long (p_argc, p_argv, "vs:p:l:t:dr:f:i:h", &options[0], &long_options)) != -1) {
         if (optarg && (strcmp (optarg, "-h") == 0 || strcmp (optarg, "--help") == 0)) {
             // TODO:  Display help from option
             std::cout << "here should the help for the choosen operator be printed, sadly this is "
@@ -182,6 +183,10 @@ void OptionHandler::handle_options (int p_argc, char **p_argv, s_options &p_opti
             }
             case 'd': {
                 p_options.m_autotuneing = true;
+                break;
+            }
+            case 'i': {
+                p_options.m_max_iterations = std::stoi (optarg);
                 break;
             }
             case 'h': {

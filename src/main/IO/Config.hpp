@@ -10,7 +10,7 @@
 struct Config {
     friend class boost::serialization::access;
     std::string m_config_name;
-	s_options m_options;
+    s_options   m_options;
 
     template <class Archive>
     void serialize (Archive &archive, const unsigned int version) {
