@@ -7,11 +7,8 @@
 #include "../tools/Debug.hpp"
 #include "ParticlesList.hpp"
 
-ParticlesList::ParticlesList(s_options &p_options,
-		ParticleBoundsCorrection &p_particle_bounds_correction)
-:
-		ParticlesBase(p_options, p_particle_bounds_correction), m_average_list_length(
-				0.16),
+ParticlesList::ParticlesList (s_options &p_options, ParticleBoundsCorrection &p_particle_bounds_correction)
+: ParticlesBase (p_options, p_particle_bounds_correction), m_average_list_length (0.16),
   m_next_list_size_multiplier (1.1) {
     m_stucture_name                  = "List";
     m_cutoff_radius                  = 0;

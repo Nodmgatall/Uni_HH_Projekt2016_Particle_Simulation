@@ -14,13 +14,12 @@ ParticleGeneratorSingleObjectMiddle::ParticleGeneratorSingleObjectMiddle (s_opti
 ParticleGeneratorSingleObjectMiddle::~ParticleGeneratorSingleObjectMiddle () {
 }
 
-void ParticleGeneratorSingleObjectMiddle::generate(
-		std::shared_ptr<ParticlesBase> p_particles) {
+void ParticleGeneratorSingleObjectMiddle::generate (std::shared_ptr<ParticlesBase> p_particles) {
 
     Benchmark::begin ("ParticleGeneratorSingleObjectMiddle");
     data_type    temp     = pow (m_options.m_particle_count, 1.0f / 3.0f);
-	Vec3f delta = m_options.m_bounds / (temp - 1);
-	Vec3f bounds_2 = m_options.m_bounds / 2;
+    Vec3f        delta    = m_options.m_bounds / (temp - 1);
+    Vec3f        bounds_2 = m_options.m_bounds / 2;
     unsigned int tempInt  = temp;
     unsigned int x, y, z;
     for (x = 0; x <= tempInt; x++) {

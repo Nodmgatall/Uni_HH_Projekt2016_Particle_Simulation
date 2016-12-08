@@ -8,10 +8,8 @@
     cell.m_positions_x[m_idx_a][particle], cell.m_positions_y[m_idx_a][particle], \
         cell.m_positions_z[m_idx_a][particle]
 
-ParticlesGrid::ParticlesGrid(s_options &p_options,
-		ParticleBoundsCorrection &p_particle_bounds_correction) :
-		ParticlesBase(p_options, p_particle_bounds_correction),
-  m_iterations_between_rearange_particles (20) {
+ParticlesGrid::ParticlesGrid (s_options &p_options, ParticleBoundsCorrection &p_particle_bounds_correction)
+: ParticlesBase (p_options, p_particle_bounds_correction), m_iterations_between_rearange_particles (20) {
     unsigned int idx_x, idx_y, idx_z;
     long         max_usefull_size         = pow (m_options.m_particle_count, 1.0 / 3.0);
     m_iterations_until_rearange_particles = m_iterations_between_rearange_particles;
@@ -19,19 +17,15 @@ ParticlesGrid::ParticlesGrid(s_options &p_options,
     m_max_id                              = 0;
     m_idx_a = !(m_idx_b = 0);
     // cut_off_radius*1.2 to allow particles to move before reconstruction of cells is needed
-	m_size = Vec3l::min(
-			Vec3l(m_options.m_bounds / (m_options.m_cut_off_radius * 1.2f)),
-			max_usefull_size);
-    m_size = m_size + 1L; // round up to next natural number for cell-count
-    m_size = Vec3l::max (m_size, Vec3l (4L));
-	m_size_per_cell = Vec3f(m_size - 1L) / m_options.m_bounds;
+    m_size = Vec3l::min (Vec3l (m_options.m_bounds / (m_options.m_cut_off_radius * 1.2f)), max_usefull_size);
+    m_size          = m_size + 1L; // round up to next natural number for cell-count
+    m_size          = Vec3l::max (m_size, Vec3l (4L));
+    m_size_per_cell = Vec3f (m_size - 1L) / m_options.m_bounds;
     m_cells.reserve (m_size.x * m_size.y * m_size.z);
     for (idx_x = 0; idx_x < m_size.x; idx_x++) {
         for (idx_y = 0; idx_y < m_size.y; idx_y++) {
             for (idx_z = 0; idx_z < m_size.z; idx_z++) {
-				m_cells.push_back(
-						ParticleCell(Vec3l(idx_x, idx_y, idx_z), m_size,
-								m_options.m_bounds));
+                m_cells.push_back (ParticleCell (Vec3l (idx_x, idx_y, idx_z), m_size, m_options.m_bounds));
             }
         }
     }

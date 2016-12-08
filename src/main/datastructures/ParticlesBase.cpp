@@ -10,8 +10,6 @@ std::string ParticlesBase::get_structure_name () {
     return m_stucture_name;
 }
 
-ParticlesBase::ParticlesBase(s_options &p_options,
-		ParticleBoundsCorrection &p_particle_bounds_correction) :
-		m_options(p_options), m_particle_bounds_correction(
-				p_particle_bounds_correction) {
+ParticlesBase::ParticlesBase (s_options &p_options, ParticleBoundsCorrection &p_particle_bounds_correction)
+: m_options (p_options), m_particle_bounds_correction (p_particle_bounds_correction) {
 }

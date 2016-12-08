@@ -65,16 +65,13 @@ void ParticleSimulator::simulate () {
 
 void ParticleSimulator::init_particle_data () {
     Benchmark::begin ("init_particle_data");
-	ParticleBoundsCorrectionWraparound particleBoundsCorrectionWraparound(
-			m_options.m_bounds);
+    ParticleBoundsCorrectionWraparound particleBoundsCorrectionWraparound (m_options.m_bounds);
     switch (m_options.m_data_structure) {
         case GRID:
-		m_particles = std::make_shared<ParticlesGrid>(m_options,
-				particleBoundsCorrectionWraparound);
+            m_particles = std::make_shared<ParticlesGrid> (m_options, particleBoundsCorrectionWraparound);
             break;
         case LIST:
-		m_particles = std::make_shared<ParticlesList>(m_options,
-				particleBoundsCorrectionWraparound);
+            m_particles = std::make_shared<ParticlesList> (m_options, particleBoundsCorrectionWraparound);
             break;
         case LISTEDGIRD:
             std::cout << "Mixture of list and grind not implemented" << std::endl;
@@ -83,7 +80,7 @@ void ParticleSimulator::init_particle_data () {
     if (m_options.m_in_file_name.length () > 0) {
         DEBUG_BEGIN << "loading from file: " << m_options.m_in_file_name << DEBUG_END;
     } else {
-		m_particle_generator->generate (m_particles);
+        m_particle_generator->generate (m_particles);
     }
     Benchmark::end ();
 }

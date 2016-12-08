@@ -63,8 +63,7 @@ class ParticlesList : public ParticlesBase {
     std::vector<std::vector<data_type>> m_mat_accelerations_y;
     std::vector<std::vector<data_type>> m_mat_accelerations_z;
 
-	ParticlesList(s_options &p_options,
-			ParticleBoundsCorrection &p_particle_bounds_correction);
+    ParticlesList (s_options &p_options, ParticleBoundsCorrection &p_particle_bounds_correction);
 
     ~ParticlesList ();
     void add_particle (Vec3f p_position);
