@@ -31,6 +31,7 @@ struct s_options {
     unsigned int     m_seed           = 123456789;
     unsigned long    m_particle_count = 0;
     unsigned long    m_max_iterations = 0;
+	Vec3f m_bounds = Vec3f(5.0f, 5.0f, 5.0f);
 
     template <class Archive>
     void serialize (Archive &archive, const unsigned int version) {
@@ -51,6 +52,9 @@ struct s_options {
         archive &BOOST_SERIALIZATION_NVP (m_seed);
         archive &BOOST_SERIALIZATION_NVP (m_particle_count);
         archive &BOOST_SERIALIZATION_NVP (m_max_iterations);
+		archive & BOOST_SERIALIZATION_NVP(m_bounds.x);
+		archive & BOOST_SERIALIZATION_NVP(m_bounds.y);
+		archive & BOOST_SERIALIZATION_NVP(m_bounds.z);
     }
 };
 #endif

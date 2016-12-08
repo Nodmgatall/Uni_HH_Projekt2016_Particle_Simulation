@@ -14,13 +14,13 @@ class ParticlesBase {
     protected:
     std::string               m_stucture_name;
     s_options &               m_options;
-    Vec3f &                   m_bounds;
     ParticleBoundsCorrection &m_particle_bounds_correction;
 
     public:
     virtual ~ParticlesBase () {
     }
-    ParticlesBase (s_options &p_options, Vec3f &p_bounds, ParticleBoundsCorrection &p_particle_bounds_correction);
+	ParticlesBase(s_options &p_options,
+			ParticleBoundsCorrection &p_particle_bounds_correction);
     virtual void run_simulation_iteration (unsigned long p_iteration_number = 0) = 0;
     virtual void add_particle (Vec3f p_position)                                 = 0;
     virtual void add_particle (Vec3f p_position, Vec3f p_velocity) = 0;

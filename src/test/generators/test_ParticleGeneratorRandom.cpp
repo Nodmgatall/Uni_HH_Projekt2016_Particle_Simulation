@@ -15,8 +15,12 @@
 class Particles : public ParticlesBase {
 
     public:
-    Particles (s_options &p_options, Vec3f &p_bounds, ParticleBoundsCorrection &p_particle_bounds_correction)
-    : ParticlesBase (p_options, p_bounds, p_particle_bounds_correction) {
+	int m_particle_count;
+	Particles(s_options &p_options,
+			ParticleBoundsCorrection &p_particle_bounds_correction)
+    :
+			ParticlesBase(p_options, p_particle_bounds_correction), m_particle_count(
+					0) {
     }
     ~Particles () {
     }
@@ -28,24 +32,29 @@ class Particles : public ParticlesBase {
     }
     void add_particle (Vec3f p_current_position) {
         (void) p_current_position;
+		m_particle_count++;
     }
     void add_particle (Vec3f p_current_position, Vec3f p_current_velocity) {
         (void) p_current_position;
         (void) p_current_velocity;
+		m_particle_count++;
     }
     unsigned long get_particle_count () {
-        return 0;
+		return m_particle_count;
     }
 };
 
 BOOST_AUTO_TEST_CASE (step1) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
+	options.m_particle_count = 10;
     ParticleGeneratorRandom            generator (options);
     Vec3f                              bounds;
     ParticleBoundsCorrectionWraparound particleBoundsCorrectionWraparound (bounds);
     std::shared_ptr<ParticlesBase>     particles =
-        std::make_shared<Particles> (options, bounds, particleBoundsCorrectionWraparound);
-    generator.generate (particles, bounds);
-    // TODO
+        std::make_shared<Particles>(
+			options, particleBoundsCorrectionWraparound);
+	generator.generate(particles);
+	BOOST_CHECK_EQUAL(particles->get_particle_count(), 10L);
+	//TODO
 }

@@ -16,7 +16,7 @@ class ParticleGeneratorBase {
     s_options &m_options;
 
     public:
-    virtual void generate (std::shared_ptr<ParticlesBase> p_particles, Vec3f &p_bounds) = 0;
+	virtual void generate(std::shared_ptr<ParticlesBase> p_particles) = 0;
     ParticleGeneratorBase (s_options &p_options);
     virtual ~ParticleGeneratorBase ();
 };
