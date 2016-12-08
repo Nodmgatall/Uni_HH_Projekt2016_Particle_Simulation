@@ -3,7 +3,7 @@
 
 #include "../Definitions.hpp"
 #include "../Vec3.hpp"
-#include "../algorithms/ParticleBoundsCorrectionWraparound.hpp"
+#include "../borders/ParticleBoundsCorrectionWraparound.hpp"
 #include "ParticlesBase.hpp"
 
 /*
