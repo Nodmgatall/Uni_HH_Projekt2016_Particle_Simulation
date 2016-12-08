@@ -5,7 +5,7 @@
  *      Author: benjamin
  */
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE "Vec3f"
+#define BOOST_TEST_MODULE "Vec3"
 #include "../main/Vec3.hpp"
 #include <boost/test/unit_test.hpp>
 #include <sstream>

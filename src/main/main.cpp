@@ -26,8 +26,7 @@ void createOutputDirectory () {
         // don't care ... but return value is used
     }
     if (mkdir (log_folder, 0700)) {
-        DEBUG_BEGIN << "createing Directory '" << log_folder << "' failed" << DEBUG_END;
-        exit (1);
+        // don't care ... but return value is used
     }
     g_debug_stream.open (std::string (log_folder) + "/log.txt", std::fstream::out);
     if (unlink ("logdata/latest")) {
@@ -48,7 +47,7 @@ int main (int argc, char **argv) {
     option_handler->handle_options (argc, argv, &simulator_options, &generator_options);
 
     std::unique_ptr<ParticleSimulator> particle_simulator (
-        new ParticleSimulator (simulator_options, &generator_options));
+        new ParticleSimulator (simulator_options, generator_options));
 
     LennardJonesAlgorithm::init (simulator_options);
 

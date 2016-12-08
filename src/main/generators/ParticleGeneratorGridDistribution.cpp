@@ -8,7 +8,7 @@
 #include "ParticleGeneratorGridDistribution.hpp"
 #include "../tools/Debug.hpp"
 
-ParticleGeneratorGridDistribution::ParticleGeneratorGridDistribution (s_generator_options *p_gen_options)
+ParticleGeneratorGridDistribution::ParticleGeneratorGridDistribution (s_generator_options &p_gen_options)
 : ParticleGeneratorBase (p_gen_options) {
 }
 

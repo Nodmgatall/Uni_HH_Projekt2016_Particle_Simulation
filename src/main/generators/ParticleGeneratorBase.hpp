@@ -13,14 +13,13 @@
 #include "../datastructures/ParticlesBase.hpp"
 class ParticleGeneratorBase {
     protected:
-    s_generator_options *m_options;
+    s_generator_options &m_options;
 
     public:
     virtual void generate (std::shared_ptr<ParticlesBase> p_particles,
                            Vec3f &                        p_bounds,
                            unsigned long &                p_particle_count) = 0;
-    e_generator_mode get_generator_mode ();
-    ParticleGeneratorBase (s_generator_options *p_gen_options);
+    ParticleGeneratorBase (s_generator_options &p_gen_options);
     virtual ~ParticleGeneratorBase ();
 };
 

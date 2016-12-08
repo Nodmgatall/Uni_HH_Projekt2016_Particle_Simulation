@@ -21,7 +21,7 @@
 class ParticleGeneratorFactory {
 
     public:
-    static std::unique_ptr<ParticleGeneratorBase> build (s_generator_options *p_options);
+    static std::unique_ptr<ParticleGeneratorBase> build (s_generator_options &p_options);
 };
 
 #endif /* SRC_PARTICLEGENERATOR_HPP_ */
