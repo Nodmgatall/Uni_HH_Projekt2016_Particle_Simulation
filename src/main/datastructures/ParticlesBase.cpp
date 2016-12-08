@@ -24,6 +24,6 @@ void ParticlesBase::set_algorithm (const std::function<bool(float &p_position_1x
                                                             float &p_position_delta_2z)> &algorithm) {
     m_algorithm = algorithm;
 }
-ParticlesBase::ParticlesBase (s_simulator_options *p_options, Vec3f *p_bounds)
-: m_options (p_options), m_bounds (p_bounds) {
+ParticlesBase::ParticlesBase (s_simulator_options &p_options, Vec3f &p_bounds, ParticleBoundsCorrection &p_particle_bounds_correction)
+: m_options (p_options), m_bounds (p_bounds), m_particle_bounds_correction (p_particle_bounds_correction) {
 }

@@ -13,7 +13,7 @@ class ParticleFileWriter {
     int           m_timestep;
     std::string   m_file_name_base;
     std::ofstream m_file;
-    std::map<e_particle_variable, bool> *m_write_modes;
+    std::map<e_particle_variable, bool> &m_write_modes;
 
     public:
     void saveData (std::vector<float> *        p_positions_x,
@@ -21,7 +21,7 @@ class ParticleFileWriter {
                    std::vector<float> *        p_positions_z,
                    std::vector<unsigned long> *ids);
 
-    ParticleFileWriter (std::map<e_particle_variable, bool> *p_write_modes);
+    ParticleFileWriter (std::map<e_particle_variable, bool> &p_write_modes);
     void set_file_name_base (const std::string &file_name_base);
     void start ();
     void end ();

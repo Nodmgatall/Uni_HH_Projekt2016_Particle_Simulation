@@ -6,6 +6,7 @@
 #include "../IO/ParticleFileWriter.hpp"
 #include "../Vec3.hpp"
 #include "../algorithms/LennardJonesAlgorithm.hpp"
+#include "../borders/ParticleBoundsCorrection.hpp"
 #include <iostream>
 #include <vector>
 
@@ -23,15 +24,16 @@ class ParticlesBase {
                        float &p_position_delta_2x,
                        float &p_position_delta_2y,
                        float &p_position_delta_2z)>
-                         m_algorithm;
-    std::string          m_stucture_name;
-    s_simulator_options *m_options;
-    Vec3f *              m_bounds;
+                              m_algorithm;
+    std::string               m_stucture_name;
+    s_simulator_options &     m_options;
+    Vec3f &                   m_bounds;
+    ParticleBoundsCorrection &m_particle_bounds_correction;
 
     public:
     virtual ~ParticlesBase () {
     }
-    ParticlesBase (s_simulator_options *p_options, Vec3f *p_bounds);
+    ParticlesBase (s_simulator_options &p_options, Vec3f &p_bounds, ParticleBoundsCorrection &p_particle_bounds_correction);
     virtual void run_simulation_iteration (unsigned long p_iteration_number = 0) = 0;
     virtual void add_particle (Vec3f p_position)                                 = 0;
     virtual void add_particle (Vec3f p_position, Vec3f p_velocity) = 0;

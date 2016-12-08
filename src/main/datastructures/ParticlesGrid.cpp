@@ -8,30 +8,26 @@
 #define CURR_POSITION(cell, particle)                                             \
     cell.m_positions_x[m_idx_a][particle], cell.m_positions_y[m_idx_a][particle], \
         cell.m_positions_z[m_idx_a][particle]
-/**
- *
- * @param p_options options for the simulation
- * @param p_bounds boundary for the particles in which they can move
- */
-ParticlesGrid::ParticlesGrid (s_simulator_options *p_options, Vec3f *p_bounds)
-: ParticlesBase (p_options, p_bounds), m_iterations_between_rearange_particles (20) {
+
+ParticlesGrid::ParticlesGrid (s_simulator_options &p_options, Vec3f &p_bounds, ParticleBoundsCorrection &p_particle_bounds_correction)
+: ParticlesBase (p_options, p_bounds, p_particle_bounds_correction),
+  m_iterations_between_rearange_particles (20) {
     unsigned int idx_x, idx_y, idx_z;
-    m_particle_bounds_correction          = new ParticleBoundsCorrectionWraparound (*m_bounds);
-    long max_usefull_size                 = pow (m_options->m_particle_count, 1.0 / 3.0);
+    long         max_usefull_size         = pow (m_options.m_particle_count, 1.0 / 3.0);
     m_iterations_until_rearange_particles = m_iterations_between_rearange_particles;
     m_stucture_name                       = "Grid";
     m_max_id                              = 0;
     m_idx_a = !(m_idx_b = 0);
     // cut_off_radius*1.2 to allow particles to move before reconstruction of cells is needed
-    m_size = Vec3l::min (Vec3l (*m_bounds / (m_options->m_cut_off_radius * 1.2f)), max_usefull_size);
-    m_size          = m_size + 1L; // round up to next natural number for cell-count
-    m_size          = Vec3l::max (m_size, Vec3l (4L));
-    m_size_per_cell = Vec3f (m_size - 1L) / *m_bounds;
+    m_size = Vec3l::min (Vec3l (m_bounds / (m_options.m_cut_off_radius * 1.2f)), max_usefull_size);
+    m_size = m_size + 1L; // round up to next natural number for cell-count
+    m_size = Vec3l::max (m_size, Vec3l (4L));
+    m_size_per_cell = Vec3f (m_size - 1L) / m_bounds;
     m_cells.reserve (m_size.x * m_size.y * m_size.z);
     for (idx_x = 0; idx_x < m_size.x; idx_x++) {
         for (idx_y = 0; idx_y < m_size.y; idx_y++) {
             for (idx_z = 0; idx_z < m_size.z; idx_z++) {
-                m_cells.push_back (ParticleCell (Vec3l (idx_x, idx_y, idx_z), m_size, *m_bounds));
+                m_cells.push_back (ParticleCell (Vec3l (idx_x, idx_y, idx_z), m_size, m_bounds));
             }
         }
     }
@@ -64,13 +60,13 @@ void ParticlesGrid::add_particle (Vec3f p_current_position) {
  * @param p_velocity the initial velocity
  */
 void ParticlesGrid::add_particle (Vec3f p_current_position, Vec3f p_current_velocity) {
-    Vec3f old_position = p_current_position - p_current_velocity * m_options->m_timestep;
-    m_particle_bounds_correction->updatePosition (p_current_position.x,
-                                                  p_current_position.y,
-                                                  p_current_position.z,
-                                                  old_position.x,
-                                                  old_position.y,
-                                                  old_position.z);
+    Vec3f old_position = p_current_position - p_current_velocity * m_options.m_timestep;
+    m_particle_bounds_correction.updatePosition (p_current_position.x,
+                                                 p_current_position.y,
+                                                 p_current_position.z,
+                                                 old_position.x,
+                                                 old_position.y,
+                                                 old_position.z);
 
     get_cell_for_particle (p_current_position).add_particle (p_current_position, old_position, m_idx_a, m_max_id++);
 }
@@ -150,10 +146,10 @@ void ParticlesGrid::step_2b_calculate_betweenCells (ParticleCell &p_cell1, Parti
 void ParticlesGrid::step_3_remove_wrong_particles_from_cell (ParticleCell &p_cell) {
     int i;
     for (i = p_cell.m_ids.size () - 1; i >= 0; i--) {
-        if (m_particle_bounds_correction->updatePosition (CURR_POSITION (p_cell, i),
-                                                          NEXT_POSITION (p_cell, i),
-                                                          p_cell.m_corner000,
-                                                          p_cell.m_corner111)) {
+        if (m_particle_bounds_correction.updatePosition (CURR_POSITION (p_cell, i),
+                                                         NEXT_POSITION (p_cell, i),
+                                                         p_cell.m_corner000,
+                                                         p_cell.m_corner111)) {
             ParticleCell &other_cell = get_cell_for_particle (CURR_POSITION (p_cell, i));
             moveParticle (p_cell, other_cell, i);
         }

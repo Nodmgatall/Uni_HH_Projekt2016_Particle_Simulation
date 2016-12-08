@@ -3,7 +3,6 @@
 
 #include "../Definitions.hpp"
 #include "../Vec3.hpp"
-#include "../borders/ParticleBoundsCorrectionWraparound.hpp"
 #include "ParticlesBase.hpp"
 
 /*
@@ -22,7 +21,6 @@ struct ParticleCell {
 
 class ParticlesGrid : public ParticlesBase {
     private:
-    ParticleBoundsCorrection *m_particle_bounds_correction;
     unsigned long             m_max_id;
     std::vector<ParticleCell> m_cells;
     Vec3l                     m_size;
@@ -42,7 +40,7 @@ class ParticlesGrid : public ParticlesBase {
     inline void step_3_remove_wrong_particles_from_cell (ParticleCell &p_cell);
 
     public:
-    ParticlesGrid (s_simulator_options *p_options, Vec3f *p_bounds);
+    ParticlesGrid (s_simulator_options &p_options, Vec3f &p_bounds, ParticleBoundsCorrection &p_particle_bounds_correction);
     ~ParticlesGrid ();
     void serialize (std::shared_ptr<ParticleFileWriter> p_writer);
     void run_simulation_iteration (unsigned long p_iteration_number = 0);

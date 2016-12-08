@@ -6,7 +6,7 @@
  */
 
 #include "ParticleFileWriter.hpp"
-ParticleFileWriter::ParticleFileWriter (std::map<e_particle_variable, bool> *p_write_modes)
+ParticleFileWriter::ParticleFileWriter (std::map<e_particle_variable, bool> &p_write_modes)
 : m_timestep (0), m_file_name_base (""), m_write_modes (p_write_modes) {
 }
 void ParticleFileWriter::start () {

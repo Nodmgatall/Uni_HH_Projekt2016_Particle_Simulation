@@ -48,7 +48,7 @@ int main (int argc, char **argv) {
     option_handler->handle_options (argc, argv, &simulator_options, &generator_options);
 
     std::unique_ptr<ParticleSimulator> particle_simulator (
-        new ParticleSimulator (&simulator_options, &generator_options));
+        new ParticleSimulator (simulator_options, &generator_options));
 
     LennardJonesAlgorithm::init (simulator_options);
 

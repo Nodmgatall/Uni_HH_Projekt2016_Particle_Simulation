@@ -7,8 +7,9 @@
 #include "../tools/Debug.hpp"
 #include "ParticlesList.hpp"
 
-ParticlesList::ParticlesList (s_simulator_options *p_options, Vec3f *p_bounds)
-: ParticlesBase (p_options, p_bounds), m_average_list_length (0.16), m_next_list_size_multiplier (1.1) {
+ParticlesList::ParticlesList (s_simulator_options &p_options, Vec3f &p_bounds, ParticleBoundsCorrection &p_particle_bounds_correction)
+: ParticlesBase (p_options, p_bounds, p_particle_bounds_correction), m_average_list_length (0.16),
+  m_next_list_size_multiplier (1.1) {
     m_stucture_name                  = "List";
     m_cutoff_radius                  = 0;
     m_last_id                        = 0;
@@ -39,9 +40,11 @@ void ParticlesList::add_particle (Vec3f p_position) {
         m_accelerations_z.push_back (0);
     }
 }
+
 void ParticlesList::add_particle (Vec3f p_position, Vec3f p_velocity) {
     (void) p_velocity;
-    add_particle (p_position); // TODO
+    (void) p_position;
+    //    add_particle (p_position); // TODO
 }
 
 void ParticlesList::run_simulation_iteration (unsigned long p_iteration_number) {
