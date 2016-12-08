@@ -15,20 +15,23 @@ BOOST_AUTO_TEST_CASE (testParticleGeneratorRandom) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
     options.m_mode                                   = e_generator_mode::RANDOM;
-    std::unique_ptr<ParticleGeneratorBase> generator = ParticleGeneratorFactory::build (options);
+    std::unique_ptr<ParticleGeneratorBase> generator = 0;
+    BOOST_CHECK_NO_THROW (generator = ParticleGeneratorFactory::build (options));
     BOOST_CHECK_EQUAL (generator->get_stucture_name (), "ParticleGeneratorRandom");
 }
 BOOST_AUTO_TEST_CASE (testParticleGeneratorSingleObjectMiddle) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
     options.m_mode                                   = e_generator_mode::SINGLE_OBJECT_MIDDLE;
-    std::unique_ptr<ParticleGeneratorBase> generator = ParticleGeneratorFactory::build (options);
+    std::unique_ptr<ParticleGeneratorBase> generator = 0;
+    BOOST_CHECK_NO_THROW (generator = ParticleGeneratorFactory::build (options));
     BOOST_CHECK_EQUAL (generator->get_stucture_name (), "ParticleGeneratorSingleObjectMiddle");
 }
 BOOST_AUTO_TEST_CASE (testParticleGeneratorGridDistribution) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
     options.m_mode                                   = e_generator_mode::GRID_DISTRIBUTION;
-    std::unique_ptr<ParticleGeneratorBase> generator = ParticleGeneratorFactory::build (options);
+    std::unique_ptr<ParticleGeneratorBase> generator = 0;
+    BOOST_CHECK_NO_THROW (generator = ParticleGeneratorFactory::build (options));
     BOOST_CHECK_EQUAL (generator->get_stucture_name (), "ParticleGeneratorGridDistribution");
 }
