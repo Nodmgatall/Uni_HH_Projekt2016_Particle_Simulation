@@ -22,22 +22,22 @@ void ParticleGeneratorGridDistribution::generate (std::shared_ptr<ParticlesBase>
     Benchmark::begin ("ParticleGeneratorGridDistribution");
 
     data_type temp = pow (p_particle_count, 1.0f / 3.0f);
-    std::cout << temp << std::endl;
     Vec3f        delta   = p_bounds / (temp - 1.0f);
     unsigned int tempInt = temp;
-    std::cout << tempInt << std::endl;
     unsigned int x, y, z;
-    int          added_stuff = 0;
+    if(p_particle_count != tempInt)
+    {
+        std::cout << "Warning: generated only " << tempInt * tempInt * tempInt << " particles." << std::endl;
+        std::cout << "3rd root of " << p_particle_count << " is not a Natural number" << std::endl;
+    }
     for (x = 0; x < tempInt; x++) {
         for (y = 0; y < tempInt; y++) {
             for (z = 0; z < tempInt; z++) {
                 if (((x * tempInt) + y) * tempInt + z < p_particle_count) {
                     p_particles->add_particle (Vec3f (x, y, z) * delta);
-                    added_stuff++;
                 }
             }
         }
     }
-    std::cout << added_stuff << std::endl;
     Benchmark::end ();
 }
