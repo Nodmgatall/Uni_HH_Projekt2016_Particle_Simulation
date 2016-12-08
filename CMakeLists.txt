@@ -69,6 +69,15 @@ if(Boost_FOUND)
                  COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/Testing/Binary/${testName}.x)
 	endforeach()
 	
+	add_test(NAME particle_simulation.x 
+                 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Testing/Binary 
+                 COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/particle_simulation.x
+                 -p 100 
+                 -l 0.1 
+                 -f 1 
+                 -r 2.5
+                 -t 0.005)
+	
 	add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} 
 #	--verbose
 	)
