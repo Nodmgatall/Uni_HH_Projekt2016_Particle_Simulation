@@ -19,8 +19,7 @@ bool ParticleBoundsCorrectionWraparound::updatePosition (float &m_x,
                                                          float &m_other_x,
                                                          float &m_other_y,
                                                          float &m_other_z) {
-    Vec3f vec (0);
-    return updatePosition (m_x, m_y, m_z, m_other_x, m_other_y, m_other_z, vec, m_bounds);
+    return updatePosition (m_x, m_y, m_z, m_other_x, m_other_y, m_other_z, g_vec3f_0, m_bounds);
 }
 bool ParticleBoundsCorrectionWraparound::updatePosition (float &m_x,
                                                          float &m_y,
