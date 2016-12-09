@@ -8,8 +8,11 @@
     cell.m_positions_x[m_idx_a][particle], cell.m_positions_y[m_idx_a][particle], \
         cell.m_positions_z[m_idx_a][particle]
 
-ParticlesGrid::ParticlesGrid (s_options &p_options, ParticleBoundsCorrection &p_particle_bounds_correction)
-: ParticlesBase (p_options, p_particle_bounds_correction), m_iterations_between_rearange_particles (20) {
+ParticlesGrid::ParticlesGrid(s_options &p_options,
+		ParticleBoundsCorrection &p_particle_bounds_correction,
+		AlgorithmBase &p_algorithm) :
+		ParticlesBase(p_options, p_particle_bounds_correction, p_algorithm), m_iterations_between_rearange_particles(
+				20) {
     unsigned int idx_x, idx_y, idx_z;
     long         max_usefull_size         = pow (m_options.m_particle_count, 1.0 / 3.0);
     m_iterations_until_rearange_particles = m_iterations_between_rearange_particles;
@@ -94,7 +97,7 @@ void ParticlesGrid::step_1_prepare_cell (ParticleCell &p_cell) {
     unsigned int       i;
     const unsigned int max = p_cell.m_ids.size ();
     for (i = 0; i < max; i++) {
-        LennardJonesAlgorithm::step_1 (CURR_POSITION (p_cell, i), NEXT_POSITION (p_cell, i));
+		m_algorithm.step_1(CURR_POSITION(p_cell, i), NEXT_POSITION(p_cell, i));
     }
 }
 /**
@@ -109,7 +112,7 @@ void ParticlesGrid::step_2a_calculate_inside_cell (ParticleCell &p_cell) {
     if (max > 0) {
         for (i = 0; i < max_1; i++) {
             for (j = i + 1; j < max; j++) {
-                LennardJonesAlgorithm::step_2 (CURR_POSITION (p_cell, i),
+				m_algorithm.step_2(CURR_POSITION(p_cell, i),
                                                NEXT_POSITION (p_cell, i),
                                                CURR_POSITION (p_cell, j),
                                                NEXT_POSITION (p_cell, j));
@@ -129,7 +132,7 @@ void ParticlesGrid::step_2b_calculate_betweenCells (ParticleCell &p_cell1, Parti
     const unsigned int max2 = p_cell2.m_ids.size ();
     for (i = 0; i < max1; i++) {
         for (j = 0; j < max2; j++) {
-            LennardJonesAlgorithm::step_2 (CURR_POSITION (p_cell1, i),
+			m_algorithm.step_2(CURR_POSITION(p_cell1, i),
                                            NEXT_POSITION (p_cell1, i),
                                            CURR_POSITION (p_cell2, j),
                                            NEXT_POSITION (p_cell2, j));

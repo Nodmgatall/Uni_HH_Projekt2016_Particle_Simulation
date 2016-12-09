@@ -11,7 +11,7 @@
 #include <iostream>
 #include <map>
 #include <memory>
-
+#include "algorithms/AlgorithmLennardJones.hpp"
 #include "generators/ParticleGeneratorFactory.hpp"
 
 class ParticleSimulator {

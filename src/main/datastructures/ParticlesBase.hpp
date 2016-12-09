@@ -5,21 +5,23 @@
 #include "../IO/ParticleFileLoader.hpp"
 #include "../IO/ParticleFileWriter.hpp"
 #include "../Vec3.hpp"
-#include "../algorithms/LennardJonesAlgorithm.hpp"
 #include "../borders/ParticleBoundsCorrection.hpp"
 #include <iostream>
 #include <vector>
+#include "../algorithms/AlgorithmBase.hpp"
 
 class ParticlesBase {
     protected:
     std::string               m_stucture_name;
     s_options &               m_options;
     ParticleBoundsCorrection &m_particle_bounds_correction;
-
+	AlgorithmBase &m_algorithm;
     public:
     virtual ~ParticlesBase () {
     }
-    ParticlesBase (s_options &p_options, ParticleBoundsCorrection &p_particle_bounds_correction);
+	ParticlesBase(s_options &p_options,
+			ParticleBoundsCorrection &p_particle_bounds_correction,
+			AlgorithmBase &p_algorithm);
     virtual void run_simulation_iteration (unsigned long p_iteration_number = 0) = 0;
     virtual void add_particle (Vec3f p_position)                                 = 0;
     virtual void add_particle (Vec3f p_position, Vec3f p_velocity) = 0;

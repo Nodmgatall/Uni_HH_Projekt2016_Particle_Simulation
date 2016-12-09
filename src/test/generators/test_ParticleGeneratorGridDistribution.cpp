@@ -9,15 +9,18 @@
 #define BOOST_TEST_MODULE "ParticleGeneratorGridDistribution"
 #include "../../main/borders/ParticleBoundsCorrectionWraparound.hpp"
 #include "../../main/generators/ParticleGeneratorGridDistribution.hpp"
+#include "../../main/algorithms/AlgorithmLennardJones.hpp"
 #include <boost/test/unit_test.hpp>
 #include <cstring>
 
 class Particles : public ParticlesBase {
-
     public:
     int m_particle_count;
-    Particles (s_options &p_options, ParticleBoundsCorrection &p_particle_bounds_correction)
-    : ParticlesBase (p_options, p_particle_bounds_correction), m_particle_count (0) {
+	Particles(s_options &p_options,
+			ParticleBoundsCorrection &p_particle_bounds_correction,
+			AlgorithmBase &p_algorithm) :
+			ParticlesBase(p_options, p_particle_bounds_correction, p_algorithm), m_particle_count(
+					0) {
     }
     ~Particles () {
     }
@@ -58,7 +61,9 @@ BOOST_AUTO_TEST_CASE (test1) {
     options.m_bounds         = Vec3f (10, 10, 10);
     ParticleGeneratorGridDistribution  generator (options);
     ParticleBoundsCorrectionWraparound border (options.m_bounds);
-    std::shared_ptr<ParticlesBase>     particles = std::make_shared<Particles> (options, border);
+	AlgorithmLennardJones algorithm(options);
+	std::shared_ptr<ParticlesBase> particles = std::make_shared<Particles>(
+			options, border, algorithm);
     generator.generate (particles);
     BOOST_CHECK_EQUAL (particles->get_particle_count (), 10L);
 }
