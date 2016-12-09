@@ -28,7 +28,7 @@ BOOST_AUTO_TEST_CASE (step2_1) {
     options.m_timestep = 1;
     AlgorithmLennardJones algorithm (options);
     data_type             v[] = { 1, 2, 3, 2, 2, 3, 1, 2, 3, 2, 2, 3 };
-    algorithm.step_2 (v[0], v[1], v[2], v[6], v[7], v[8], v[3], v[4], v[5], v[9], v[10], v[11]);
+    algorithm.step_2 (v[0], v[1], v[2], v[6], v[7], v[8], &v[3], &v[4], &v[5], &v[9], &v[10], &v[11], 0, 1);
     BOOST_CHECK_EQUAL (v[6] - v[0], 24);
     BOOST_CHECK_EQUAL (v[9] - v[3], -24);
 }
@@ -38,7 +38,7 @@ BOOST_AUTO_TEST_CASE (step2_2) {
     options.m_timestep = 1;
     AlgorithmLennardJones algorithm (options);
     data_type             v[] = { 1, 2, 3, 1, 3, 3, 1, 2, 3, 1, 3, 3 };
-    algorithm.step_2 (v[0], v[1], v[2], v[6], v[7], v[8], v[3], v[4], v[5], v[9], v[10], v[11]);
+    algorithm.step_2 (v[0], v[1], v[2], v[6], v[7], v[8], &v[3], &v[4], &v[5], &v[9], &v[10], &v[11], 0, 1);
     BOOST_CHECK_EQUAL (v[7] - v[1], 24);
     BOOST_CHECK_EQUAL (v[10] - v[4], -24);
 }
@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_CASE (step2_3) {
     options.m_timestep = 1;
     AlgorithmLennardJones algorithm (options);
     data_type             v[] = { 1, 2, 3, 1, 2, 4, 1, 2, 3, 1, 2, 4 };
-    algorithm.step_2 (v[0], v[1], v[2], v[6], v[7], v[8], v[3], v[4], v[5], v[9], v[10], v[11]);
+    algorithm.step_2 (v[0], v[1], v[2], v[6], v[7], v[8], &v[3], &v[4], &v[5], &v[9], &v[10], &v[11], 0, 1);
     BOOST_CHECK_EQUAL (v[8] - v[2], 24);
     BOOST_CHECK_EQUAL (v[11] - v[5], -24);
 }

@@ -26,18 +26,20 @@ class AlgorithmBase {
                          data_type &      p_position_bx,
                          data_type &      p_position_by,
                          data_type &      p_position_bz) = 0;
-    virtual void step_2 (const data_type &p_position_aix,
-                         const data_type &p_position_aiy,
-                         const data_type &p_position_aiz,
-                         data_type &      p_position_bix,
-                         data_type &      p_position_biy,
-                         data_type &      p_position_biz,
-                         const data_type &p_position_ajx,
-                         const data_type &p_position_ajy,
-                         const data_type &p_position_ajz,
-                         data_type &      p_position_bjx,
-                         data_type &      p_position_bjy,
-                         data_type &      p_position_bjz) = 0;
+    virtual void step_2 (const data_type &      p_position_aix,
+                         const data_type &      p_position_aiy,
+                         const data_type &      p_position_aiz,
+                         data_type &            p_position_bix,
+                         data_type &            p_position_biy,
+                         data_type &            p_position_biz,
+                         const data_type *const p_position_ajx,
+                         const data_type *const p_position_ajy,
+                         const data_type *const p_position_ajz,
+                         data_type *const       p_position_bjx,
+                         data_type *const       p_position_bjy,
+                         data_type *const       p_position_bjz,
+                         const unsigned long    p_index_j_begin,
+                         const unsigned long    p_index_j_end) = 0;
 };
 
 #endif /* SRC_MAIN_ALGORITHMS_ALGORITHMBASE_HPP_ */

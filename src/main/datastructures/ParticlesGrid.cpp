@@ -1,13 +1,5 @@
 #include "ParticlesGrid.hpp"
 
-#define NEXT_POSITION(cell, particle)                                             \
-    cell.m_positions_x[m_idx_b][particle], cell.m_positions_y[m_idx_b][particle], \
-        cell.m_positions_z[m_idx_b][particle]
-#define OLD_POSITION(cell, particle) NEXT_POSITION (cell, particle)
-#define CURR_POSITION(cell, particle)                                             \
-    cell.m_positions_x[m_idx_a][particle], cell.m_positions_y[m_idx_a][particle], \
-        cell.m_positions_z[m_idx_a][particle]
-
 ParticlesGrid::ParticlesGrid (s_options &               p_options,
                               ParticleBoundsCorrection &p_particle_bounds_correction,
                               AlgorithmBase &           p_algorithm)
@@ -97,7 +89,12 @@ void ParticlesGrid::step_1_prepare_cell (ParticleCell &p_cell) {
     unsigned int       i;
     const unsigned int max = p_cell.m_ids.size ();
     for (i = 0; i < max; i++) {
-        m_algorithm.step_1 (CURR_POSITION (p_cell, i), NEXT_POSITION (p_cell, i));
+        m_algorithm.step_1 (p_cell.m_positions_x[m_idx_a][i],
+                            p_cell.m_positions_y[m_idx_a][i],
+                            p_cell.m_positions_z[m_idx_a][i],
+                            p_cell.m_positions_x[m_idx_b][i],
+                            p_cell.m_positions_y[m_idx_b][i],
+                            p_cell.m_positions_z[m_idx_b][i]);
     }
 }
 /**
@@ -106,17 +103,25 @@ void ParticlesGrid::step_1_prepare_cell (ParticleCell &p_cell) {
  * @param p_cell the cell which contains the particles
  */
 void ParticlesGrid::step_2a_calculate_inside_cell (ParticleCell &p_cell) {
-    unsigned int       i, j;
+    unsigned long      i;
     const unsigned int max   = p_cell.m_ids.size ();
     const unsigned int max_1 = max - 1;
     if (max > 0) {
         for (i = 0; i < max_1; i++) {
-            for (j = i + 1; j < max; j++) {
-                m_algorithm.step_2 (CURR_POSITION (p_cell, i),
-                                    NEXT_POSITION (p_cell, i),
-                                    CURR_POSITION (p_cell, j),
-                                    NEXT_POSITION (p_cell, j));
-            }
+            m_algorithm.step_2 (p_cell.m_positions_x[m_idx_a][i],
+                                p_cell.m_positions_y[m_idx_a][i],
+                                p_cell.m_positions_z[m_idx_a][i],
+                                p_cell.m_positions_x[m_idx_b][i],
+                                p_cell.m_positions_y[m_idx_b][i],
+                                p_cell.m_positions_z[m_idx_b][i],
+                                p_cell.m_positions_x[m_idx_a].data (),
+                                p_cell.m_positions_y[m_idx_a].data (),
+                                p_cell.m_positions_z[m_idx_a].data (),
+                                p_cell.m_positions_x[m_idx_b].data (),
+                                p_cell.m_positions_y[m_idx_b].data (),
+                                p_cell.m_positions_z[m_idx_b].data (),
+                                i + 1,
+                                max);
         }
     }
 }
@@ -127,16 +132,24 @@ void ParticlesGrid::step_2a_calculate_inside_cell (ParticleCell &p_cell) {
  * @param p_cell2
  */
 void ParticlesGrid::step_2b_calculate_betweenCells (ParticleCell &p_cell1, ParticleCell &p_cell2) {
-    unsigned int       i, j;
+    unsigned int       i;
     const unsigned int max1 = p_cell1.m_ids.size ();
     const unsigned int max2 = p_cell2.m_ids.size ();
     for (i = 0; i < max1; i++) {
-        for (j = 0; j < max2; j++) {
-            m_algorithm.step_2 (CURR_POSITION (p_cell1, i),
-                                NEXT_POSITION (p_cell1, i),
-                                CURR_POSITION (p_cell2, j),
-                                NEXT_POSITION (p_cell2, j));
-        }
+        m_algorithm.step_2 (p_cell1.m_positions_x[m_idx_a][i],
+                            p_cell1.m_positions_y[m_idx_a][i],
+                            p_cell1.m_positions_z[m_idx_a][i],
+                            p_cell1.m_positions_x[m_idx_b][i],
+                            p_cell1.m_positions_y[m_idx_b][i],
+                            p_cell1.m_positions_z[m_idx_b][i],
+                            p_cell2.m_positions_x[m_idx_a].data (),
+                            p_cell2.m_positions_y[m_idx_a].data (),
+                            p_cell2.m_positions_z[m_idx_a].data (),
+                            p_cell2.m_positions_x[m_idx_b].data (),
+                            p_cell2.m_positions_y[m_idx_b].data (),
+                            p_cell2.m_positions_z[m_idx_b].data (),
+                            0,
+                            max2);
     }
 }
 /**
@@ -147,11 +160,17 @@ void ParticlesGrid::step_2b_calculate_betweenCells (ParticleCell &p_cell1, Parti
 void ParticlesGrid::step_3_remove_wrong_particles_from_cell (ParticleCell &p_cell) {
     int i;
     for (i = p_cell.m_ids.size () - 1; i >= 0; i--) {
-        if (m_particle_bounds_correction.updatePosition (CURR_POSITION (p_cell, i),
-                                                         NEXT_POSITION (p_cell, i),
+        if (m_particle_bounds_correction.updatePosition (p_cell.m_positions_x[m_idx_a][i],
+                                                         p_cell.m_positions_y[m_idx_a][i],
+                                                         p_cell.m_positions_z[m_idx_a][i],
+                                                         p_cell.m_positions_x[m_idx_b][i],
+                                                         p_cell.m_positions_y[m_idx_b][i],
+                                                         p_cell.m_positions_z[m_idx_b][i],
                                                          p_cell.m_corner000,
                                                          p_cell.m_corner111)) {
-            ParticleCell &other_cell = get_cell_for_particle (CURR_POSITION (p_cell, i));
+            ParticleCell &other_cell = get_cell_for_particle (p_cell.m_positions_x[m_idx_a][i],
+                                                              p_cell.m_positions_y[m_idx_a][i],
+                                                              p_cell.m_positions_z[m_idx_a][i]);
             moveParticle (p_cell, other_cell, i);
         }
     }
