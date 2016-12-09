@@ -66,15 +66,15 @@ void ParticleSimulator::simulate () {
 void ParticleSimulator::init_particle_data () {
     Benchmark::begin ("init_particle_data");
     ParticleBoundsCorrectionWraparound particleBoundsCorrectionWraparound (m_options.m_bounds);
-	AlgorithmLennardJones algorithm = AlgorithmLennardJones(m_options);
+    AlgorithmLennardJones              algorithm = AlgorithmLennardJones (m_options);
     switch (m_options.m_data_structure) {
         case GRID:
-		m_particles = std::make_shared<ParticlesGrid>(m_options,
-				particleBoundsCorrectionWraparound, algorithm);
+            m_particles =
+                std::make_shared<ParticlesGrid> (m_options, particleBoundsCorrectionWraparound, algorithm);
             break;
         case LIST:
-		m_particles = std::make_shared<ParticlesList>(m_options,
-				particleBoundsCorrectionWraparound, algorithm);
+            m_particles =
+                std::make_shared<ParticlesList> (m_options, particleBoundsCorrectionWraparound, algorithm);
             break;
         case LISTEDGIRD:
             std::cout << "Mixture of list and grind not implemented" << std::endl;

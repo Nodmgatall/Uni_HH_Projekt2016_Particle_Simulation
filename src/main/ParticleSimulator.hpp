@@ -4,15 +4,15 @@
 #include "Definitions.hpp"
 #include "IO/OptionHandler.hpp"
 #include "IO/ParticleFileWriter.hpp"
+#include "algorithms/AlgorithmLennardJones.hpp"
 #include "borders/ParticleBoundsCorrectionWraparound.hpp"
 #include "datastructures/ParticlesBase.hpp"
+#include "generators/ParticleGeneratorFactory.hpp"
 #include <functional>
 #include <getopt.h>
 #include <iostream>
 #include <map>
 #include <memory>
-#include "algorithms/AlgorithmLennardJones.hpp"
-#include "generators/ParticleGeneratorFactory.hpp"
 
 class ParticleSimulator {
     private:
