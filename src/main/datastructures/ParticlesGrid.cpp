@@ -61,7 +61,6 @@ void ParticlesGrid::add_particle (Vec3f p_current_position, Vec3f p_current_velo
                                                  old_position.x,
                                                  old_position.y,
                                                  old_position.z);
-
     get_cell_for_particle (p_current_position).add_particle (p_current_position, old_position, m_idx_a, m_max_id++);
 }
 /**
