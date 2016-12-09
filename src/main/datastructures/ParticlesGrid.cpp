@@ -35,7 +35,7 @@ ParticleCell &ParticlesGrid::get_cell_at (long x, long y, long z) {
     return m_cells[get_cell_index (x, y, z)];
 }
 ParticleCell &ParticlesGrid::get_cell_for_particle (data_type x, data_type y, data_type z) {
-    return get_cell_at (x * m_size_per_cell.x, y * m_size_per_cell.y, z * m_size_per_cell.z);
+    return get_cell_at (x / m_size_per_cell.x, y / m_size_per_cell.y, z / m_size_per_cell.z);
 }
 ParticleCell &ParticlesGrid::get_cell_for_particle (Vec3f m_position) {
     return get_cell_for_particle (m_position.x, m_position.y, m_position.z);

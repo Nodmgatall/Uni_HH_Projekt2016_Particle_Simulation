@@ -147,7 +147,6 @@ class ParticlesGridTestClass : public ParticlesGrid {
                             ParticleBoundsCorrection &p_particle_bounds_correction,
                             AlgorithmBase &           p_algorithm)
     : ParticlesGrid (p_options, p_particle_bounds_correction, p_algorithm) {
-        BOOST_CHECK_MESSAGE (0, m_size_per_cell);
     }
     ~ParticlesGridTestClass () {
     }
@@ -334,13 +333,9 @@ BOOST_AUTO_TEST_CASE (test_get_cell_for_particle_1) {
         for (idx_y = 0; idx_y < particlesGrid.get_size ().y; idx_y++) {
             for (idx_x = 0; idx_x < particlesGrid.get_size ().x; idx_x++) {
                 ParticleCell &cell = particlesGrid.public_get_cell_for_particle (
-                    5.0 / particlesGrid.get_size ().x * (float) idx_x + 0.001,
-                    5.0 / particlesGrid.get_size ().y * (float) idx_y + 0.001,
-                    5.0 / particlesGrid.get_size ().z * (float) idx_z + 0.001);
-                BOOST_CHECK_MESSAGE (0, 5.0 / particlesGrid.get_size ().x * (float) idx_x + 0.001);
-                BOOST_CHECK_MESSAGE (0, 5.0 / particlesGrid.get_size ().y * (float) idx_y + 0.001);
-                BOOST_CHECK_MESSAGE (0, 5.0 / particlesGrid.get_size ().z * (float) idx_z + 0.001);
-                BOOST_CHECK_MESSAGE (0, counter);
+                    5.0 / particlesGrid.get_size ().x * (float) idx_x + 0.5,
+                    5.0 / particlesGrid.get_size ().y * (float) idx_y + 0.5,
+                    5.0 / particlesGrid.get_size ().z * (float) idx_z + 0.5);
                 BOOST_CHECK_EQUAL (&cell - particlesGrid.get_cells ().data (), counter++);
             }
         }
