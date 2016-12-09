@@ -133,18 +133,18 @@ void ParticlesList::build_lists_smarter (data_type *   p_distances_x,
     std::vector<data_type> distances_squared (p_size_distance_vectors);
 
     // calculating distance vectors for (n^2 -n)/2 pairs
-    for (unsigned long particle_idx = 0; particle_idx < particle_count - 1; particle_idx++) {
+    for (unsigned long particle_idx = 0, range = particle_count - 1; particle_idx < particle_count - 1; particle_idx++, range--) {
         macro_debug ("calculating distances of ", particle_idx);
         macro_debug ("range: ", (particle_count - (particle_idx + 1)));
         calculate_distance_vectors (particle_idx,
-                                    &p_distances_x[start_pos_distance_vector],
-                                    &p_distances_y[start_pos_distance_vector],
-                                    &p_distances_z[start_pos_distance_vector],
-                                    &m_positions_x[particle_idx + 1],
-                                    &m_positions_y[particle_idx + 1],
-                                    &m_positions_z[particle_idx + 1],
-                                    particle_idx + 1,
-                                    particle_count);
+                                    &p_distances_x[0],
+                                    &p_distances_y[0],
+                                    &p_distances_z[0],
+                                    &m_positions_x[0],
+                                    &m_positions_y[0],
+                                    &m_positions_z[0],
+                                    start_pos_distance_vector,
+                                    range);
         start_pos_distance_vector += (particle_count - particle_idx - 1);
     }
 
@@ -342,21 +342,22 @@ void ParticlesList::calculate_distance_vectors (unsigned long p_particle_idx,
                                                 unsigned long start_idx,
                                                 unsigned long end_idx) {
     unsigned long cur_dist_idx;
-    unsigned long other_part_idx;
-    data_type     x = m_positions_x[p_particle_idx];
-    data_type     y = m_positions_y[p_particle_idx];
-    data_type     z = m_positions_z[p_particle_idx];
+    data_type     x = p_positions_x[p_particle_idx];
+    data_type     y = p_positions_y[p_particle_idx];
+    data_type     z = p_positions_z[p_particle_idx];
 
-    for (cur_dist_idx = 0, other_part_idx = start_idx; other_part_idx < end_idx; cur_dist_idx++, other_part_idx++) {
-        p_distances_x[cur_dist_idx] = x - p_positions_x[other_part_idx];
+    int test = 0;
+    for (cur_dist_idx = 0; cur_dist_idx < end_idx; cur_dist_idx++) {
+        p_distances_x[start_idx + cur_dist_idx] = x - p_positions_x[p_particle_idx + cur_dist_idx + 1];
+        test++;
     }
 
-    for (cur_dist_idx = 0, other_part_idx = start_idx; other_part_idx < end_idx; cur_dist_idx++, other_part_idx++) {
-        p_distances_y[cur_dist_idx] = y - p_positions_y[other_part_idx];
+    for (cur_dist_idx = 0; cur_dist_idx < end_idx; cur_dist_idx++) {
+        p_distances_y[start_idx + cur_dist_idx] = y - p_positions_y[p_particle_idx + cur_dist_idx + 1];
     }
 
-    for (cur_dist_idx = 0, other_part_idx = start_idx; other_part_idx < end_idx; cur_dist_idx++, other_part_idx++) {
-        p_distances_z[cur_dist_idx] = z - p_positions_z[other_part_idx];
+    for (cur_dist_idx = 0; cur_dist_idx < end_idx; cur_dist_idx++) {
+        p_distances_z[start_idx + cur_dist_idx] = z - p_positions_z[p_particle_idx + cur_dist_idx + 1];
     }
 }
 void ParticlesList::calculate_distances_squared (data_type *   p_distances_squared,
