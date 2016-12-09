@@ -26,17 +26,45 @@ ParticlesGrid::ParticlesGrid (s_options &               p_options,
         }
     }
 }
+/**
+ * destructor
+ */
 ParticlesGrid::~ParticlesGrid () {
 }
+/**
+ * return the combined index for the cell at the given index
+ * @param x index
+ * @param y index
+ * @param z index
+ */
 unsigned long ParticlesGrid::get_cell_index (long x, long y, long z) {
     return x + m_size.x * (y + m_size.y * z);
 }
+/**
+ * returns the cell at the given index
+ * @param x index
+ * @param y index
+ * @param z index
+ * @return the cell
+ */
 ParticleCell &ParticlesGrid::get_cell_at (long x, long y, long z) {
     return m_cells[get_cell_index (x, y, z)];
 }
+/**
+ * return the cell for the given coordinate
+ * @param x coordinate
+ * @param y coordinate
+ * @param z coordinate
+ * @return the cell
+ */
 ParticleCell &ParticlesGrid::get_cell_for_particle (data_type x, data_type y, data_type z) {
     return get_cell_at (x / m_size_per_cell.x, y / m_size_per_cell.y, z / m_size_per_cell.z);
 }
+/**
+ * return the cell for the given position
+ * @param m_position the position
+ * @return the cell
+ */
 ParticleCell &ParticlesGrid::get_cell_for_particle (Vec3f m_position) {
     return get_cell_for_particle (m_position.x, m_position.y, m_position.z);
 }
@@ -292,11 +320,24 @@ unsigned long ParticlesGrid::get_particle_count () {
     }
     return particle_count;
 }
+/**
+ * creates an cell which can hold a subset of the particles
+ * @param p_idx the index of the created cell in the array m_cells from ParticlesGrid
+ * @param p_size used to calculate the actual border of this cell
+ * @param p_bounds used to calculate the actual border of this cell
+ */
 ParticleCell::ParticleCell (Vec3l p_idx, Vec3l p_size, Vec3f &p_bounds) {
     m_idx       = p_idx;
     m_corner000 = Vec3f (m_idx) / Vec3f (p_size) * p_bounds;
     m_corner111 = Vec3f (m_idx + 1L) / Vec3f (p_size) * p_bounds;
 }
+/**
+ * adds an particle to this cell
+ * @param p_current_position the current position of the particle to add
+ * @param p_old_position the position which the particle had the last timestep
+ * @param p_current_index in which array should the current value be stored
+ * @param p_id the id for the added particle
+ */
 void ParticleCell::add_particle (Vec3f p_current_position, Vec3f p_old_position, int p_current_index, int p_id) {
     m_positions_x[p_current_index].push_back (p_current_position.x);
     m_positions_y[p_current_index].push_back (p_current_position.y);
