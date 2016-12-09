@@ -15,13 +15,10 @@
 
 class Algorithm : public AlgorithmBase {
   public:
-    std::vector<data_type> m_position_aix;
-    std::vector<data_type> m_position_aiy;
-    std::vector<data_type> m_position_aiz;
-    std::vector<data_type> m_position_bix;
-    std::vector<data_type> m_position_biy;
-    std::vector<data_type> m_position_biz;
-    int                    m_count;
+    std::vector<int>              m_step_1_helper;
+    std::vector<std::vector<int>> m_step_2_helper;
+    int                           m_count;
+
     Algorithm (const s_options &p_options) : AlgorithmBase (p_options), m_count (0) {
     }
     void step_1 (const data_type &p_position_ax,
@@ -30,13 +27,31 @@ class Algorithm : public AlgorithmBase {
                  data_type &      p_position_bx,
                  data_type &      p_position_by,
                  data_type &      p_position_bz) {
-        m_position_aix.push_back (p_position_ax);
-        m_position_aiy.push_back (p_position_ay);
-        m_position_aiz.push_back (p_position_az);
-        m_position_bix.push_back (p_position_bx);
-        m_position_biy.push_back (p_position_by);
-        m_position_biz.push_back (p_position_bz);
+        BOOST_CHECK_EQUAL (p_position_ax, p_position_ay - 1);
+        BOOST_CHECK_EQUAL (p_position_ay, p_position_az - 1);
+        BOOST_CHECK_EQUAL (p_position_bx, p_position_by - 1);
+        BOOST_CHECK_EQUAL (p_position_by, p_position_bz - 1);
+        int idx_i = 0;
+        if (p_position_ax > p_position_bx) {
+            idx_i = (int) p_position_bx - 1;
+            BOOST_CHECK_EQUAL (p_position_ax, p_position_bx + 10);
+        } else {
+            idx_i = (int) p_position_ax - 1;
+            BOOST_CHECK_EQUAL (p_position_ax, p_position_bx - 10);
+        }
+        m_step_1_helper.push_back (idx_i);
         m_count++;
+    }
+    void test_prepare_step_2 (int p_count) {
+        m_step_2_helper.clear ();
+        m_step_2_helper.reserve (p_count);
+        for (int i = 0; i < p_count; i++) {
+            m_step_2_helper.push_back (std::vector<int> ());
+            m_step_2_helper[i].reserve (p_count);
+            for (int j = 0; j < p_count; j++) {
+                m_step_2_helper[i].push_back (0);
+            }
+        }
     }
     void step_2 (const data_type &      p_position_aix,
                  const data_type &      p_position_aiy,
@@ -52,20 +67,34 @@ class Algorithm : public AlgorithmBase {
                  data_type *const       p_position_bjz,
                  const unsigned long    p_index_j_begin,
                  const unsigned long    p_index_j_end) {
-        (void) p_position_aix;
-        (void) p_position_aiy;
-        (void) p_position_aiz;
-        (void) p_position_bix;
-        (void) p_position_biy;
-        (void) p_position_biz;
-        (void) p_position_ajx;
-        (void) p_position_ajy;
-        (void) p_position_ajz;
-        (void) p_position_bjx;
-        (void) p_position_bjy;
-        (void) p_position_bjz;
-        (void) p_index_j_begin;
-        (void) p_index_j_end;
+        BOOST_CHECK_EQUAL (p_position_aix, p_position_aiy - 1);
+        BOOST_CHECK_EQUAL (p_position_aiy, p_position_aiz - 1);
+        BOOST_CHECK_EQUAL (p_position_bix, p_position_biy - 1);
+        BOOST_CHECK_EQUAL (p_position_biy, p_position_biz - 1);
+        int idx_i = 0;
+        if (p_position_aix > p_position_bix) {
+            idx_i = (int) p_position_bix - 1;
+            BOOST_CHECK_EQUAL (p_position_aix, p_position_bix + 10);
+        } else {
+            idx_i = (int) p_position_aix - 1;
+            BOOST_CHECK_EQUAL (p_position_aix, p_position_bix - 10);
+        }
+        for (unsigned long j = p_index_j_begin; j < p_index_j_end; j++) {
+            BOOST_CHECK_EQUAL (p_position_ajx[j], p_position_ajy[j] - 1);
+            BOOST_CHECK_EQUAL (p_position_ajy[j], p_position_ajz[j] - 1);
+            BOOST_CHECK_EQUAL (p_position_bjx[j], p_position_bjy[j] - 1);
+            BOOST_CHECK_EQUAL (p_position_bjy[j], p_position_bjz[j] - 1);
+            int idx_j = 0;
+            if (p_position_ajx[j] > p_position_bjx[j]) {
+                idx_j = (int) p_position_bjx[j] - 1;
+                BOOST_CHECK_EQUAL (p_position_ajx[j], p_position_bjx[j] + 10);
+            } else {
+                idx_j = (int) p_position_ajx[j] - 1;
+                BOOST_CHECK_EQUAL (p_position_ajx[j], p_position_bjx[j] - 10);
+            }
+            m_step_2_helper[idx_i][idx_j]++;
+            m_step_2_helper[idx_j][idx_i]++;
+        }
     }
 };
 class BoundsCorrection : public ParticleBoundsCorrection {
@@ -370,7 +399,7 @@ BOOST_AUTO_TEST_CASE (test_get_cell_for_particle_2) {
         }
     }
 }
-BOOST_AUTO_TEST_CASE (test_prepareCell) {
+BOOST_AUTO_TEST_CASE (test_step_1) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
     options.m_bounds = Vec3f (5, 5, 5);
@@ -388,27 +417,33 @@ BOOST_AUTO_TEST_CASE (test_prepareCell) {
         call_count[i] = 0;
     }
     for (int i = 0; i < particleCount; i++) {
-        if (algorithm.m_position_bix[i] < algorithm.m_position_aix[i])
-            call_count[(int) (algorithm.m_position_bix[i]) - 1]++;
-        else
-            call_count[(int) (algorithm.m_position_aix[i]) - 1]++;
-        BOOST_CHECK_EQUAL (algorithm.m_position_aix[i], algorithm.m_position_aiy[i] - 1);
-        BOOST_CHECK_EQUAL (algorithm.m_position_aiy[i], algorithm.m_position_aiz[i] - 1);
-        BOOST_CHECK_EQUAL (algorithm.m_position_aix[i], algorithm.m_position_bix[i] + 10);
-        BOOST_CHECK_EQUAL (algorithm.m_position_bix[i], algorithm.m_position_biy[i] - 1);
-        BOOST_CHECK_EQUAL (algorithm.m_position_biy[i], algorithm.m_position_biz[i] - 1);
-        if (algorithm.m_position_bix[i] < algorithm.m_position_aix[i])
-            BOOST_CHECK_EQUAL (algorithm.m_position_aix[i], algorithm.m_position_bix[i] + 10);
-        else
-            BOOST_CHECK_EQUAL (algorithm.m_position_aix[i], algorithm.m_position_bix[i] - 10);
+        call_count[algorithm.m_step_1_helper[i]]++;
     }
     for (int i = 0; i < particleCount; i++) {
         BOOST_CHECK_EQUAL (call_count[i], 1);
     }
 }
+BOOST_AUTO_TEST_CASE (test_step_2a) {
+    s_options options;
+    memset (&options, 0, sizeof (s_options));
+    options.m_bounds = Vec3f (5, 5, 5);
+    BoundsCorrection       border (options.m_bounds);
+    Algorithm              algorithm (options);
+    ParticlesGridTestClass particlesGrid (options, border, algorithm);
+    ParticleCell           cell          = ParticleCell (Vec3l (), Vec3l (), options.m_bounds);
+    const int              particleCount = 4;
+    for (int i = 0; i < particleCount; i++)
+        cell.add_particle (Vec3f (i + 1, i + 2, i + 3), Vec3f (i + 11, i + 12, i + 13), 0, i);
+    algorithm.test_prepare_step_2 (particleCount);
+    particlesGrid.public_step_2a_calculate_inside_cell (cell);
+    for (int i = 0; i < particleCount; i++) {
+        for (int j = 0; j < particleCount; j++) {
+            BOOST_CHECK_EQUAL (algorithm.m_step_2_helper[i][j], i != j);
+        }
+    }
+}
 
 /*
- void step_1_prepare_cell (ParticleCell &p_cell);
  void step_2a_calculate_inside_cell (ParticleCell &p_cell);
  void step_2b_calculate_betweenCells (ParticleCell &p_cell1, ParticleCell &p_cell2);
  void step_3_remove_wrong_particles_from_cell (ParticleCell &p_cell);
