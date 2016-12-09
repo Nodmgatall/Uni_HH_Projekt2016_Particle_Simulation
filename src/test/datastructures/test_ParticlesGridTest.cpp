@@ -444,7 +444,6 @@ BOOST_AUTO_TEST_CASE (test_step_2a) {
 }
 
 /*
- void step_2a_calculate_inside_cell (ParticleCell &p_cell);
  void step_2b_calculate_betweenCells (ParticleCell &p_cell1, ParticleCell &p_cell2);
  void step_3_remove_wrong_particles_from_cell (ParticleCell &p_cell);
 
