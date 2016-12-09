@@ -175,7 +175,7 @@ class ParticlesGridTestClass : public ParticlesGrid {
         step_2a_calculate_inside_cell (p_cell);
     }
     void public_step_2b_calculate_between_cells (ParticleCell &p_cell1, ParticleCell &p_cell2) {
-		step_2b_calculate_between_cells(p_cell1, p_cell2);
+        step_2b_calculate_between_cells (p_cell1, p_cell2);
     }
     void public_step_3_remove_wrong_particles_from_cell (ParticleCell &p_cell) {
         step_3_remove_wrong_particles_from_cell (p_cell);
