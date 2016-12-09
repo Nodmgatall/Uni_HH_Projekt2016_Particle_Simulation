@@ -9,7 +9,7 @@ format:
 	find . -maxdepth 10 -name "*.hpp" | xargs clang-format -i -sort-includes
 
 clean: format
-	cd .. && $(MAKE) clean
+	cd .. && $(MAKE) clean --no-print-directory
 	rm -rf ../CMakeFiles ../CMakeCache.txt ../Makefile ../cmake_install.cmake CTestTestfile.cmake ../xml ../html ../latex 
 
 doxygen:
@@ -26,11 +26,10 @@ endif
 
 	
 build_release: format
-	cd .. && $(MAKE) clean
-	cd .. && $(MAKE) particle_simulation.x -j 8
+	cd .. && $(MAKE) particle_simulation.x -j 8 --no-print-directory
 
 build: build_release
-	cd .. && $(MAKE) -j 8
+	cd .. && $(MAKE) -j 8 --no-print-directory
 
 rmlog: format
 	rm -rf ../logdata
@@ -52,4 +51,6 @@ else
 endif
 	lcov --extract ../Testing/coverage_combined.info "*/src/main/*" --output-file ../Testing/coverage.info
 	genhtml ../Testing/coverage.info --output-directory ../Testing/coverage_out --demangle-cpp
-	
+
+show_log:
+	cat ../Testing/Temporary/LastTest.log

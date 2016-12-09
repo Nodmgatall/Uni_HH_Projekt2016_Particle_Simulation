@@ -16,7 +16,7 @@ ParticlesGrid::ParticlesGrid (s_options &               p_options,
     m_size = Vec3l::min (Vec3l (m_options.m_bounds / (m_options.m_cut_off_radius * 1.2f)), max_usefull_size);
     m_size          = m_size + 1L; // round up to next natural number for cell-count
     m_size          = Vec3l::max (m_size, Vec3l (4L));
-    m_size_per_cell = Vec3f (m_size - 1L) / m_options.m_bounds;
+    m_size_per_cell = m_options.m_bounds / Vec3f (m_size);
     m_cells.reserve (m_size.x * m_size.y * m_size.z);
     for (idx_x = 0; idx_x < m_size.x; idx_x++) {
         for (idx_y = 0; idx_y < m_size.y; idx_y++) {
@@ -278,6 +278,7 @@ inline void ParticlesGrid::moveParticle (ParticleCell &p_cell_from, ParticleCell
         p_cell_to.m_positions_x[j].push_back (p_cell_from.m_positions_x[j][p_index_from]);
         p_cell_to.m_positions_y[j].push_back (p_cell_from.m_positions_y[j][p_index_from]);
         p_cell_to.m_positions_z[j].push_back (p_cell_from.m_positions_z[j][p_index_from]);
+        p_cell_from.m_positions_x[j].erase (p_cell_from.m_positions_x[j].begin () + p_index_from);
         p_cell_from.m_positions_y[j].erase (p_cell_from.m_positions_y[j].begin () + p_index_from);
         p_cell_from.m_positions_z[j].erase (p_cell_from.m_positions_z[j].begin () + p_index_from);
     }
