@@ -134,23 +134,23 @@ void ParticlesGrid::step_2a_calculate_inside_cell (ParticleCell &p_cell) {
  * @param p_cell1
  * @param p_cell2
  */
-void ParticlesGrid::step_2b_calculate_betweenCells (ParticleCell &p_cell1, ParticleCell &p_cell2) {
+void ParticlesGrid::step_2b_calculate_betweenCells (ParticleCell &p_cell_i, ParticleCell &p_cell_j) {
     unsigned int       i;
-    const unsigned int max1 = p_cell1.m_ids.size ();
-    const unsigned int max2 = p_cell2.m_ids.size ();
+    const unsigned int max1 = p_cell_i.m_ids.size ();
+    const unsigned int max2 = p_cell_j.m_ids.size ();
     for (i = 0; i < max1; i++) {
-        m_algorithm.step_2 (p_cell1.m_positions_x[m_idx_a][i],
-                            p_cell1.m_positions_y[m_idx_a][i],
-                            p_cell1.m_positions_z[m_idx_a][i],
-                            p_cell1.m_positions_x[m_idx_b][i],
-                            p_cell1.m_positions_y[m_idx_b][i],
-                            p_cell1.m_positions_z[m_idx_b][i],
-                            p_cell2.m_positions_x[m_idx_a].data (),
-                            p_cell2.m_positions_y[m_idx_a].data (),
-                            p_cell2.m_positions_z[m_idx_a].data (),
-                            p_cell2.m_positions_x[m_idx_b].data (),
-                            p_cell2.m_positions_y[m_idx_b].data (),
-                            p_cell2.m_positions_z[m_idx_b].data (),
+        m_algorithm.step_2 (p_cell_i.m_positions_x[m_idx_a][i],
+                            p_cell_i.m_positions_y[m_idx_a][i],
+                            p_cell_i.m_positions_z[m_idx_a][i],
+                            p_cell_i.m_positions_x[m_idx_b][i],
+                            p_cell_i.m_positions_y[m_idx_b][i],
+                            p_cell_i.m_positions_z[m_idx_b][i],
+                            p_cell_j.m_positions_x[m_idx_a].data (),
+                            p_cell_j.m_positions_y[m_idx_a].data (),
+                            p_cell_j.m_positions_z[m_idx_a].data (),
+                            p_cell_j.m_positions_x[m_idx_b].data (),
+                            p_cell_j.m_positions_y[m_idx_b].data (),
+                            p_cell_j.m_positions_z[m_idx_b].data (),
                             0,
                             max2);
     }

@@ -37,7 +37,7 @@ class ParticlesGrid : public ParticlesBase {
     void moveParticle (ParticleCell &p_cell_from, ParticleCell &p_cell_to, long p_index_from);
     void step_1_prepare_cell (ParticleCell &p_cell);
     void step_2a_calculate_inside_cell (ParticleCell &p_cell);
-    void step_2b_calculate_betweenCells (ParticleCell &p_cell1, ParticleCell &p_cell2);
+    void step_2b_calculate_betweenCells (ParticleCell &p_cell_i, ParticleCell &p_cell_j);
     void step_3_remove_wrong_particles_from_cell (ParticleCell &p_cell);
 
   public:

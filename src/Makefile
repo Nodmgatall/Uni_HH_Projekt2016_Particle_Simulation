@@ -1,4 +1,4 @@
-.PHONY: all format clean doxygen cmake build rmlog run test
+.PHONY: all format clean doxygen cmake build rmlog run test show_log
 
 all: format cmake build run
 
@@ -41,11 +41,11 @@ test:
 	rm -rf ../Testing
 	$(MAKE) cmake build
 ifeq ($(platform),Darwin)
-	cd .. && $(MAKE) check | true
+	cd .. && $(MAKE) check
 	lcov --directory ../CMakeFiles/ --capture --output-file ../Testing/coverage_combined.info
 else
 	lcov --directory ../CMakeFiles/ --capture --initial --output-file ../Testing/coverage_init.info
-	cd .. && $(MAKE) check | true
+	cd .. && $(MAKE) check
 	lcov --directory ../CMakeFiles/ --capture --output-file ../Testing/coverage_test.info
 	lcov --add-tracefile ../Testing/coverage_init.info --add-tracefile ../Testing/coverage_test.info --output-file ../Testing/coverage_combined.info
 endif

@@ -442,6 +442,38 @@ BOOST_AUTO_TEST_CASE (test_step_2a) {
         }
     }
 }
+BOOST_AUTO_TEST_CASE (test_step_2b) {
+    s_options options;
+    memset (&options, 0, sizeof (s_options));
+    options.m_bounds = Vec3f (5, 5, 5);
+    BoundsCorrection       border (options.m_bounds);
+    Algorithm              algorithm (options);
+    ParticlesGridTestClass particlesGrid (options, border, algorithm);
+    ParticleCell           cell_i          = ParticleCell (Vec3l (), Vec3l (), options.m_bounds);
+    ParticleCell           cell_j          = ParticleCell (Vec3l (), Vec3l (), options.m_bounds);
+    const int              particleCount_i = 4;
+    const int              particleCount_j = 3;
+    for (int i = 0; i < particleCount_i; i++)
+        cell_i.add_particle (Vec3f (i + 1, i + 2, i + 3), Vec3f (i + 11, i + 12, i + 13), 0, i);
+    for (int i = particleCount_i; i < particleCount_i + particleCount_j; i++)
+        cell_j.add_particle (Vec3f (i + 1, i + 2, i + 3), Vec3f (i + 11, i + 12, i + 13), 0, i);
+    algorithm.test_prepare_step_2 (particleCount_i + particleCount_j);
+    particlesGrid.public_step_2b_calculate_betweenCells (cell_i, cell_j);
+    int sum = 0;
+    for (int i = 0; i < particleCount_i + particleCount_j; i++) {
+        for (int j = 0; j < particleCount_i + particleCount_j; j++) {
+            int cmp = 0;
+            if ((i < particleCount_i) || (j < particleCount_i)) {
+                if ((i >= particleCount_i) || (j >= particleCount_i)) {
+                    cmp = 1;
+                }
+            }
+            BOOST_CHECK_EQUAL (algorithm.m_step_2_helper[i][j], cmp);
+            sum += algorithm.m_step_2_helper[i][j];
+        }
+    }
+    BOOST_CHECK_EQUAL (sum, particleCount_i * particleCount_j * 2);
+}
 
 /*
  void step_2b_calculate_betweenCells (ParticleCell &p_cell1, ParticleCell &p_cell2);
