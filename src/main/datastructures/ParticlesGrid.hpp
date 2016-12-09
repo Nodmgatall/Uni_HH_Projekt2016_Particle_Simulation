@@ -6,7 +6,8 @@
 #include "ParticlesBase.hpp"
 
 /*
- * Partikel, die auf der einen Seite das Grid verlassen, kommen auf der anderen Seite wieder rein.
+ * Partikel, die auf der einen Seite das Grid verlassen, kommen auf der anderen
+ * Seite wieder rein.
  * */
 struct ParticleCell {
     std::vector<data_type>     m_positions_x[2];
@@ -20,7 +21,7 @@ struct ParticleCell {
 };
 
 class ParticlesGrid : public ParticlesBase {
-    protected:
+  protected:
     unsigned long             m_max_id;
     std::vector<ParticleCell> m_cells;
     Vec3l                     m_size;
@@ -39,7 +40,7 @@ class ParticlesGrid : public ParticlesBase {
     inline void step_2b_calculate_betweenCells (ParticleCell &p_cell1, ParticleCell &p_cell2);
     inline void step_3_remove_wrong_particles_from_cell (ParticleCell &p_cell);
 
-    public:
+  public:
     ParticlesGrid (s_options &p_options, ParticleBoundsCorrection &p_particle_bounds_correction, AlgorithmBase &p_algorithm);
     ~ParticlesGrid ();
     void serialize (std::shared_ptr<ParticleFileWriter> p_writer);

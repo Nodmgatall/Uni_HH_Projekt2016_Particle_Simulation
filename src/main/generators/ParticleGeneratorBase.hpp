@@ -12,11 +12,11 @@
 #include "../IO/Options.hpp"
 #include "../datastructures/ParticlesBase.hpp"
 class ParticleGeneratorBase {
-    protected:
+  protected:
     s_options & m_options;
     std::string m_stucture_name;
 
-    public:
+  public:
     virtual void generate (std::shared_ptr<ParticlesBase> p_particles) = 0;
     ParticleGeneratorBase (s_options &p_options);
     virtual ~ParticleGeneratorBase ();

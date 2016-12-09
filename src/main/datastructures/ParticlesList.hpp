@@ -7,7 +7,7 @@
 #include <vector>
 
 class ParticlesList : public ParticlesBase {
-    private:
+  private:
     data_type m_average_list_length;
     data_type m_next_list_size_multiplier;
     short     m_duration_list;
@@ -17,7 +17,7 @@ class ParticlesList : public ParticlesBase {
     void      calculate_duration_list ();
     void      setup_iteration ();
 
-    public:
+  public:
     unsigned long              m_last_id;
     data_type                  m_cutoff_radius;
     std::vector<unsigned long> m_unused_ids;
@@ -104,6 +104,7 @@ class ParticlesList : public ParticlesBase {
                              std::vector<data_type> *    p_accelerations_x,
                              std::vector<data_type> *    p_accelerations_y,
                              std::vector<data_type> *    p_accelerations_z);
-    // void update_original_vectors (unsigned long p_start_idx, unsigned long p_segment_length);
+    // void update_original_vectors (unsigned long p_start_idx, unsigned long
+    // p_segment_length);
 };
 #endif

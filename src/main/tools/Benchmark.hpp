@@ -14,12 +14,12 @@
 #include <sys/time.h>
 #include <time.h>
 class Benchmark {
-    private:
+  private:
     static std::stack<std::string>    m_section_names;
     static std::stack<struct timeval> m_section_starttimes;
     static std::stack<bool>           m_section_print;
 
-    public:
+  public:
     static void begin (std::string p_section_name, bool p_print = true);
     static void end ();
 };

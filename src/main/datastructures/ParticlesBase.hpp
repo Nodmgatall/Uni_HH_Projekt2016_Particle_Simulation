@@ -11,13 +11,13 @@
 #include <vector>
 
 class ParticlesBase {
-    protected:
+  protected:
     std::string               m_stucture_name;
     s_options &               m_options;
     ParticleBoundsCorrection &m_particle_bounds_correction;
     AlgorithmBase &           m_algorithm;
 
-    public:
+  public:
     virtual ~ParticlesBase () {
     }
     ParticlesBase (s_options &p_options, ParticleBoundsCorrection &p_particle_bounds_correction, AlgorithmBase &p_algorithm);

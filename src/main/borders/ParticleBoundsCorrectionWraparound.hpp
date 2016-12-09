@@ -11,7 +11,7 @@
 #include "ParticleBoundsCorrection.hpp"
 
 class ParticleBoundsCorrectionWraparound : public ParticleBoundsCorrection {
-    public:
+  public:
     ParticleBoundsCorrectionWraparound (Vec3f &p_bounds);
     virtual ~ParticleBoundsCorrectionWraparound ();
     bool updatePosition (data_type &  m_x,

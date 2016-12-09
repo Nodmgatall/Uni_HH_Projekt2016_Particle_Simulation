@@ -12,7 +12,7 @@
 #include <math.h>
 
 class ParticleGeneratorSingleObjectMiddle : public ParticleGeneratorBase {
-    public:
+  public:
     ParticleGeneratorSingleObjectMiddle (s_options &p_options);
     virtual ~ParticleGeneratorSingleObjectMiddle ();
     void generate (std::shared_ptr<ParticlesBase> p_particles);

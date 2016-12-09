@@ -7,7 +7,7 @@
 #include "Options.hpp"
 
 class ConfigLoader {
-    public:
+  public:
     std::string m_config_file_name;
     std::map<std::string, Config> m_configs;
 

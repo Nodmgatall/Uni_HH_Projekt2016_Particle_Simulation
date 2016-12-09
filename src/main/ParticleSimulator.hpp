@@ -15,14 +15,14 @@
 #include <memory>
 
 class ParticleSimulator {
-    private:
+  private:
     s_options &                            m_options;
     std::shared_ptr<ParticleFileWriter>    m_particle_file_writer;
     std::unique_ptr<ParticleGeneratorBase> m_particle_generator;
     std::shared_ptr<ParticlesBase>         m_particles;
     bool                                   m_save_config;
 
-    public:
+  public:
     ParticleSimulator (s_options &p_options);
     void simulate ();
     void init_particle_data ();

@@ -11,7 +11,8 @@ ParticlesGrid::ParticlesGrid (s_options &               p_options,
     m_stucture_name                       = "Grid";
     m_max_id                              = 0;
     m_idx_a = !(m_idx_b = 0);
-    // cut_off_radius*1.2 to allow particles to move before reconstruction of cells is needed
+    // cut_off_radius*1.2 to allow particles to move before reconstruction of
+    // cells is needed
     m_size = Vec3l::min (Vec3l (m_options.m_bounds / (m_options.m_cut_off_radius * 1.2f)), max_usefull_size);
     m_size          = m_size + 1L; // round up to next natural number for cell-count
     m_size          = Vec3l::max (m_size, Vec3l (4L));
@@ -82,7 +83,8 @@ void ParticlesGrid::serialize (std::shared_ptr<ParticleFileWriter> p_file_writer
     Benchmark::end ();
 }
 /**
- * first step in each iteration. Calculates the new particle position based on its own speed
+ * first step in each iteration. Calculates the new particle position based on
+ * its own speed
  * @param p_cell the cell contains the particles which are calculated
  */
 void ParticlesGrid::step_1_prepare_cell (ParticleCell &p_cell) {
@@ -98,7 +100,8 @@ void ParticlesGrid::step_1_prepare_cell (ParticleCell &p_cell) {
     }
 }
 /**
- * calculates the movement of particles based on the forces between every particle-pair in the given
+ * calculates the movement of particles based on the forces between every
+ * particle-pair in the given
  * cell
  * @param p_cell the cell which contains the particles
  */
@@ -126,7 +129,8 @@ void ParticlesGrid::step_2a_calculate_inside_cell (ParticleCell &p_cell) {
     }
 }
 /**
- * calculates the movement based on forces between particles which are in different cells each
+ * calculates the movement based on forces between particles which are in
+ * different cells each
  * particle-pair consists of one particle from each cell given as parameters
  * @param p_cell1
  * @param p_cell2
@@ -153,7 +157,8 @@ void ParticlesGrid::step_2b_calculate_betweenCells (ParticleCell &p_cell1, Parti
     }
 }
 /**
- * verify that all particles in cell are in the correct cell. if there are particles which should be
+ * verify that all particles in cell are in the correct cell. if there are
+ * particles which should be
  * in an other cell, these particles get moved
  * @param p_cell
  */
@@ -176,7 +181,8 @@ void ParticlesGrid::step_3_remove_wrong_particles_from_cell (ParticleCell &p_cel
     }
 }
 /**
- * runs a complete timestep simulation on all particles contained in this datastructure
+ * runs a complete timestep simulation on all particles contained in this
+ * datastructure
  * @param p_iteration_number unused? TODO remove?!?
  */
 void ParticlesGrid::run_simulation_iteration (unsigned long p_iteration_number) {

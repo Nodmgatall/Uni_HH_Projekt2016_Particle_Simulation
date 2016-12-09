@@ -71,7 +71,8 @@ void OptionHandler::handle_options (int p_argc, char **p_argv, s_options &p_opti
     while ((argv_index = getopt_long (p_argc, p_argv, "vs:p:l:t:dr:f:i:h", &options[0], &long_options)) != -1) {
         if (optarg && (strcmp (optarg, "-h") == 0 || strcmp (optarg, "--help") == 0)) {
             // TODO:  Display help from option
-            std::cout << "here should the help for the choosen operator be printed, sadly this is "
+            std::cout << "here should the help for the choosen operator be printed, "
+                         "sadly this is "
                          "not implemented"
                       << std::endl;
             exit (EXIT_SUCCESS);
@@ -271,7 +272,8 @@ void OptionHandler::print_choosen_options (s_options &p_options) {
     }
     g_debug_stream << "]" << DEBUG_END;
     /*
-     macro_debug("generator_mode :" , p_options.particle_generator->get_generator_mode());
+     macro_debug("generator_mode :" ,
+     p_options.particle_generator->get_generator_mode());
      macro_debug("data_structure :" , p_options.particles->get_structure_name());
      */
     Benchmark::end ();

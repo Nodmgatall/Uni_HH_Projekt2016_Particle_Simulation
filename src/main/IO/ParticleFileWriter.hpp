@@ -9,13 +9,13 @@
 #define SRC_PARTICLEFILEWRITER_HPP_
 #include "../Definitions.hpp"
 class ParticleFileWriter {
-    private:
+  private:
     int           m_timestep;
     std::string   m_file_name_base;
     std::ofstream m_file;
     std::map<e_particle_variable, bool> &m_write_modes;
 
-    public:
+  public:
     void saveData (std::vector<data_type> *    p_positions_x,
                    std::vector<data_type> *    p_positions_y,
                    std::vector<data_type> *    p_positions_z,

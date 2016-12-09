@@ -19,10 +19,10 @@
 #include <memory>
 #include <unistd.h>
 class GeneratorInvalidException : public std::exception {
-    private:
+  private:
     int m_generator_mode;
 
-    public:
+  public:
     GeneratorInvalidException () : m_generator_mode (-1) {
     }
     GeneratorInvalidException (int p_generator_mode) : m_generator_mode (p_generator_mode) {
@@ -34,10 +34,10 @@ class GeneratorInvalidException : public std::exception {
     }
 };
 class GeneratorNotImplementedException : public std::exception {
-    private:
+  private:
     int m_generator_mode;
 
-    public:
+  public:
     GeneratorNotImplementedException (int p_generator_mode) : m_generator_mode (p_generator_mode) {
     }
     virtual const char *what () const throw () {
@@ -47,7 +47,7 @@ class GeneratorNotImplementedException : public std::exception {
     }
 };
 class ParticleGeneratorFactory {
-    public:
+  public:
     static std::unique_ptr<ParticleGeneratorBase> build (s_options &p_options);
 };
 

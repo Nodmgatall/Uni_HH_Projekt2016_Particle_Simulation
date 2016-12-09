@@ -11,7 +11,7 @@
 #include "ParticleGeneratorBase.hpp"
 
 class ParticleGeneratorGridDistribution : public ParticleGeneratorBase {
-    public:
+  public:
     ParticleGeneratorGridDistribution (s_options &p_options);
     virtual ~ParticleGeneratorGridDistribution ();
     void generate (std::shared_ptr<ParticlesBase> p_particles);

@@ -97,7 +97,8 @@ void ParticlesList::run_simulation_iteration (unsigned long p_iteration_number) 
         }
     }
 
-    //    for (unsigned long neighbour_idx = 0; neighbour_idx < neighbour_cnt; neighbour_idx++) {
+    //    for (unsigned long neighbour_idx = 0; neighbour_idx < neighbour_cnt;
+    //    neighbour_idx++) {
     // calculate force
     //
     //  }
@@ -220,8 +221,10 @@ void ParticlesList::build_lists () {
     unsigned long current_list_idx      = 0;
     unsigned long next_free_list_entry  = 0;
 
-    // TODO: Idea: dont let them be initialized each time we need to build the lists
-    // instead make them a member; pro: minmal performance improvement, con: memory need * (4/3)
+    // TODO: Idea: dont let them be initialized each time we need to build the
+    // lists
+    // instead make them a member; pro: minmal performance improvement, con:
+    // memory need * (4/3)
     unsigned long listed_size = particle_cnt * (particle_cnt * (0.25));
     std::cout << "listed size: " << listed_size << std::endl;
     m_listed_positions_x.resize (listed_size);
@@ -268,7 +271,6 @@ void ParticlesList::build_lists () {
 
         int cnt_neighbours = 0;
         for (unsigned long other_idx = 0; other_idx < particle_cnt - 1; other_idx++) {
-
             if (distances_squared[other_idx] < cutoff_radius_squared) {
                 m_listed_positions_x[next_free_list_entry]  = m_positions_x[other_idx];
                 m_listed_positions_y[next_free_list_entry]  = m_positions_y[other_idx];
@@ -282,7 +284,6 @@ void ParticlesList::build_lists () {
             }
 
             if (current_entries == m_listed_positions_x.size ()) {
-
                 listed_size = listed_size * m_next_list_size_multiplier;
                 macro_debug ("resizing lists to: ", listed_size)
 
@@ -325,7 +326,8 @@ void ParticlesList::setup_iteration () {
     macro_debug_1 ("finished setting up iteration")
 }
 /**
- *  this functions takes a range of positions and a index of a particle of wich we want to
+ *  this functions takes a range of positions and a index of a particle of wich
+ * we want to
  *  know the distances to each particle in the range.
  */
 
@@ -397,13 +399,13 @@ void ParticlesList::calculate_distances_squared (data_type *   p_distances_squar
 }
 
 void ParticlesList::serialize (std::shared_ptr<ParticleFileWriter> p_writer) {
-
     Benchmark::begin ("saving the data", false);
     p_writer->saveData (&m_positions_x, &m_positions_y, &m_positions_z, &m_particle_ids);
     Benchmark::end ();
 }
 /* most likely not used
- void ParticlesList::update_original_vectors (unsigned long p_start_idx, unsigned long
+ void ParticlesList::update_original_vectors (unsigned long p_start_idx,
+ unsigned long
  p_segment_length) {
 
  get_current_status (p_start_idx,

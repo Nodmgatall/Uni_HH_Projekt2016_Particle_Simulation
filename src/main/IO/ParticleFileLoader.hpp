@@ -9,7 +9,7 @@
 #define SRC_PARTICLEFILELOADER_HPP_
 
 class ParticleFileLoader {
-    public:
+  public:
     ParticleFileLoader ();
     virtual ~ParticleFileLoader ();
 };

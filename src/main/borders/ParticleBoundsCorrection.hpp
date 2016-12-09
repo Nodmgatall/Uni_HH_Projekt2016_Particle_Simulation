@@ -9,10 +9,10 @@
 #define SRC_ALGORITHMS_PARTICLEBOUNDSCORRECTION_HPP_
 #include "../Vec3.hpp"
 class ParticleBoundsCorrection {
-    protected:
+  protected:
     Vec3f &m_bounds;
 
-    public:
+  public:
     ParticleBoundsCorrection (Vec3f &p_bounds) : m_bounds (p_bounds) {
     }
     virtual ~ParticleBoundsCorrection () {

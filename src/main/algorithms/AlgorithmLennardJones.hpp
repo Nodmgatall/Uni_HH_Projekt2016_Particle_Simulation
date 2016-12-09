@@ -18,14 +18,14 @@
  * step 3 swap arrays for old and new positions
  * */
 class AlgorithmLennardJones : public AlgorithmBase {
-    private:
+  private:
     data_type A_ij;
     data_type B_ij;
     data_type m_i;
     data_type m_j;
     void step_1_local (const data_type &p_position_a, data_type &p_position_b);
 
-    public:
+  public:
     AlgorithmLennardJones (const s_options &p_options);
     void step_1 (const data_type &p_position_ax,
                  const data_type &p_position_ay,

@@ -41,14 +41,16 @@ BOOST_AUTO_TEST_CASE (testParticleGeneratorMulipleObjects) {
     memset (&options, 0, sizeof (s_options));
     options.m_mode                                   = e_generator_mode::MULTIPLE_OBJECTS;
     std::unique_ptr<ParticleGeneratorBase> generator = 0;
-    BOOST_CHECK_THROW (generator = ParticleGeneratorFactory::build (options), GeneratorNotImplementedException);
+    BOOST_CHECK_NO_THROW (generator = ParticleGeneratorFactory::build (options));
+    BOOST_CHECK_EQUAL (generator->get_stucture_name (), "ParticleGeneratorMultipleObjecs");
 }
 BOOST_AUTO_TEST_CASE (testParticleGeneratorRandomUniform) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
     options.m_mode                                   = e_generator_mode::RANDOM_UNIFORM;
     std::unique_ptr<ParticleGeneratorBase> generator = 0;
-    BOOST_CHECK_THROW (generator = ParticleGeneratorFactory::build (options), GeneratorNotImplementedException);
+    BOOST_CHECK_NO_THROW (generator = ParticleGeneratorFactory::build (options));
+    BOOST_CHECK_EQUAL (generator->get_stucture_name (), "ParticleGeneratorRandomUniform");
 }
 BOOST_AUTO_TEST_CASE (testParticleGeneratorError) {
     s_options options;

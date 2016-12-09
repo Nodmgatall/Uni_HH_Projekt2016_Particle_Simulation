@@ -38,7 +38,6 @@ void ConfigLoader::deserialize_configs () {
     std::ifstream in_file_stream (m_config_file_name);
     if (in_file_stream.is_open ()) {
         if (in_file_stream.good ()) {
-
             if (in_file_stream.peek () == std::ifstream::traits_type::eof ()) {
                 std::cout << "Config file empty or corrupted" << std::endl;
                 std::cout << "Do you wan to continue? File could be deleted(y/n)" << std::endl;

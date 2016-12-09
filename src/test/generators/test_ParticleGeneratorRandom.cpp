@@ -14,7 +14,7 @@
 #include <cstring>
 
 class Particles : public ParticlesBase {
-    public:
+  public:
     int m_particle_count;
     Particles (s_options &p_options, ParticleBoundsCorrection &p_particle_bounds_correction, AlgorithmBase &p_algorithm)
     : ParticlesBase (p_options, p_particle_bounds_correction, p_algorithm), m_particle_count (0) {

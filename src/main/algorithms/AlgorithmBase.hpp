@@ -12,10 +12,10 @@
 #include "../IO/Options.hpp"
 
 class AlgorithmBase {
-    private:
+  private:
     const s_options &m_options;
 
-    public:
+  public:
     AlgorithmBase (const s_options &p_options) : m_options (p_options) {
     }
     virtual ~AlgorithmBase () {
