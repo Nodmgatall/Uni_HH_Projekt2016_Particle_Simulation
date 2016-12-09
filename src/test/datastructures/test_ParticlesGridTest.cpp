@@ -484,6 +484,4 @@ BOOST_AUTO_TEST_CASE (test_step_2b) {
  ~ParticlesGrid ();
  void serialize (std::shared_ptr<ParticleFileWriter> p_writer);
  void run_simulation_iteration (unsigned long p_iteration_number = 0);
- void add_particle (Vec3f p_current_position);
- void add_particle (Vec3f p_current_position, Vec3f p_current_velocity);
- unsigned long get_particle_count (); */
+ */
