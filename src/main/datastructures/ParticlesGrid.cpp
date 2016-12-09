@@ -26,17 +26,45 @@ ParticlesGrid::ParticlesGrid (s_options &               p_options,
         }
     }
 }
+/**
+ * destructor
+ */
 ParticlesGrid::~ParticlesGrid () {
 }
+/**
+ * return the combined index for the cell at the given index
+ * @param x index
+ * @param y index
+ * @param z index
+ */
 unsigned long ParticlesGrid::get_cell_index (long x, long y, long z) {
     return x + m_size.x * (y + m_size.y * z);
 }
+/**
+ * returns the cell at the given index
+ * @param x index
+ * @param y index
+ * @param z index
+ * @return the cell
+ */
 ParticleCell &ParticlesGrid::get_cell_at (long x, long y, long z) {
     return m_cells[get_cell_index (x, y, z)];
 }
+/**
+ * return the cell for the given coordinate
+ * @param x coordinate
+ * @param y coordinate
+ * @param z coordinate
+ * @return the cell
+ */
 ParticleCell &ParticlesGrid::get_cell_for_particle (data_type x, data_type y, data_type z) {
-    return get_cell_at (x * m_size_per_cell.x, y * m_size_per_cell.y, z * m_size_per_cell.z);
+    return get_cell_at (x / m_size_per_cell.x, y / m_size_per_cell.y, z / m_size_per_cell.z);
 }
+/**
+ * return the cell for the given position
+ * @param m_position the position
+ * @return the cell
+ */
 ParticleCell &ParticlesGrid::get_cell_for_particle (Vec3f m_position) {
     return get_cell_for_particle (m_position.x, m_position.y, m_position.z);
 }
@@ -61,7 +89,6 @@ void ParticlesGrid::add_particle (Vec3f p_current_position, Vec3f p_current_velo
                                                  old_position.x,
                                                  old_position.y,
                                                  old_position.z);
-
     get_cell_for_particle (p_current_position).add_particle (p_current_position, old_position, m_idx_a, m_max_id++);
 }
 /**
@@ -135,23 +162,23 @@ void ParticlesGrid::step_2a_calculate_inside_cell (ParticleCell &p_cell) {
  * @param p_cell1
  * @param p_cell2
  */
-void ParticlesGrid::step_2b_calculate_betweenCells (ParticleCell &p_cell1, ParticleCell &p_cell2) {
+void ParticlesGrid::step_2b_calculate_between_cells (ParticleCell &p_cell_i, ParticleCell &p_cell_j) {
     unsigned int       i;
-    const unsigned int max1 = p_cell1.m_ids.size ();
-    const unsigned int max2 = p_cell2.m_ids.size ();
+    const unsigned int max1 = p_cell_i.m_ids.size ();
+    const unsigned int max2 = p_cell_j.m_ids.size ();
     for (i = 0; i < max1; i++) {
-        m_algorithm.step_2 (p_cell1.m_positions_x[m_idx_a][i],
-                            p_cell1.m_positions_y[m_idx_a][i],
-                            p_cell1.m_positions_z[m_idx_a][i],
-                            p_cell1.m_positions_x[m_idx_b][i],
-                            p_cell1.m_positions_y[m_idx_b][i],
-                            p_cell1.m_positions_z[m_idx_b][i],
-                            p_cell2.m_positions_x[m_idx_a].data (),
-                            p_cell2.m_positions_y[m_idx_a].data (),
-                            p_cell2.m_positions_z[m_idx_a].data (),
-                            p_cell2.m_positions_x[m_idx_b].data (),
-                            p_cell2.m_positions_y[m_idx_b].data (),
-                            p_cell2.m_positions_z[m_idx_b].data (),
+        m_algorithm.step_2 (p_cell_i.m_positions_x[m_idx_a][i],
+                            p_cell_i.m_positions_y[m_idx_a][i],
+                            p_cell_i.m_positions_z[m_idx_a][i],
+                            p_cell_i.m_positions_x[m_idx_b][i],
+                            p_cell_i.m_positions_y[m_idx_b][i],
+                            p_cell_i.m_positions_z[m_idx_b][i],
+                            p_cell_j.m_positions_x[m_idx_a].data (),
+                            p_cell_j.m_positions_y[m_idx_a].data (),
+                            p_cell_j.m_positions_z[m_idx_a].data (),
+                            p_cell_j.m_positions_x[m_idx_b].data (),
+                            p_cell_j.m_positions_y[m_idx_b].data (),
+                            p_cell_j.m_positions_z[m_idx_b].data (),
                             0,
                             max2);
     }
@@ -213,32 +240,32 @@ void ParticlesGrid::run_simulation_iteration (unsigned long p_iteration_number) 
         for (idx_x = parallel_offset; idx_x < m_size.x - 1; idx_x += 2) {
             for (idx_y = 0; idx_y < m_size.y - 1; idx_y++) {
                 for (idx_z = 0; idx_z < m_size.z - 1; idx_z++) {
-                    step_2b_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
-                                                    get_cell_at (idx_x + 1, idx_y + 1, idx_z + 1)); // 1
-                    step_2b_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
-                                                    get_cell_at (idx_x + 1, idx_y, idx_z)); // 2
-                    step_2b_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
-                                                    get_cell_at (idx_x + 1, idx_y + 1, idx_z)); // 3
-                    step_2b_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
-                                                    get_cell_at (idx_x + 1, idx_y, idx_z + 1)); // 4
-                    step_2b_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
-                                                    get_cell_at (idx_x + 1, idx_y + 1, idx_z)); // 5
-                    step_2b_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
-                                                    get_cell_at (idx_x + 1, idx_y, idx_z + 1)); // 6
-                    step_2b_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z),
-                                                    get_cell_at (idx_x, idx_y + 1, idx_z + 1)); // 7
-                    step_2b_calculate_betweenCells (get_cell_at (idx_x + 1, idx_y, idx_z),
-                                                    get_cell_at (idx_x, idx_y + 1, idx_z)); // 8
-                    step_2b_calculate_betweenCells (get_cell_at (idx_x + 1, idx_y, idx_z),
-                                                    get_cell_at (idx_x, idx_y, idx_z + 1)); // 9
-                    step_2b_calculate_betweenCells (get_cell_at (idx_x, idx_y + 1, idx_z),
-                                                    get_cell_at (idx_x, idx_y, idx_z + 1)); // 10
-                    step_2b_calculate_betweenCells (get_cell_at (idx_x + 1, idx_y, idx_z),
-                                                    get_cell_at (idx_x, idx_y + 1, idx_z + 1)); // 11
-                    step_2b_calculate_betweenCells (get_cell_at (idx_x, idx_y + 1, idx_z),
-                                                    get_cell_at (idx_x + 1, idx_y, idx_z + 1)); // 12
-                    step_2b_calculate_betweenCells (get_cell_at (idx_x, idx_y, idx_z + 1),
-                                                    get_cell_at (idx_x + 1, idx_y + 1, idx_z)); // 13
+                    step_2b_calculate_between_cells (get_cell_at (idx_x, idx_y, idx_z),
+                                                     get_cell_at (idx_x + 1, idx_y + 1, idx_z + 1)); // 1
+                    step_2b_calculate_between_cells (get_cell_at (idx_x, idx_y, idx_z),
+                                                     get_cell_at (idx_x + 1, idx_y, idx_z)); // 2
+                    step_2b_calculate_between_cells (get_cell_at (idx_x, idx_y, idx_z),
+                                                     get_cell_at (idx_x + 1, idx_y + 1, idx_z)); // 3
+                    step_2b_calculate_between_cells (get_cell_at (idx_x, idx_y, idx_z),
+                                                     get_cell_at (idx_x + 1, idx_y, idx_z + 1)); // 4
+                    step_2b_calculate_between_cells (get_cell_at (idx_x, idx_y, idx_z),
+                                                     get_cell_at (idx_x + 1, idx_y + 1, idx_z)); // 5
+                    step_2b_calculate_between_cells (get_cell_at (idx_x, idx_y, idx_z),
+                                                     get_cell_at (idx_x + 1, idx_y, idx_z + 1)); // 6
+                    step_2b_calculate_between_cells (get_cell_at (idx_x, idx_y, idx_z),
+                                                     get_cell_at (idx_x, idx_y + 1, idx_z + 1)); // 7
+                    step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y, idx_z),
+                                                     get_cell_at (idx_x, idx_y + 1, idx_z)); // 8
+                    step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y, idx_z),
+                                                     get_cell_at (idx_x, idx_y, idx_z + 1)); // 9
+                    step_2b_calculate_between_cells (get_cell_at (idx_x, idx_y + 1, idx_z),
+                                                     get_cell_at (idx_x, idx_y, idx_z + 1)); // 10
+                    step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y, idx_z),
+                                                     get_cell_at (idx_x, idx_y + 1, idx_z + 1)); // 11
+                    step_2b_calculate_between_cells (get_cell_at (idx_x, idx_y + 1, idx_z),
+                                                     get_cell_at (idx_x + 1, idx_y, idx_z + 1)); // 12
+                    step_2b_calculate_between_cells (get_cell_at (idx_x, idx_y, idx_z + 1),
+                                                     get_cell_at (idx_x + 1, idx_y + 1, idx_z)); // 13
                 }
             }
         }
@@ -293,11 +320,24 @@ unsigned long ParticlesGrid::get_particle_count () {
     }
     return particle_count;
 }
+/**
+ * creates an cell which can hold a subset of the particles
+ * @param p_idx the index of the created cell in the array m_cells from ParticlesGrid
+ * @param p_size used to calculate the actual border of this cell
+ * @param p_bounds used to calculate the actual border of this cell
+ */
 ParticleCell::ParticleCell (Vec3l p_idx, Vec3l p_size, Vec3f &p_bounds) {
     m_idx       = p_idx;
     m_corner000 = Vec3f (m_idx) / Vec3f (p_size) * p_bounds;
     m_corner111 = Vec3f (m_idx + 1L) / Vec3f (p_size) * p_bounds;
 }
+/**
+ * adds an particle to this cell
+ * @param p_current_position the current position of the particle to add
+ * @param p_old_position the position which the particle had the last timestep
+ * @param p_current_index in which array should the current value be stored
+ * @param p_id the id for the added particle
+ */
 void ParticleCell::add_particle (Vec3f p_current_position, Vec3f p_old_position, int p_current_index, int p_id) {
     m_positions_x[p_current_index].push_back (p_current_position.x);
     m_positions_y[p_current_index].push_back (p_current_position.y);

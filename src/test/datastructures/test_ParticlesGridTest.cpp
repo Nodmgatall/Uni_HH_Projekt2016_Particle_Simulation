@@ -15,7 +15,11 @@
 
 class Algorithm : public AlgorithmBase {
   public:
-    Algorithm (const s_options &p_options) : AlgorithmBase (p_options) {
+    std::vector<int>              m_step_1_helper;
+    std::vector<std::vector<int>> m_step_2_helper;
+    int                           m_count;
+
+    Algorithm (const s_options &p_options) : AlgorithmBase (p_options), m_count (0) {
     }
     void step_1 (const data_type &p_position_ax,
                  const data_type &p_position_ay,
@@ -23,12 +27,31 @@ class Algorithm : public AlgorithmBase {
                  data_type &      p_position_bx,
                  data_type &      p_position_by,
                  data_type &      p_position_bz) {
-        (void) p_position_ax;
-        (void) p_position_ay;
-        (void) p_position_az;
-        (void) p_position_bx;
-        (void) p_position_by;
-        (void) p_position_bz;
+        BOOST_CHECK_EQUAL (p_position_ax, p_position_ay - 1);
+        BOOST_CHECK_EQUAL (p_position_ay, p_position_az - 1);
+        BOOST_CHECK_EQUAL (p_position_bx, p_position_by - 1);
+        BOOST_CHECK_EQUAL (p_position_by, p_position_bz - 1);
+        int idx_i = 0;
+        if (p_position_ax > p_position_bx) {
+            idx_i = (int) p_position_bx - 1;
+            BOOST_CHECK_EQUAL (p_position_ax, p_position_bx + 10);
+        } else {
+            idx_i = (int) p_position_ax - 1;
+            BOOST_CHECK_EQUAL (p_position_ax, p_position_bx - 10);
+        }
+        m_step_1_helper.push_back (idx_i);
+        m_count++;
+    }
+    void test_prepare_step_2 (int p_count) {
+        m_step_2_helper.clear ();
+        m_step_2_helper.reserve (p_count);
+        for (int i = 0; i < p_count; i++) {
+            m_step_2_helper.push_back (std::vector<int> ());
+            m_step_2_helper[i].reserve (p_count);
+            for (int j = 0; j < p_count; j++) {
+                m_step_2_helper[i].push_back (0);
+            }
+        }
     }
     void step_2 (const data_type &      p_position_aix,
                  const data_type &      p_position_aiy,
@@ -44,20 +67,34 @@ class Algorithm : public AlgorithmBase {
                  data_type *const       p_position_bjz,
                  const unsigned long    p_index_j_begin,
                  const unsigned long    p_index_j_end) {
-        (void) p_position_aix;
-        (void) p_position_aiy;
-        (void) p_position_aiz;
-        (void) p_position_bix;
-        (void) p_position_biy;
-        (void) p_position_biz;
-        (void) p_position_ajx;
-        (void) p_position_ajy;
-        (void) p_position_ajz;
-        (void) p_position_bjx;
-        (void) p_position_bjy;
-        (void) p_position_bjz;
-        (void) p_index_j_begin;
-        (void) p_index_j_end;
+        BOOST_CHECK_EQUAL (p_position_aix, p_position_aiy - 1);
+        BOOST_CHECK_EQUAL (p_position_aiy, p_position_aiz - 1);
+        BOOST_CHECK_EQUAL (p_position_bix, p_position_biy - 1);
+        BOOST_CHECK_EQUAL (p_position_biy, p_position_biz - 1);
+        int idx_i = 0;
+        if (p_position_aix > p_position_bix) {
+            idx_i = (int) p_position_bix - 1;
+            BOOST_CHECK_EQUAL (p_position_aix, p_position_bix + 10);
+        } else {
+            idx_i = (int) p_position_aix - 1;
+            BOOST_CHECK_EQUAL (p_position_aix, p_position_bix - 10);
+        }
+        for (unsigned long j = p_index_j_begin; j < p_index_j_end; j++) {
+            BOOST_CHECK_EQUAL (p_position_ajx[j], p_position_ajy[j] - 1);
+            BOOST_CHECK_EQUAL (p_position_ajy[j], p_position_ajz[j] - 1);
+            BOOST_CHECK_EQUAL (p_position_bjx[j], p_position_bjy[j] - 1);
+            BOOST_CHECK_EQUAL (p_position_bjy[j], p_position_bjz[j] - 1);
+            int idx_j = 0;
+            if (p_position_ajx[j] > p_position_bjx[j]) {
+                idx_j = (int) p_position_bjx[j] - 1;
+                BOOST_CHECK_EQUAL (p_position_ajx[j], p_position_bjx[j] + 10);
+            } else {
+                idx_j = (int) p_position_ajx[j] - 1;
+                BOOST_CHECK_EQUAL (p_position_ajx[j], p_position_bjx[j] - 10);
+            }
+            m_step_2_helper[idx_i][idx_j]++;
+            m_step_2_helper[idx_j][idx_i]++;
+        }
     }
 };
 class BoundsCorrection : public ParticleBoundsCorrection {
@@ -137,8 +174,8 @@ class ParticlesGridTestClass : public ParticlesGrid {
     void public_step_2a_calculate_inside_cell (ParticleCell &p_cell) {
         step_2a_calculate_inside_cell (p_cell);
     }
-    void public_step_2b_calculate_betweenCells (ParticleCell &p_cell1, ParticleCell &p_cell2) {
-        step_2b_calculate_betweenCells (p_cell1, p_cell2);
+    void public_step_2b_calculate_between_cells (ParticleCell &p_cell1, ParticleCell &p_cell2) {
+        step_2b_calculate_between_cells (p_cell1, p_cell2);
     }
     void public_step_3_remove_wrong_particles_from_cell (ParticleCell &p_cell) {
         step_3_remove_wrong_particles_from_cell (p_cell);
@@ -147,7 +184,6 @@ class ParticlesGridTestClass : public ParticlesGrid {
                             ParticleBoundsCorrection &p_particle_bounds_correction,
                             AlgorithmBase &           p_algorithm)
     : ParticlesGrid (p_options, p_particle_bounds_correction, p_algorithm) {
-        BOOST_CHECK_MESSAGE (0, m_size_per_cell);
     }
     ~ParticlesGridTestClass () {
     }
@@ -334,24 +370,112 @@ BOOST_AUTO_TEST_CASE (test_get_cell_for_particle_1) {
         for (idx_y = 0; idx_y < particlesGrid.get_size ().y; idx_y++) {
             for (idx_x = 0; idx_x < particlesGrid.get_size ().x; idx_x++) {
                 ParticleCell &cell = particlesGrid.public_get_cell_for_particle (
-                    5.0 / particlesGrid.get_size ().x * (float) idx_x + 0.001,
-                    5.0 / particlesGrid.get_size ().y * (float) idx_y + 0.001,
-                    5.0 / particlesGrid.get_size ().z * (float) idx_z + 0.001);
-                BOOST_CHECK_MESSAGE (0, 5.0 / particlesGrid.get_size ().x * (float) idx_x + 0.001);
-                BOOST_CHECK_MESSAGE (0, 5.0 / particlesGrid.get_size ().y * (float) idx_y + 0.001);
-                BOOST_CHECK_MESSAGE (0, 5.0 / particlesGrid.get_size ().z * (float) idx_z + 0.001);
-                BOOST_CHECK_MESSAGE (0, counter);
+                    5.0 / particlesGrid.get_size ().x * (float) idx_x + 0.5,
+                    5.0 / particlesGrid.get_size ().y * (float) idx_y + 0.5,
+                    5.0 / particlesGrid.get_size ().z * (float) idx_z + 0.5);
                 BOOST_CHECK_EQUAL (&cell - particlesGrid.get_cells ().data (), counter++);
             }
         }
     }
 }
+BOOST_AUTO_TEST_CASE (test_get_cell_for_particle_2) {
+    unsigned int idx_x, idx_y, idx_z;
+    s_options    options;
+    memset (&options, 0, sizeof (s_options));
+    options.m_bounds = Vec3f (5, 5, 5);
+    BoundsCorrection       border (options.m_bounds);
+    Algorithm              algorithm (options);
+    ParticlesGridTestClass particlesGrid (options, border, algorithm);
+    int                    counter = 0;
+    for (idx_z = 0; idx_z < particlesGrid.get_size ().z; idx_z++) {
+        for (idx_y = 0; idx_y < particlesGrid.get_size ().y; idx_y++) {
+            for (idx_x = 0; idx_x < particlesGrid.get_size ().x; idx_x++) {
+                ParticleCell &cell = particlesGrid.public_get_cell_for_particle (
+                    Vec3f (5.0 / particlesGrid.get_size ().x * (float) idx_x + 0.5,
+                           5.0 / particlesGrid.get_size ().y * (float) idx_y + 0.5,
+                           5.0 / particlesGrid.get_size ().z * (float) idx_z + 0.5));
+                BOOST_CHECK_EQUAL (&cell - particlesGrid.get_cells ().data (), counter++);
+            }
+        }
+    }
+}
+BOOST_AUTO_TEST_CASE (test_step_1) {
+    s_options options;
+    memset (&options, 0, sizeof (s_options));
+    options.m_bounds = Vec3f (5, 5, 5);
+    BoundsCorrection       border (options.m_bounds);
+    Algorithm              algorithm (options);
+    ParticlesGridTestClass particlesGrid (options, border, algorithm);
+    ParticleCell           cell          = ParticleCell (Vec3l (), Vec3l (), options.m_bounds);
+    const int              particleCount = 4;
+    for (int i = 0; i < particleCount; i++)
+        cell.add_particle (Vec3f (i + 1, i + 2, i + 3), Vec3f (i + 11, i + 12, i + 13), 0, i);
+    particlesGrid.public_step_1_prepare_cell (cell);
+    BOOST_CHECK_EQUAL (algorithm.m_count, particleCount);
+    int call_count[particleCount];
+    for (int i = 0; i < particleCount; i++) {
+        call_count[i] = 0;
+    }
+    for (int i = 0; i < particleCount; i++) {
+        call_count[algorithm.m_step_1_helper[i]]++;
+    }
+    for (int i = 0; i < particleCount; i++) {
+        BOOST_CHECK_EQUAL (call_count[i], 1);
+    }
+}
+BOOST_AUTO_TEST_CASE (test_step_2a) {
+    s_options options;
+    memset (&options, 0, sizeof (s_options));
+    options.m_bounds = Vec3f (5, 5, 5);
+    BoundsCorrection       border (options.m_bounds);
+    Algorithm              algorithm (options);
+    ParticlesGridTestClass particlesGrid (options, border, algorithm);
+    ParticleCell           cell          = ParticleCell (Vec3l (), Vec3l (), options.m_bounds);
+    const int              particleCount = 4;
+    for (int i = 0; i < particleCount; i++)
+        cell.add_particle (Vec3f (i + 1, i + 2, i + 3), Vec3f (i + 11, i + 12, i + 13), 0, i);
+    algorithm.test_prepare_step_2 (particleCount);
+    particlesGrid.public_step_2a_calculate_inside_cell (cell);
+    for (int i = 0; i < particleCount; i++) {
+        for (int j = 0; j < particleCount; j++) {
+            BOOST_CHECK_EQUAL (algorithm.m_step_2_helper[i][j], i != j);
+        }
+    }
+}
+BOOST_AUTO_TEST_CASE (test_step_2b) {
+    s_options options;
+    memset (&options, 0, sizeof (s_options));
+    options.m_bounds = Vec3f (5, 5, 5);
+    BoundsCorrection       border (options.m_bounds);
+    Algorithm              algorithm (options);
+    ParticlesGridTestClass particlesGrid (options, border, algorithm);
+    ParticleCell           cell_i          = ParticleCell (Vec3l (), Vec3l (), options.m_bounds);
+    ParticleCell           cell_j          = ParticleCell (Vec3l (), Vec3l (), options.m_bounds);
+    const int              particleCount_i = 4;
+    const int              particleCount_j = 3;
+    for (int i = 0; i < particleCount_i; i++)
+        cell_i.add_particle (Vec3f (i + 1, i + 2, i + 3), Vec3f (i + 11, i + 12, i + 13), 0, i);
+    for (int i = particleCount_i; i < particleCount_i + particleCount_j; i++)
+        cell_j.add_particle (Vec3f (i + 1, i + 2, i + 3), Vec3f (i + 11, i + 12, i + 13), 0, i);
+    algorithm.test_prepare_step_2 (particleCount_i + particleCount_j);
+    particlesGrid.public_step_2b_calculate_between_cells (cell_i, cell_j);
+    int sum = 0;
+    for (int i = 0; i < particleCount_i + particleCount_j; i++) {
+        for (int j = 0; j < particleCount_i + particleCount_j; j++) {
+            int cmp = 0;
+            if ((i < particleCount_i) || (j < particleCount_i)) {
+                if ((i >= particleCount_i) || (j >= particleCount_i)) {
+                    cmp = 1;
+                }
+            }
+            BOOST_CHECK_EQUAL (algorithm.m_step_2_helper[i][j], cmp);
+            sum += algorithm.m_step_2_helper[i][j];
+        }
+    }
+    BOOST_CHECK_EQUAL (sum, particleCount_i * particleCount_j * 2);
+}
+
 /*
- ParticleCell &get_cell_for_particle (data_type x, data_type y, data_type z);
- ParticleCell &get_cell_for_particle (Vec3f m_position);
- void step_1_prepare_cell (ParticleCell &p_cell);
- void step_2a_calculate_inside_cell (ParticleCell &p_cell);
- void step_2b_calculate_betweenCells (ParticleCell &p_cell1, ParticleCell &p_cell2);
  void step_3_remove_wrong_particles_from_cell (ParticleCell &p_cell);
 
  public:
@@ -360,6 +484,4 @@ BOOST_AUTO_TEST_CASE (test_get_cell_for_particle_1) {
  ~ParticlesGrid ();
  void serialize (std::shared_ptr<ParticleFileWriter> p_writer);
  void run_simulation_iteration (unsigned long p_iteration_number = 0);
- void add_particle (Vec3f p_current_position);
- void add_particle (Vec3f p_current_position, Vec3f p_current_velocity);
- unsigned long get_particle_count (); */
+ */
