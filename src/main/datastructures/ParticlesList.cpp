@@ -133,7 +133,8 @@ void ParticlesList::build_lists_smarter (data_type *   p_distances_x,
     std::vector<data_type> distances_squared (p_size_distance_vectors);
 
     // calculating distance vectors for (n^2 -n)/2 pairs
-    for (unsigned long particle_idx = 0, range = particle_count - 1; particle_idx < particle_count - 1; particle_idx++, range--) {
+    for (unsigned long particle_idx = 0, range = particle_count - 1; particle_idx < particle_count - 1;
+         particle_idx++, range--) {
         macro_debug ("calculating distances of ", particle_idx);
         macro_debug ("range: ", (particle_count - (particle_idx + 1)));
         calculate_distance_vectors (particle_idx,

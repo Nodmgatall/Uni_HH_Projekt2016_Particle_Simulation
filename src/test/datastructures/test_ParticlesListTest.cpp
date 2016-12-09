@@ -124,12 +124,12 @@ BOOST_AUTO_TEST_CASE (build_lists) {
 
     ParticlesList particle_list (options, border, algorithm);
 
-    particle_list.m_positions_x = { 1.5, 1.5, 1.5, 0.75 };
-    particle_list.m_positions_y = { 1.5, 2.0, 2.5, 0.75 };
-    particle_list.m_positions_z = { 1.5, 1.5, 1.5, 1.5 };
+    particle_list.m_positions_x            = { 1.5, 1.5, 1.5, 0.75 };
+    particle_list.m_positions_y            = { 1.5, 2.0, 2.5, 0.75 };
+    particle_list.m_positions_z            = { 1.5, 1.5, 1.5, 1.5 };
     unsigned long          distances_count = 6;
     std::vector<data_type> distances_squared (6);
-    particle_list.build_lists_smarter(&x_distances[0], &y_distances[0], &z_distances[0], &distances_squared[0], distances_count);
+    particle_list.build_lists_smarter (&x_distances[0], &y_distances[0], &z_distances[0], &distances_squared[0], distances_count);
 
     BOOST_CHECK_EQUAL (particle_list.m_mat_positions_x.size (), 4);
     BOOST_CHECK_EQUAL (particle_list.m_mat_positions_y.size (), 4);
