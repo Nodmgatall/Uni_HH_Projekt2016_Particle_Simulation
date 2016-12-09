@@ -174,8 +174,8 @@ class ParticlesGridTestClass : public ParticlesGrid {
     void public_step_2a_calculate_inside_cell (ParticleCell &p_cell) {
         step_2a_calculate_inside_cell (p_cell);
     }
-    void public_step_2b_calculate_betweenCells (ParticleCell &p_cell1, ParticleCell &p_cell2) {
-        step_2b_calculate_betweenCells (p_cell1, p_cell2);
+    void public_step_2b_calculate_between_cells (ParticleCell &p_cell1, ParticleCell &p_cell2) {
+		step_2b_calculate_between_cells(p_cell1, p_cell2);
     }
     void public_step_3_remove_wrong_particles_from_cell (ParticleCell &p_cell) {
         step_3_remove_wrong_particles_from_cell (p_cell);
@@ -458,7 +458,7 @@ BOOST_AUTO_TEST_CASE (test_step_2b) {
     for (int i = particleCount_i; i < particleCount_i + particleCount_j; i++)
         cell_j.add_particle (Vec3f (i + 1, i + 2, i + 3), Vec3f (i + 11, i + 12, i + 13), 0, i);
     algorithm.test_prepare_step_2 (particleCount_i + particleCount_j);
-    particlesGrid.public_step_2b_calculate_betweenCells (cell_i, cell_j);
+    particlesGrid.public_step_2b_calculate_between_cells (cell_i, cell_j);
     int sum = 0;
     for (int i = 0; i < particleCount_i + particleCount_j; i++) {
         for (int j = 0; j < particleCount_i + particleCount_j; j++) {
@@ -476,7 +476,6 @@ BOOST_AUTO_TEST_CASE (test_step_2b) {
 }
 
 /*
- void step_2b_calculate_betweenCells (ParticleCell &p_cell1, ParticleCell &p_cell2);
  void step_3_remove_wrong_particles_from_cell (ParticleCell &p_cell);
 
  public:
