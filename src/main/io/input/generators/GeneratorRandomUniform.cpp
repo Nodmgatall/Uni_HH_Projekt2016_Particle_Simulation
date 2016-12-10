@@ -14,5 +14,5 @@ GeneratorRandomUniform::GeneratorRandomUniform (s_options& p_options, Datastruct
 GeneratorRandomUniform::~GeneratorRandomUniform () {
 }
 
-void GeneratorRandomUniform::initialize () {
+void GeneratorRandomUniform::initialize_datastructure () {
 }

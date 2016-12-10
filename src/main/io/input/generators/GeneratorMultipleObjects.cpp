@@ -14,5 +14,5 @@ GeneratorMultipleObjects::GeneratorMultipleObjects (s_options& p_options, Datast
 GeneratorMultipleObjects::~GeneratorMultipleObjects () {
 }
 
-void GeneratorMultipleObjects::initialize () {
+void GeneratorMultipleObjects::initialize_datastructure () {
 }

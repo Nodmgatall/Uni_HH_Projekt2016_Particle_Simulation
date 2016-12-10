@@ -23,7 +23,7 @@ class InputBase {
     }
     virtual ~InputBase () {
     }
-    virtual void initialize () {
+    virtual void initialize_datastructure () {
     }
 };
 

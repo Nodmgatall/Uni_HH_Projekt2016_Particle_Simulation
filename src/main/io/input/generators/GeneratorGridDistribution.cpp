@@ -14,7 +14,7 @@ GeneratorGridDistribution::GeneratorGridDistribution (s_options& p_options, Data
 GeneratorGridDistribution::~GeneratorGridDistribution () {
 }
 
-void GeneratorGridDistribution::initialize () {
+void GeneratorGridDistribution::initialize_datastructure () {
     Benchmark::begin ("ParticleGeneratorGridDistribution");
     data_type     temp  = pow (m_options.m_particle_count, 1.0f / 3.0f);
     Vec3f         delta = m_options.m_bounds / (temp - 1.0f);

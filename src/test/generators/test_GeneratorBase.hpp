@@ -88,6 +88,6 @@ BOOST_AUTO_TEST_CASE (test1) {
     ParticleWriter        writer    = ParticleWriter ();
     Particles             particles = Particles (options, border, algorithm, writer);
     GeneratorUnderTest    generator (options, particles);
-    generator.initialize ();
+    generator.initialize_datastructure ();
     BOOST_CHECK_EQUAL (particles.get_particle_count (), 10L);
 }

@@ -14,5 +14,5 @@ FileReaderCSV::FileReaderCSV (s_options& p_options, DatastructureBase& p_datastr
 FileReaderCSV::~FileReaderCSV () {
 }
 
-void FileReaderCSV::initialize () {
+void FileReaderCSV::initialize_datastructure () {
 }

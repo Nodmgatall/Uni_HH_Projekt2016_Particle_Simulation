@@ -14,7 +14,7 @@ class GeneratorGridDistribution : public InputBase {
   public:
     GeneratorGridDistribution (s_options& p_options, DatastructureBase& p_datastructure);
     virtual ~GeneratorGridDistribution ();
-    void initialize ();
+    void initialize_datastructure ();
 };
 
 #endif /* SRC_GENERATORS_GENERATORGRIDDISTRIBUTION_HPP_ */

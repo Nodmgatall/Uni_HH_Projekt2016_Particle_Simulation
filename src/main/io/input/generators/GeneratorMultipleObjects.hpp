@@ -14,7 +14,7 @@ class GeneratorMultipleObjects : public InputBase {
   public:
     GeneratorMultipleObjects (s_options& p_options, DatastructureBase& p_datastructure);
     virtual ~GeneratorMultipleObjects ();
-    void initialize ();
+    void initialize_datastructure ();
 };
 
 #endif /* SRC_MAIN_GENERATORS_PARTICLEGENERATORMULTIPLEOBJECTS_HPP_ */

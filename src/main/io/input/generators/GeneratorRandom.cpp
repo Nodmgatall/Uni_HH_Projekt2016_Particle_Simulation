@@ -14,7 +14,7 @@ GeneratorRandom::GeneratorRandom (s_options& p_options, DatastructureBase& p_dat
 GeneratorRandom::~GeneratorRandom () {
 }
 
-void GeneratorRandom::initialize () {
+void GeneratorRandom::initialize_datastructure () {
     Benchmark::begin ("ParticleGeneratorRandom");
     std::srand (m_options.m_seed);
     for (unsigned long id = 0; id < m_options.m_particle_count; id++) {

@@ -14,7 +14,7 @@ class GeneratorRandom : public InputBase {
   public:
     GeneratorRandom (s_options& p_options, DatastructureBase& p_datastructure);
     virtual ~GeneratorRandom ();
-    void initialize ();
+    void initialize_datastructure ();
 };
 
 #endif /* SRC_GENERATORS_GENERATORRANDOM_HPP_ */
