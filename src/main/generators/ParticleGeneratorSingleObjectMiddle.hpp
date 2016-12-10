@@ -15,7 +15,7 @@ class ParticleGeneratorSingleObjectMiddle : public ParticleGeneratorBase {
   public:
     ParticleGeneratorSingleObjectMiddle (s_options& p_options);
     virtual ~ParticleGeneratorSingleObjectMiddle ();
-    void generate (std::shared_ptr<ParticlesBase> p_particles);
+    void generate (ParticlesBase* p_particles);
 };
 
 #endif /* SRC_GENERATORS_PARTICLEGENERATORSINGLEOBJECTMIDDLE_HPP_ */

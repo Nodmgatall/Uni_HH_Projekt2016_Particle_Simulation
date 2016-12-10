@@ -13,10 +13,10 @@
 
 class AlgorithmBase {
   private:
-    const s_options& m_options;
+    s_options& m_options;
 
   public:
-    AlgorithmBase (const s_options& p_options) : m_options (p_options) {
+    AlgorithmBase (s_options& p_options) : m_options (p_options) {
     }
     virtual ~AlgorithmBase () {
     }

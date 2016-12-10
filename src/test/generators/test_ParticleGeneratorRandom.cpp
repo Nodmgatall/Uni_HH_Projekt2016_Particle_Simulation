@@ -63,8 +63,7 @@ BOOST_AUTO_TEST_CASE (test1) {
     ParticleBoundsCorrectionWraparound border (options.m_bounds);
     AlgorithmLennardJones              algorithm (options);
     ParticleFileWriter                 writer (options.m_write_modes, "");
-    std::shared_ptr<ParticlesBase>     particles =
-        std::make_shared<Particles> (options, border, algorithm, writer);
+    Particles* particles = new Particles (options, border, algorithm, writer);
     generator.generate (particles);
     BOOST_CHECK_EQUAL (particles->get_particle_count (), 10L);
 }

@@ -15,7 +15,7 @@ ParticleGeneratorRandom::ParticleGeneratorRandom (s_options& p_options)
 ParticleGeneratorRandom::~ParticleGeneratorRandom () {
 }
 
-void ParticleGeneratorRandom::generate (std::shared_ptr<ParticlesBase> p_particles) {
+void ParticleGeneratorRandom::generate (ParticlesBase* p_particles) {
     Benchmark::begin ("ParticleGeneratorRandom");
     std::srand (m_options.m_seed);
     for (unsigned long id = 0; id < m_options.m_particle_count; id++) {

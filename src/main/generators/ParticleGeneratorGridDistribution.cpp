@@ -16,7 +16,7 @@ ParticleGeneratorGridDistribution::ParticleGeneratorGridDistribution (s_options&
 ParticleGeneratorGridDistribution::~ParticleGeneratorGridDistribution () {
 }
 
-void ParticleGeneratorGridDistribution::generate (std::shared_ptr<ParticlesBase> p_particles) {
+void ParticleGeneratorGridDistribution::generate (ParticlesBase* p_particles) {
     Benchmark::begin ("ParticleGeneratorGridDistribution");
     data_type     temp  = pow (m_options.m_particle_count, 1.0f / 3.0f);
     Vec3f         delta = m_options.m_bounds / (temp - 1.0f);

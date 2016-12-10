@@ -6,8 +6,7 @@
  */
 
 #include "AlgorithmLennardJones.hpp"
-AlgorithmLennardJones::AlgorithmLennardJones (const s_options& p_options)
-: AlgorithmBase (p_options) {
+AlgorithmLennardJones::AlgorithmLennardJones (s_options& p_options) : AlgorithmBase (p_options) {
     A_ij = 48 * p_options.m_timestep * p_options.m_timestep;
     B_ij = 24 * p_options.m_timestep * p_options.m_timestep;
     m_i  = 1;

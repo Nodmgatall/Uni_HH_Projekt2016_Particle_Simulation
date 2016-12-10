@@ -16,13 +16,13 @@
 
 class ParticleSimulator {
   private:
-    s_options&                     m_options;
-    ParticleGeneratorBase          m_particle_generator;
-    std::shared_ptr<ParticlesBase> m_particles;
-    ParticleFileWriter             m_particle_file_writer;
-    bool                           m_save_config;
-    ParticleBoundsCorrection       m_particle_bounds_correction;
-    AlgorithmLennardJones          m_algorithm;
+    s_options&                m_options;
+    ParticleGeneratorBase*    m_particle_generator;
+    ParticleFileWriter*       m_particle_file_writer;
+    bool                      m_save_config;
+    ParticleBoundsCorrection* m_particle_bounds_correction;
+    AlgorithmLennardJones*    m_algorithm;
+    ParticlesBase*            m_particles;
 
   public:
     ParticleSimulator (s_options& p_options);

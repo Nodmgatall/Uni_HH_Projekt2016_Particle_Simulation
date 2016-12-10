@@ -21,9 +21,10 @@
 
 ParticleSimulator::ParticleSimulator (s_options& p_options)
 : m_options (p_options), m_particle_generator (ParticleGeneratorFactory::build (p_options)),
-  m_particles (0),
-  m_particle_file_writer (p_options.m_write_modes, std::string (log_folder) + "/data"),
-  m_save_config (false), m_particle_bounds_correction (p_options.m_bounds), m_algorithm (p_options) {
+  m_particle_file_writer (new ParticleFileWriter (p_options.m_write_modes, std::string (log_folder) + "/data")),
+  m_save_config (false),
+  m_particle_bounds_correction (new ParticleBoundsCorrectionWraparound (p_options.m_bounds)),
+  m_algorithm (new AlgorithmLennardJones (p_options)), m_particles (0) {
 }
 
 void ParticleSimulator::simulate () {
@@ -60,12 +61,10 @@ void ParticleSimulator::init_particle_data () {
     Benchmark::begin ("init_particle_data");
     switch (m_options.m_data_structure) {
         case GRID:
-            m_particles =
-                std::make_shared<ParticlesGrid> (m_options, m_particle_bounds_correction, m_algorithm, m_particle_file_writer);
+            m_particles = new ParticlesGrid (m_options, *m_particle_bounds_correction, *m_algorithm, *m_particle_file_writer);
             break;
         case LIST:
-            m_particles =
-                std::make_shared<ParticlesList> (m_options, m_particle_bounds_correction, m_algorithm, m_particle_file_writer);
+            m_particles = new ParticlesList (m_options, *m_particle_bounds_correction, *m_algorithm, *m_particle_file_writer);
             break;
         case LISTEDGIRD:
             std::cout << "Mixture of list and grind not implemented" << std::endl;
@@ -74,7 +73,7 @@ void ParticleSimulator::init_particle_data () {
     if (m_options.m_in_file_name.length () > 0) {
         DEBUG_BEGIN << "loading from file: " << m_options.m_in_file_name << DEBUG_END;
     } else {
-        m_particle_generator.generate (m_particles);
+        m_particle_generator->generate (m_particles);
     }
     Benchmark::end ();
 }

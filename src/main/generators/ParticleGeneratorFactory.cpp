@@ -7,18 +7,18 @@
 
 #include "ParticleGeneratorFactory.hpp"
 
-ParticleGeneratorBase ParticleGeneratorFactory::build (s_options& p_options) {
+ParticleGeneratorBase* ParticleGeneratorFactory::build (s_options& p_options) {
     switch (p_options.m_mode) {
         case e_generator_mode::RANDOM: {
-            return ParticleGeneratorRandom (p_options);
+            return new ParticleGeneratorRandom (p_options);
             break;
         }
         case e_generator_mode::SINGLE_OBJECT_MIDDLE: {
-            return ParticleGeneratorSingleObjectMiddle (p_options);
+            return new ParticleGeneratorSingleObjectMiddle (p_options);
             break;
         }
         case e_generator_mode::GRID_DISTRIBUTION: {
-            return ParticleGeneratorGridDistribution (p_options);
+            return new ParticleGeneratorGridDistribution (p_options);
             break;
         }
         case e_generator_mode::MULTIPLE_OBJECTS: {

@@ -20,7 +20,7 @@ class Algorithm : public AlgorithmBase {
     std::vector<std::vector<int>> m_step_2_helper;
     int                           m_count;
 
-    Algorithm (const s_options& p_options) : AlgorithmBase (p_options), m_count (0) {
+    Algorithm (s_options& p_options) : AlgorithmBase (p_options), m_count (0) {
     }
     void step_1 (const data_type& p_position_ax,
                  const data_type& p_position_ay,
