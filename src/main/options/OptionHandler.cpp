@@ -93,23 +93,23 @@ void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_opti
 
             // Generator modes
             case 4:
-                p_options.m_mode = MULTIPLE_OBJECTS;
+                p_options.m_input_type = MULTIPLE_OBJECTS;
                 generator_mode_set++;
                 break;
             case 5:
-                p_options.m_mode = RANDOM;
+                p_options.m_input_type = RANDOM;
                 generator_mode_set++;
                 break;
             case 6:
-                p_options.m_mode = RANDOM_UNIFORM;
+                p_options.m_input_type = RANDOM_UNIFORM;
                 generator_mode_set++;
                 break;
             case 7:
-                p_options.m_mode = SINGLE_OBJECT_MIDDLE;
+                p_options.m_input_type = SINGLE_OBJECT_MIDDLE;
                 generator_mode_set++;
                 break;
             case 8:
-                p_options.m_mode = GRID_DISTRIBUTION;
+                p_options.m_input_type = GRID_DISTRIBUTION;
                 generator_mode_set++;
                 break;
 
@@ -243,7 +243,7 @@ void OptionHandler::print_choosen_options (s_options& p_options) {
     // DEBUG_BEGIN << "algorithm     :" << m_algorithm << DEBUG_END;
     // DEBUG_BEGIN << "particles:" << m_particles << DEBUG_END;
     DEBUG_BEGIN << "generator seed : " << p_options.m_seed << DEBUG_END;
-    DEBUG_BEGIN << "generator mode : " << p_options.m_mode << DEBUG_END;
+    DEBUG_BEGIN << "generator mode : " << p_options.m_input_type << DEBUG_END;
     DEBUG_BEGIN << "algorithm_type : " << p_options.m_algorithm_type << DEBUG_END;
     DEBUG_BEGIN << "autotuneing    : " << p_options.m_autotuneing << DEBUG_END;
     DEBUG_BEGIN << "data_format    : " << p_options.m_output_type << DEBUG_END;

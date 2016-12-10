@@ -8,18 +8,18 @@
 #include "InputFactory.hpp"
 
 InputBase InputFactory::build (s_options& p_options) {
-    switch (p_options.m_mode) {
-        case e_generator_type::RANDOM:
+    switch (p_options.m_input_type) {
+        case e_input_type::RANDOM:
             return GeneratorRandom (p_options);
-        case e_generator_type::SINGLE_OBJECT_MIDDLE:
+        case e_input_type::SINGLE_OBJECT_MIDDLE:
             return GeneratorSingleObjectMiddle (p_options);
-        case e_generator_type::GRID_DISTRIBUTION:
+        case e_input_type::GRID_DISTRIBUTION:
             return GeneratorGridDistribution (p_options);
-        case e_generator_type::MULTIPLE_OBJECTS:
+        case e_input_type::MULTIPLE_OBJECTS:
             return GeneratorMultipleObjects (p_options);
-        case e_generator_type::RANDOM_UNIFORM:
+        case e_input_type::RANDOM_UNIFORM:
             return GeneratorRandomUniform (p_options);
         default:
-            throw GeneratorTypeInvalidException (p_options.m_mode);
+            throw InputTypeInvalidException (p_options.m_input_type);
     }
 }

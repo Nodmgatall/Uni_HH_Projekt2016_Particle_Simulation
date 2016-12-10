@@ -27,12 +27,12 @@ struct s_options {
                                                           { VELOCITY, true },
                                                           { ACCELERATION, true },
                                                           { PARTICLE_TYPE, false } };
-    e_generator_type m_mode                                         = GRID_DISTRIBUTION;
-    unsigned int     m_seed                                         = 123456789;
-    unsigned long    m_particle_count                               = 0;
-    unsigned long    m_max_iterations                               = 0;
-    Vec3f            m_bounds                                       = Vec3f (5.0f, 5.0f, 5.0f);
-    int              m_max_iterations_between_datastructure_rebuild = 20;
+    e_input_type  m_input_type                                   = GRID_DISTRIBUTION;
+    unsigned int  m_seed                                         = 123456789;
+    unsigned long m_particle_count                               = 0;
+    unsigned long m_max_iterations                               = 0;
+    Vec3f         m_bounds                                       = Vec3f (5.0f, 5.0f, 5.0f);
+    int           m_max_iterations_between_datastructure_rebuild = 20;
 
     template <class Archive>
     void serialize (Archive& archive, const unsigned int version) {
@@ -49,7 +49,7 @@ struct s_options {
         archive& BOOST_SERIALIZATION_NVP (m_cut_off_radius);
         archive& BOOST_SERIALIZATION_NVP (m_data_structure);
         archive& BOOST_SERIALIZATION_NVP (m_write_modes);
-        archive& BOOST_SERIALIZATION_NVP (m_mode);
+        archive& BOOST_SERIALIZATION_NVP (m_input_type);
         archive& BOOST_SERIALIZATION_NVP (m_seed);
         archive& BOOST_SERIALIZATION_NVP (m_particle_count);
         archive& BOOST_SERIALIZATION_NVP (m_max_iterations);
