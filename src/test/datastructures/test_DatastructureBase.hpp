@@ -4,9 +4,15 @@
  *  Created on: Dec 8, 2016
  *      Author: benjamin
  */
-
+#ifndef BOOST_TEST_DYN_LINK
+// this code is never executed !! -->>
+#include "../../main/datastructures/DatastructureGrid.hpp"
+typedef DatastructureGrid DatastructureUnderTest;
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE "ParticlesBase"
+#define BOOST_TEST_MODULE "DatastructureBaseGrid"
+//<<-- this code is never executed !!
+#endif
+
 #include "../../main/IO/ParticleWriterBase.hpp"
 #include "../../main/algorithms/AlgorithmBase.hpp"
 #include "../../main/borders/BorderBase.hpp"

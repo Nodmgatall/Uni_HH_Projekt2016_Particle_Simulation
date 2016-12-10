@@ -1,5 +1,5 @@
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE "VerletListTests"
+#define BOOST_TEST_MODULE "DatastructureList"
 
 #include "../../main/IO/ParticleWriterCSV.hpp"
 #include "../../main/algorithms/AlgorithmLennardJones.hpp"

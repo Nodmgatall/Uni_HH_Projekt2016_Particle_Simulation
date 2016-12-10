@@ -5,11 +5,16 @@
  *      Author: benjamin
  */
 
+#ifndef BOOST_TEST_DYN_LINK
+// this code is never executed !! -->>
+#include "../../main/generators/GeneratorRandom.hpp"
+typedef GeneratorRandom GeneratorUnderTest;
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE "ParticleGeneratorRandom"
+#define BOOST_TEST_MODULE "GeneratorRandom"
+//<<-- this code is never executed !!
+#endif
 #include "../../main/algorithms/AlgorithmLennardJones.hpp"
 #include "../../main/borders/BorderWrapparound.hpp"
-#include "../../main/generators/GeneratorRandom.hpp"
 #include <boost/test/unit_test.hpp>
 #include <cstring>
 
@@ -78,7 +83,7 @@ BOOST_AUTO_TEST_CASE (test1) {
     memset (&options, 0, sizeof (s_options));
     options.m_particle_count = 10;
     options.m_bounds         = Vec3f (10, 10, 10);
-    GeneratorRandom       generator (options);
+    GeneratorUnderTest    generator (options);
     BorderWrapparound     border (options.m_bounds);
     AlgorithmLennardJones algorithm (options);
     ParticleWriter        writer    = ParticleWriter ();

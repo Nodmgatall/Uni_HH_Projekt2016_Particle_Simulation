@@ -6,7 +6,7 @@
  *      Author: benjamin
  */
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE "LennardJonesAlgorithm"
+#define BOOST_TEST_MODULE "AlgorithmLennardJones"
 #include "../../main/algorithms/AlgorithmLennardJones.hpp"
 #include <boost/test/unit_test.hpp>
 #include <cstring>
