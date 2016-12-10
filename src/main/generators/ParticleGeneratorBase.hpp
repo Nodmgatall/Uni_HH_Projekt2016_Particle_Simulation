@@ -17,7 +17,7 @@ class ParticleGeneratorBase {
     std::string m_stucture_name;
 
   public:
-    virtual void generate (std::shared_ptr<ParticlesBase> p_particles) = 0;
+    virtual void generate (std::shared_ptr<ParticlesBase> p_particles);
     ParticleGeneratorBase (s_options& p_options);
     virtual ~ParticleGeneratorBase ();
     const std::string& get_stucture_name () const;

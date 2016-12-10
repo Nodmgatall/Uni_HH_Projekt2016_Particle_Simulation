@@ -36,13 +36,31 @@ class ParticleBoundsCorrection {
                                  data_type&   m_other_y,
                                  data_type&   m_other_z,
                                  const Vec3f& m_corner000,
-                                 const Vec3f& m_corner111) = 0;
+                                 const Vec3f& m_corner111) {
+        (void) m_x;
+        (void) m_y;
+        (void) m_z;
+        (void) m_other_x;
+        (void) m_other_y;
+        (void) m_other_z;
+        (void) m_corner000;
+        (void) m_corner111;
+        return false;
+    }
     virtual bool updatePosition (data_type& m_x,
                                  data_type& m_y,
                                  data_type& m_z,
                                  data_type& m_other_x,
                                  data_type& m_other_y,
-                                 data_type& m_other_z) = 0;
+                                 data_type& m_other_z) {
+        (void) m_x;
+        (void) m_y;
+        (void) m_z;
+        (void) m_other_x;
+        (void) m_other_y;
+        (void) m_other_z;
+        return false;
+    }
 };
 
 #endif /* SRC_ALGORITHMS_PARTICLEBOUNDSCORRECTION_HPP_ */

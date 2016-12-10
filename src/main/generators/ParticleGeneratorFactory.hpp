@@ -48,7 +48,7 @@ class GeneratorNotImplementedException : public std::exception {
 };
 class ParticleGeneratorFactory {
   public:
-    static std::unique_ptr<ParticleGeneratorBase> build (s_options& p_options);
+    static ParticleGeneratorBase build (s_options& p_options);
 };
 
 #endif /* SRC_PARTICLEGENERATOR_HPP_ */

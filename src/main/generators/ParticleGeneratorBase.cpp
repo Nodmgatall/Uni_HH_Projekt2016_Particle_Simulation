@@ -17,3 +17,6 @@ ParticleGeneratorBase::~ParticleGeneratorBase () {
 const std::string& ParticleGeneratorBase::get_stucture_name () const {
     return m_stucture_name;
 }
+void ParticleGeneratorBase::generate (std::shared_ptr<ParticlesBase> p_particles) {
+    (void) p_particles;
+}

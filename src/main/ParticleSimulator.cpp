@@ -75,7 +75,7 @@ void ParticleSimulator::init_particle_data () {
     if (m_options.m_in_file_name.length () > 0) {
         DEBUG_BEGIN << "loading from file: " << m_options.m_in_file_name << DEBUG_END;
     } else {
-        m_particle_generator->generate (m_particles);
+        m_particle_generator.generate (m_particles);
     }
     Benchmark::end ();
 }
