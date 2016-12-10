@@ -25,8 +25,32 @@ ParticleSimulator::ParticleSimulator (s_options& p_options)
   m_save_config (false),
   m_particle_bounds_correction (new ParticleBoundsCorrectionWraparound (p_options.m_bounds)),
   m_algorithm (new AlgorithmLennardJones (p_options)), m_particles (0) {
+    Benchmark::begin ("ParticleSimulator");
+    switch (m_options.m_data_structure) {
+        case GRID:
+            m_particles = new ParticlesGrid (m_options, *m_particle_bounds_correction, *m_algorithm, *m_particle_file_writer);
+            break;
+        case LIST:
+            m_particles = new ParticlesList (m_options, *m_particle_bounds_correction, *m_algorithm, *m_particle_file_writer);
+            break;
+        case LISTEDGIRD:
+            std::cout << "Mixture of list and grind not implemented" << std::endl;
+            exit (EXIT_SUCCESS);
+    }
+    if (m_options.m_in_file_name.length () > 0) {
+        DEBUG_BEGIN << "loading from file: " << m_options.m_in_file_name << DEBUG_END;
+    } else {
+        m_particle_generator->generate (m_particles);
+    }
+    Benchmark::end ();
 }
-
+ParticleSimulator::~ParticleSimulator () {
+    delete (m_particle_generator);
+    delete (m_particle_file_writer);
+    delete (m_particle_bounds_correction);
+    delete (m_algorithm);
+    delete (m_particles);
+}
 void ParticleSimulator::simulate () {
     Benchmark::begin ("Simulation");
     m_particles->serialize ();
@@ -55,25 +79,4 @@ void ParticleSimulator::simulate () {
     Benchmark::end ();
     std::cout << "Simulated " << iteration_number << " iterations in " << current_time
               << "miliseconds" << std::endl;
-}
-
-void ParticleSimulator::init_particle_data () {
-    Benchmark::begin ("init_particle_data");
-    switch (m_options.m_data_structure) {
-        case GRID:
-            m_particles = new ParticlesGrid (m_options, *m_particle_bounds_correction, *m_algorithm, *m_particle_file_writer);
-            break;
-        case LIST:
-            m_particles = new ParticlesList (m_options, *m_particle_bounds_correction, *m_algorithm, *m_particle_file_writer);
-            break;
-        case LISTEDGIRD:
-            std::cout << "Mixture of list and grind not implemented" << std::endl;
-            exit (EXIT_SUCCESS);
-    }
-    if (m_options.m_in_file_name.length () > 0) {
-        DEBUG_BEGIN << "loading from file: " << m_options.m_in_file_name << DEBUG_END;
-    } else {
-        m_particle_generator->generate (m_particles);
-    }
-    Benchmark::end ();
 }

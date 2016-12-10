@@ -26,8 +26,8 @@ class ParticleSimulator {
 
   public:
     ParticleSimulator (s_options& p_options);
+    ~ParticleSimulator ();
     void simulate ();
-    void init_particle_data ();
 };
 
 #endif

@@ -45,7 +45,6 @@ int main (int argc, char** argv) {
     ParticleSimulator particle_simulator (options);
 
     Benchmark::begin ("everything", false);
-    particle_simulator.init_particle_data ();
     particle_simulator.simulate ();
     Benchmark::end ();
 }
