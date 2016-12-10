@@ -14,20 +14,16 @@
 
 class InputBase {
   protected:
-    s_options&  m_options;
-    std::string m_stucture_name;
+    s_options&         m_options;
+    DatastructureBase& m_datastructure;
 
   public:
-    InputBase (s_options& p_options)
-    : m_options (p_options), m_stucture_name ("ParticleGeneratorBase") {
+    InputBase (s_options& p_options, DatastructureBase& p_datastructure)
+    : m_options (p_options), m_datastructure (p_datastructure) {
     }
     virtual ~InputBase () {
     }
-    const std::string& get_stucture_name () const {
-        return m_stucture_name;
-    }
-    virtual void generate (DatastructureBase* p_particles) {
-        (void) p_particles;
+    virtual void initialize () {
     }
 };
 

@@ -7,13 +7,12 @@
 
 #include "GeneratorMultipleObjects.hpp"
 
-GeneratorMultipleObjects::GeneratorMultipleObjects (s_options& p_options) : InputBase (p_options) {
-    m_stucture_name = "ParticleGeneratorMultipleObjects";
+GeneratorMultipleObjects::GeneratorMultipleObjects (s_options& p_options, DatastructureBase& p_datastructure)
+: InputBase (p_options, p_datastructure) {
 }
 
 GeneratorMultipleObjects::~GeneratorMultipleObjects () {
 }
 
-void GeneratorMultipleObjects::generate (DatastructureBase* p_particles) {
-    (void) p_particles;
+void GeneratorMultipleObjects::initialize () {
 }

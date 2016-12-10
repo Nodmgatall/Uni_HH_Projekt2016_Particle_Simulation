@@ -7,15 +7,14 @@
 
 #include "GeneratorGridDistribution.hpp"
 
-GeneratorGridDistribution::GeneratorGridDistribution (s_options& p_options)
-: InputBase (p_options) {
-    m_stucture_name = "ParticleGeneratorGridDistribution";
+GeneratorGridDistribution::GeneratorGridDistribution (s_options& p_options, DatastructureBase& p_datastructure)
+: InputBase (p_options, p_datastructure) {
 }
 
 GeneratorGridDistribution::~GeneratorGridDistribution () {
 }
 
-void GeneratorGridDistribution::generate (DatastructureBase* p_particles) {
+void GeneratorGridDistribution::initialize () {
     Benchmark::begin ("ParticleGeneratorGridDistribution");
     data_type     temp  = pow (m_options.m_particle_count, 1.0f / 3.0f);
     Vec3f         delta = m_options.m_bounds / (temp - 1.0f);
@@ -25,7 +24,7 @@ void GeneratorGridDistribution::generate (DatastructureBase* p_particles) {
     for (x = 0; x < tempInt; x++) {
         for (y = 0; y < tempInt; y++) {
             for (z = 0; z < tempInt; z++) {
-                p_particles->add_particle (Vec3f (x, y, z) * delta, Vec3f ());
+                m_datastructure.add_particle (Vec3f (x, y, z) * delta, Vec3f ());
                 count++;
             }
         }
@@ -35,7 +34,7 @@ void GeneratorGridDistribution::generate (DatastructureBase* p_particles) {
             for (y = 0; y < tempInt; y++) {
                 for (z = 0; z < tempInt; z++) {
                     if (count++ < m_options.m_particle_count) {
-                        p_particles->add_particle (Vec3f (temp / 2.0 + x, y, z) * delta, Vec3f ());
+                        m_datastructure.add_particle (Vec3f (temp / 2.0 + x, y, z) * delta, Vec3f ());
                     }
                 }
             }

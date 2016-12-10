@@ -7,20 +7,22 @@
 
 #include "GeneratorRandom.hpp"
 
-GeneratorRandom::GeneratorRandom (s_options& p_options) : InputBase (p_options) {
-    m_stucture_name = "ParticleGeneratorRandom";
+GeneratorRandom::GeneratorRandom (s_options& p_options, DatastructureBase& p_datastructure)
+: InputBase (p_options, p_datastructure) {
 }
 
 GeneratorRandom::~GeneratorRandom () {
 }
 
-void GeneratorRandom::generate (DatastructureBase* p_particles) {
+void GeneratorRandom::initialize () {
     Benchmark::begin ("ParticleGeneratorRandom");
     std::srand (m_options.m_seed);
     for (unsigned long id = 0; id < m_options.m_particle_count; id++) {
-        p_particles->add_particle (Vec3f ((data_type) std::rand (), (data_type) std::rand (), (data_type) std::rand ()) /
-                                       (data_type) RAND_MAX * m_options.m_bounds,
-                                   Vec3f ());
+        m_datastructure.add_particle (Vec3f ((data_type) std::rand (),
+                                             (data_type) std::rand (),
+                                             (data_type) std::rand ()) /
+                                          (data_type) RAND_MAX * m_options.m_bounds,
+                                      Vec3f ());
     }
     Benchmark::end ();
 }

@@ -7,15 +7,14 @@
 
 #include "GeneratorSingleObjectMiddle.hpp"
 
-GeneratorSingleObjectMiddle::GeneratorSingleObjectMiddle (s_options& p_options)
-: InputBase (p_options) {
-    m_stucture_name = "ParticleGeneratorSingleObjectMiddle";
+GeneratorSingleObjectMiddle::GeneratorSingleObjectMiddle (s_options& p_options, DatastructureBase& p_datastructure)
+: InputBase (p_options, p_datastructure) {
 }
 
 GeneratorSingleObjectMiddle::~GeneratorSingleObjectMiddle () {
 }
 
-void GeneratorSingleObjectMiddle::generate (DatastructureBase* p_particles) {
+void GeneratorSingleObjectMiddle::initialize () {
     Benchmark::begin ("ParticleGeneratorSingleObjectMiddle");
     data_type     temp     = pow (m_options.m_particle_count, 1.0f / 3.0f);
     Vec3f         bounds_2 = m_options.m_bounds / 2;
@@ -32,7 +31,7 @@ void GeneratorSingleObjectMiddle::generate (DatastructureBase* p_particles) {
                 if (length > smallest_dimension_2) {
                     direction = direction / length * (length - smallest_dimension_2);
                 }
-                p_particles->add_particle (bounds_2 + direction, Vec3f ());
+                m_datastructure.add_particle (bounds_2 + direction, Vec3f ());
                 count++;
             }
         }
@@ -47,7 +46,7 @@ void GeneratorSingleObjectMiddle::generate (DatastructureBase* p_particles) {
                         if (length > smallest_dimension_2) {
                             direction = direction / length * (length - smallest_dimension_2);
                         }
-                        p_particles->add_particle (bounds_2 + direction, Vec3f ());
+                        m_datastructure.add_particle (bounds_2 + direction, Vec3f ());
                     }
                 }
             }

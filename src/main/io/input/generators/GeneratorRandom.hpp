@@ -12,9 +12,9 @@
 
 class GeneratorRandom : public InputBase {
   public:
-    GeneratorRandom (s_options& p_options);
+    GeneratorRandom (s_options& p_options, DatastructureBase& p_datastructure);
     virtual ~GeneratorRandom ();
-    void generate (DatastructureBase* p_s);
+    void initialize ();
 };
 
 #endif /* SRC_GENERATORS_GENERATORRANDOM_HPP_ */

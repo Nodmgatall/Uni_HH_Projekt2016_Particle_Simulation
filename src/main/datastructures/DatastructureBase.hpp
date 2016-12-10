@@ -4,7 +4,6 @@
 #include "../Vec3.hpp"
 #include "../algorithms/AlgorithmBase.hpp"
 #include "../borders/BorderBase.hpp"
-#include "../io/input/ParticleFileLoader.hpp"
 #include "../io/output/ParticleWriterBase.hpp"
 #include "../options/Options.hpp"
 #include <iostream>

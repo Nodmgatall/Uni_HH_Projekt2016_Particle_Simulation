@@ -13,9 +13,9 @@
 
 class GeneratorSingleObjectMiddle : public InputBase {
   public:
-    GeneratorSingleObjectMiddle (s_options& p_options);
+    GeneratorSingleObjectMiddle (s_options& p_options, DatastructureBase& p_datastructure);
     virtual ~GeneratorSingleObjectMiddle ();
-    void generate (DatastructureBase* p_s);
+    void initialize ();
 };
 
 #endif /* SRC_GENERATORS_GENERATORSINGLEOBJECTMIDDLE_HPP_ */

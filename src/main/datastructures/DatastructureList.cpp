@@ -2,7 +2,6 @@
 #include <vector>
 
 #include "../Vec3.hpp"
-#include "../io/input/ParticleFileLoader.hpp"
 #include "../io/output/ParticleWriterBase.hpp"
 #include "../tools/Debug.hpp"
 #include "DatastructureList.hpp"

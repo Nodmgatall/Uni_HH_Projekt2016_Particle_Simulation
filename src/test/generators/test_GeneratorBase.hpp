@@ -83,11 +83,11 @@ BOOST_AUTO_TEST_CASE (test1) {
     memset (&options, 0, sizeof (s_options));
     options.m_particle_count = 10;
     options.m_bounds         = Vec3f (10, 10, 10);
-    GeneratorUnderTest    generator (options);
     BorderWrapparound     border (options.m_bounds);
     AlgorithmLennardJones algorithm (options);
     ParticleWriter        writer    = ParticleWriter ();
-    Particles*            particles = new Particles (options, border, algorithm, writer);
-    generator.generate (particles);
-    BOOST_CHECK_EQUAL (particles->get_particle_count (), 10L);
+    Particles             particles = Particles (options, border, algorithm, writer);
+    GeneratorUnderTest    generator (options, particles);
+    generator.initialize ();
+    BOOST_CHECK_EQUAL (particles.get_particle_count (), 10L);
 }
