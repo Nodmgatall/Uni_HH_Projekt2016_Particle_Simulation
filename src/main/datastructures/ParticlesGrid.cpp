@@ -94,7 +94,6 @@ void ParticlesGrid::add_particle (Vec3f p_current_position, Vec3f p_current_velo
 }
 /**
  * saves all particles to an file
- * @param p_file_writer the wrapper which holds the file and formats the output
  */
 void ParticlesGrid::serialize () {
     Benchmark::begin ("saving the data", false);
@@ -158,8 +157,7 @@ void ParticlesGrid::step_2a_calculate_inside_cell (ParticleCell& p_cell) {
 }
 /**
  * calculates the movement based on forces between particles which are in
- * different cells each
- * particle-pair consists of one particle from each cell given as parameters
+ * different cells each particle-pair consists of one particle from each cell given as parameters
  * @param p_cell1
  * @param p_cell2
  */
@@ -185,6 +183,30 @@ void ParticlesGrid::step_2b_calculate_between_cells (ParticleCell& p_cell_i, Par
     }
 }
 /**
+ * calculates the movement based on forces between particles which are in
+ * different cells. the cells to calculate are extracted from the "base" coordinate given as
+ * parameter. the compiler should unroll the loops completely.
+ * @param p_x
+ * @param p_y
+ * @param p_z
+ */
+void ParticlesGrid::step_2b_calculate_between_neigbours (unsigned int& p_x, unsigned int& p_y, unsigned int& p_z) {
+    for (int a = -1; a <= 1; a++) {
+        for (int b = -1; b <= 1; b++) {
+            for (int c = -1; c <= 1; c++) {
+                if ((a == 0) && (b == 0) && (c == 0)) {
+                    return;
+                }
+                ParticleCell& cell1 =
+                    get_cell_at (p_x + (a < 0 ? 1 : 0), p_y + (b < 0 ? 1 : 0), p_z + (c < 0 ? 1 : 0));
+                ParticleCell& cell2 =
+                    get_cell_at (p_x + (a < 0 ? 0 : a), p_y + (b < 0 ? 0 : b), p_z + (c < 0 ? 0 : c));
+                step_2b_calculate_between_cells (cell1, cell2);
+            }
+        }
+    }
+}
+/**
  * verify that all particles in cell are in the correct cell. if there are
  * particles which should be
  * in an other cell, these particles get moved
@@ -205,22 +227,6 @@ void ParticlesGrid::step_3_remove_wrong_particles_from_cell (ParticleCell& p_cel
                                                               p_cell.m_positions_y[m_idx_a][i],
                                                               p_cell.m_positions_z[m_idx_a][i]);
             moveParticle (p_cell, other_cell, i);
-        }
-    }
-}
-void ParticlesGrid::step_2b_calculate_between_neigbours (unsigned int& p_x, unsigned int& p_y, unsigned int& p_z) {
-    for (int a = -1; a <= 1; a++) {
-        for (int b = -1; b <= 1; b++) {
-            for (int c = -1; c <= 1; c++) {
-                if ((a == 0) && (b == 0) && (c == 0)) {
-                    return;
-                }
-                ParticleCell& cell1 =
-                    get_cell_at (p_x + (a < 0 ? 1 : 0), p_y + (b < 0 ? 1 : 0), p_z + (c < 0 ? 1 : 0));
-                ParticleCell& cell2 =
-                    get_cell_at (p_x + (a < 0 ? 0 : a), p_y + (b < 0 ? 0 : b), p_z + (c < 0 ? 0 : c));
-                step_2b_calculate_between_cells (cell1, cell2);
-            }
         }
     }
 }
