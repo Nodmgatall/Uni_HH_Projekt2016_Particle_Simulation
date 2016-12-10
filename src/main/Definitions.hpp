@@ -34,7 +34,7 @@
 #define ENUM_TO_STRING_ENTRY(enum_name, enum_member) \
     std::pair<enum_name, const char*> (enum_name::enum_member, #enum_member)
 /////////////////////////////////////////////////////////////////////////////////////////////
-enum e_data_format {
+enum e_output_format {
     CSV,      //
     LAMMPS,   //
     ESPRESSO, //
@@ -42,13 +42,13 @@ enum e_data_format {
     VMD,      //
     VTK
 };
-static std::map<e_data_format, const char*> g_enum_data_format_to_string_map = {
-    ENUM_TO_STRING_ENTRY (e_data_format, CSV),      //
-    ENUM_TO_STRING_ENTRY (e_data_format, LAMMPS),   //
-    ENUM_TO_STRING_ENTRY (e_data_format, ESPRESSO), //
-    ENUM_TO_STRING_ENTRY (e_data_format, GROMACS),  //
-    ENUM_TO_STRING_ENTRY (e_data_format, VMD),      //
-    ENUM_TO_STRING_ENTRY (e_data_format, VTK),
+static std::map<e_output_format, const char*> g_enum_data_format_to_string_map = {
+    ENUM_TO_STRING_ENTRY (e_output_format, CSV),      //
+    ENUM_TO_STRING_ENTRY (e_output_format, LAMMPS),   //
+    ENUM_TO_STRING_ENTRY (e_output_format, ESPRESSO), //
+    ENUM_TO_STRING_ENTRY (e_output_format, GROMACS),  //
+    ENUM_TO_STRING_ENTRY (e_output_format, VMD),      //
+    ENUM_TO_STRING_ENTRY (e_output_format, VTK),
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////
