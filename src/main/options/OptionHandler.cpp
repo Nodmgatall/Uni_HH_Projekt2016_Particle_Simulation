@@ -78,17 +78,21 @@ void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_opti
         switch (argv_index) {
             // Write modes
             case 0:
-                p_options.m_write_modes[VELOCITY] = !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
+                p_options.m_write_modes[e_csv_column_type::VELOCITY] =
+                    !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
                 break;
             case 1:
-                p_options.m_write_modes[POSITION] = !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
+                p_options.m_write_modes[e_csv_column_type::POSITION] =
+                    !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
                 break;
             case 2:
-                p_options.m_write_modes[ACCELERATION] = !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
+                p_options.m_write_modes[e_csv_column_type::ACCELERATION] =
+                    !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
                 break;
 
             case 3:
-                p_options.m_write_modes[PARTICLE_TYPE] = !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
+                p_options.m_write_modes[e_csv_column_type::PARTICLE_TYPE] =
+                    !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
                 break;
 
             // Generator modes
@@ -256,17 +260,17 @@ void OptionHandler::print_choosen_options (s_options& p_options) {
     DEBUG_BEGIN << "write_fequency : " << p_options.m_write_fequency << DEBUG_END;
     DEBUG_BEGIN << "cut_off_radius : " << p_options.m_cut_off_radius << DEBUG_END;
     DEBUG_BEGIN << "write_modes    : [ID";
-    if (p_options.m_write_modes[POSITION]) {
-        g_debug_stream << ", POSITION";
+    if (p_options.m_write_modes[e_csv_column_type::POSITION]) {
+        g_debug_stream << ", " << e_csv_column_type::POSITION;
     }
-    if (p_options.m_write_modes[VELOCITY]) {
-        g_debug_stream << ", VELOCITY";
+    if (p_options.m_write_modes[e_csv_column_type::VELOCITY]) {
+        g_debug_stream << ", " << e_csv_column_type::VELOCITY;
     }
-    if (p_options.m_write_modes[ACCELERATION]) {
-        g_debug_stream << ", ACCELERATION";
+    if (p_options.m_write_modes[e_csv_column_type::ACCELERATION]) {
+        g_debug_stream << ", " << e_csv_column_type::ACCELERATION;
     }
-    if (p_options.m_write_modes[PARTICLE_TYPE]) {
-        g_debug_stream << ", PARTICLE_TYPE";
+    if (p_options.m_write_modes[e_csv_column_type::PARTICLE_TYPE]) {
+        g_debug_stream << ", " << e_csv_column_type::PARTICLE_TYPE;
     }
     g_debug_stream << "]" << DEBUG_END;
     /*

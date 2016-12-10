@@ -21,20 +21,22 @@ BOOST_AUTO_TEST_CASE (calculate_distance_vectors) {
     std::vector<data_type> expected_z_distances = { 0, 0, 0, 0, 0, 0 };
     Vec3f                  bounds (3, 3, 3);
 
-    s_options options = {
-        e_algorithm_type::LENNARD_JONES,
-        false,
-        e_output_type::CSV,
-        "",
-        "",
-        1000,
-        1,
-        false,
-        1,
-        1.0,
-        e_datastructure_type::GRID,
-        { { ID, false }, { POSITION, false }, { VELOCITY, false }, { ACCELERATION, false }, { PARTICLE_TYPE, false } }
-    };
+    s_options options = { e_algorithm_type::LENNARD_JONES,
+                          false,
+                          e_output_type::CSV,
+                          "",
+                          "",
+                          1000,
+                          1,
+                          false,
+                          1,
+                          1.0,
+                          e_datastructure_type::GRID,
+                          { { e_csv_column_type::ID, false },
+                            { e_csv_column_type::POSITION, false },
+                            { e_csv_column_type::VELOCITY, false },
+                            { e_csv_column_type::ACCELERATION, false },
+                            { e_csv_column_type::PARTICLE_TYPE, false } } };
     BorderWrapparound     border (bounds);
     AlgorithmLennardJones algorithm (options);
     FileWriterCSV         writer (options.m_write_modes, "");
@@ -70,20 +72,22 @@ BOOST_AUTO_TEST_CASE (calculate_distances_squared) {
     std::vector<data_type> z_distances = { 0, 0, 0, 0, 0, 0 };
     Vec3f                  bounds (3, 3, 3);
 
-    s_options options = {
-        e_algorithm_type::LENNARD_JONES,
-        false,
-        e_output_type::CSV,
-        "",
-        "",
-        1000,
-        1,
-        false,
-        1,
-        1.0,
-        e_datastructure_type::GRID,
-        { { ID, false }, { POSITION, false }, { VELOCITY, false }, { ACCELERATION, false }, { PARTICLE_TYPE, false } }
-    };
+    s_options options = { e_algorithm_type::LENNARD_JONES,
+                          false,
+                          e_output_type::CSV,
+                          "",
+                          "",
+                          1000,
+                          1,
+                          false,
+                          1,
+                          1.0,
+                          e_datastructure_type::GRID,
+                          { { e_csv_column_type::ID, false },
+                            { e_csv_column_type::POSITION, false },
+                            { e_csv_column_type::VELOCITY, false },
+                            { e_csv_column_type::ACCELERATION, false },
+                            { e_csv_column_type::PARTICLE_TYPE, false } } };
     BorderWrapparound     border (bounds);
     AlgorithmLennardJones algorithm (options);
     FileWriterCSV         writer (options.m_write_modes, "");
@@ -106,20 +110,22 @@ BOOST_AUTO_TEST_CASE (build_lists) {
     std::vector<data_type> z_distances = { 0, 0, 0, 0, 0, 0 };
     Vec3f                  bounds (3, 3, 3);
 
-    s_options options = {
-        e_algorithm_type::LENNARD_JONES,
-        false,
-        e_output_type::CSV,
-        "",
-        "",
-        1000,
-        1,
-        false,
-        1,
-        1.0,
-        e_datastructure_type::GRID,
-        { { ID, false }, { POSITION, false }, { VELOCITY, false }, { ACCELERATION, false }, { PARTICLE_TYPE, false } }
-    };
+    s_options options = { e_algorithm_type::LENNARD_JONES,
+                          false,
+                          e_output_type::CSV,
+                          "",
+                          "",
+                          1000,
+                          1,
+                          false,
+                          1,
+                          1.0,
+                          e_datastructure_type::GRID,
+                          { { e_csv_column_type::ID, false },
+                            { e_csv_column_type::POSITION, false },
+                            { e_csv_column_type::VELOCITY, false },
+                            { e_csv_column_type::ACCELERATION, false },
+                            { e_csv_column_type::PARTICLE_TYPE, false } } };
     BorderWrapparound     border (bounds);
     AlgorithmLennardJones algorithm (options);
     FileWriterCSV         writer (options.m_write_modes, "");

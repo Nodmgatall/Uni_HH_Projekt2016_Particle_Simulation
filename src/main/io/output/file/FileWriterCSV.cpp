@@ -7,7 +7,7 @@
 
 #include "FileWriterCSV.hpp"
 
-FileWriterCSV::FileWriterCSV (std::map<e_particle_variable, bool>& p_write_modes, const std::string& p_file_name_base)
+FileWriterCSV::FileWriterCSV (std::map<e_csv_column_type, bool>& p_write_modes, const std::string& p_file_name_base)
 : WriterBase (), m_timestep (0), m_file_name_base (p_file_name_base), m_write_modes (p_write_modes) {
 }
 void FileWriterCSV::start () {

@@ -11,6 +11,7 @@
 #include <omp.h>
 #endif
 #include "enums/EnumAlgorithmType.hpp"
+#include "enums/EnumCSVColumnType.hpp"
 #include "enums/EnumDatastructureType.hpp"
 #include "enums/EnumInputType.hpp"
 #include "enums/EnumOutputType.hpp"
@@ -34,23 +35,6 @@
 
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
-
-#define ENUM_TO_STRING_ENTRY(enum_name, enum_member) \
-    std::pair<enum_name, const char*> (enum_name::enum_member, #enum_member)
-/////////////////////////////////////////////////////////////////////////////////////////////
-enum e_particle_variable {
-    ID,           //
-    VELOCITY,     //
-    POSITION,     //
-    ACCELERATION, //
-    PARTICLE_TYPE
-};
-static std::map<e_particle_variable, const char*> g_enum_particle_variable_to_string_map = {
-    ENUM_TO_STRING_ENTRY (e_particle_variable, VELOCITY),
-    ENUM_TO_STRING_ENTRY (e_particle_variable, POSITION),
-    ENUM_TO_STRING_ENTRY (e_particle_variable, ACCELERATION),
-    ENUM_TO_STRING_ENTRY (e_particle_variable, PARTICLE_TYPE),
-};
 
 #include "tools/Benchmark.hpp"
 #include "tools/Debug.hpp"

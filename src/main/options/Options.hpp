@@ -22,11 +22,11 @@ struct s_options {
     int                  m_write_fequency = 1;
     data_type            m_cut_off_radius = 0.01;
     e_datastructure_type m_data_structure = e_datastructure_type::GRID;
-    std::map<e_particle_variable, bool> m_write_modes = { { ID, true },
-                                                          { POSITION, true },
-                                                          { VELOCITY, true },
-                                                          { ACCELERATION, true },
-                                                          { PARTICLE_TYPE, false } };
+    std::map<e_csv_column_type, bool> m_write_modes = { { e_csv_column_type::ID, true },
+                                                        { e_csv_column_type::POSITION, true },
+                                                        { e_csv_column_type::VELOCITY, true },
+                                                        { e_csv_column_type::ACCELERATION, true },
+                                                        { e_csv_column_type::PARTICLE_TYPE, false } };
     e_input_type  m_input_type                                   = e_input_type::GRID_DISTRIBUTION;
     unsigned int  m_seed                                         = 123456789;
     unsigned long m_particle_count                               = 0;
