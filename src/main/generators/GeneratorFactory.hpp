@@ -1,21 +1,21 @@
 /*
- * ParticleGenerator.hpp
+ * Generator.hpp
  *
  *  Created on: Oct 29, 2016
  *      Author: benjamin
  */
 
-#ifndef SRC_PARTICLEGENERATORFACTORY_HPP_
-#define SRC_PARTICLEGENERATORFACTORY_HPP_
+#ifndef SRC_GENERATORFACTORY_HPP_
+#define SRC_GENERATORFACTORY_HPP_
 
 #include "../Definitions.hpp"
 #include "../IO/Options.hpp"
-#include "ParticleGeneratorBase.hpp"
-#include "ParticleGeneratorGridDistribution.hpp"
-#include "ParticleGeneratorMultipleObjects.hpp"
-#include "ParticleGeneratorRandom.hpp"
-#include "ParticleGeneratorRandomUniform.hpp"
-#include "ParticleGeneratorSingleObjectMiddle.hpp"
+#include "GeneratorBase.hpp"
+#include "GeneratorGridDistribution.hpp"
+#include "GeneratorMultipleObjects.hpp"
+#include "GeneratorRandom.hpp"
+#include "GeneratorRandomUniform.hpp"
+#include "GeneratorSingleObjectMiddle.hpp"
 #include <cstdio>
 #include <memory>
 #include <unistd.h>
@@ -49,9 +49,9 @@ class GeneratorNotImplementedException : public std::exception {
         return text;
     }
 };
-class ParticleGeneratorFactory {
+class GeneratorFactory {
   public:
-    static ParticleGeneratorBase* build (s_options& p_options);
+    static GeneratorBase* build (s_options& p_options);
 };
 
-#endif /* SRC_PARTICLEGENERATOR_HPP_ */
+#endif /* SRC_GENERATOR_HPP_ */

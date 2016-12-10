@@ -5,17 +5,17 @@
  *      Author: benjamin
  */
 
-#include "ParticleGeneratorSingleObjectMiddle.hpp"
+#include "GeneratorSingleObjectMiddle.hpp"
 
-ParticleGeneratorSingleObjectMiddle::ParticleGeneratorSingleObjectMiddle (s_options& p_options)
-: ParticleGeneratorBase (p_options) {
+GeneratorSingleObjectMiddle::GeneratorSingleObjectMiddle (s_options& p_options)
+: GeneratorBase (p_options) {
     m_stucture_name = "ParticleGeneratorSingleObjectMiddle";
 }
 
-ParticleGeneratorSingleObjectMiddle::~ParticleGeneratorSingleObjectMiddle () {
+GeneratorSingleObjectMiddle::~GeneratorSingleObjectMiddle () {
 }
 
-void ParticleGeneratorSingleObjectMiddle::generate (DatastructureBase* p_particles) {
+void GeneratorSingleObjectMiddle::generate (DatastructureBase* p_particles) {
     Benchmark::begin ("ParticleGeneratorSingleObjectMiddle");
     data_type     temp     = pow (m_options.m_particle_count, 1.0f / 3.0f);
     Vec3f         bounds_2 = m_options.m_bounds / 2;

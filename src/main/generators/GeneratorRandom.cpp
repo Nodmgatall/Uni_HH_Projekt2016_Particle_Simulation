@@ -5,17 +5,16 @@
  *      Author: benjamin
  */
 
-#include "ParticleGeneratorRandom.hpp"
+#include "GeneratorRandom.hpp"
 
-ParticleGeneratorRandom::ParticleGeneratorRandom (s_options& p_options)
-: ParticleGeneratorBase (p_options) {
+GeneratorRandom::GeneratorRandom (s_options& p_options) : GeneratorBase (p_options) {
     m_stucture_name = "ParticleGeneratorRandom";
 }
 
-ParticleGeneratorRandom::~ParticleGeneratorRandom () {
+GeneratorRandom::~GeneratorRandom () {
 }
 
-void ParticleGeneratorRandom::generate (DatastructureBase* p_particles) {
+void GeneratorRandom::generate (DatastructureBase* p_particles) {
     Benchmark::begin ("ParticleGeneratorRandom");
     std::srand (m_options.m_seed);
     for (unsigned long id = 0; id < m_options.m_particle_count; id++) {

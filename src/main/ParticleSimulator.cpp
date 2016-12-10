@@ -17,10 +17,10 @@
 
 #include "datastructures/DatastructureBase.hpp"
 #include "datastructures/DatastructureGrid.hpp"
-#include "generators/ParticleGeneratorFactory.hpp"
+#include "generators/GeneratorFactory.hpp"
 
 ParticleSimulator::ParticleSimulator (s_options& p_options)
-: m_options (p_options), m_generator (ParticleGeneratorFactory::build (p_options)),
+: m_options (p_options), m_generator (GeneratorFactory::build (p_options)),
   m_writer (new ParticleWriterCSV (p_options.m_write_modes, std::string (log_folder) + "/data")),
   m_save_config (false), m_border (new BorderWrapparound (p_options.m_bounds)),
   m_algorithm (new AlgorithmLennardJones (p_options)), m_datastructure (0) {

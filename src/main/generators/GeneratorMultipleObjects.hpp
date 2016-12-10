@@ -8,12 +8,12 @@
 #ifndef SRC_MAIN_GENERATORS_PARTICLEGENERATORMULTIPLEOBJECTS_HPP_
 #define SRC_MAIN_GENERATORS_PARTICLEGENERATORMULTIPLEOBJECTS_HPP_
 
-#include "ParticleGeneratorBase.hpp"
+#include "GeneratorBase.hpp"
 
-class ParticleGeneratorMultipleObjects : public ParticleGeneratorBase {
+class GeneratorMultipleObjects : public GeneratorBase {
   public:
-    ParticleGeneratorMultipleObjects (s_options& p_options);
-    virtual ~ParticleGeneratorMultipleObjects ();
+    GeneratorMultipleObjects (s_options& p_options);
+    virtual ~GeneratorMultipleObjects ();
     void generate (DatastructureBase* p_particles);
 };
 

@@ -1,16 +1,15 @@
 /*
- * test_ParticleGeneratorGridDistribution.cpp
+ * test_ParticleGeneratorSingleObjectMiddle.cpp
  *
  *  Created on: Dec 8, 2016
  *      Author: benjamin
  */
 
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE "ParticleGeneratorGridDistribution"
-#include "../../main/IO/ParticleWriterBase.hpp"
+#define BOOST_TEST_MODULE "ParticleGeneratorSingleObjectMiddle"
 #include "../../main/algorithms/AlgorithmLennardJones.hpp"
 #include "../../main/borders/BorderWrapparound.hpp"
-#include "../../main/generators/ParticleGeneratorGridDistribution.hpp"
+#include "../../main/generators/GeneratorSingleObjectMiddle.hpp"
 #include <boost/test/unit_test.hpp>
 #include <cstring>
 
@@ -79,11 +78,11 @@ BOOST_AUTO_TEST_CASE (test1) {
     memset (&options, 0, sizeof (s_options));
     options.m_particle_count = 10;
     options.m_bounds         = Vec3f (10, 10, 10);
-    ParticleGeneratorGridDistribution generator (options);
-    BorderWrapparound                 border (options.m_bounds);
-    AlgorithmLennardJones             algorithm (options);
-    ParticleWriter                    writer = ParticleWriter ();
-    Particles* particles                     = new Particles (options, border, algorithm, writer);
+    GeneratorSingleObjectMiddle generator (options);
+    BorderWrapparound           border (options.m_bounds);
+    AlgorithmLennardJones       algorithm (options);
+    ParticleWriter              writer    = ParticleWriter ();
+    Particles*                  particles = new Particles (options, border, algorithm, writer);
     generator.generate (particles);
     BOOST_CHECK_EQUAL (particles->get_particle_count (), 10L);
 }

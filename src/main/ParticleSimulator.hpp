@@ -7,7 +7,7 @@
 #include "algorithms/AlgorithmLennardJones.hpp"
 #include "borders/BorderWrapparound.hpp"
 #include "datastructures/DatastructureBase.hpp"
-#include "generators/ParticleGeneratorFactory.hpp"
+#include "generators/GeneratorFactory.hpp"
 #include <functional>
 #include <getopt.h>
 #include <iostream>
@@ -16,13 +16,13 @@
 
 class ParticleSimulator {
   private:
-    s_options&             m_options;
-    ParticleGeneratorBase* m_generator;
-    ParticleWriterBase*    m_writer;
-    bool                   m_save_config;
-    BorderBase*            m_border;
-    AlgorithmBase*         m_algorithm;
-    DatastructureBase*     m_datastructure;
+    s_options&          m_options;
+    GeneratorBase*      m_generator;
+    ParticleWriterBase* m_writer;
+    bool                m_save_config;
+    BorderBase*         m_border;
+    AlgorithmBase*      m_algorithm;
+    DatastructureBase*  m_datastructure;
 
   public:
     ParticleSimulator (s_options& p_options);
