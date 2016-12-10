@@ -10,6 +10,8 @@
 #ifdef OMP_AVAILABLE
 #include <omp.h>
 #endif
+#include "options/EnumAlgorithmType.hpp"
+#include "options/EnumGeneratorMode.hpp"
 #include <cstdlib>
 #include <ctime>
 #include <exception>
@@ -30,34 +32,6 @@
 
 #define ENUM_TO_STRING_ENTRY(enum_name, enum_member) \
     std::pair<enum_name, const char*> (enum_name::enum_member, #enum_member)
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-enum e_generator_mode {
-    MULTIPLE_OBJECTS,     // mehrere Kugeln gleichmäßig verteilt
-    RANDOM,               // komplett zufällig
-    RANDOM_UNIFORM,       // zufällig ungefähr gleichmäßig
-    SINGLE_OBJECT_MIDDLE, // eine Kugel in der Mitte des Volumens
-    GRID_DISTRIBUTION,    // komplett gleichmäßig
-};
-static std::map<e_generator_mode, const char*> g_enum_generator_mode_to_string_map = {
-    ENUM_TO_STRING_ENTRY (e_generator_mode, MULTIPLE_OBJECTS),
-    ENUM_TO_STRING_ENTRY (e_generator_mode, RANDOM),
-    ENUM_TO_STRING_ENTRY (e_generator_mode, RANDOM_UNIFORM),
-    ENUM_TO_STRING_ENTRY (e_generator_mode, SINGLE_OBJECT_MIDDLE),
-    ENUM_TO_STRING_ENTRY (e_generator_mode, GRID_DISTRIBUTION),
-};
-/////////////////////////////////////////////////////////////////////////////////////////////
-enum e_algorithm_type {
-    LENNARD_JONES,                  //
-    SMOTHED_PARTICLE_HYDRODYNAMICS, //
-    DISSIPATIVE_PARTICLE_DYNAMICS
-};
-static std::map<e_algorithm_type, const char*> g_enum_algorithm_type_to_string_map = {
-    ENUM_TO_STRING_ENTRY (e_algorithm_type, LENNARD_JONES),
-    ENUM_TO_STRING_ENTRY (e_algorithm_type, SMOTHED_PARTICLE_HYDRODYNAMICS),
-    ENUM_TO_STRING_ENTRY (e_algorithm_type, DISSIPATIVE_PARTICLE_DYNAMICS),
-};
-
 /////////////////////////////////////////////////////////////////////////////////////////////
 enum e_data_format {
     CSV,      //

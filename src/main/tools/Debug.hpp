@@ -41,14 +41,6 @@ struct s_debug_stream : std::ofstream {
         print (var ? "ON" : "OFF");
         return *this;
     }
-    s_debug_stream& operator<< (const e_generator_mode& var) {
-        print (g_enum_generator_mode_to_string_map[var]);
-        return *this;
-    }
-    s_debug_stream& operator<< (const e_algorithm_type& var) {
-        print (g_enum_algorithm_type_to_string_map[var]);
-        return *this;
-    }
     s_debug_stream& operator<< (const e_data_format& var) {
         print (g_enum_data_format_to_string_map[var]);
         return *this;
