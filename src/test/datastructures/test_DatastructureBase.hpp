@@ -6,7 +6,7 @@
  */
 
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE "ParticlesGrid"
+#define BOOST_TEST_MODULE "ParticlesBase"
 #include "../../main/IO/ParticleWriterBase.hpp"
 #include "../../main/algorithms/AlgorithmBase.hpp"
 #include "../../main/borders/BorderBase.hpp"

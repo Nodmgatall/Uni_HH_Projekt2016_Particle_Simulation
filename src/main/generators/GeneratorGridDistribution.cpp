@@ -26,7 +26,7 @@ void GeneratorGridDistribution::generate (DatastructureBase* p_particles) {
     for (x = 0; x < tempInt; x++) {
         for (y = 0; y < tempInt; y++) {
             for (z = 0; z < tempInt; z++) {
-                p_particles->add_particle (Vec3f (x, y, z) * delta);
+                p_particles->add_particle (Vec3f (x, y, z) * delta, Vec3f ());
                 count++;
             }
         }
@@ -36,7 +36,7 @@ void GeneratorGridDistribution::generate (DatastructureBase* p_particles) {
             for (y = 0; y < tempInt; y++) {
                 for (z = 0; z < tempInt; z++) {
                     if (count++ < m_options.m_particle_count) {
-                        p_particles->add_particle (Vec3f (temp / 2.0 + x, y, z) * delta);
+                        p_particles->add_particle (Vec3f (temp / 2.0 + x, y, z) * delta, Vec3f ());
                     }
                 }
             }

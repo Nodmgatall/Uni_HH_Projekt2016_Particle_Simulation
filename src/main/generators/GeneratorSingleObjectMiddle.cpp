@@ -32,7 +32,7 @@ void GeneratorSingleObjectMiddle::generate (DatastructureBase* p_particles) {
                 if (length > smallest_dimension_2) {
                     direction = direction / length * (length - smallest_dimension_2);
                 }
-                p_particles->add_particle (bounds_2 + direction);
+                p_particles->add_particle (bounds_2 + direction, Vec3f ());
                 count++;
             }
         }
@@ -47,7 +47,7 @@ void GeneratorSingleObjectMiddle::generate (DatastructureBase* p_particles) {
                         if (length > smallest_dimension_2) {
                             direction = direction / length * (length - smallest_dimension_2);
                         }
-                        p_particles->add_particle (bounds_2 + direction);
+                        p_particles->add_particle (bounds_2 + direction, Vec3f ());
                     }
                 }
             }
