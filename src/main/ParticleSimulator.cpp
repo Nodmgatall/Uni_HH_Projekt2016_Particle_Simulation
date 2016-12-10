@@ -13,22 +13,18 @@ ParticleSimulator::~ParticleSimulator () {
 }
 void ParticleSimulator::simulate () {
     Benchmark::begin ("Simulation");
-    m_datastructure.serialize ();
-    data_type     current_time = 0.0;
-    data_type     max_run_time;
+    unsigned long max_timesteps              = 0;
     int           timesteps_until_next_write = m_options.m_write_fequency;
     unsigned long iteration_number           = 0;
     if (m_options.m_max_iterations > 0) {
-        max_run_time = m_options.m_max_iterations * m_options.m_timestep;
+        max_timesteps = m_options.m_max_iterations;
     } else {
-        max_run_time = m_options.m_run_time_limit;
+        max_timesteps = m_options.m_run_time_limit / m_options.m_timestep;
     }
-    max_run_time = MIN (max_run_time, m_options.m_run_time_limit);
-    while (current_time < max_run_time) {
+    m_datastructure.serialize ();
+    while (iteration_number < max_timesteps) {
         Benchmark::begin ("Simulating the time-step");
-        DEBUG_BEGIN << DEBUG_VAR (current_time) << DEBUG_END;
         m_datastructure.run_simulation_iteration (iteration_number);
-        current_time += m_options.m_timestep;
         timesteps_until_next_write--;
         if (!timesteps_until_next_write) {
             m_datastructure.serialize ();
@@ -38,5 +34,4 @@ void ParticleSimulator::simulate () {
         Benchmark::end ();
     }
     Benchmark::end ();
-    std::cout << "Simulated " << iteration_number << " iterations " << std::endl;
 }
