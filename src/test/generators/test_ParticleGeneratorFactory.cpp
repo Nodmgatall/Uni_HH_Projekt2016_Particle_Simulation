@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE (testParticleGeneratorMulipleObjects) {
     memset (&options, 0, sizeof (s_options));
     options.m_mode                   = e_generator_mode::MULTIPLE_OBJECTS;
     ParticleGeneratorBase* generator = ParticleGeneratorFactory::build (options);
-    BOOST_CHECK_EQUAL (generator->get_stucture_name (), "ParticleGeneratorMultipleObjecs");
+    BOOST_CHECK_EQUAL (generator->get_stucture_name (), "ParticleGeneratorMultipleObjects");
 }
 BOOST_AUTO_TEST_CASE (testParticleGeneratorRandomUniform) {
     s_options options;

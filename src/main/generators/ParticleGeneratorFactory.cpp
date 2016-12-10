@@ -22,10 +22,12 @@ ParticleGeneratorBase* ParticleGeneratorFactory::build (s_options& p_options) {
             break;
         }
         case e_generator_mode::MULTIPLE_OBJECTS: {
-            throw GeneratorNotImplementedException (p_options.m_mode);
+            return new ParticleGeneratorMultipleObjects (p_options);
+            break;
         }
         case e_generator_mode::RANDOM_UNIFORM: {
-            throw GeneratorNotImplementedException (p_options.m_mode);
+            return new ParticleGeneratorRandomUniform (p_options);
+            break;
         }
         default: { throw GeneratorInvalidException (p_options.m_mode); }
     }

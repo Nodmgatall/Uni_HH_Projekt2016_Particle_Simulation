@@ -13,7 +13,9 @@
 #include "../datastructures/ParticlesBase.hpp"
 #include "ParticleGeneratorBase.hpp"
 #include "ParticleGeneratorGridDistribution.hpp"
+#include "ParticleGeneratorMultipleObjects.hpp"
 #include "ParticleGeneratorRandom.hpp"
+#include "ParticleGeneratorRandomUniform.hpp"
 #include "ParticleGeneratorSingleObjectMiddle.hpp"
 #include <cstdio>
 #include <memory>
