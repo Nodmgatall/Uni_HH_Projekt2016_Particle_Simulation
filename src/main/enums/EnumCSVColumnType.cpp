@@ -7,14 +7,19 @@
 
 #include "EnumCSVColumnType.hpp"
 
-const char* g_csv_column_names[] = {
+const char* g_csv_column_names[] = { "ID",
+                                     "VELOCITY",
+                                     "POSITION",
+                                     "ACCELERATION",
+                                     "PARTICLE_"
+                                     "TYPE" };
 
-    "ID",
-    "VELOCITY",
-    "POSITION",
-    "ACCELERATION",
-    "PARTICLE_TYPE"
-};
+const char* g_printed_csv_column_names[]
+                                      [3] = { { "ID", "", "" },
+                                              { "VelocityX", "VelocityY", "VelocityZ" },
+                                              { "PositionX", "PositionY", "PositionZ" },
+                                              { "AccelerationX", "AccelerationY", "AccelerationZ" },
+                                              { "ParticleType", "", "" } };
 
 std::ostream& operator<< (std::ostream& stream, const e_csv_column_type p_csv_column_type) {
     switch (p_csv_column_type) {

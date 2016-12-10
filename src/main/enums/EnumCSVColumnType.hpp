@@ -22,6 +22,8 @@ std::ostream& operator<< (std::ostream& stream, const e_csv_column_type p_csv_co
 
 extern const char* g_csv_column_names[];
 
+extern const char* g_printed_csv_column_names[][3];
+
 class CSVColumnTypeInvalidException : public std::exception {
   private:
     e_csv_column_type m_csv_column_type;

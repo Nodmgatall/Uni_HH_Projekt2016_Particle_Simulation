@@ -12,9 +12,15 @@ FileWriterCSV::FileWriterCSV (std::map<e_csv_column_type, bool>& p_write_modes, 
 }
 void FileWriterCSV::start () {
     m_file = std::ofstream (m_file_name_base + std::to_string (m_timestep) + ".csv");
-    m_file << "id, x coordinate, y coordinate, z coordinate\n"; // absichtlich
-                                                                // NICHT std::endl
-                                                                // !!!!!
+    m_file << g_printed_csv_column_names[static_cast<int> (e_csv_column_type::ID) - 1][0];
+    if (m_write_modes[e_csv_column_type::POSITION]) {
+        for (int i = 0; i < 3; i++) {
+            m_file << ", "
+                   << g_printed_csv_column_names[static_cast<int> (e_csv_column_type::POSITION) - 1][i];
+        }
+    }
+    // absichtlich NICHT std::endl !!!!!
+    m_file << "\n";
 }
 void FileWriterCSV::saveData (std::vector<data_type>&     p_positions_x,
                               std::vector<data_type>&     p_positions_y,
@@ -23,7 +29,9 @@ void FileWriterCSV::saveData (std::vector<data_type>&     p_positions_x,
     unsigned long count = p_ids.size ();
     for (unsigned long i = 0; i < count; i++) {
         m_file << p_ids[i];
-        m_file << ", " << p_positions_x[i] << ", " << p_positions_y[i] << ", " << p_positions_z[i];
+        if (m_write_modes[e_csv_column_type::POSITION]) {
+            m_file << ", " << p_positions_x[i] << ", " << p_positions_y[i] << ", " << p_positions_z[i];
+        }
         m_file << "\n";
     }
 }
