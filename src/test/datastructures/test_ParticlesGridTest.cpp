@@ -492,7 +492,5 @@ BOOST_AUTO_TEST_CASE (test_step_2b) {
  public:
  ParticlesGrid (s_options &p_options, ParticleBoundsCorrection &p_particle_bounds_correction,
  AlgorithmBase &p_algorithm);
- ~ParticlesGrid ();
- void serialize (std::shared_ptr<ParticleFileWriter> p_writer);
- void run_simulation_iteration (unsigned long p_iteration_number = 0);
+
  */

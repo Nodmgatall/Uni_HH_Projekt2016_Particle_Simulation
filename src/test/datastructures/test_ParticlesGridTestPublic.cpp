@@ -345,12 +345,6 @@ BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_2) {
 }
 
 /*
- void step_3_remove_wrong_particles_from_cell (ParticleCell &p_cell);
- void step_2b_calculate_between_neigbours (unsigned int &p_x, unsigned int &p_y, unsigned int &p_z);
  public:
- ParticlesGrid (s_options &p_options, ParticleBoundsCorrection &p_particle_bounds_correction,
- AlgorithmBase &p_algorithm);
- ~ParticlesGrid ();
- void serialize (std::shared_ptr<ParticleFileWriter> p_writer);
- void run_simulation_iteration (unsigned long p_iteration_number = 0);
+ void serialize ();
  */
