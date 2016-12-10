@@ -8,9 +8,9 @@
 #ifndef SRC_PARTICLEFILEWRITER_HPP_
 #define SRC_PARTICLEFILEWRITER_HPP_
 
-#include "ParticleWriterBase.hpp"
+#include "../WriterBase.hpp"
 
-class ParticleWriterCSV : public ParticleWriterBase {
+class FileWriterCSV : public WriterBase {
   protected:
     int           m_timestep;
     std::string   m_file_name_base;
@@ -22,7 +22,7 @@ class ParticleWriterCSV : public ParticleWriterBase {
                    std::vector<data_type>&     p_positions_y,
                    std::vector<data_type>&     p_positions_z,
                    std::vector<unsigned long>& p_ids);
-    ParticleWriterCSV (std::map<e_particle_variable, bool>& p_write_modes, const std::string& p_file_name_base);
+    FileWriterCSV (std::map<e_particle_variable, bool>& p_write_modes, const std::string& p_file_name_base);
     void start ();
     void end ();
 };

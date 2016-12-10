@@ -61,7 +61,7 @@ class DatastructureGrid : public DatastructureBase {
     void step_3_remove_wrong_particles_from_cell (ParticleCell& p_cell);
 
   public:
-    DatastructureGrid (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, ParticleWriterBase& p_particle_writer);
+    DatastructureGrid (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_particle_writer);
     ~DatastructureGrid ();
     void serialize ();
     void run_simulation_iteration (unsigned long p_iteration_number = 0);

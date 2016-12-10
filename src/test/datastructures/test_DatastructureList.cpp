@@ -4,7 +4,7 @@
 #include "../../main/algorithms/AlgorithmLennardJones.hpp"
 #include "../../main/borders/BorderWrapparound.hpp"
 #include "../../main/datastructures/DatastructureList.hpp"
-#include "../../main/io/output/ParticleWriterCSV.hpp"
+#include "../../main/io/output/file/FileWriterCSV.hpp"
 #include <boost/test/unit_test.hpp>
 void generate_test_particle_list () {
 }
@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE (calculate_distance_vectors) {
     };
     BorderWrapparound     border (bounds);
     AlgorithmLennardJones algorithm (options);
-    ParticleWriterCSV     writer (options.m_write_modes, "");
+    FileWriterCSV         writer (options.m_write_modes, "");
     DatastructureList     particle_list (options, border, algorithm, writer);
 
     unsigned long start_pos      = 0;
@@ -86,7 +86,7 @@ BOOST_AUTO_TEST_CASE (calculate_distances_squared) {
     };
     BorderWrapparound     border (bounds);
     AlgorithmLennardJones algorithm (options);
-    ParticleWriterCSV     writer (options.m_write_modes, "");
+    FileWriterCSV         writer (options.m_write_modes, "");
     DatastructureList     particle_list (options, border, algorithm, writer);
 
     unsigned long          distances_count = 6;
@@ -122,7 +122,7 @@ BOOST_AUTO_TEST_CASE (build_lists) {
     };
     BorderWrapparound     border (bounds);
     AlgorithmLennardJones algorithm (options);
-    ParticleWriterCSV     writer (options.m_write_modes, "");
+    FileWriterCSV         writer (options.m_write_modes, "");
     DatastructureList     particle_list (options, border, algorithm, writer);
 
     particle_list.m_positions_x            = { 1.5, 1.5, 1.5, 0.75 };

@@ -2,14 +2,10 @@
 #include <vector>
 
 #include "../Vec3.hpp"
-#include "../io/output/ParticleWriterBase.hpp"
 #include "../tools/Debug.hpp"
 #include "DatastructureList.hpp"
 
-DatastructureList::DatastructureList (s_options&          p_options,
-                                      BorderBase&         p_border,
-                                      AlgorithmBase&      p_algorithm,
-                                      ParticleWriterBase& p_particle_writer)
+DatastructureList::DatastructureList (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_particle_writer)
 : DatastructureBase (p_options, p_border, p_algorithm, p_particle_writer),
   m_average_list_length (0.16), m_next_list_size_multiplier (1.1) {
     m_stucture_name                  = "List";

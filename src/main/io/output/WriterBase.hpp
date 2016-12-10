@@ -10,10 +10,10 @@
 
 #include "../../Definitions.hpp"
 
-class ParticleWriterBase {
+class WriterBase {
   public:
-    ParticleWriterBase ();
-    virtual ~ParticleWriterBase ();
+    WriterBase ();
+    virtual ~WriterBase ();
     virtual void saveData (std::vector<data_type>&     p_positions_x,
                            std::vector<data_type>&     p_positions_y,
                            std::vector<data_type>&     p_positions_z,

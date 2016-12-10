@@ -4,23 +4,23 @@
 #include "../Vec3.hpp"
 #include "../algorithms/AlgorithmBase.hpp"
 #include "../borders/BorderBase.hpp"
-#include "../io/output/ParticleWriterBase.hpp"
+#include "../io/output/file/FileWriterCSV.hpp"
 #include "../options/Options.hpp"
 #include <iostream>
 #include <vector>
 
 class DatastructureBase {
   protected:
-    std::string         m_stucture_name;
-    s_options&          m_options;
-    BorderBase&         m_border;
-    AlgorithmBase&      m_algorithm;
-    ParticleWriterBase& m_writer;
+    std::string    m_stucture_name;
+    s_options&     m_options;
+    BorderBase&    m_border;
+    AlgorithmBase& m_algorithm;
+    WriterBase&    m_writer;
 
   public:
     virtual ~DatastructureBase () {
     }
-    DatastructureBase (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, ParticleWriterBase& p_writer)
+    DatastructureBase (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_writer)
     : m_options (p_options), m_border (p_border), m_algorithm (p_algorithm), m_writer (p_writer) {
     }
     std::string get_structure_name () {

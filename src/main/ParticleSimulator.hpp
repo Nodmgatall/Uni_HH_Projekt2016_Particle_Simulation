@@ -6,7 +6,7 @@
 #include "options/OptionHandler.hpp"
 
 #include "borders/BorderWrapparound.hpp"
-#include "io/output/ParticleWriterCSV.hpp"
+#include "io/output/file/FileWriterCSV.hpp"
 
 #include "algorithms/AlgorithmFactory.hpp"
 #include "datastructures/DatastructureFactory.hpp"
@@ -20,12 +20,12 @@
 
 class ParticleSimulator {
   private:
-    s_options          m_options;
-    ParticleWriterBase m_writer;
-    BorderBase         m_border;
-    AlgorithmBase      m_algorithm;
-    DatastructureBase  m_datastructure;
-    InputBase          m_input;
+    s_options         m_options;
+    WriterBase        m_writer;
+    BorderBase        m_border;
+    AlgorithmBase     m_algorithm;
+    DatastructureBase m_datastructure;
+    InputBase         m_input;
 
   public:
     ParticleSimulator (s_options& p_options);

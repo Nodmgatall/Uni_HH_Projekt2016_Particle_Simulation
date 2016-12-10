@@ -15,11 +15,11 @@ typedef DatastructureGrid DatastructureUnderTest;
 
 #include "../../main/algorithms/AlgorithmBase.hpp"
 #include "../../main/borders/BorderBase.hpp"
-#include "../../main/io/output/ParticleWriterBase.hpp"
+#include "../../main/io/output/WriterBase.hpp"
 #include <boost/test/unit_test.hpp>
 #include <cstring>
 
-class ParticleWriter : public ParticleWriterBase {
+class ParticleWriter : public WriterBase {
   public:
     bool             m_start_called;
     bool             m_end_called;
