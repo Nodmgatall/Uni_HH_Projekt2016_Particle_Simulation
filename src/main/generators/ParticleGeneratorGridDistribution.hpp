@@ -14,7 +14,7 @@ class ParticleGeneratorGridDistribution : public ParticleGeneratorBase {
   public:
     ParticleGeneratorGridDistribution (s_options& p_options);
     virtual ~ParticleGeneratorGridDistribution ();
-    void generate (ParticlesBase* p_particles);
+    void generate (DatastructureBase* p_particles);
 };
 
 #endif /* SRC_GENERATORS_PARTICLEGENERATORGRIDDISTRIBUTION_HPP_ */

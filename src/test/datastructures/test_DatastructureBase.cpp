@@ -9,8 +9,8 @@
 #define BOOST_TEST_MODULE "ParticlesGrid"
 #include "../../main/IO/ParticleWriterBase.hpp"
 #include "../../main/algorithms/AlgorithmBase.hpp"
-#include "../../main/borders/ParticleBoundsCorrection.hpp"
-#include "../../main/datastructures/ParticlesGrid.hpp"
+#include "../../main/borders/BorderBase.hpp"
+#include "../../main/datastructures/DatastructureGrid.hpp"
 #include <boost/test/unit_test.hpp>
 #include <cstring>
 
@@ -126,10 +126,10 @@ class Algorithm : public AlgorithmBase {
         }
     }
 };
-class BoundsCorrection : public ParticleBoundsCorrection {
+class BoundsCorrection : public BorderBase {
   public:
     int m_call_count;
-    BoundsCorrection (Vec3f& p_bounds) : ParticleBoundsCorrection (p_bounds), m_call_count (0) {
+    BoundsCorrection (Vec3f& p_bounds) : BorderBase (p_bounds), m_call_count (0) {
     }
     virtual ~BoundsCorrection () {
     }
@@ -162,7 +162,7 @@ class BoundsCorrection : public ParticleBoundsCorrection {
         return true;
     }
 };
-class ParticlesGridTestClass : public ParticlesGrid {
+class ParticlesGridTestClass : public DatastructureGrid {
   public:
     unsigned long public_get_cell_index (long x, long y, long z) {
         return get_cell_index (x, y, z);
@@ -191,11 +191,11 @@ class ParticlesGridTestClass : public ParticlesGrid {
     void public_step_3_remove_wrong_particles_from_cell (ParticleCell& p_cell) {
         step_3_remove_wrong_particles_from_cell (p_cell);
     }
-    ParticlesGridTestClass (s_options&                p_options,
-                            ParticleBoundsCorrection& p_particle_bounds_correction,
-                            AlgorithmBase&            p_algorithm,
-                            ParticleWriterBase&       p_particle_file_writer)
-    : ParticlesGrid (p_options, p_particle_bounds_correction, p_algorithm, p_particle_file_writer) {
+    ParticlesGridTestClass (s_options&          p_options,
+                            BorderBase&         p_particle_bounds_correction,
+                            AlgorithmBase&      p_algorithm,
+                            ParticleWriterBase& p_particle_file_writer)
+    : DatastructureGrid (p_options, p_particle_bounds_correction, p_algorithm, p_particle_file_writer) {
     }
     ~ParticlesGridTestClass () {
     }

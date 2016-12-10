@@ -14,7 +14,7 @@ class ParticleGeneratorMultipleObjects : public ParticleGeneratorBase {
   public:
     ParticleGeneratorMultipleObjects (s_options& p_options);
     virtual ~ParticleGeneratorMultipleObjects ();
-    void generate (ParticlesBase* p_particles);
+    void generate (DatastructureBase* p_particles);
 };
 
 #endif /* SRC_MAIN_GENERATORS_PARTICLEGENERATORMULTIPLEOBJECTS_HPP_ */

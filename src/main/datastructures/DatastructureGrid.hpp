@@ -3,7 +3,7 @@
 
 #include "../Definitions.hpp"
 #include "../Vec3.hpp"
-#include "ParticlesBase.hpp"
+#include "DatastructureBase.hpp"
 
 struct ParticleCell {
     std::vector<data_type>     m_positions_x[2];
@@ -16,7 +16,7 @@ struct ParticleCell {
     void add_particle (Vec3f p_current_position, Vec3f p_old_position, int p_current_index, int p_id);
 };
 
-class ParticlesGrid : public ParticlesBase {
+class DatastructureGrid : public DatastructureBase {
   protected:
     /**
      * the index for the "next" inserted particle
@@ -65,11 +65,8 @@ class ParticlesGrid : public ParticlesBase {
     void step_3_remove_wrong_particles_from_cell (ParticleCell& p_cell);
 
   public:
-    ParticlesGrid (s_options&                p_options,
-                   ParticleBoundsCorrection& p_particle_bounds_correction,
-                   AlgorithmBase&            p_algorithm,
-                   ParticleWriterBase&       p_particle_writer);
-    ~ParticlesGrid ();
+    DatastructureGrid (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, ParticleWriterBase& p_particle_writer);
+    ~DatastructureGrid ();
     void serialize ();
     void run_simulation_iteration (unsigned long p_iteration_number = 0);
     void add_particle (Vec3f p_current_position);

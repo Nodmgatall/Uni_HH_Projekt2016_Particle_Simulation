@@ -15,6 +15,6 @@ ParticleGeneratorRandomUniform::ParticleGeneratorRandomUniform (s_options& p_opt
 ParticleGeneratorRandomUniform::~ParticleGeneratorRandomUniform () {
 }
 
-void ParticleGeneratorRandomUniform::generate (ParticlesBase* p_particles) {
+void ParticleGeneratorRandomUniform::generate (DatastructureBase* p_particles) {
     (void) p_particles;
 }

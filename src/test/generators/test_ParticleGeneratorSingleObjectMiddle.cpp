@@ -8,7 +8,7 @@
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "ParticleGeneratorSingleObjectMiddle"
 #include "../../main/algorithms/AlgorithmLennardJones.hpp"
-#include "../../main/borders/ParticleBoundsCorrectionWraparound.hpp"
+#include "../../main/borders/BorderWrapparound.hpp"
 #include "../../main/generators/ParticleGeneratorSingleObjectMiddle.hpp"
 #include <boost/test/unit_test.hpp>
 #include <cstring>
@@ -32,14 +32,14 @@ class ParticleWriter : public ParticleWriterBase {
     }
 };
 
-class Particles : public ParticlesBase {
+class Particles : public DatastructureBase {
   public:
     int m_particle_count;
-    Particles (s_options&                p_options,
-               ParticleBoundsCorrection& p_particle_bounds_correction,
-               AlgorithmBase&            p_algorithm,
-               ParticleWriterBase&       p_particle_file_writer)
-    : ParticlesBase (p_options, p_particle_bounds_correction, p_algorithm, p_particle_file_writer),
+    Particles (s_options&          p_options,
+               BorderBase&         p_particle_bounds_correction,
+               AlgorithmBase&      p_algorithm,
+               ParticleWriterBase& p_particle_file_writer)
+    : DatastructureBase (p_options, p_particle_bounds_correction, p_algorithm, p_particle_file_writer),
       m_particle_count (0) {
     }
     ~Particles () {
@@ -79,11 +79,10 @@ BOOST_AUTO_TEST_CASE (test1) {
     options.m_particle_count = 10;
     options.m_bounds         = Vec3f (10, 10, 10);
     ParticleGeneratorSingleObjectMiddle generator (options);
-    ParticleBoundsCorrectionWraparound  border (options.m_bounds);
+    BorderWrapparound                   border (options.m_bounds);
     AlgorithmLennardJones               algorithm (options);
     ParticleWriter                      writer = ParticleWriter ();
-    ;
-    Particles* particles = new Particles (options, border, algorithm, writer);
+    Particles* particles                       = new Particles (options, border, algorithm, writer);
     generator.generate (particles);
     BOOST_CHECK_EQUAL (particles->get_particle_count (), 10L);
 }

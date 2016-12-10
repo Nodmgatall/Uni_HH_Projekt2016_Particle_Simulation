@@ -10,14 +10,14 @@
 
 #include "../Definitions.hpp"
 #include "../IO/Options.hpp"
-#include "../datastructures/ParticlesBase.hpp"
+#include "../datastructures/DatastructureBase.hpp"
 class ParticleGeneratorBase {
   protected:
     s_options&  m_options;
     std::string m_stucture_name;
 
   public:
-    virtual void generate (ParticlesBase* p_particles);
+    virtual void generate (DatastructureBase* p_particles);
     ParticleGeneratorBase (s_options& p_options);
     virtual ~ParticleGeneratorBase ();
     const std::string& get_stucture_name () const;

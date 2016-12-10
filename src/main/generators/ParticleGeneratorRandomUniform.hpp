@@ -14,7 +14,7 @@ class ParticleGeneratorRandomUniform : public ParticleGeneratorBase {
   public:
     ParticleGeneratorRandomUniform (s_options& p_options);
     virtual ~ParticleGeneratorRandomUniform ();
-    void generate (ParticlesBase* p_particles);
+    void generate (DatastructureBase* p_particles);
 };
 
 #endif /* SRC_MAIN_GENERATORS_PARTICLEGENERATORRANDOMUNIFORM_HPP_ */

@@ -8,14 +8,14 @@
 #ifndef SRC_ALGORITHMS_PARTICLEBOUNDSCORRECTION_HPP_
 #define SRC_ALGORITHMS_PARTICLEBOUNDSCORRECTION_HPP_
 #include "../Vec3.hpp"
-class ParticleBoundsCorrection {
+class BorderBase {
   protected:
     Vec3f& m_bounds;
 
   public:
-    ParticleBoundsCorrection (Vec3f& p_bounds) : m_bounds (p_bounds) {
+    BorderBase (Vec3f& p_bounds) : m_bounds (p_bounds) {
     }
-    virtual ~ParticleBoundsCorrection () {
+    virtual ~BorderBase () {
     }
     /**
      * check if the positions are within the cube between m_corner000 m_corner111.

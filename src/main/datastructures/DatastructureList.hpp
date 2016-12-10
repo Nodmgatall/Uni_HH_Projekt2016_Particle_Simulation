@@ -3,10 +3,10 @@
 
 #include "../IO/ParticleFileLoader.hpp"
 #include "../IO/ParticleWriterBase.hpp"
-#include "ParticlesBase.hpp"
+#include "DatastructureBase.hpp"
 #include <vector>
 
-class ParticlesList : public ParticlesBase {
+class DatastructureList : public DatastructureBase {
   private:
     data_type m_average_list_length;
     data_type m_next_list_size_multiplier;
@@ -63,12 +63,12 @@ class ParticlesList : public ParticlesBase {
     std::vector<std::vector<data_type>> m_mat_accelerations_y;
     std::vector<std::vector<data_type>> m_mat_accelerations_z;
 
-    ParticlesList (s_options&                p_options,
-                   ParticleBoundsCorrection& p_particle_bounds_correction,
-                   AlgorithmBase&            p_algorithm,
-                   ParticleWriterBase&       p_particle_writer);
+    DatastructureList (s_options&          p_options,
+                       BorderBase&         p_particle_bounds_correction,
+                       AlgorithmBase&      p_algorithm,
+                       ParticleWriterBase& p_particle_writer);
 
-    ~ParticlesList ();
+    ~DatastructureList ();
     void add_particle (Vec3f p_position);
     void add_particle (Vec3f p_position, Vec3f p_velocity);
     unsigned long get_particle_count ();

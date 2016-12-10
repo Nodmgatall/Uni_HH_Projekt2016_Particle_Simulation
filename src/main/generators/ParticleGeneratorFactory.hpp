@@ -10,7 +10,6 @@
 
 #include "../Definitions.hpp"
 #include "../IO/Options.hpp"
-#include "../datastructures/ParticlesBase.hpp"
 #include "ParticleGeneratorBase.hpp"
 #include "ParticleGeneratorGridDistribution.hpp"
 #include "ParticleGeneratorMultipleObjects.hpp"
@@ -20,6 +19,8 @@
 #include <cstdio>
 #include <memory>
 #include <unistd.h>
+
+#include "../datastructures/DatastructureBase.hpp"
 class GeneratorInvalidException : public std::exception {
   private:
     int m_generator_mode;

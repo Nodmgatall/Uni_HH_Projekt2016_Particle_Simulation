@@ -15,6 +15,6 @@ ParticleGeneratorMultipleObjects::ParticleGeneratorMultipleObjects (s_options& p
 ParticleGeneratorMultipleObjects::~ParticleGeneratorMultipleObjects () {
 }
 
-void ParticleGeneratorMultipleObjects::generate (ParticlesBase* p_particles) {
+void ParticleGeneratorMultipleObjects::generate (DatastructureBase* p_particles) {
     (void) p_particles;
 }

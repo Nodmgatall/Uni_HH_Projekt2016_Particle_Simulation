@@ -6,25 +6,22 @@
 #include "../IO/ParticleWriterBase.hpp"
 #include "../Vec3.hpp"
 #include "../algorithms/AlgorithmBase.hpp"
-#include "../borders/ParticleBoundsCorrection.hpp"
+#include "../borders/BorderBase.hpp"
 #include <iostream>
 #include <vector>
 
-class ParticlesBase {
+class DatastructureBase {
   protected:
-    std::string               m_stucture_name;
-    s_options&                m_options;
-    ParticleBoundsCorrection& m_particle_bounds_correction;
-    AlgorithmBase&            m_algorithm;
-    ParticleWriterBase&       m_particle_writer;
+    std::string         m_stucture_name;
+    s_options&          m_options;
+    BorderBase&         m_border;
+    AlgorithmBase&      m_algorithm;
+    ParticleWriterBase& m_particle_writer;
 
   public:
-    virtual ~ParticlesBase () {
+    virtual ~DatastructureBase () {
     }
-    ParticlesBase (s_options&                p_options,
-                   ParticleBoundsCorrection& p_particle_bounds_correction,
-                   AlgorithmBase&            p_algorithm,
-                   ParticleWriterBase&       p_particle_writer);
+    DatastructureBase (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, ParticleWriterBase& p_particle_writer);
     virtual void run_simulation_iteration (unsigned long p_iteration_number = 0);
     virtual void add_particle (Vec3f p_position);
     virtual void add_particle (Vec3f p_position, Vec3f p_velocity);

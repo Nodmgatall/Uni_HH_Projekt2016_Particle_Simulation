@@ -8,30 +8,29 @@
 
 #include "Definitions.hpp"
 #include "ParticleSimulator.hpp"
-#include "datastructures/ParticlesBase.hpp"
-#include "datastructures/ParticlesGrid.hpp"
-#include "datastructures/ParticlesList.hpp"
+#include "datastructures/DatastructureList.hpp"
 #include "tools/Usage.hpp"
 
 #include "IO/Options.hpp"
 #include <memory>
 #include <unistd.h>
 
+#include "datastructures/DatastructureBase.hpp"
+#include "datastructures/DatastructureGrid.hpp"
 #include "generators/ParticleGeneratorFactory.hpp"
 
 ParticleSimulator::ParticleSimulator (s_options& p_options)
 : m_options (p_options), m_particle_generator (ParticleGeneratorFactory::build (p_options)),
-  m_particle_file_writer (new ParticleFileWriter (p_options.m_write_modes, std::string (log_folder) + "/data")),
-  m_save_config (false),
-  m_particle_bounds_correction (new ParticleBoundsCorrectionWraparound (p_options.m_bounds)),
+  m_particle_file_writer (new ParticleWriterCSV (p_options.m_write_modes, std::string (log_folder) + "/data")),
+  m_save_config (false), m_border (new BorderWrapparound (p_options.m_bounds)),
   m_algorithm (new AlgorithmLennardJones (p_options)), m_particles (0) {
     Benchmark::begin ("ParticleSimulator");
     switch (m_options.m_data_structure) {
         case GRID:
-            m_particles = new ParticlesGrid (m_options, *m_particle_bounds_correction, *m_algorithm, *m_particle_file_writer);
+            m_particles = new DatastructureGrid (m_options, *m_border, *m_algorithm, *m_particle_file_writer);
             break;
         case LIST:
-            m_particles = new ParticlesList (m_options, *m_particle_bounds_correction, *m_algorithm, *m_particle_file_writer);
+            m_particles = new DatastructureList (m_options, *m_border, *m_algorithm, *m_particle_file_writer);
             break;
         case LISTEDGIRD:
             std::cout << "Mixture of list and grind not implemented" << std::endl;
@@ -47,7 +46,7 @@ ParticleSimulator::ParticleSimulator (s_options& p_options)
 ParticleSimulator::~ParticleSimulator () {
     delete (m_particle_generator);
     delete (m_particle_file_writer);
-    delete (m_particle_bounds_correction);
+    delete (m_border);
     delete (m_algorithm);
     delete (m_particles);
 }

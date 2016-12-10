@@ -9,7 +9,7 @@
 #define SRC_PARTICLEFILEWRITER_HPP_
 #include "../Definitions.hpp"
 #include "ParticleWriterBase.hpp"
-class ParticleFileWriter : public ParticleWriterBase {
+class ParticleWriterCSV : public ParticleWriterBase {
   protected:
     int           m_timestep;
     std::string   m_file_name_base;
@@ -21,7 +21,7 @@ class ParticleFileWriter : public ParticleWriterBase {
                    std::vector<data_type>&     p_positions_y,
                    std::vector<data_type>&     p_positions_z,
                    std::vector<unsigned long>& p_ids);
-    ParticleFileWriter (std::map<e_particle_variable, bool>& p_write_modes, const std::string& p_file_name_base);
+    ParticleWriterCSV (std::map<e_particle_variable, bool>& p_write_modes, const std::string& p_file_name_base);
     void start ();
     void end ();
 };

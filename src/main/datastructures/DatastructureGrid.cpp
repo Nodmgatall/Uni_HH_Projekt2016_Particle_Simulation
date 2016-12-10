@@ -1,10 +1,10 @@
-#include "ParticlesGrid.hpp"
+#include "DatastructureGrid.hpp"
 
-ParticlesGrid::ParticlesGrid (s_options&                p_options,
-                              ParticleBoundsCorrection& p_particle_bounds_correction,
-                              AlgorithmBase&            p_algorithm,
-                              ParticleWriterBase&       p_particle_writer)
-: ParticlesBase (p_options, p_particle_bounds_correction, p_algorithm, p_particle_writer),
+DatastructureGrid::DatastructureGrid (s_options&          p_options,
+                                      BorderBase&         p_particle_bounds_correction,
+                                      AlgorithmBase&      p_algorithm,
+                                      ParticleWriterBase& p_particle_writer)
+: DatastructureBase (p_options, p_particle_bounds_correction, p_algorithm, p_particle_writer),
   m_iterations_between_rearange_particles (20) {
     unsigned int idx_x, idx_y, idx_z;
     long         max_usefull_size         = pow (m_options.m_particle_count, 1.0 / 3.0);
@@ -30,7 +30,7 @@ ParticlesGrid::ParticlesGrid (s_options&                p_options,
 /**
  * destructor
  */
-ParticlesGrid::~ParticlesGrid () {
+DatastructureGrid::~DatastructureGrid () {
 }
 /**
  * return the combined index for the cell at the given index
@@ -38,7 +38,7 @@ ParticlesGrid::~ParticlesGrid () {
  * @param y index
  * @param z index
  */
-unsigned long ParticlesGrid::get_cell_index (long x, long y, long z) {
+unsigned long DatastructureGrid::get_cell_index (long x, long y, long z) {
     return x + m_size.x * (y + m_size.y * z);
 }
 /**
@@ -48,7 +48,7 @@ unsigned long ParticlesGrid::get_cell_index (long x, long y, long z) {
  * @param z index
  * @return the cell
  */
-ParticleCell& ParticlesGrid::get_cell_at (long x, long y, long z) {
+ParticleCell& DatastructureGrid::get_cell_at (long x, long y, long z) {
     return m_cells[get_cell_index (x, y, z)];
 }
 /**
@@ -58,7 +58,7 @@ ParticleCell& ParticlesGrid::get_cell_at (long x, long y, long z) {
  * @param z coordinate
  * @return the cell
  */
-ParticleCell& ParticlesGrid::get_cell_for_particle (data_type x, data_type y, data_type z) {
+ParticleCell& DatastructureGrid::get_cell_for_particle (data_type x, data_type y, data_type z) {
     return get_cell_at (x / m_size_per_cell.x, y / m_size_per_cell.y, z / m_size_per_cell.z);
 }
 /**
@@ -66,14 +66,14 @@ ParticleCell& ParticlesGrid::get_cell_for_particle (data_type x, data_type y, da
  * @param m_position the position
  * @return the cell
  */
-ParticleCell& ParticlesGrid::get_cell_for_particle (Vec3f m_position) {
+ParticleCell& DatastructureGrid::get_cell_for_particle (Vec3f m_position) {
     return get_cell_for_particle (m_position.x, m_position.y, m_position.z);
 }
 /**
  * adds an particle to the current simulation
  * @param p_position the position of the new particle
  */
-void ParticlesGrid::add_particle (Vec3f p_current_position) {
+void DatastructureGrid::add_particle (Vec3f p_current_position) {
     add_particle (p_current_position, Vec3f (0));
 }
 /**
@@ -82,20 +82,20 @@ void ParticlesGrid::add_particle (Vec3f p_current_position) {
  * @param p_position the position of the new particle
  * @param p_velocity the initial velocity
  */
-void ParticlesGrid::add_particle (Vec3f p_current_position, Vec3f p_current_velocity) {
+void DatastructureGrid::add_particle (Vec3f p_current_position, Vec3f p_current_velocity) {
     Vec3f old_position = p_current_position - p_current_velocity * m_options.m_timestep;
-    m_particle_bounds_correction.updatePosition (p_current_position.x,
-                                                 p_current_position.y,
-                                                 p_current_position.z,
-                                                 old_position.x,
-                                                 old_position.y,
-                                                 old_position.z);
+    m_border.updatePosition (p_current_position.x,
+                             p_current_position.y,
+                             p_current_position.z,
+                             old_position.x,
+                             old_position.y,
+                             old_position.z);
     get_cell_for_particle (p_current_position).add_particle (p_current_position, old_position, m_idx_a, m_max_id++);
 }
 /**
  * saves all particles to an file
  */
-void ParticlesGrid::serialize () {
+void DatastructureGrid::serialize () {
     Benchmark::begin ("saving the data", false);
     m_particle_writer.start ();
     for (ParticleCell cell : m_cells) {
@@ -114,7 +114,7 @@ void ParticlesGrid::serialize () {
  * its own speed
  * @param p_cell the cell contains the particles which are calculated
  */
-void ParticlesGrid::step_1_prepare_cell (ParticleCell& p_cell) {
+void DatastructureGrid::step_1_prepare_cell (ParticleCell& p_cell) {
     unsigned int       i;
     const unsigned int max = p_cell.m_ids.size ();
     for (i = 0; i < max; i++) {
@@ -132,7 +132,7 @@ void ParticlesGrid::step_1_prepare_cell (ParticleCell& p_cell) {
  * cell
  * @param p_cell the cell which contains the particles
  */
-void ParticlesGrid::step_2a_calculate_inside_cell (ParticleCell& p_cell) {
+void DatastructureGrid::step_2a_calculate_inside_cell (ParticleCell& p_cell) {
     unsigned long      i;
     const unsigned int max   = p_cell.m_ids.size ();
     const unsigned int max_1 = max - 1;
@@ -161,7 +161,7 @@ void ParticlesGrid::step_2a_calculate_inside_cell (ParticleCell& p_cell) {
  * @param p_cell1
  * @param p_cell2
  */
-void ParticlesGrid::step_2b_calculate_between_cells (ParticleCell& p_cell_i, ParticleCell& p_cell_j) {
+void DatastructureGrid::step_2b_calculate_between_cells (ParticleCell& p_cell_i, ParticleCell& p_cell_j) {
     unsigned int       i;
     const unsigned int max1 = p_cell_i.m_ids.size ();
     const unsigned int max2 = p_cell_j.m_ids.size ();
@@ -190,7 +190,7 @@ void ParticlesGrid::step_2b_calculate_between_cells (ParticleCell& p_cell_i, Par
  * @param p_y
  * @param p_z
  */
-void ParticlesGrid::step_2b_calculate_between_neigbours (unsigned int& p_x, unsigned int& p_y, unsigned int& p_z) {
+void DatastructureGrid::step_2b_calculate_between_neigbours (unsigned int& p_x, unsigned int& p_y, unsigned int& p_z) {
     for (int a = -1; a <= 1; a++) {
         for (int b = -1; b <= 1; b++) {
             for (int c = -1; c <= 1; c++) {
@@ -212,17 +212,17 @@ void ParticlesGrid::step_2b_calculate_between_neigbours (unsigned int& p_x, unsi
  * in an other cell, these particles get moved
  * @param p_cell
  */
-void ParticlesGrid::step_3_remove_wrong_particles_from_cell (ParticleCell& p_cell) {
+void DatastructureGrid::step_3_remove_wrong_particles_from_cell (ParticleCell& p_cell) {
     int i;
     for (i = p_cell.m_ids.size () - 1; i >= 0; i--) {
-        if (m_particle_bounds_correction.updatePosition (p_cell.m_positions_x[m_idx_a][i],
-                                                         p_cell.m_positions_y[m_idx_a][i],
-                                                         p_cell.m_positions_z[m_idx_a][i],
-                                                         p_cell.m_positions_x[m_idx_b][i],
-                                                         p_cell.m_positions_y[m_idx_b][i],
-                                                         p_cell.m_positions_z[m_idx_b][i],
-                                                         p_cell.m_corner000,
-                                                         p_cell.m_corner111)) {
+        if (m_border.updatePosition (p_cell.m_positions_x[m_idx_a][i],
+                                     p_cell.m_positions_y[m_idx_a][i],
+                                     p_cell.m_positions_z[m_idx_a][i],
+                                     p_cell.m_positions_x[m_idx_b][i],
+                                     p_cell.m_positions_y[m_idx_b][i],
+                                     p_cell.m_positions_z[m_idx_b][i],
+                                     p_cell.m_corner000,
+                                     p_cell.m_corner111)) {
             ParticleCell& other_cell = get_cell_for_particle (p_cell.m_positions_x[m_idx_a][i],
                                                               p_cell.m_positions_y[m_idx_a][i],
                                                               p_cell.m_positions_z[m_idx_a][i]);
@@ -235,7 +235,7 @@ void ParticlesGrid::step_3_remove_wrong_particles_from_cell (ParticleCell& p_cel
  * datastructure
  * @param p_iteration_number unused? TODO remove?!?
  */
-void ParticlesGrid::run_simulation_iteration (unsigned long p_iteration_number) {
+void DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_number) {
     (void) p_iteration_number;
     m_iterations_until_rearange_particles--;
     unsigned int idx_x, idx_y, idx_z, parallel_offset;
@@ -286,7 +286,7 @@ void ParticlesGrid::run_simulation_iteration (unsigned long p_iteration_number) 
  * @param p_cell_to
  * @param p_index_from
  */
-inline void ParticlesGrid::moveParticle (ParticleCell& p_cell_from, ParticleCell& p_cell_to, long p_index_from) {
+inline void DatastructureGrid::moveParticle (ParticleCell& p_cell_from, ParticleCell& p_cell_to, long p_index_from) {
     unsigned int j;
     p_cell_to.m_ids.push_back (p_cell_from.m_ids[p_index_from]);
     p_cell_from.m_ids.erase (p_cell_from.m_ids.begin () + p_index_from);
@@ -302,7 +302,7 @@ inline void ParticlesGrid::moveParticle (ParticleCell& p_cell_from, ParticleCell
 /**
  * @return the total number of particles in all cells
  */
-unsigned long ParticlesGrid::get_particle_count () {
+unsigned long DatastructureGrid::get_particle_count () {
     unsigned long particle_count = 0;
     for (ParticleCell cell : m_cells) {
         particle_count += cell.m_ids.size ();

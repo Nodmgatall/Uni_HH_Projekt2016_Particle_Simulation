@@ -8,12 +8,12 @@
 #ifndef SRC_ALGORITHMS_PARTICLEBOUNDSCORRECTIONWRAPAROUND_HPP_
 #define SRC_ALGORITHMS_PARTICLEBOUNDSCORRECTIONWRAPAROUND_HPP_
 
-#include "ParticleBoundsCorrection.hpp"
+#include "BorderBase.hpp"
 
-class ParticleBoundsCorrectionWraparound : public ParticleBoundsCorrection {
+class BorderWrapparound : public BorderBase {
   public:
-    ParticleBoundsCorrectionWraparound (Vec3f& p_bounds);
-    virtual ~ParticleBoundsCorrectionWraparound ();
+    BorderWrapparound (Vec3f& p_bounds);
+    virtual ~BorderWrapparound ();
     bool updatePosition (data_type&   m_x,
                          data_type&   m_y,
                          data_type&   m_z,

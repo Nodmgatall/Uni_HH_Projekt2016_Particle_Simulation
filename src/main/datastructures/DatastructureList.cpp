@@ -5,13 +5,13 @@
 #include "../IO/ParticleWriterBase.hpp"
 #include "../Vec3.hpp"
 #include "../tools/Debug.hpp"
-#include "ParticlesList.hpp"
+#include "DatastructureList.hpp"
 
-ParticlesList::ParticlesList (s_options&                p_options,
-                              ParticleBoundsCorrection& p_particle_bounds_correction,
-                              AlgorithmBase&            p_algorithm,
-                              ParticleWriterBase&       p_particle_writer)
-: ParticlesBase (p_options, p_particle_bounds_correction, p_algorithm, p_particle_writer),
+DatastructureList::DatastructureList (s_options&          p_options,
+                                      BorderBase&         p_particle_bounds_correction,
+                                      AlgorithmBase&      p_algorithm,
+                                      ParticleWriterBase& p_particle_writer)
+: DatastructureBase (p_options, p_particle_bounds_correction, p_algorithm, p_particle_writer),
   m_average_list_length (0.16), m_next_list_size_multiplier (1.1) {
     m_stucture_name                  = "List";
     m_cutoff_radius                  = 0;
@@ -20,10 +20,10 @@ ParticlesList::ParticlesList (s_options&                p_options,
     m_cnt_iterations_without_rebuild = 1;
     macro_debug_1 ("constructor of ParticleList called")
 }
-ParticlesList::~ParticlesList () {
+DatastructureList::~DatastructureList () {
 }
 
-void ParticlesList::add_particle (Vec3f p_position) {
+void DatastructureList::add_particle (Vec3f p_position) {
     if (!m_unused_ids.empty ()) {
         m_unused_ids.erase (m_unused_ids.begin ());
         std::cout << "Not implemented: program will exit" << std::endl;
@@ -44,13 +44,13 @@ void ParticlesList::add_particle (Vec3f p_position) {
     }
 }
 
-void ParticlesList::add_particle (Vec3f p_position, Vec3f p_velocity) {
+void DatastructureList::add_particle (Vec3f p_position, Vec3f p_velocity) {
     (void) p_velocity;
     (void) p_position;
     //    add_particle (p_position); // TODO
 }
 
-void ParticlesList::run_simulation_iteration (unsigned long p_iteration_number) {
+void DatastructureList::run_simulation_iteration (unsigned long p_iteration_number) {
     macro_debug_1 ("running iteration") unsigned long particle_count = m_positions_x.size ();
     unsigned long                                     last_particle  = particle_count - 1;
     //    unsigned long neighbour_cnt;
@@ -107,15 +107,15 @@ void ParticlesList::run_simulation_iteration (unsigned long p_iteration_number) 
     macro_debug_1 ("iteration done")
 }
 
-unsigned long ParticlesList::get_particle_count () {
+unsigned long DatastructureList::get_particle_count () {
     return m_positions_x.size ();
 }
 
-void ParticlesList::build_lists_smarter (data_type*    p_distances_x,
-                                         data_type*    p_distances_y,
-                                         data_type*    p_distances_z,
-                                         data_type*    p_distances_squared,
-                                         unsigned long p_size_distance_vectors) {
+void DatastructureList::build_lists_smarter (data_type*    p_distances_x,
+                                             data_type*    p_distances_y,
+                                             data_type*    p_distances_z,
+                                             data_type*    p_distances_squared,
+                                             unsigned long p_size_distance_vectors) {
     unsigned long          particle_count            = m_positions_x.size ();
     unsigned long          start_pos_distance_vector = 0;
     data_type              cutoff_radius_squared     = 0.8;
@@ -216,7 +216,7 @@ void ParticlesList::build_lists_smarter (data_type*    p_distances_x,
     m_listed_velocities_z.shrink_to_fit ();
 }
 
-void ParticlesList::build_lists () {
+void DatastructureList::build_lists () {
     macro_debug_1 ("starting building neighbour lists");
     unsigned long particle_cnt          = get_particle_count ();
     data_type     cutoff_radius_squared = 0.8;
@@ -316,7 +316,7 @@ void ParticlesList::build_lists () {
             macro_debug_1 ("finished building neighbour lists")
 }
 
-void ParticlesList::setup_iteration () {
+void DatastructureList::setup_iteration () {
     macro_debug_1 ("starting setting up iteration") int size = m_positions_x.size ();
     m_listed_accelerations_x                                 = std::vector<data_type> (size);
     m_listed_accelerations_y                                 = std::vector<data_type> (size);
@@ -333,16 +333,16 @@ void ParticlesList::setup_iteration () {
  *  know the distances to each particle in the range.
  */
 
-void ParticlesList::calculate_distance_vectors (unsigned long p_particle_idx,
+void DatastructureList::calculate_distance_vectors (unsigned long p_particle_idx,
 
-                                                data_type*    p_distances_x,
-                                                data_type*    p_distances_y,
-                                                data_type*    p_distances_z,
-                                                data_type*    p_positions_x,
-                                                data_type*    p_positions_y,
-                                                data_type*    p_positions_z,
-                                                unsigned long start_idx,
-                                                unsigned long end_idx) {
+                                                    data_type*    p_distances_x,
+                                                    data_type*    p_distances_y,
+                                                    data_type*    p_distances_z,
+                                                    data_type*    p_positions_x,
+                                                    data_type*    p_positions_y,
+                                                    data_type*    p_positions_z,
+                                                    unsigned long start_idx,
+                                                    unsigned long end_idx) {
     unsigned long cur_dist_idx;
     data_type     x = p_positions_x[p_particle_idx];
     data_type     y = p_positions_y[p_particle_idx];
@@ -362,11 +362,11 @@ void ParticlesList::calculate_distance_vectors (unsigned long p_particle_idx,
         p_distances_z[start_idx + cur_dist_idx] = z - p_positions_z[p_particle_idx + cur_dist_idx + 1];
     }
 }
-void ParticlesList::calculate_distances_squared (data_type*    p_distances_squared,
-                                                 data_type*    p_distances_x,
-                                                 data_type*    p_distances_y,
-                                                 data_type*    p_distances_z,
-                                                 unsigned long size) {
+void DatastructureList::calculate_distances_squared (data_type*    p_distances_squared,
+                                                     data_type*    p_distances_x,
+                                                     data_type*    p_distances_y,
+                                                     data_type*    p_distances_z,
+                                                     unsigned long size) {
     Benchmark::begin ("Calculating Distances", false);
 
     unsigned long cur_part_idx;
@@ -401,7 +401,7 @@ void ParticlesList::calculate_distances_squared (data_type*    p_distances_squar
     Benchmark::end ();
 }
 
-void ParticlesList::serialize () {
+void DatastructureList::serialize () {
     Benchmark::begin ("saving the data", false);
     m_particle_writer.start ();
     m_particle_writer.saveData (m_positions_x, m_positions_y, m_positions_z, m_particle_ids);
@@ -426,19 +426,19 @@ void ParticlesList::serialize () {
  &m_accelerations_z);
  }
  */
-void ParticlesList::get_current_status (unsigned long p_idx_first,
-                                        unsigned long p_segment_length,
+void DatastructureList::get_current_status (unsigned long p_idx_first,
+                                            unsigned long p_segment_length,
 
-                                        std::vector<unsigned long>* p_ids,
-                                        std::vector<data_type>*     p_positions_x,
-                                        std::vector<data_type>*     p_positions_y,
-                                        std::vector<data_type>*     p_positions_z,
-                                        std::vector<data_type>*     p_velocities_x,
-                                        std::vector<data_type>*     p_velocities_y,
-                                        std::vector<data_type>*     p_velocities_z,
-                                        std::vector<data_type>*     p_accelerations_x,
-                                        std::vector<data_type>*     p_accelerations_y,
-                                        std::vector<data_type>*     p_accelerations_z) {
+                                            std::vector<unsigned long>* p_ids,
+                                            std::vector<data_type>*     p_positions_x,
+                                            std::vector<data_type>*     p_positions_y,
+                                            std::vector<data_type>*     p_positions_z,
+                                            std::vector<data_type>*     p_velocities_x,
+                                            std::vector<data_type>*     p_velocities_y,
+                                            std::vector<data_type>*     p_velocities_z,
+                                            std::vector<data_type>*     p_accelerations_x,
+                                            std::vector<data_type>*     p_accelerations_y,
+                                            std::vector<data_type>*     p_accelerations_z) {
     unsigned long end = p_segment_length + p_idx_first;
     int           current_list_idx;
     for (unsigned long range_idx = p_idx_first; range_idx < end; range_idx++) {
@@ -456,7 +456,7 @@ void ParticlesList::get_current_status (unsigned long p_idx_first,
     }
 }
 
-data_type ParticlesList::calculate_cnt_average_neighbours () {
+data_type DatastructureList::calculate_cnt_average_neighbours () {
     data_type accum_neighbours = 0;
     for (unsigned long i = 1; i < m_particle_list_ranges.size (); i += 2) {
         accum_neighbours += m_particle_list_ranges[i];
@@ -465,6 +465,6 @@ data_type ParticlesList::calculate_cnt_average_neighbours () {
     return accum_neighbours;
 }
 
-data_type ParticlesList::get_cnt_average_neighbours () {
+data_type DatastructureList::get_cnt_average_neighbours () {
     return m_average_list_length;
 }

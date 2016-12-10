@@ -1,10 +1,10 @@
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "VerletListTests"
 
-#include "../../main/IO/ParticleFileWriter.hpp"
+#include "../../main/IO/ParticleWriterCSV.hpp"
 #include "../../main/algorithms/AlgorithmLennardJones.hpp"
-#include "../../main/borders/ParticleBoundsCorrectionWraparound.hpp"
-#include "../../main/datastructures/ParticlesList.hpp"
+#include "../../main/borders/BorderWrapparound.hpp"
+#include "../../main/datastructures/DatastructureList.hpp"
 #include <boost/test/unit_test.hpp>
 void generate_test_particle_list () {
 }
@@ -35,10 +35,10 @@ BOOST_AUTO_TEST_CASE (calculate_distance_vectors) {
         GRID,
         { { ID, false }, { POSITION, false }, { VELOCITY, false }, { ACCELERATION, false }, { PARTICLE_TYPE, false } }
     };
-    ParticleBoundsCorrectionWraparound border (bounds);
-    AlgorithmLennardJones              algorithm (options);
-    ParticleFileWriter                 writer (options.m_write_modes, "");
-    ParticlesList                      particle_list (options, border, algorithm, writer);
+    BorderWrapparound     border (bounds);
+    AlgorithmLennardJones algorithm (options);
+    ParticleWriterCSV     writer (options.m_write_modes, "");
+    DatastructureList     particle_list (options, border, algorithm, writer);
 
     unsigned long start_pos      = 0;
     unsigned long particle_count = 4;
@@ -84,10 +84,10 @@ BOOST_AUTO_TEST_CASE (calculate_distances_squared) {
         GRID,
         { { ID, false }, { POSITION, false }, { VELOCITY, false }, { ACCELERATION, false }, { PARTICLE_TYPE, false } }
     };
-    ParticleBoundsCorrectionWraparound border (bounds);
-    AlgorithmLennardJones              algorithm (options);
-    ParticleFileWriter                 writer (options.m_write_modes, "");
-    ParticlesList                      particle_list (options, border, algorithm, writer);
+    BorderWrapparound     border (bounds);
+    AlgorithmLennardJones algorithm (options);
+    ParticleWriterCSV     writer (options.m_write_modes, "");
+    DatastructureList     particle_list (options, border, algorithm, writer);
 
     unsigned long          distances_count = 6;
     std::vector<data_type> distances_squared (6);
@@ -120,10 +120,10 @@ BOOST_AUTO_TEST_CASE (build_lists) {
         GRID,
         { { ID, false }, { POSITION, false }, { VELOCITY, false }, { ACCELERATION, false }, { PARTICLE_TYPE, false } }
     };
-    ParticleBoundsCorrectionWraparound border (bounds);
-    AlgorithmLennardJones              algorithm (options);
-    ParticleFileWriter                 writer (options.m_write_modes, "");
-    ParticlesList                      particle_list (options, border, algorithm, writer);
+    BorderWrapparound     border (bounds);
+    AlgorithmLennardJones algorithm (options);
+    ParticleWriterCSV     writer (options.m_write_modes, "");
+    DatastructureList     particle_list (options, border, algorithm, writer);
 
     particle_list.m_positions_x            = { 1.5, 1.5, 1.5, 0.75 };
     particle_list.m_positions_y            = { 1.5, 2.0, 2.5, 0.75 };
