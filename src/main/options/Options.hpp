@@ -11,9 +11,9 @@
 
 struct s_options {
     friend class boost::serialization::access;
-    e_algorithm_type m_algorithm_type = LENNARD_JONES;
+    e_algorithm_type m_algorithm_type = e_algorithm_type::LENNARD_JONES;
     bool             m_autotuneing    = false;
-    e_output_format  m_output_format  = CSV;
+    e_output_type    m_output_type    = e_output_type::CSV;
     std::string      m_in_file_name   = "";
     std::string      m_out_file_name  = "";
     data_type        m_run_time_limit = 1000;
@@ -21,7 +21,7 @@ struct s_options {
     bool             m_verbose        = false;
     int              m_write_fequency = 1;
     data_type        m_cut_off_radius = 0.01;
-    e_data_structure m_data_structure = GRID;
+    e_data_structure m_data_structure = e_data_structure::GRID;
     std::map<e_particle_variable, bool> m_write_modes = { { ID, true },
                                                           { POSITION, true },
                                                           { VELOCITY, true },
@@ -39,7 +39,7 @@ struct s_options {
         (void) version;
         archive& BOOST_SERIALIZATION_NVP (m_algorithm_type);
         archive& BOOST_SERIALIZATION_NVP (m_autotuneing);
-        archive& BOOST_SERIALIZATION_NVP (m_output_format);
+        archive& BOOST_SERIALIZATION_NVP (m_output_type);
         archive& BOOST_SERIALIZATION_NVP (m_in_file_name);
         archive& BOOST_SERIALIZATION_NVP (m_out_file_name);
         archive& BOOST_SERIALIZATION_NVP (m_run_time_limit);

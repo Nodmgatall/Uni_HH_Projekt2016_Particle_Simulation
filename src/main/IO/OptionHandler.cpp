@@ -247,7 +247,7 @@ void OptionHandler::print_choosen_options (s_options& p_options) {
     DEBUG_BEGIN << "generator mode : " << p_options.m_mode << DEBUG_END;
     DEBUG_BEGIN << "algorithm_type : " << p_options.m_algorithm_type << DEBUG_END;
     DEBUG_BEGIN << "autotuneing    : " << p_options.m_autotuneing << DEBUG_END;
-    DEBUG_BEGIN << "data_format    : " << p_options.m_output_format << DEBUG_END;
+    DEBUG_BEGIN << "data_format    : " << p_options.m_output_type << DEBUG_END;
     DEBUG_BEGIN << "file_in_name   : " << p_options.m_in_file_name << DEBUG_END;
     DEBUG_BEGIN << "file_out_name  : " << p_options.m_out_file_name << DEBUG_END;
     DEBUG_BEGIN << "particle_count : " << p_options.m_particle_count << DEBUG_END;

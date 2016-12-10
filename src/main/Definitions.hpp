@@ -12,7 +12,7 @@
 #endif
 #include "options/EnumAlgorithmType.hpp"
 #include "options/EnumGeneratorType.hpp"
-#include "options/EnumOutputFormat.hpp"
+#include "options/EnumOutputType.hpp"
 #include <cstdlib>
 #include <ctime>
 #include <exception>
