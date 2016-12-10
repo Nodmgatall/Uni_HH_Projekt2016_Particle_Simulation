@@ -13,7 +13,7 @@ struct s_options {
     friend class boost::serialization::access;
     e_algorithm_type m_algorithm_type = LENNARD_JONES;
     bool             m_autotuneing    = false;
-    e_output_format  m_data_format    = CSV;
+    e_output_format    m_output_format    = CSV;
     std::string      m_in_file_name   = "";
     std::string      m_out_file_name  = "";
     data_type        m_run_time_limit = 1000;
@@ -39,7 +39,7 @@ struct s_options {
         (void) version;
         archive& BOOST_SERIALIZATION_NVP (m_algorithm_type);
         archive& BOOST_SERIALIZATION_NVP (m_autotuneing);
-        archive& BOOST_SERIALIZATION_NVP (m_data_format);
+        archive& BOOST_SERIALIZATION_NVP (m_output_format);
         archive& BOOST_SERIALIZATION_NVP (m_in_file_name);
         archive& BOOST_SERIALIZATION_NVP (m_out_file_name);
         archive& BOOST_SERIALIZATION_NVP (m_run_time_limit);
