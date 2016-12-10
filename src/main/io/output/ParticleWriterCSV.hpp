@@ -7,8 +7,9 @@
 
 #ifndef SRC_PARTICLEFILEWRITER_HPP_
 #define SRC_PARTICLEFILEWRITER_HPP_
-#include "../Definitions.hpp"
+
 #include "ParticleWriterBase.hpp"
+
 class ParticleWriterCSV : public ParticleWriterBase {
   protected:
     int           m_timestep;

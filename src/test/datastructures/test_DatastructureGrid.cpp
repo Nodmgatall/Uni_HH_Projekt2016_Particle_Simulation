@@ -7,10 +7,10 @@
 
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "DatastructureGrid"
-#include "../../main/IO/ParticleWriterBase.hpp"
 #include "../../main/algorithms/AlgorithmBase.hpp"
 #include "../../main/borders/BorderBase.hpp"
 #include "../../main/datastructures/DatastructureGrid.hpp"
+#include "../../main/io/output/ParticleWriterBase.hpp"
 #include <boost/test/unit_test.hpp>
 #include <cstring>
 

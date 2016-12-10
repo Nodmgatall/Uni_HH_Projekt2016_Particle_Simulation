@@ -1,9 +1,9 @@
 #ifndef CONFIG_LOADER_HPP
 #define CONFIG_LOADER_HPP
-#include "../Definitions.hpp"
+#include "../../Definitions.hpp"
 #include <map>
 
-#include "../options/Options.hpp"
+#include "../../options/Options.hpp"
 #include "Config.hpp"
 
 class ConfigLoader {

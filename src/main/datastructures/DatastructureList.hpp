@@ -1,8 +1,8 @@
 #ifndef PARTICLELIST_HPP
 #define PARTICLELIST_HPP
 
-#include "../IO/ParticleFileLoader.hpp"
-#include "../IO/ParticleWriterBase.hpp"
+#include "../io/input/ParticleFileLoader.hpp"
+#include "../io/output/ParticleWriterBase.hpp"
 #include "DatastructureBase.hpp"
 #include <vector>
 

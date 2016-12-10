@@ -6,7 +6,6 @@
  */
 
 #include "GeneratorGridDistribution.hpp"
-#include "../tools/Debug.hpp"
 
 GeneratorGridDistribution::GeneratorGridDistribution (s_options& p_options)
 : GeneratorBase (p_options) {

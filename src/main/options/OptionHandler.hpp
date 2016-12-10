@@ -5,8 +5,8 @@
 #include <vector>
 
 #include "../Definitions.hpp"
-#include "../options/Options.hpp"
-#include "ConfigLoader.hpp"
+#include "../io/config/ConfigLoader.hpp"
+#include "Options.hpp"
 
 class OptionHandler {
   public:

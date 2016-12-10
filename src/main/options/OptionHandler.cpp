@@ -1,5 +1,4 @@
 #include "OptionHandler.hpp"
-#include "ConfigLoader.hpp"
 #include <getopt.h>
 #include <map>
 #include <vector>

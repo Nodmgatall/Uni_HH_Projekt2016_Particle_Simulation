@@ -5,7 +5,7 @@
  *      Author: benjamin
  */
 #ifndef BOOST_TEST_DYN_LINK
-#include "../../main/generators/GeneratorGridDistribution.hpp"
+#include "../../main/io/input/generators/GeneratorGridDistribution.hpp"
 typedef GeneratorGridDistribution GeneratorUnderTest;
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "GeneratorBaseGridDistribution"

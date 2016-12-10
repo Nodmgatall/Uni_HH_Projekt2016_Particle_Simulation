@@ -7,7 +7,7 @@
 
 #ifndef BOOST_TEST_DYN_LINK
 // this code is never executed !! -->>
-#include "../../main/generators/GeneratorRandom.hpp"
+#include "../../main/io/input/generators/GeneratorRandom.hpp"
 typedef GeneratorRandom GeneratorUnderTest;
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "GeneratorRandom"

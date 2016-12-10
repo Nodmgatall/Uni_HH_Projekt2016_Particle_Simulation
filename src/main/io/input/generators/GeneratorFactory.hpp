@@ -8,8 +8,8 @@
 #ifndef SRC_GENERATORFACTORY_HPP_
 #define SRC_GENERATORFACTORY_HPP_
 
-#include "../Definitions.hpp"
-#include "../options/Options.hpp"
+#include "../../../Definitions.hpp"
+#include "../../../options/Options.hpp"
 #include "GeneratorBase.hpp"
 #include "GeneratorGridDistribution.hpp"
 #include "GeneratorMultipleObjects.hpp"
@@ -20,7 +20,7 @@
 #include <memory>
 #include <unistd.h>
 
-#include "../datastructures/DatastructureBase.hpp"
+#include "../../../datastructures/DatastructureBase.hpp"
 
 class GeneratorFactory {
   public:

@@ -3,14 +3,14 @@
 
 #include "Definitions.hpp"
 
-#include "IO/OptionHandler.hpp"
+#include "options/OptionHandler.hpp"
 
-#include "IO/ParticleWriterCSV.hpp"
 #include "borders/BorderWrapparound.hpp"
+#include "io/output/ParticleWriterCSV.hpp"
 
 #include "algorithms/AlgorithmFactory.hpp"
 #include "datastructures/DatastructureFactory.hpp"
-#include "generators/GeneratorFactory.hpp"
+#include "io/input/generators/GeneratorFactory.hpp"
 
 #include <functional>
 #include <getopt.h>

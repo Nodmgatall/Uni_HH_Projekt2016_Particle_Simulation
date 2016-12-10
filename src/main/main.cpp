@@ -1,6 +1,6 @@
 #include "Definitions.hpp"
-#include "IO/OptionHandler.hpp"
 #include "ParticleSimulator.hpp"
+#include "options/OptionHandler.hpp"
 
 void print_header () {
     DEBUG_BEGIN << DEBUG_END;

@@ -5,7 +5,7 @@
  *      Author: benjamin
  */
 #ifndef BOOST_TEST_DYN_LINK
-#include "../../main/generators/GeneratorMultipleObjects.hpp"
+#include "../../main/io/input/generators/GeneratorMultipleObjects.hpp"
 typedef GeneratorMultipleObjects GeneratorUnderTest;
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "GeneratorBaseMultipleObjects"

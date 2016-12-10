@@ -8,9 +8,9 @@
 #ifndef SRC_MAIN_DATASTRUCTURES_DATASTRUCTUREFACTORY_HPP_
 #define SRC_MAIN_DATASTRUCTURES_DATASTRUCTUREFACTORY_HPP_
 
-#include "../IO/ParticleWriterBase.hpp"
 #include "../algorithms/AlgorithmBase.hpp"
 #include "../borders/BorderBase.hpp"
+#include "../io/output/ParticleWriterBase.hpp"
 #include "../options/Options.hpp"
 #include "../tools/Debug.hpp"
 #include "DatastructureBase.hpp"

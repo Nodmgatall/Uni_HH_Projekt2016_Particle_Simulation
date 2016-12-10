@@ -7,7 +7,7 @@
 
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "ParticleGeneratorFactory"
-#include "../../main/generators/GeneratorFactory.hpp"
+#include "../../main/io/input/generators/GeneratorFactory.hpp"
 #include <boost/test/unit_test.hpp>
 #include <cstring>
 
