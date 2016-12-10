@@ -9,7 +9,7 @@
 #define SRC_MAIN_ALGORITHMS_ALGORITHMBASE_HPP_
 
 #include "../Definitions.hpp"
-#include "../IO/Options.hpp"
+#include "../options/Options.hpp"
 
 class AlgorithmBase {
   private:

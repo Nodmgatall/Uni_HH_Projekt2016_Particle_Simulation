@@ -11,7 +11,7 @@
 #include "datastructures/DatastructureList.hpp"
 #include "tools/Usage.hpp"
 
-#include "IO/Options.hpp"
+#include "options/Options.hpp"
 #include <memory>
 #include <unistd.h>
 
@@ -26,13 +26,13 @@ ParticleSimulator::ParticleSimulator (s_options& p_options)
   m_algorithm (new AlgorithmLennardJones (p_options)), m_datastructure (0) {
     Benchmark::begin ("ParticleSimulator");
     switch (m_options.m_data_structure) {
-        case GRID:
+        case e_data_structure::GRID:
             m_datastructure = new DatastructureGrid (m_options, *m_border, *m_algorithm, *m_writer);
             break;
-        case LIST:
+        case e_data_structure::LIST:
             m_datastructure = new DatastructureList (m_options, *m_border, *m_algorithm, *m_writer);
             break;
-        case LISTEDGIRD:
+        default:
             std::cout << "Mixture of list and grind not implemented" << std::endl;
             exit (EXIT_SUCCESS);
     }
@@ -62,7 +62,8 @@ void ParticleSimulator::simulate () {
     } else {
         max_run_time = m_options.m_run_time_limit;
     }
-    while (current_time < max_run_time && current_time < m_options.m_run_time_limit) {
+    max_run_time = MIN (max_run_time, m_options.m_run_time_limit);
+    while (current_time < max_run_time) {
         Benchmark::begin ("Simulating the time-step");
         DEBUG_BEGIN << DEBUG_VAR (current_time) << DEBUG_END;
         m_datastructure->run_simulation_iteration (iteration_number);
@@ -76,6 +77,5 @@ void ParticleSimulator::simulate () {
         Benchmark::end ();
     }
     Benchmark::end ();
-    std::cout << "Simulated " << iteration_number << " iterations in " << current_time
-              << "miliseconds" << std::endl;
+    std::cout << "Simulated " << iteration_number << " iterations " << std::endl;
 }

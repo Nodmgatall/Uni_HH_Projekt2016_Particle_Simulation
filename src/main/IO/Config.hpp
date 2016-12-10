@@ -5,7 +5,7 @@
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/serialization/nvp.hpp>
 
-#include "Options.hpp"
+#include "../options/Options.hpp"
 
 struct Config {
     friend class boost::serialization::access;

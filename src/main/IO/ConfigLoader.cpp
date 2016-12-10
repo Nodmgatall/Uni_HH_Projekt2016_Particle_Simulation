@@ -9,7 +9,6 @@
 #endif
 #include "Config.hpp"
 #include "ConfigLoader.hpp"
-#include "Options.hpp"
 
 ConfigLoader::ConfigLoader () : m_config_file_name (".config_sim") {
     deserialize_configs ();

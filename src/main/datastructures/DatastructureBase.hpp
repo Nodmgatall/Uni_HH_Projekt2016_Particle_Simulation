@@ -1,12 +1,12 @@
 #ifndef PARTICLE_HPP
 #define PARTICLE_HPP
 #include "../Definitions.hpp"
-#include "../IO/Options.hpp"
 #include "../IO/ParticleFileLoader.hpp"
 #include "../IO/ParticleWriterBase.hpp"
 #include "../Vec3.hpp"
 #include "../algorithms/AlgorithmBase.hpp"
 #include "../borders/BorderBase.hpp"
+#include "../options/Options.hpp"
 #include <iostream>
 #include <vector>
 

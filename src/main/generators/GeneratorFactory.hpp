@@ -9,7 +9,7 @@
 #define SRC_GENERATORFACTORY_HPP_
 
 #include "../Definitions.hpp"
-#include "../IO/Options.hpp"
+#include "../options/Options.hpp"
 #include "GeneratorBase.hpp"
 #include "GeneratorGridDistribution.hpp"
 #include "GeneratorMultipleObjects.hpp"

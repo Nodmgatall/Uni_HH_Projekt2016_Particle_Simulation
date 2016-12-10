@@ -9,8 +9,8 @@
 #define SRC_GENERATORS_PARTICLEGENERATORBASE_HPP_
 
 #include "../Definitions.hpp"
-#include "../IO/Options.hpp"
 #include "../datastructures/DatastructureBase.hpp"
+#include "../options/Options.hpp"
 class GeneratorBase {
   protected:
     s_options&  m_options;

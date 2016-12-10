@@ -3,8 +3,8 @@
 #include "../Definitions.hpp"
 #include <map>
 
+#include "../options/Options.hpp"
 #include "Config.hpp"
-#include "Options.hpp"
 
 class ConfigLoader {
   public:

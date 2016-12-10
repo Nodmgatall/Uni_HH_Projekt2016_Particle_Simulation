@@ -4,7 +4,6 @@
 #include <map>
 #include <vector>
 
-#include "Options.hpp"
 void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_options) {
     Benchmark::begin ("OptionHandler");
 
