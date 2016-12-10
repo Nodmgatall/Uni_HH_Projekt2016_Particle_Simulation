@@ -5,7 +5,7 @@
  *      Author: benjamin
  */
 
-#include "EnumAlgorithmType.hpp"
+#include "../enums/EnumAlgorithmType.hpp"
 
 const char* g_algorithm_names[] = { "UNDEFINED", "LENNARD_JONES", "SMOTHED_PARTICLE_HYDRODYNAMICS", "DISSIPATIVE_PARTICLE_DYNAMICS" };
 

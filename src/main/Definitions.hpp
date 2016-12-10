@@ -10,10 +10,10 @@
 #ifdef OMP_AVAILABLE
 #include <omp.h>
 #endif
-#include "options/EnumAlgorithmType.hpp"
-#include "options/EnumDatastructureType.hpp"
-#include "options/EnumInputType.hpp"
-#include "options/EnumOutputType.hpp"
+#include "enums/EnumAlgorithmType.hpp"
+#include "enums/EnumDatastructureType.hpp"
+#include "enums/EnumInputType.hpp"
+#include "enums/EnumOutputType.hpp"
 #include <cstdio>
 #include <cstdlib>
 #include <ctime>
