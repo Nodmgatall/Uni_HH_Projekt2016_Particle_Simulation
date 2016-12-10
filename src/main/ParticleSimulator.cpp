@@ -19,12 +19,17 @@
 #include "datastructures/DatastructureGrid.hpp"
 #include "generators/GeneratorFactory.hpp"
 
-ParticleSimulator::ParticleSimulator (s_options& p_options)
-: m_options (p_options),
-  m_writer (ParticleWriterCSV (p_options.m_write_modes, std::string (log_folder) + "/data")),
-  m_border (BorderWrapparound (m_options.m_bounds)), m_algorithm (AlgorithmLennardJones (m_options)),
-  m_datastructure (DatastructureFactory::build (m_options, m_border, m_algorithm, m_writer)),
-  m_generator (GeneratorFactory::build (m_options)) {
+ParticleSimulator::ParticleSimulator (s_options& p_options) //
+    : m_options (p_options),                                //
+      m_writer (ParticleWriterCSV (p_options.m_write_modes,
+                                   std::string (log_folder) + "/data")), //
+      m_border (BorderWrapparound (m_options.m_bounds)),                 //
+      m_algorithm (AlgorithmLennardJones (m_options)),                   //
+      m_datastructure (DatastructureFactory::build (m_options,
+                                                    m_border,
+                                                    m_algorithm,
+                                                    m_writer)), //
+      m_generator (GeneratorFactory::build (m_options)) {
     Benchmark::begin ("ParticleSimulator");
     if (m_options.m_in_file_name.length () > 0) {
         DEBUG_BEGIN << "loading from file: " << m_options.m_in_file_name << DEBUG_END;

@@ -11,15 +11,6 @@
 #include <boost/test/unit_test.hpp>
 #include <cstring>
 
-BOOST_AUTO_TEST_CASE (testGeneratorNotImplementedException) {
-    GeneratorNotImplementedException exception (e_generator_type::GRID_DISTRIBUTION);
-    BOOST_CHECK_EQUAL (std::string (exception.what ()),
-                       "generator mode ( 4 ) is not (fully) implemented");
-}
-BOOST_AUTO_TEST_CASE (testGeneratorInvalidException) {
-    GeneratorInvalidException exception (-1);
-    BOOST_CHECK_EQUAL (std::string (exception.what ()), "generator mode ( -1 ) is undefined");
-}
 BOOST_AUTO_TEST_CASE (testParticleGeneratorRandom) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
@@ -59,5 +50,5 @@ BOOST_AUTO_TEST_CASE (testParticleGeneratorError) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
     options.m_mode = static_cast<e_generator_type> (-1);
-    BOOST_CHECK_THROW (GeneratorFactory::build (options), GeneratorInvalidException);
+    BOOST_CHECK_THROW (GeneratorFactory::build (options), GeneratorTypeInvalidException);
 }
