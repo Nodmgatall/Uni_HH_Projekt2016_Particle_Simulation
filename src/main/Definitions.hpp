@@ -11,7 +11,7 @@
 #include <omp.h>
 #endif
 #include "options/EnumAlgorithmType.hpp"
-#include "options/EnumGeneratorMode.hpp"
+#include "options/EnumGeneratorType.hpp"
 #include "options/EnumOutputFormat.hpp"
 #include <cstdlib>
 #include <ctime>

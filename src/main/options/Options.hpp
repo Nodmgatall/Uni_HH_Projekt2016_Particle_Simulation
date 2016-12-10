@@ -27,7 +27,7 @@ struct s_options {
                                                           { VELOCITY, true },
                                                           { ACCELERATION, true },
                                                           { PARTICLE_TYPE, false } };
-    e_generator_mode m_mode                                         = GRID_DISTRIBUTION;
+    e_generator_type m_mode                                         = GRID_DISTRIBUTION;
     unsigned int     m_seed                                         = 123456789;
     unsigned long    m_particle_count                               = 0;
     unsigned long    m_max_iterations                               = 0;

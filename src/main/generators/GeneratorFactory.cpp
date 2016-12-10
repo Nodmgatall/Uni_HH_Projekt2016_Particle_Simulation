@@ -9,23 +9,23 @@
 
 GeneratorBase* GeneratorFactory::build (s_options& p_options) {
     switch (p_options.m_mode) {
-        case e_generator_mode::RANDOM: {
+        case e_generator_type::RANDOM: {
             return new GeneratorRandom (p_options);
             break;
         }
-        case e_generator_mode::SINGLE_OBJECT_MIDDLE: {
+        case e_generator_type::SINGLE_OBJECT_MIDDLE: {
             return new GeneratorSingleObjectMiddle (p_options);
             break;
         }
-        case e_generator_mode::GRID_DISTRIBUTION: {
+        case e_generator_type::GRID_DISTRIBUTION: {
             return new GeneratorGridDistribution (p_options);
             break;
         }
-        case e_generator_mode::MULTIPLE_OBJECTS: {
+        case e_generator_type::MULTIPLE_OBJECTS: {
             return new GeneratorMultipleObjects (p_options);
             break;
         }
-        case e_generator_mode::RANDOM_UNIFORM: {
+        case e_generator_type::RANDOM_UNIFORM: {
             return new GeneratorRandomUniform (p_options);
             break;
         }
