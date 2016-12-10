@@ -36,13 +36,9 @@ class DatastructureGrid : public DatastructureBase {
      */
     Vec3f m_size_per_cell;
     /**
-     * the number of iterations between to tests that all particles stay within the given bounds
-     */
-    unsigned const int m_iterations_between_rearange_particles;
-    /**
      * the number of iterations until next test that all particles stay within the given bounds
      */
-    unsigned int m_iterations_until_rearange_particles;
+    int m_iterations_until_rearange_particles;
     /**
      * the current position of particles is stored in the array with this index
      * m_idx_a != m_idx_b

@@ -4,11 +4,10 @@ DatastructureGrid::DatastructureGrid (s_options&          p_options,
                                       BorderBase&         p_border,
                                       AlgorithmBase&      p_algorithm,
                                       ParticleWriterBase& p_particle_writer)
-: DatastructureBase (p_options, p_border, p_algorithm, p_particle_writer),
-  m_iterations_between_rearange_particles (20) {
+: DatastructureBase (p_options, p_border, p_algorithm, p_particle_writer) {
     unsigned int idx_x, idx_y, idx_z;
     long         max_usefull_size         = pow (m_options.m_particle_count, 1.0 / 3.0);
-    m_iterations_until_rearange_particles = m_iterations_between_rearange_particles;
+    m_iterations_until_rearange_particles = m_options.m_max_iterations_between_datastructure_rebuild;
     m_stucture_name                       = "Grid";
     m_max_id                              = 0;
     m_idx_a = !(m_idx_b = 0);
@@ -263,7 +262,7 @@ void DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
         }
     }
     Benchmark::end ();
-    if (!m_iterations_until_rearange_particles) {
+    if (m_iterations_until_rearange_particles < 1) {
         Benchmark::begin ("step 3", false);
         for (parallel_offset = 0; parallel_offset < 3; parallel_offset++) {
             for (idx_x = parallel_offset; idx_x < m_size.x; idx_x += 3) {
@@ -277,7 +276,7 @@ void DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
         }
         Benchmark::end ();
     }
-    m_iterations_until_rearange_particles = m_iterations_between_rearange_particles;
+    m_iterations_until_rearange_particles = m_options.m_max_iterations_between_datastructure_rebuild;
     m_idx_b = !(m_idx_a = m_idx_b);
 }
 /**
