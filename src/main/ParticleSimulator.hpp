@@ -21,7 +21,7 @@ class ParticleSimulator {
     ParticleFileWriter*       m_particle_file_writer;
     bool                      m_save_config;
     ParticleBoundsCorrection* m_particle_bounds_correction;
-    AlgorithmLennardJones*    m_algorithm;
+    AlgorithmBase*            m_algorithm;
     ParticlesBase*            m_particles;
 
   public:
