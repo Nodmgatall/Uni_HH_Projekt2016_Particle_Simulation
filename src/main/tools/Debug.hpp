@@ -41,10 +41,6 @@ struct s_debug_stream : std::ofstream {
         print (var ? "ON" : "OFF");
         return *this;
     }
-    s_debug_stream& operator<< (const e_output_format& var) {
-        print (g_enum_data_format_to_string_map[var]);
-        return *this;
-    }
     s_debug_stream& operator<< (const e_particle_variable& var) {
         print (g_enum_particle_variable_to_string_map[var]);
         return *this;

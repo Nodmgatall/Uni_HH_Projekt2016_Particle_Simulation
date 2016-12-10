@@ -19,7 +19,6 @@ std::ostream& operator<< (std::ostream& stream, const e_generator_mode p_generat
         case e_generator_mode::GRID_DISTRIBUTION:
         case e_generator_mode::MULTIPLE_OBJECTS:
             return stream << g_generator_names[p_generator_mode];
-
         default:
             throw GeneratorModeInvalidException (p_generator_mode);
     }

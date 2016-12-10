@@ -11,8 +11,8 @@
 #include <omp.h>
 #endif
 #include "options/EnumAlgorithmType.hpp"
-
 #include "options/EnumGeneratorMode.hpp"
+#include "options/EnumOutputFormat.hpp"
 #include <cstdlib>
 #include <ctime>
 #include <exception>
@@ -33,24 +33,6 @@
 
 #define ENUM_TO_STRING_ENTRY(enum_name, enum_member) \
     std::pair<enum_name, const char*> (enum_name::enum_member, #enum_member)
-/////////////////////////////////////////////////////////////////////////////////////////////
-enum e_output_format {
-    CSV,      //
-    LAMMPS,   //
-    ESPRESSO, //
-    GROMACS,  //
-    VMD,      //
-    VTK
-};
-static std::map<e_output_format, const char*> g_enum_data_format_to_string_map = {
-    ENUM_TO_STRING_ENTRY (e_output_format, CSV),      //
-    ENUM_TO_STRING_ENTRY (e_output_format, LAMMPS),   //
-    ENUM_TO_STRING_ENTRY (e_output_format, ESPRESSO), //
-    ENUM_TO_STRING_ENTRY (e_output_format, GROMACS),  //
-    ENUM_TO_STRING_ENTRY (e_output_format, VMD),      //
-    ENUM_TO_STRING_ENTRY (e_output_format, VTK),
-};
-
 /////////////////////////////////////////////////////////////////////////////////////////////
 enum e_particle_variable {
     ID,           //
