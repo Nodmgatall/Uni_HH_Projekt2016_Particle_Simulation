@@ -10,7 +10,6 @@
 #include "../../main/IO/ParticleWriterBase.hpp"
 #include "../../main/algorithms/AlgorithmBase.hpp"
 #include "../../main/borders/BorderBase.hpp"
-#include "../../main/datastructures/DatastructureGrid.hpp"
 #include <boost/test/unit_test.hpp>
 #include <cstring>
 
@@ -48,13 +47,11 @@ class ParticleWriter : public ParticleWriterBase {
         m_start_called = false;
     }
 };
-
 class Algorithm : public AlgorithmBase {
   public:
     std::vector<int>              m_step_1_helper;
     std::vector<std::vector<int>> m_step_2_helper;
     int                           m_count;
-
     Algorithm (s_options& p_options) : AlgorithmBase (p_options), m_count (0) {
     }
     void step_1 (const data_type& p_position_ax,
@@ -168,13 +165,12 @@ BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_1) {
     options.m_bounds         = Vec3f (3, 3, 3);
     options.m_cut_off_radius = 1;
     options.m_timestep       = 1;
-    BoundsCorrection border (options.m_bounds);
-    Algorithm        algorithm (options);
-    ParticleWriter   writer = ParticleWriter (0);
-    ;
-    DatastructureGrid  particlesGrid (options, border, algorithm, writer);
-    std::vector<Vec3f> allParticles;
-    int                count = 0;
+    BoundsCorrection       border (options.m_bounds);
+    Algorithm              algorithm (options);
+    ParticleWriter         writer = ParticleWriter (0);
+    DatastructureUnderTest particlesGrid (options, border, algorithm, writer);
+    std::vector<Vec3f>     allParticles;
+    int                    count = 0;
     {
         Vec3f vec = Vec3f (0.5, 0.5, 0.5);
         allParticles.push_back (vec);
@@ -197,7 +193,7 @@ BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_1) {
     }
     algorithm.test_prepare (-count);
     BOOST_CHECK_EQUAL (particlesGrid.get_particle_count (), -count);
-    particlesGrid.run_simulation_iteration ();
+    particlesGrid.run_simulation_iteration (0);
     for (unsigned int i = 0; i < allParticles.size (); i++) {
         BOOST_CHECK_EQUAL (algorithm.m_step_1_helper[i], 1);
         BOOST_CHECK_EQUAL (algorithm.m_step_2_helper[i][i], 0);
@@ -234,12 +230,12 @@ BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_2) {
     options.m_bounds         = Vec3f (size, size, size);
     options.m_cut_off_radius = 1;
     options.m_timestep       = 1;
-    BoundsCorrection   border (options.m_bounds);
-    Algorithm          algorithm (options);
-    ParticleWriter     writer = ParticleWriter (0);
-    DatastructureGrid  particlesGrid (options, border, algorithm, writer);
-    std::vector<Vec3f> allParticles;
-    int                count = 0;
+    BoundsCorrection       border (options.m_bounds);
+    Algorithm              algorithm (options);
+    ParticleWriter         writer = ParticleWriter (0);
+    DatastructureUnderTest particlesGrid (options, border, algorithm, writer);
+    std::vector<Vec3f>     allParticles;
+    int                    count = 0;
     for (int x = 0; x < 5; x++) {
         for (int y = 0; y < 5; y++) {
             for (int z = 0; z < 5; z++) {
@@ -250,7 +246,7 @@ BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_2) {
         }
     }
     algorithm.test_prepare (-count);
-    particlesGrid.run_simulation_iteration ();
+    particlesGrid.run_simulation_iteration (0);
     BOOST_CHECK_EQUAL (particlesGrid.get_particle_count (), -count);
     for (unsigned int i = 0; i < allParticles.size (); i++) {
         BOOST_CHECK_EQUAL (algorithm.m_step_1_helper[i], 1);
@@ -289,13 +285,13 @@ BOOST_AUTO_TEST_CASE (test_serialize) {
     options.m_bounds         = Vec3f (size, size, size);
     options.m_cut_off_radius = 1;
     options.m_timestep       = 1;
-    BoundsCorrection   border (options.m_bounds);
-    Algorithm          algorithm (options);
-    ParticleWriter     writer = ParticleWriter (count_3 * count_3 * count_3);
-    DatastructureGrid  particlesGrid (options, border, algorithm, writer);
-    std::vector<Vec3f> allParticles;
-    std::vector<Vec3l> allParticlesIndicees;
-    int                count = 0;
+    BoundsCorrection       border (options.m_bounds);
+    Algorithm              algorithm (options);
+    ParticleWriter         writer = ParticleWriter (count_3 * count_3 * count_3);
+    DatastructureUnderTest particlesGrid (options, border, algorithm, writer);
+    std::vector<Vec3f>     allParticles;
+    std::vector<Vec3l>     allParticlesIndicees;
+    int                    count = 0;
     for (int x = 0; x < count_3; x++) {
         for (int y = 0; y < count_3; y++) {
             for (int z = 0; z < count_3; z++) {
