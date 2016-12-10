@@ -2,13 +2,16 @@
 #define PARTICLE_SIMULATOR_HPP
 
 #include "Definitions.hpp"
+
 #include "IO/OptionHandler.hpp"
+
 #include "IO/ParticleWriterCSV.hpp"
-#include "algorithms/AlgorithmLennardJones.hpp"
 #include "borders/BorderWrapparound.hpp"
-#include "datastructures/DatastructureBase.hpp"
+
+#include "algorithms/AlgorithmFactory.hpp"
 #include "datastructures/DatastructureFactory.hpp"
 #include "generators/GeneratorFactory.hpp"
+
 #include <functional>
 #include <getopt.h>
 #include <iostream>

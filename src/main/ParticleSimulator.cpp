@@ -1,30 +1,12 @@
-#include <memory>
 
-#include <getopt.h>
-#include <stdio.h>
-#include <string.h>
-#include <unistd.h>
-#include <vector>
-
-#include "Definitions.hpp"
 #include "ParticleSimulator.hpp"
-#include "datastructures/DatastructureList.hpp"
-#include "tools/Usage.hpp"
-
-#include "options/Options.hpp"
-#include <memory>
-#include <unistd.h>
-
-#include "datastructures/DatastructureBase.hpp"
-#include "datastructures/DatastructureGrid.hpp"
-#include "generators/GeneratorFactory.hpp"
 
 ParticleSimulator::ParticleSimulator (s_options& p_options) //
     : m_options (p_options),                                //
       m_writer (ParticleWriterCSV (p_options.m_write_modes,
                                    std::string (log_folder) + "/data")), //
       m_border (BorderWrapparound (m_options.m_bounds)),                 //
-      m_algorithm (AlgorithmLennardJones (m_options)),                   //
+      m_algorithm (AlgorithmFactory::build (m_options)),                 //
       m_datastructure (DatastructureFactory::build (m_options,
                                                     m_border,
                                                     m_algorithm,
