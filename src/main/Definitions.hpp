@@ -10,6 +10,7 @@
 #ifdef OMP_AVAILABLE
 #include <omp.h>
 #endif
+#include "options/EnumAlgorithmType.hpp"
 #include <cstdlib>
 #include <ctime>
 #include <exception>
@@ -46,18 +47,6 @@ static std::map<e_generator_mode, const char*> g_enum_generator_mode_to_string_m
     ENUM_TO_STRING_ENTRY (e_generator_mode, SINGLE_OBJECT_MIDDLE),
     ENUM_TO_STRING_ENTRY (e_generator_mode, GRID_DISTRIBUTION),
 };
-/////////////////////////////////////////////////////////////////////////////////////////////
-enum e_algorithm_type {
-    LENNARD_JONES,                  //
-    SMOTHED_PARTICLE_HYDRODYNAMICS, //
-    DISSIPATIVE_PARTICLE_DYNAMICS
-};
-static std::map<e_algorithm_type, const char*> g_enum_algorithm_type_to_string_map = {
-    ENUM_TO_STRING_ENTRY (e_algorithm_type, LENNARD_JONES),
-    ENUM_TO_STRING_ENTRY (e_algorithm_type, SMOTHED_PARTICLE_HYDRODYNAMICS),
-    ENUM_TO_STRING_ENTRY (e_algorithm_type, DISSIPATIVE_PARTICLE_DYNAMICS),
-};
-
 /////////////////////////////////////////////////////////////////////////////////////////////
 enum e_data_format {
     CSV,      //
