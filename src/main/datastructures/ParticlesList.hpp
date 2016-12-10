@@ -63,7 +63,10 @@ class ParticlesList : public ParticlesBase {
     std::vector<std::vector<data_type>> m_mat_accelerations_y;
     std::vector<std::vector<data_type>> m_mat_accelerations_z;
 
-    ParticlesList (s_options &p_options, ParticleBoundsCorrection &p_particle_bounds_correction, AlgorithmBase &p_algorithm);
+    ParticlesList (s_options&                p_options,
+                   ParticleBoundsCorrection& p_particle_bounds_correction,
+                   AlgorithmBase&            p_algorithm,
+                   ParticleFileWriter&       p_particle_writer);
 
     ~ParticlesList ();
     void add_particle (Vec3f p_position);
@@ -71,39 +74,39 @@ class ParticlesList : public ParticlesBase {
     unsigned long get_particle_count ();
     void run_simulation_iteration (unsigned long p_iteration_number);
     void build_lists ();
-    void build_lists_smarter (data_type *   p_distances_x,
-                              data_type *   p_distances_y,
-                              data_type *   p_distances_z,
-                              data_type *   p_distances_squared,
+    void build_lists_smarter (data_type*    p_distances_x,
+                              data_type*    p_distances_y,
+                              data_type*    p_distances_z,
+                              data_type*    p_distances_squared,
                               unsigned long p_size_distance_vectors);
     void calculate_distance_vectors (unsigned long p_particle_idx,
-                                     data_type *   p_distances_x,
-                                     data_type *   p_distances_y,
-                                     data_type *   p_distances_z,
-                                     data_type *   p_positions_x,
-                                     data_type *   p_positions_y,
-                                     data_type *   p_positions_z,
+                                     data_type*    p_distances_x,
+                                     data_type*    p_distances_y,
+                                     data_type*    p_distances_z,
+                                     data_type*    p_positions_x,
+                                     data_type*    p_positions_y,
+                                     data_type*    p_positions_z,
                                      unsigned long start_idx,
                                      unsigned long end_idx);
     data_type get_cnt_average_neighbours ();
-    void calculate_distances_squared (data_type *   p_distances_squared,
-                                      data_type *   p_distances_x,
-                                      data_type *   p_distances_y,
-                                      data_type *   p_distances_z,
+    void calculate_distances_squared (data_type*    p_distances_squared,
+                                      data_type*    p_distances_x,
+                                      data_type*    p_distances_y,
+                                      data_type*    p_distances_z,
                                       unsigned long size);
-    void serialize (std::shared_ptr<ParticleFileWriter> p_writer);
+    void serialize ();
     void get_current_status (unsigned long               p_idx_first,
                              unsigned long               p_segment_length,
-                             std::vector<unsigned long> *p_ids,
-                             std::vector<data_type> *    p_positions_x,
-                             std::vector<data_type> *    p_positions_y,
-                             std::vector<data_type> *    p_positions_z,
-                             std::vector<data_type> *    p_velocities_x,
-                             std::vector<data_type> *    p_velocities_y,
-                             std::vector<data_type> *    p_velocities_z,
-                             std::vector<data_type> *    p_accelerations_x,
-                             std::vector<data_type> *    p_accelerations_y,
-                             std::vector<data_type> *    p_accelerations_z);
+                             std::vector<unsigned long>* p_ids,
+                             std::vector<data_type>*     p_positions_x,
+                             std::vector<data_type>*     p_positions_y,
+                             std::vector<data_type>*     p_positions_z,
+                             std::vector<data_type>*     p_velocities_x,
+                             std::vector<data_type>*     p_velocities_y,
+                             std::vector<data_type>*     p_velocities_z,
+                             std::vector<data_type>*     p_accelerations_x,
+                             std::vector<data_type>*     p_accelerations_y,
+                             std::vector<data_type>*     p_accelerations_z);
     // void update_original_vectors (unsigned long p_start_idx, unsigned long
     // p_segment_length);
 };

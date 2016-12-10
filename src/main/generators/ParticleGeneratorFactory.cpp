@@ -7,7 +7,7 @@
 
 #include "ParticleGeneratorFactory.hpp"
 
-std::unique_ptr<ParticleGeneratorBase> ParticleGeneratorFactory::build (s_options &p_options) {
+std::unique_ptr<ParticleGeneratorBase> ParticleGeneratorFactory::build (s_options& p_options) {
     std::unique_ptr<ParticleGeneratorBase> result = 0;
     switch (p_options.m_mode) {
         case e_generator_mode::RANDOM: {

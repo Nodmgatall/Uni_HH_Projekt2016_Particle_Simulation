@@ -12,7 +12,7 @@ struct ParticleCell {
     std::vector<unsigned long> m_ids;
     Vec3f                      m_corner000, m_corner111;
     Vec3l                      m_idx; // refer to ParticlesGrid::m_cells
-    ParticleCell (Vec3l p_idx, Vec3l p_size, Vec3f &p_bounds);
+    ParticleCell (Vec3l p_idx, Vec3l p_size, Vec3f& p_bounds);
     void add_particle (Vec3f p_current_position, Vec3f p_old_position, int p_current_index, int p_id);
 };
 
@@ -54,20 +54,23 @@ class ParticlesGrid : public ParticlesBase {
      */
     unsigned int  m_idx_b;
     unsigned long get_cell_index (long x, long y, long z);
-    ParticleCell &get_cell_at (long x, long y, long z);
-    ParticleCell &get_cell_for_particle (data_type x, data_type y, data_type z);
-    ParticleCell &get_cell_for_particle (Vec3f m_position);
-    void moveParticle (ParticleCell &p_cell_from, ParticleCell &p_cell_to, long p_index_from);
-    void step_1_prepare_cell (ParticleCell &p_cell);
-    void step_2a_calculate_inside_cell (ParticleCell &p_cell);
-    void step_2b_calculate_between_neigbours (unsigned int &p_x, unsigned int &p_y, unsigned int &p_z);
-    void step_2b_calculate_between_cells (ParticleCell &p_cell_i, ParticleCell &p_cell_j);
-    void step_3_remove_wrong_particles_from_cell (ParticleCell &p_cell);
+    ParticleCell& get_cell_at (long x, long y, long z);
+    ParticleCell& get_cell_for_particle (data_type x, data_type y, data_type z);
+    ParticleCell& get_cell_for_particle (Vec3f m_position);
+    void moveParticle (ParticleCell& p_cell_from, ParticleCell& p_cell_to, long p_index_from);
+    void step_1_prepare_cell (ParticleCell& p_cell);
+    void step_2a_calculate_inside_cell (ParticleCell& p_cell);
+    void step_2b_calculate_between_neigbours (unsigned int& p_x, unsigned int& p_y, unsigned int& p_z);
+    void step_2b_calculate_between_cells (ParticleCell& p_cell_i, ParticleCell& p_cell_j);
+    void step_3_remove_wrong_particles_from_cell (ParticleCell& p_cell);
 
   public:
-    ParticlesGrid (s_options &p_options, ParticleBoundsCorrection &p_particle_bounds_correction, AlgorithmBase &p_algorithm);
+    ParticlesGrid (s_options&                p_options,
+                   ParticleBoundsCorrection& p_particle_bounds_correction,
+                   AlgorithmBase&            p_algorithm,
+                   ParticleFileWriter&       p_particle_writer);
     ~ParticlesGrid ();
-    void serialize (std::shared_ptr<ParticleFileWriter> p_writer);
+    void serialize ();
     void run_simulation_iteration (unsigned long p_iteration_number = 0);
     void add_particle (Vec3f p_current_position);
     void add_particle (Vec3f p_current_position, Vec3f p_current_velocity);

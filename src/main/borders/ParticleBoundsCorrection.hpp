@@ -10,10 +10,10 @@
 #include "../Vec3.hpp"
 class ParticleBoundsCorrection {
   protected:
-    Vec3f &m_bounds;
+    Vec3f& m_bounds;
 
   public:
-    ParticleBoundsCorrection (Vec3f &p_bounds) : m_bounds (p_bounds) {
+    ParticleBoundsCorrection (Vec3f& p_bounds) : m_bounds (p_bounds) {
     }
     virtual ~ParticleBoundsCorrection () {
     }
@@ -29,20 +29,20 @@ class ParticleBoundsCorrection {
      * @param m_corner111
      * @return
      */
-    virtual bool updatePosition (data_type &  m_x,
-                                 data_type &  m_y,
-                                 data_type &  m_z,
-                                 data_type &  m_other_x,
-                                 data_type &  m_other_y,
-                                 data_type &  m_other_z,
-                                 const Vec3f &m_corner000,
-                                 const Vec3f &m_corner111) = 0;
-    virtual bool updatePosition (data_type &m_x,
-                                 data_type &m_y,
-                                 data_type &m_z,
-                                 data_type &m_other_x,
-                                 data_type &m_other_y,
-                                 data_type &m_other_z) = 0;
+    virtual bool updatePosition (data_type&   m_x,
+                                 data_type&   m_y,
+                                 data_type&   m_z,
+                                 data_type&   m_other_x,
+                                 data_type&   m_other_y,
+                                 data_type&   m_other_z,
+                                 const Vec3f& m_corner000,
+                                 const Vec3f& m_corner111) = 0;
+    virtual bool updatePosition (data_type& m_x,
+                                 data_type& m_y,
+                                 data_type& m_z,
+                                 data_type& m_other_x,
+                                 data_type& m_other_y,
+                                 data_type& m_other_z) = 0;
 };
 
 #endif /* SRC_ALGORITHMS_PARTICLEBOUNDSCORRECTION_HPP_ */

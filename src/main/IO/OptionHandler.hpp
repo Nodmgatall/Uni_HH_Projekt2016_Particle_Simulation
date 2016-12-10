@@ -11,10 +11,10 @@
 
 class OptionHandler {
   public:
-    void handle_options (int p_argc, char **p_argv, s_options &p_options);
+    void handle_options (int p_argc, char** p_argv, s_options& p_options);
 
   private:
-    void print_choosen_options (s_options &p_options);
+    void print_choosen_options (s_options& p_options);
     void print_usage_particle_sim ();
     void print_usage_generation_mode ();
 };

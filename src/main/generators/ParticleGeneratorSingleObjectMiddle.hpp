@@ -13,7 +13,7 @@
 
 class ParticleGeneratorSingleObjectMiddle : public ParticleGeneratorBase {
   public:
-    ParticleGeneratorSingleObjectMiddle (s_options &p_options);
+    ParticleGeneratorSingleObjectMiddle (s_options& p_options);
     virtual ~ParticleGeneratorSingleObjectMiddle ();
     void generate (std::shared_ptr<ParticlesBase> p_particles);
 };

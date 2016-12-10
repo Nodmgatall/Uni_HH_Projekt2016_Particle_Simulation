@@ -29,52 +29,52 @@ struct Vec3 {
         y = v.y;
         z = v.z;
     }
-    inline Vec3<T> operator+ (const Vec3<T> &other) {
+    inline Vec3<T> operator+ (const Vec3<T>& other) {
         return Vec3<T> (x + other.x, y + other.y, z + other.z);
     }
-    inline Vec3<T> operator+= (const Vec3<T> &other) {
+    inline Vec3<T> operator+= (const Vec3<T>& other) {
         x += other.x;
         y += other.y;
         z += other.z;
         return *this;
     }
-    inline Vec3<T> operator+= (const T &s) {
+    inline Vec3<T> operator+= (const T& s) {
         x += s;
         y += s;
         z += s;
         return *this;
     }
-    inline Vec3<T> operator- (const Vec3<T> &other) {
+    inline Vec3<T> operator- (const Vec3<T>& other) {
         return Vec3<T> (x - other.x, y - other.y, z - other.z);
     }
-    inline Vec3<T> operator- (const T &s) {
+    inline Vec3<T> operator- (const T& s) {
         return Vec3<T> (x - s, y - s, z - s);
     }
-    inline Vec3<T> operator* (const Vec3<T> &other) {
+    inline Vec3<T> operator* (const Vec3<T>& other) {
         return Vec3<T> (x * other.x, y * other.y, z * other.z);
     }
-    inline Vec3<T> operator/ (const T &s) {
+    inline Vec3<T> operator/ (const T& s) {
         return Vec3<T> (x / s, y / s, z / s);
     }
-    inline Vec3<T> operator/ (const Vec3<T> &other) {
+    inline Vec3<T> operator/ (const Vec3<T>& other) {
         return Vec3<T> (x / other.x, y / other.y, z / other.z);
     }
-    inline bool operator== (const Vec3<T> &other) {
+    inline bool operator== (const Vec3<T>& other) {
         return (x == other.x) && (y == other.y) && (z == other.z);
     }
-    inline bool operator!= (const Vec3<T> &other) {
+    inline bool operator!= (const Vec3<T>& other) {
         return (x != other.x) || (y != other.y) || (z != other.z);
     }
-    inline static Vec3<T> max (const Vec3<T> &a, const Vec3<T> &b) {
+    inline static Vec3<T> max (const Vec3<T>& a, const Vec3<T>& b) {
         return Vec3<T> (a.x > b.x ? a.x : b.x, a.y > b.y ? a.y : b.y, a.z > b.z ? a.z : b.z);
     }
-    inline static Vec3<T> min (const Vec3<T> &a, const Vec3<T> &b) {
+    inline static Vec3<T> min (const Vec3<T>& a, const Vec3<T>& b) {
         return Vec3<T> (a.x < b.x ? a.x : b.x, a.y < b.y ? a.y : b.y, a.z < b.z ? a.z : b.z);
     }
     inline T length () {
         return sqrt (x * x + y * y + z * z);
     }
-    inline friend std::ostream &operator<< (std::ostream &stream, const Vec3<T> vec) {
+    inline friend std::ostream& operator<< (std::ostream& stream, const Vec3<T> vec) {
         return stream << "Vec3(" << vec.x << "," << vec.y << "," << vec.z << ")";
     }
 };

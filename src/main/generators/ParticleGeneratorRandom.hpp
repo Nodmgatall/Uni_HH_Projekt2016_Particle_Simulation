@@ -12,7 +12,7 @@
 
 class ParticleGeneratorRandom : public ParticleGeneratorBase {
   public:
-    ParticleGeneratorRandom (s_options &p_options);
+    ParticleGeneratorRandom (s_options& p_options);
     virtual ~ParticleGeneratorRandom ();
     void generate (std::shared_ptr<ParticlesBase> p_particles);
 };

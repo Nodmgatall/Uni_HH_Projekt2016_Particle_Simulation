@@ -13,14 +13,14 @@
 #include "../datastructures/ParticlesBase.hpp"
 class ParticleGeneratorBase {
   protected:
-    s_options & m_options;
+    s_options&  m_options;
     std::string m_stucture_name;
 
   public:
     virtual void generate (std::shared_ptr<ParticlesBase> p_particles) = 0;
-    ParticleGeneratorBase (s_options &p_options);
+    ParticleGeneratorBase (s_options& p_options);
     virtual ~ParticleGeneratorBase ();
-    const std::string &get_stucture_name () const;
+    const std::string& get_stucture_name () const;
 };
 
 #endif /* SRC_GENERATORS_PARTICLEGENERATORBASE_HPP_ */

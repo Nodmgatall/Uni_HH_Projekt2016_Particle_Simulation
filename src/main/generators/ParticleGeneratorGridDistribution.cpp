@@ -8,7 +8,7 @@
 #include "ParticleGeneratorGridDistribution.hpp"
 #include "../tools/Debug.hpp"
 
-ParticleGeneratorGridDistribution::ParticleGeneratorGridDistribution (s_options &p_options)
+ParticleGeneratorGridDistribution::ParticleGeneratorGridDistribution (s_options& p_options)
 : ParticleGeneratorBase (p_options) {
     m_stucture_name = "ParticleGeneratorGridDistribution";
 }

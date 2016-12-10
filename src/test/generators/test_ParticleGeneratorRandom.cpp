@@ -16,13 +16,16 @@
 class Particles : public ParticlesBase {
   public:
     int m_particle_count;
-    Particles (s_options &p_options, ParticleBoundsCorrection &p_particle_bounds_correction, AlgorithmBase &p_algorithm)
-    : ParticlesBase (p_options, p_particle_bounds_correction, p_algorithm), m_particle_count (0) {
+    Particles (s_options&                p_options,
+               ParticleBoundsCorrection& p_particle_bounds_correction,
+               AlgorithmBase&            p_algorithm,
+               ParticleFileWriter&       p_particle_file_writer)
+    : ParticlesBase (p_options, p_particle_bounds_correction, p_algorithm, p_particle_file_writer),
+      m_particle_count (0) {
     }
     ~Particles () {
     }
-    void serialize (std::shared_ptr<ParticleFileWriter> p_writer) {
-        (void) p_writer;
+    void serialize () {
     }
     void run_simulation_iteration (unsigned long p_iteration_number = 0) {
         (void) p_iteration_number;
@@ -59,7 +62,10 @@ BOOST_AUTO_TEST_CASE (test1) {
     ParticleGeneratorRandom            generator (options);
     ParticleBoundsCorrectionWraparound border (options.m_bounds);
     AlgorithmLennardJones              algorithm (options);
-    std::shared_ptr<ParticlesBase> particles = std::make_shared<Particles> (options, border, algorithm);
+    ParticleFileWriter                 writer (options.m_write_modes);
+    ;
+    std::shared_ptr<ParticlesBase> particles =
+        std::make_shared<Particles> (options, border, algorithm, writer);
     generator.generate (particles);
     BOOST_CHECK_EQUAL (particles->get_particle_count (), 10L);
 }

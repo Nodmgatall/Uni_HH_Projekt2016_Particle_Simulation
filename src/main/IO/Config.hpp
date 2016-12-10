@@ -13,10 +13,10 @@ struct Config {
     s_options   m_options;
 
     template <class Archive>
-    void serialize (Archive &archive, const unsigned int version) {
+    void serialize (Archive& archive, const unsigned int version) {
         (void) version;
-        archive &BOOST_SERIALIZATION_NVP (m_config_name);
-        archive &BOOST_SERIALIZATION_NVP (m_options);
+        archive& BOOST_SERIALIZATION_NVP (m_config_name);
+        archive& BOOST_SERIALIZATION_NVP (m_options);
     }
 };
 

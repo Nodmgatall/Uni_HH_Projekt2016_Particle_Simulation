@@ -19,23 +19,17 @@
 
 #include "generators/ParticleGeneratorFactory.hpp"
 
-/*clang-format off */
-ParticleSimulator::ParticleSimulator (s_options &p_options)
-:
-
-  m_options (p_options),
-  m_particle_file_writer (std::make_shared<ParticleFileWriter> (p_options.m_write_modes)),
-  m_particle_generator (ParticleGeneratorFactory::build (p_options)), m_particles (0),
-  m_save_config (false) {
+ParticleSimulator::ParticleSimulator (s_options& p_options)
+: m_options (p_options), m_particle_generator (ParticleGeneratorFactory::build (p_options)),
+  m_particles (0), m_particle_file_writer (p_options.m_write_modes), m_save_config (false),
+  m_particle_bounds_correction (p_options.m_bounds), m_algorithm (p_options) {
     DEBUG_BEGIN << "ParticleSimulator()" << DEBUG_END;
-    m_particle_file_writer->set_file_name_base (std::string (log_folder) + "/data");
-    m_save_config = false; // TODO remvove
+    m_particle_file_writer.set_file_name_base (std::string (log_folder) + "/data");
 }
-/*clang-format on */
 
 void ParticleSimulator::simulate () {
     Benchmark::begin ("Simulation");
-    m_particles->serialize (m_particle_file_writer);
+    m_particles->serialize ();
     data_type     current_time = 0.0;
     data_type     max_run_time;
     int           timesteps_until_next_write = m_options.m_write_fequency;
@@ -52,7 +46,7 @@ void ParticleSimulator::simulate () {
         current_time += m_options.m_timestep;
         timesteps_until_next_write--;
         if (!timesteps_until_next_write) {
-            m_particles->serialize (m_particle_file_writer);
+            m_particles->serialize ();
             timesteps_until_next_write = m_options.m_write_fequency;
         }
         iteration_number++;
@@ -65,16 +59,14 @@ void ParticleSimulator::simulate () {
 
 void ParticleSimulator::init_particle_data () {
     Benchmark::begin ("init_particle_data");
-    ParticleBoundsCorrectionWraparound particleBoundsCorrectionWraparound (m_options.m_bounds);
-    AlgorithmLennardJones              algorithm = AlgorithmLennardJones (m_options);
     switch (m_options.m_data_structure) {
         case GRID:
             m_particles =
-                std::make_shared<ParticlesGrid> (m_options, particleBoundsCorrectionWraparound, algorithm);
+                std::make_shared<ParticlesGrid> (m_options, m_particle_bounds_correction, m_algorithm, m_particle_file_writer);
             break;
         case LIST:
             m_particles =
-                std::make_shared<ParticlesList> (m_options, particleBoundsCorrectionWraparound, algorithm);
+                std::make_shared<ParticlesList> (m_options, m_particle_bounds_correction, m_algorithm, m_particle_file_writer);
             break;
         case LISTEDGIRD:
             std::cout << "Mixture of list and grind not implemented" << std::endl;

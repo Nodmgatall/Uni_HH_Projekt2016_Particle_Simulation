@@ -7,28 +7,28 @@
 
 #include "ParticleBoundsCorrectionWraparound.hpp"
 
-ParticleBoundsCorrectionWraparound::ParticleBoundsCorrectionWraparound (Vec3f &p_bounds)
+ParticleBoundsCorrectionWraparound::ParticleBoundsCorrectionWraparound (Vec3f& p_bounds)
 : ParticleBoundsCorrection (p_bounds) {
 }
 
 ParticleBoundsCorrectionWraparound::~ParticleBoundsCorrectionWraparound () {
 }
-bool ParticleBoundsCorrectionWraparound::updatePosition (data_type &m_x,
-                                                         data_type &m_y,
-                                                         data_type &m_z,
-                                                         data_type &m_other_x,
-                                                         data_type &m_other_y,
-                                                         data_type &m_other_z) {
+bool ParticleBoundsCorrectionWraparound::updatePosition (data_type& m_x,
+                                                         data_type& m_y,
+                                                         data_type& m_z,
+                                                         data_type& m_other_x,
+                                                         data_type& m_other_y,
+                                                         data_type& m_other_z) {
     return updatePosition (m_x, m_y, m_z, m_other_x, m_other_y, m_other_z, g_vec3f_0, m_bounds);
 }
-bool ParticleBoundsCorrectionWraparound::updatePosition (data_type &  m_x,
-                                                         data_type &  m_y,
-                                                         data_type &  m_z,
-                                                         data_type &  m_other_x,
-                                                         data_type &  m_other_y,
-                                                         data_type &  m_other_z,
-                                                         const Vec3f &m_corner000,
-                                                         const Vec3f &m_corner111) {
+bool ParticleBoundsCorrectionWraparound::updatePosition (data_type&   m_x,
+                                                         data_type&   m_y,
+                                                         data_type&   m_z,
+                                                         data_type&   m_other_x,
+                                                         data_type&   m_other_y,
+                                                         data_type&   m_other_z,
+                                                         const Vec3f& m_corner000,
+                                                         const Vec3f& m_corner111) {
     Vec3l delta (0);
     if (m_x < m_corner000.x) {
         delta.x = -1;

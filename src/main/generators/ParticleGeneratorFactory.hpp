@@ -27,8 +27,8 @@ class GeneratorInvalidException : public std::exception {
     }
     GeneratorInvalidException (int p_generator_mode) : m_generator_mode (p_generator_mode) {
     }
-    virtual const char *what () const throw () {
-        char *text = (char *) malloc (100);
+    virtual const char* what () const throw () {
+        char* text = (char*) malloc (100);
         sprintf (text, "generator mode ( %d ) is undefined", m_generator_mode);
         return text;
     }
@@ -40,15 +40,15 @@ class GeneratorNotImplementedException : public std::exception {
   public:
     GeneratorNotImplementedException (int p_generator_mode) : m_generator_mode (p_generator_mode) {
     }
-    virtual const char *what () const throw () {
-        char *text = (char *) malloc (100);
+    virtual const char* what () const throw () {
+        char* text = (char*) malloc (100);
         sprintf (text, "generator mode ( %d ) is not (fully) implemented", m_generator_mode);
         return text;
     }
 };
 class ParticleGeneratorFactory {
   public:
-    static std::unique_ptr<ParticleGeneratorBase> build (s_options &p_options);
+    static std::unique_ptr<ParticleGeneratorBase> build (s_options& p_options);
 };
 
 #endif /* SRC_PARTICLEGENERATOR_HPP_ */

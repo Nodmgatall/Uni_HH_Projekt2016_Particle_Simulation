@@ -1,6 +1,7 @@
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "VerletListTests"
 
+#include "../../main/IO/ParticleFileWriter.hpp"
 #include "../../main/algorithms/AlgorithmLennardJones.hpp"
 #include "../../main/borders/ParticleBoundsCorrectionWraparound.hpp"
 #include "../../main/datastructures/ParticlesList.hpp"
@@ -37,7 +38,8 @@ BOOST_AUTO_TEST_CASE (calculate_distance_vectors) {
     ParticleBoundsCorrectionWraparound border (bounds);
     AlgorithmLennardJones              algorithm (options);
 
-    ParticlesList particle_list (options, border, algorithm);
+    ParticleFileWriter writer (options.m_write_modes);
+    ParticlesList      particle_list (options, border, algorithm, writer);
 
     unsigned long start_pos      = 0;
     unsigned long particle_count = 4;
@@ -86,7 +88,8 @@ BOOST_AUTO_TEST_CASE (calculate_distances_squared) {
     ParticleBoundsCorrectionWraparound border (bounds);
     AlgorithmLennardJones              algorithm (options);
 
-    ParticlesList particle_list (options, border, algorithm);
+    ParticleFileWriter writer (options.m_write_modes);
+    ParticlesList      particle_list (options, border, algorithm, writer);
 
     unsigned long          distances_count = 6;
     std::vector<data_type> distances_squared (6);
@@ -122,7 +125,8 @@ BOOST_AUTO_TEST_CASE (build_lists) {
     ParticleBoundsCorrectionWraparound border (bounds);
     AlgorithmLennardJones              algorithm (options);
 
-    ParticlesList particle_list (options, border, algorithm);
+    ParticleFileWriter writer (options.m_write_modes);
+    ParticlesList      particle_list (options, border, algorithm, writer);
 
     particle_list.m_positions_x            = { 1.5, 1.5, 1.5, 0.75 };
     particle_list.m_positions_y            = { 1.5, 2.0, 2.5, 0.75 };

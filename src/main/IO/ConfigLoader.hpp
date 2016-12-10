@@ -13,8 +13,8 @@ class ConfigLoader {
 
     ConfigLoader ();
     ~ConfigLoader ();
-    void load_config (std::string p_config_name, s_options &p_options);
-    void save_config (std::string p_config_name, s_options &p_options);
+    void load_config (std::string p_config_name, s_options& p_options);
+    void save_config (std::string p_config_name, s_options& p_options);
     void serialize_configs ();
     void deserialize_configs ();
     void list_configs ();

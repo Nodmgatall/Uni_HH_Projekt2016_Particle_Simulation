@@ -71,11 +71,11 @@ void ConfigLoader::deserialize_configs () {
 #endif
 }
 
-void ConfigLoader::load_config (std::string p_config_name, s_options &p_options) {
+void ConfigLoader::load_config (std::string p_config_name, s_options& p_options) {
     p_options = m_configs[p_config_name].m_options;
 }
 
-void ConfigLoader::save_config (std::string p_config_name, s_options &p_options) {
+void ConfigLoader::save_config (std::string p_config_name, s_options& p_options) {
     if (m_configs.find (p_config_name) == m_configs.end ()) {
         Config new_config;
         new_config.m_config_name = p_config_name;

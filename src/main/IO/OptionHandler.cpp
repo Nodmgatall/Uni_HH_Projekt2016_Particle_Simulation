@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "Options.hpp"
-void OptionHandler::handle_options (int p_argc, char **p_argv, s_options &p_options) {
+void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_options) {
     Benchmark::begin ("OptionHandler");
 
     int argv_index;
@@ -239,7 +239,7 @@ void OptionHandler::handle_options (int p_argc, char **p_argv, s_options &p_opti
         }
     }
 }
-void OptionHandler::print_choosen_options (s_options &p_options) {
+void OptionHandler::print_choosen_options (s_options& p_options) {
     Benchmark::begin ("Print-Options");
     (void) p_options;
     // DEBUG_BEGIN << "algorithm     :" << m_algorithm << DEBUG_END;

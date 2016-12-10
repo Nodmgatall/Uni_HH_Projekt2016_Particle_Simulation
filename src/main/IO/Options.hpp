@@ -34,27 +34,27 @@ struct s_options {
     Vec3f            m_bounds         = Vec3f (5.0f, 5.0f, 5.0f);
 
     template <class Archive>
-    void serialize (Archive &archive, const unsigned int version) {
+    void serialize (Archive& archive, const unsigned int version) {
         (void) version;
-        archive &BOOST_SERIALIZATION_NVP (m_algorithm_type);
-        archive &BOOST_SERIALIZATION_NVP (m_autotuneing);
-        archive &BOOST_SERIALIZATION_NVP (m_data_format);
-        archive &BOOST_SERIALIZATION_NVP (m_in_file_name);
-        archive &BOOST_SERIALIZATION_NVP (m_out_file_name);
-        archive &BOOST_SERIALIZATION_NVP (m_run_time_limit);
-        archive &BOOST_SERIALIZATION_NVP (m_timestep);
-        archive &BOOST_SERIALIZATION_NVP (m_verbose);
-        archive &BOOST_SERIALIZATION_NVP (m_write_fequency);
-        archive &BOOST_SERIALIZATION_NVP (m_cut_off_radius);
-        archive &BOOST_SERIALIZATION_NVP (m_data_structure);
-        archive &BOOST_SERIALIZATION_NVP (m_write_modes);
-        archive &BOOST_SERIALIZATION_NVP (m_mode);
-        archive &BOOST_SERIALIZATION_NVP (m_seed);
-        archive &BOOST_SERIALIZATION_NVP (m_particle_count);
-        archive &BOOST_SERIALIZATION_NVP (m_max_iterations);
-        archive &BOOST_SERIALIZATION_NVP (m_bounds.x);
-        archive &BOOST_SERIALIZATION_NVP (m_bounds.y);
-        archive &BOOST_SERIALIZATION_NVP (m_bounds.z);
+        archive& BOOST_SERIALIZATION_NVP (m_algorithm_type);
+        archive& BOOST_SERIALIZATION_NVP (m_autotuneing);
+        archive& BOOST_SERIALIZATION_NVP (m_data_format);
+        archive& BOOST_SERIALIZATION_NVP (m_in_file_name);
+        archive& BOOST_SERIALIZATION_NVP (m_out_file_name);
+        archive& BOOST_SERIALIZATION_NVP (m_run_time_limit);
+        archive& BOOST_SERIALIZATION_NVP (m_timestep);
+        archive& BOOST_SERIALIZATION_NVP (m_verbose);
+        archive& BOOST_SERIALIZATION_NVP (m_write_fequency);
+        archive& BOOST_SERIALIZATION_NVP (m_cut_off_radius);
+        archive& BOOST_SERIALIZATION_NVP (m_data_structure);
+        archive& BOOST_SERIALIZATION_NVP (m_write_modes);
+        archive& BOOST_SERIALIZATION_NVP (m_mode);
+        archive& BOOST_SERIALIZATION_NVP (m_seed);
+        archive& BOOST_SERIALIZATION_NVP (m_particle_count);
+        archive& BOOST_SERIALIZATION_NVP (m_max_iterations);
+        archive& BOOST_SERIALIZATION_NVP (m_bounds.x);
+        archive& BOOST_SERIALIZATION_NVP (m_bounds.y);
+        archive& BOOST_SERIALIZATION_NVP (m_bounds.z);
     }
 };
 #endif

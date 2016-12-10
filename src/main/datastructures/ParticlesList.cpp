@@ -7,10 +7,11 @@
 #include "../tools/Debug.hpp"
 #include "ParticlesList.hpp"
 
-ParticlesList::ParticlesList (s_options &               p_options,
-                              ParticleBoundsCorrection &p_particle_bounds_correction,
-                              AlgorithmBase &           p_algorithm)
-: ParticlesBase (p_options, p_particle_bounds_correction, p_algorithm),
+ParticlesList::ParticlesList (s_options&                p_options,
+                              ParticleBoundsCorrection& p_particle_bounds_correction,
+                              AlgorithmBase&            p_algorithm,
+                              ParticleFileWriter&       p_particle_writer)
+: ParticlesBase (p_options, p_particle_bounds_correction, p_algorithm, p_particle_writer),
   m_average_list_length (0.16), m_next_list_size_multiplier (1.1) {
     m_stucture_name                  = "List";
     m_cutoff_radius                  = 0;
@@ -110,10 +111,10 @@ unsigned long ParticlesList::get_particle_count () {
     return m_positions_x.size ();
 }
 
-void ParticlesList::build_lists_smarter (data_type *   p_distances_x,
-                                         data_type *   p_distances_y,
-                                         data_type *   p_distances_z,
-                                         data_type *   p_distances_squared,
+void ParticlesList::build_lists_smarter (data_type*    p_distances_x,
+                                         data_type*    p_distances_y,
+                                         data_type*    p_distances_z,
+                                         data_type*    p_distances_squared,
                                          unsigned long p_size_distance_vectors) {
     unsigned long          particle_count            = m_positions_x.size ();
     unsigned long          start_pos_distance_vector = 0;
@@ -334,12 +335,12 @@ void ParticlesList::setup_iteration () {
 
 void ParticlesList::calculate_distance_vectors (unsigned long p_particle_idx,
 
-                                                data_type *   p_distances_x,
-                                                data_type *   p_distances_y,
-                                                data_type *   p_distances_z,
-                                                data_type *   p_positions_x,
-                                                data_type *   p_positions_y,
-                                                data_type *   p_positions_z,
+                                                data_type*    p_distances_x,
+                                                data_type*    p_distances_y,
+                                                data_type*    p_distances_z,
+                                                data_type*    p_positions_x,
+                                                data_type*    p_positions_y,
+                                                data_type*    p_positions_z,
                                                 unsigned long start_idx,
                                                 unsigned long end_idx) {
     unsigned long cur_dist_idx;
@@ -361,10 +362,10 @@ void ParticlesList::calculate_distance_vectors (unsigned long p_particle_idx,
         p_distances_z[start_idx + cur_dist_idx] = z - p_positions_z[p_particle_idx + cur_dist_idx + 1];
     }
 }
-void ParticlesList::calculate_distances_squared (data_type *   p_distances_squared,
-                                                 data_type *   p_distances_x,
-                                                 data_type *   p_distances_y,
-                                                 data_type *   p_distances_z,
+void ParticlesList::calculate_distances_squared (data_type*    p_distances_squared,
+                                                 data_type*    p_distances_x,
+                                                 data_type*    p_distances_y,
+                                                 data_type*    p_distances_z,
                                                  unsigned long size) {
     Benchmark::begin ("Calculating Distances", false);
 
@@ -400,9 +401,11 @@ void ParticlesList::calculate_distances_squared (data_type *   p_distances_squar
     Benchmark::end ();
 }
 
-void ParticlesList::serialize (std::shared_ptr<ParticleFileWriter> p_writer) {
+void ParticlesList::serialize () {
     Benchmark::begin ("saving the data", false);
-    p_writer->saveData (&m_positions_x, &m_positions_y, &m_positions_z, &m_particle_ids);
+    m_particle_writer.start ();
+    m_particle_writer.saveData (&m_positions_x, &m_positions_y, &m_positions_z, &m_particle_ids);
+    m_particle_writer.end ();
     Benchmark::end ();
 }
 /* most likely not used
@@ -426,16 +429,16 @@ void ParticlesList::serialize (std::shared_ptr<ParticleFileWriter> p_writer) {
 void ParticlesList::get_current_status (unsigned long p_idx_first,
                                         unsigned long p_segment_length,
 
-                                        std::vector<unsigned long> *p_ids,
-                                        std::vector<data_type> *    p_positions_x,
-                                        std::vector<data_type> *    p_positions_y,
-                                        std::vector<data_type> *    p_positions_z,
-                                        std::vector<data_type> *    p_velocities_x,
-                                        std::vector<data_type> *    p_velocities_y,
-                                        std::vector<data_type> *    p_velocities_z,
-                                        std::vector<data_type> *    p_accelerations_x,
-                                        std::vector<data_type> *    p_accelerations_y,
-                                        std::vector<data_type> *    p_accelerations_z) {
+                                        std::vector<unsigned long>* p_ids,
+                                        std::vector<data_type>*     p_positions_x,
+                                        std::vector<data_type>*     p_positions_y,
+                                        std::vector<data_type>*     p_positions_z,
+                                        std::vector<data_type>*     p_velocities_x,
+                                        std::vector<data_type>*     p_velocities_y,
+                                        std::vector<data_type>*     p_velocities_z,
+                                        std::vector<data_type>*     p_accelerations_x,
+                                        std::vector<data_type>*     p_accelerations_y,
+                                        std::vector<data_type>*     p_accelerations_z) {
     unsigned long end = p_segment_length + p_idx_first;
     int           current_list_idx;
     for (unsigned long range_idx = p_idx_first; range_idx < end; range_idx++) {

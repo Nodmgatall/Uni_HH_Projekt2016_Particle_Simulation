@@ -13,19 +13,23 @@
 class ParticlesBase {
   protected:
     std::string               m_stucture_name;
-    s_options &               m_options;
-    ParticleBoundsCorrection &m_particle_bounds_correction;
-    AlgorithmBase &           m_algorithm;
+    s_options&                m_options;
+    ParticleBoundsCorrection& m_particle_bounds_correction;
+    AlgorithmBase&            m_algorithm;
+    ParticleFileWriter&       m_particle_writer;
 
   public:
     virtual ~ParticlesBase () {
     }
-    ParticlesBase (s_options &p_options, ParticleBoundsCorrection &p_particle_bounds_correction, AlgorithmBase &p_algorithm);
+    ParticlesBase (s_options&                p_options,
+                   ParticleBoundsCorrection& p_particle_bounds_correction,
+                   AlgorithmBase&            p_algorithm,
+                   ParticleFileWriter&       p_particle_writer);
     virtual void run_simulation_iteration (unsigned long p_iteration_number = 0) = 0;
     virtual void add_particle (Vec3f p_position)                                 = 0;
     virtual void add_particle (Vec3f p_position, Vec3f p_velocity) = 0;
     std::string           get_structure_name ();
-    virtual unsigned long get_particle_count ()                           = 0;
-    virtual void serialize (std::shared_ptr<ParticleFileWriter> p_writer) = 0;
+    virtual unsigned long get_particle_count () = 0;
+    virtual void          serialize ()          = 0;
 };
 #endif

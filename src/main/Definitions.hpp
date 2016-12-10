@@ -29,7 +29,7 @@
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 
 #define ENUM_TO_STRING_ENTRY(enum_name, enum_member) \
-    std::pair<enum_name, const char *> (enum_name::enum_member, #enum_member)
+    std::pair<enum_name, const char*> (enum_name::enum_member, #enum_member)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 enum e_generator_mode {
@@ -39,7 +39,7 @@ enum e_generator_mode {
     SINGLE_OBJECT_MIDDLE, // eine Kugel in der Mitte des Volumens
     GRID_DISTRIBUTION,    // komplett gleichmäßig
 };
-static std::map<e_generator_mode, const char *> g_enum_generator_mode_to_string_map = {
+static std::map<e_generator_mode, const char*> g_enum_generator_mode_to_string_map = {
     ENUM_TO_STRING_ENTRY (e_generator_mode, MULTIPLE_OBJECTS),
     ENUM_TO_STRING_ENTRY (e_generator_mode, RANDOM),
     ENUM_TO_STRING_ENTRY (e_generator_mode, RANDOM_UNIFORM),
@@ -52,7 +52,7 @@ enum e_algorithm_type {
     SMOTHED_PARTICLE_HYDRODYNAMICS, //
     DISSIPATIVE_PARTICLE_DYNAMICS
 };
-static std::map<e_algorithm_type, const char *> g_enum_algorithm_type_to_string_map = {
+static std::map<e_algorithm_type, const char*> g_enum_algorithm_type_to_string_map = {
     ENUM_TO_STRING_ENTRY (e_algorithm_type, LENNARD_JONES),
     ENUM_TO_STRING_ENTRY (e_algorithm_type, SMOTHED_PARTICLE_HYDRODYNAMICS),
     ENUM_TO_STRING_ENTRY (e_algorithm_type, DISSIPATIVE_PARTICLE_DYNAMICS),
@@ -67,7 +67,7 @@ enum e_data_format {
     VMD,      //
     VTK
 };
-static std::map<e_data_format, const char *> g_enum_data_format_to_string_map = {
+static std::map<e_data_format, const char*> g_enum_data_format_to_string_map = {
     ENUM_TO_STRING_ENTRY (e_data_format, CSV),      //
     ENUM_TO_STRING_ENTRY (e_data_format, LAMMPS),   //
     ENUM_TO_STRING_ENTRY (e_data_format, ESPRESSO), //
@@ -84,7 +84,7 @@ enum e_particle_variable {
     ACCELERATION, //
     PARTICLE_TYPE
 };
-static std::map<e_particle_variable, const char *> g_enum_particle_variable_to_string_map = {
+static std::map<e_particle_variable, const char*> g_enum_particle_variable_to_string_map = {
     ENUM_TO_STRING_ENTRY (e_particle_variable, VELOCITY),
     ENUM_TO_STRING_ENTRY (e_particle_variable, POSITION),
     ENUM_TO_STRING_ENTRY (e_particle_variable, ACCELERATION),
@@ -93,7 +93,7 @@ static std::map<e_particle_variable, const char *> g_enum_particle_variable_to_s
 
 enum e_data_structure { GRID, LIST, LISTEDGIRD };
 
-static std::map<e_data_structure, const char *> g_enum_data_structure_variable_to_string_map =
+static std::map<e_data_structure, const char*> g_enum_data_structure_variable_to_string_map =
     { ENUM_TO_STRING_ENTRY (e_data_structure, GRID),
       ENUM_TO_STRING_ENTRY (e_data_structure, LIST),
       ENUM_TO_STRING_ENTRY (e_data_structure, LISTEDGIRD) };
