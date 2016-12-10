@@ -18,7 +18,7 @@ class ParticleSimulator {
   private:
     s_options&                m_options;
     ParticleGeneratorBase*    m_particle_generator;
-    ParticleFileWriter*       m_particle_file_writer;
+    ParticleWriterBase*       m_particle_file_writer;
     bool                      m_save_config;
     ParticleBoundsCorrection* m_particle_bounds_correction;
     AlgorithmBase*            m_algorithm;

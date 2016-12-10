@@ -2,7 +2,7 @@
 #define PARTICLELIST_HPP
 
 #include "../IO/ParticleFileLoader.hpp"
-#include "../IO/ParticleFileWriter.hpp"
+#include "../IO/ParticleWriterBase.hpp"
 #include "ParticlesBase.hpp"
 #include <vector>
 
@@ -66,7 +66,7 @@ class ParticlesList : public ParticlesBase {
     ParticlesList (s_options&                p_options,
                    ParticleBoundsCorrection& p_particle_bounds_correction,
                    AlgorithmBase&            p_algorithm,
-                   ParticleFileWriter&       p_particle_writer);
+                   ParticleWriterBase&       p_particle_writer);
 
     ~ParticlesList ();
     void add_particle (Vec3f p_position);

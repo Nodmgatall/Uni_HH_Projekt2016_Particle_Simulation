@@ -3,7 +3,7 @@
 ParticlesGrid::ParticlesGrid (s_options&                p_options,
                               ParticleBoundsCorrection& p_particle_bounds_correction,
                               AlgorithmBase&            p_algorithm,
-                              ParticleFileWriter&       p_particle_writer)
+                              ParticleWriterBase&       p_particle_writer)
 : ParticlesBase (p_options, p_particle_bounds_correction, p_algorithm, p_particle_writer),
   m_iterations_between_rearange_particles (20) {
     unsigned int idx_x, idx_y, idx_z;

@@ -7,12 +7,31 @@
 
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "ParticlesGrid"
-#include "../../main/IO/ParticleFileWriter.hpp"
+#include "../../main/IO/ParticleWriterBase.hpp"
 #include "../../main/algorithms/AlgorithmBase.hpp"
 #include "../../main/borders/ParticleBoundsCorrection.hpp"
 #include "../../main/datastructures/ParticlesGrid.hpp"
 #include <boost/test/unit_test.hpp>
 #include <cstring>
+
+class ParticleWriter : public ParticleWriterBase {
+  public:
+    void saveData (std::vector<data_type>*     p_positions_x,
+                   std::vector<data_type>*     p_positions_y,
+                   std::vector<data_type>*     p_positions_z,
+                   std::vector<unsigned long>* p_ids) {
+        (void) p_positions_x;
+        (void) p_positions_y;
+        (void) p_positions_z;
+        (void) p_ids;
+    }
+    ParticleWriter () {
+    }
+    void start () {
+    }
+    void end () {
+    }
+};
 
 class Algorithm : public AlgorithmBase {
   public:
@@ -184,7 +203,7 @@ class ParticlesGridTestClass : public ParticlesGrid {
     ParticlesGridTestClass (s_options&                p_options,
                             ParticleBoundsCorrection& p_particle_bounds_correction,
                             AlgorithmBase&            p_algorithm,
-                            ParticleFileWriter&       p_particle_file_writer)
+                            ParticleWriterBase&       p_particle_file_writer)
     : ParticlesGrid (p_options, p_particle_bounds_correction, p_algorithm, p_particle_file_writer) {
     }
     ~ParticlesGridTestClass () {
@@ -214,9 +233,10 @@ BOOST_AUTO_TEST_CASE (test_add_particle_1) {
     s_options    options;
     memset (&options, 0, sizeof (s_options));
     options.m_bounds = Vec3f (5, 5, 5);
-    BoundsCorrection       border (options.m_bounds);
-    Algorithm              algorithm (options);
-    ParticleFileWriter     writer (options.m_write_modes, "");
+    BoundsCorrection border (options.m_bounds);
+    Algorithm        algorithm (options);
+    ParticleWriter   writer = ParticleWriter ();
+    ;
     ParticlesGridTestClass particlesGrid (options, border, algorithm, writer);
     Vec3f                  particles[7];
     particles[0] = Vec3f (1, 2, 3);
@@ -269,9 +289,10 @@ BOOST_AUTO_TEST_CASE (test_get_cell_index) {
     s_options    options;
     memset (&options, 0, sizeof (s_options));
     options.m_bounds = Vec3f (5, 5, 5);
-    BoundsCorrection       border (options.m_bounds);
-    Algorithm              algorithm (options);
-    ParticleFileWriter     writer (options.m_write_modes, "");
+    BoundsCorrection border (options.m_bounds);
+    Algorithm        algorithm (options);
+    ParticleWriter   writer = ParticleWriter ();
+    ;
     ParticlesGridTestClass particlesGrid (options, border, algorithm, writer);
     int                    counter = 0;
     for (idx_z = 0; idx_z < particlesGrid.get_size ().z; idx_z++) {
@@ -287,9 +308,10 @@ BOOST_AUTO_TEST_CASE (test_get_cell_at) {
     s_options    options;
     memset (&options, 0, sizeof (s_options));
     options.m_bounds = Vec3f (5, 5, 5);
-    BoundsCorrection       border (options.m_bounds);
-    Algorithm              algorithm (options);
-    ParticleFileWriter     writer (options.m_write_modes, "");
+    BoundsCorrection border (options.m_bounds);
+    Algorithm        algorithm (options);
+    ParticleWriter   writer = ParticleWriter ();
+    ;
     ParticlesGridTestClass particlesGrid (options, border, algorithm, writer);
     int                    counter = 0;
     for (idx_z = 0; idx_z < particlesGrid.get_size ().z; idx_z++) {
@@ -305,9 +327,10 @@ BOOST_AUTO_TEST_CASE (test_moveParticle) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
     options.m_bounds = Vec3f (5, 5, 5);
-    BoundsCorrection       border (options.m_bounds);
-    Algorithm              algorithm (options);
-    ParticleFileWriter     writer (options.m_write_modes, "");
+    BoundsCorrection border (options.m_bounds);
+    Algorithm        algorithm (options);
+    ParticleWriter   writer = ParticleWriter ();
+    ;
     ParticlesGridTestClass particlesGrid (options, border, algorithm, writer);
     ParticleCell           cell1 = ParticleCell (Vec3l (), Vec3l (), options.m_bounds);
     ParticleCell           cell2 = ParticleCell (Vec3l (), Vec3l (), options.m_bounds);
@@ -368,9 +391,10 @@ BOOST_AUTO_TEST_CASE (test_get_cell_for_particle_1) {
     s_options    options;
     memset (&options, 0, sizeof (s_options));
     options.m_bounds = Vec3f (5, 5, 5);
-    BoundsCorrection       border (options.m_bounds);
-    Algorithm              algorithm (options);
-    ParticleFileWriter     writer (options.m_write_modes, "");
+    BoundsCorrection border (options.m_bounds);
+    Algorithm        algorithm (options);
+    ParticleWriter   writer = ParticleWriter ();
+    ;
     ParticlesGridTestClass particlesGrid (options, border, algorithm, writer);
     int                    counter = 0;
     for (idx_z = 0; idx_z < particlesGrid.get_size ().z; idx_z++) {
@@ -390,9 +414,10 @@ BOOST_AUTO_TEST_CASE (test_get_cell_for_particle_2) {
     s_options    options;
     memset (&options, 0, sizeof (s_options));
     options.m_bounds = Vec3f (5, 5, 5);
-    BoundsCorrection       border (options.m_bounds);
-    Algorithm              algorithm (options);
-    ParticleFileWriter     writer (options.m_write_modes, "");
+    BoundsCorrection border (options.m_bounds);
+    Algorithm        algorithm (options);
+    ParticleWriter   writer = ParticleWriter ();
+    ;
     ParticlesGridTestClass particlesGrid (options, border, algorithm, writer);
     int                    counter = 0;
     for (idx_z = 0; idx_z < particlesGrid.get_size ().z; idx_z++) {
@@ -411,9 +436,10 @@ BOOST_AUTO_TEST_CASE (test_step_1) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
     options.m_bounds = Vec3f (5, 5, 5);
-    BoundsCorrection       border (options.m_bounds);
-    Algorithm              algorithm (options);
-    ParticleFileWriter     writer (options.m_write_modes, "");
+    BoundsCorrection border (options.m_bounds);
+    Algorithm        algorithm (options);
+    ParticleWriter   writer = ParticleWriter ();
+    ;
     ParticlesGridTestClass particlesGrid (options, border, algorithm, writer);
     ParticleCell           cell          = ParticleCell (Vec3l (), Vec3l (), options.m_bounds);
     const int              particleCount = 4;
@@ -436,9 +462,10 @@ BOOST_AUTO_TEST_CASE (test_step_2a) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
     options.m_bounds = Vec3f (5, 5, 5);
-    BoundsCorrection       border (options.m_bounds);
-    Algorithm              algorithm (options);
-    ParticleFileWriter     writer (options.m_write_modes, "");
+    BoundsCorrection border (options.m_bounds);
+    Algorithm        algorithm (options);
+    ParticleWriter   writer = ParticleWriter ();
+    ;
     ParticlesGridTestClass particlesGrid (options, border, algorithm, writer);
     ParticleCell           cell          = ParticleCell (Vec3l (), Vec3l (), options.m_bounds);
     const int              particleCount = 4;
@@ -456,9 +483,10 @@ BOOST_AUTO_TEST_CASE (test_step_2b) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
     options.m_bounds = Vec3f (5, 5, 5);
-    BoundsCorrection       border (options.m_bounds);
-    Algorithm              algorithm (options);
-    ParticleFileWriter     writer (options.m_write_modes, "");
+    BoundsCorrection border (options.m_bounds);
+    Algorithm        algorithm (options);
+    ParticleWriter   writer = ParticleWriter ();
+    ;
     ParticlesGridTestClass particlesGrid (options, border, algorithm, writer);
     ParticleCell           cell_i          = ParticleCell (Vec3l (), Vec3l (), options.m_bounds);
     ParticleCell           cell_j          = ParticleCell (Vec3l (), Vec3l (), options.m_bounds);

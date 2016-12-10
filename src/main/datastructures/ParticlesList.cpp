@@ -2,7 +2,7 @@
 #include <vector>
 
 #include "../IO/ParticleFileLoader.hpp"
-#include "../IO/ParticleFileWriter.hpp"
+#include "../IO/ParticleWriterBase.hpp"
 #include "../Vec3.hpp"
 #include "../tools/Debug.hpp"
 #include "ParticlesList.hpp"
@@ -10,7 +10,7 @@
 ParticlesList::ParticlesList (s_options&                p_options,
                               ParticleBoundsCorrection& p_particle_bounds_correction,
                               AlgorithmBase&            p_algorithm,
-                              ParticleFileWriter&       p_particle_writer)
+                              ParticleWriterBase&       p_particle_writer)
 : ParticlesBase (p_options, p_particle_bounds_correction, p_algorithm, p_particle_writer),
   m_average_list_length (0.16), m_next_list_size_multiplier (1.1) {
     m_stucture_name                  = "List";

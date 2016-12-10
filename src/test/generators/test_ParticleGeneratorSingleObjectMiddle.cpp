@@ -13,13 +13,32 @@
 #include <boost/test/unit_test.hpp>
 #include <cstring>
 
+class ParticleWriter : public ParticleWriterBase {
+  public:
+    void saveData (std::vector<data_type>*     p_positions_x,
+                   std::vector<data_type>*     p_positions_y,
+                   std::vector<data_type>*     p_positions_z,
+                   std::vector<unsigned long>* p_ids) {
+        (void) p_positions_x;
+        (void) p_positions_y;
+        (void) p_positions_z;
+        (void) p_ids;
+    }
+    ParticleWriter () {
+    }
+    void start () {
+    }
+    void end () {
+    }
+};
+
 class Particles : public ParticlesBase {
   public:
     int m_particle_count;
     Particles (s_options&                p_options,
                ParticleBoundsCorrection& p_particle_bounds_correction,
                AlgorithmBase&            p_algorithm,
-               ParticleFileWriter&       p_particle_file_writer)
+               ParticleWriterBase&       p_particle_file_writer)
     : ParticlesBase (p_options, p_particle_bounds_correction, p_algorithm, p_particle_file_writer),
       m_particle_count (0) {
     }
@@ -62,7 +81,8 @@ BOOST_AUTO_TEST_CASE (test1) {
     ParticleGeneratorSingleObjectMiddle generator (options);
     ParticleBoundsCorrectionWraparound  border (options.m_bounds);
     AlgorithmLennardJones               algorithm (options);
-    ParticleFileWriter                  writer (options.m_write_modes, "");
+    ParticleWriter                      writer = ParticleWriter ();
+    ;
     Particles* particles = new Particles (options, border, algorithm, writer);
     generator.generate (particles);
     BOOST_CHECK_EQUAL (particles->get_particle_count (), 10L);

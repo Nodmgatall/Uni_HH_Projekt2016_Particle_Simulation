@@ -68,7 +68,7 @@ class ParticlesGrid : public ParticlesBase {
     ParticlesGrid (s_options&                p_options,
                    ParticleBoundsCorrection& p_particle_bounds_correction,
                    AlgorithmBase&            p_algorithm,
-                   ParticleFileWriter&       p_particle_writer);
+                   ParticleWriterBase&       p_particle_writer);
     ~ParticlesGrid ();
     void serialize ();
     void run_simulation_iteration (unsigned long p_iteration_number = 0);

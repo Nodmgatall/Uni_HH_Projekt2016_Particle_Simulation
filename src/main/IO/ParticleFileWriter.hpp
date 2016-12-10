@@ -8,8 +8,9 @@
 #ifndef SRC_PARTICLEFILEWRITER_HPP_
 #define SRC_PARTICLEFILEWRITER_HPP_
 #include "../Definitions.hpp"
-class ParticleFileWriter {
-  private:
+#include "ParticleWriterBase.hpp"
+class ParticleFileWriter : public ParticleWriterBase {
+  protected:
     int           m_timestep;
     std::string   m_file_name_base;
     std::ofstream m_file;
@@ -19,10 +20,8 @@ class ParticleFileWriter {
     void saveData (std::vector<data_type>*     p_positions_x,
                    std::vector<data_type>*     p_positions_y,
                    std::vector<data_type>*     p_positions_z,
-                   std::vector<unsigned long>* ids);
-
+                   std::vector<unsigned long>* p_ids);
     ParticleFileWriter (std::map<e_particle_variable, bool>& p_write_modes, const std::string& p_file_name_base);
-
     void start ();
     void end ();
 };
