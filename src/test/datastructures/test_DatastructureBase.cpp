@@ -162,62 +162,6 @@ class BoundsCorrection : public BorderBase {
         return true;
     }
 };
-class ParticlesGridTestClass : public DatastructureGrid {
-  public:
-    unsigned long public_get_cell_index (long x, long y, long z) {
-        return get_cell_index (x, y, z);
-    }
-    ParticleCell& public_get_cell_at (long x, long y, long z) {
-        return get_cell_at (x, y, z);
-    }
-    ParticleCell& public_get_cell_for_particle (data_type x, data_type y, data_type z) {
-        return get_cell_for_particle (x, y, z);
-    }
-    ParticleCell& public_get_cell_for_particle (Vec3f m_position) {
-        return get_cell_for_particle (m_position);
-    }
-    void public_moveParticle (ParticleCell& p_cell_from, ParticleCell& p_cell_to, long p_index_from) {
-        moveParticle (p_cell_from, p_cell_to, p_index_from);
-    }
-    void public_step_1_prepare_cell (ParticleCell& p_cell) {
-        step_1_prepare_cell (p_cell);
-    }
-    void public_step_2a_calculate_inside_cell (ParticleCell& p_cell) {
-        step_2a_calculate_inside_cell (p_cell);
-    }
-    void public_step_2b_calculate_between_cells (ParticleCell& p_cell1, ParticleCell& p_cell2) {
-        step_2b_calculate_between_cells (p_cell1, p_cell2);
-    }
-    void public_step_3_remove_wrong_particles_from_cell (ParticleCell& p_cell) {
-        step_3_remove_wrong_particles_from_cell (p_cell);
-    }
-    ParticlesGridTestClass (s_options&          p_options,
-                            BorderBase&         p_particle_bounds_correction,
-                            AlgorithmBase&      p_algorithm,
-                            ParticleWriterBase& p_particle_file_writer)
-    : DatastructureGrid (p_options, p_particle_bounds_correction, p_algorithm, p_particle_file_writer) {
-    }
-    ~ParticlesGridTestClass () {
-    }
-    const std::vector<ParticleCell>& get_cells () {
-        return m_cells;
-    }
-    unsigned int get_idx_a () {
-        return m_idx_a;
-    }
-    unsigned int get_idx_b () {
-        return m_idx_b;
-    }
-    unsigned long get_max_id () {
-        return m_max_id;
-    }
-    const Vec3l& get_size () {
-        return m_size;
-    }
-    const Vec3f& get_size_per_cell () {
-        return m_size_per_cell;
-    }
-};
 BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_1) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
@@ -228,9 +172,9 @@ BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_1) {
     Algorithm        algorithm (options);
     ParticleWriter   writer = ParticleWriter (0);
     ;
-    ParticlesGridTestClass particlesGrid (options, border, algorithm, writer);
-    std::vector<Vec3f>     allParticles;
-    int                    count = 0;
+    DatastructureGrid  particlesGrid (options, border, algorithm, writer);
+    std::vector<Vec3f> allParticles;
+    int                count = 0;
     {
         Vec3f vec = Vec3f (0.5, 0.5, 0.5);
         allParticles.push_back (vec);
@@ -290,34 +234,22 @@ BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_2) {
     options.m_bounds         = Vec3f (size, size, size);
     options.m_cut_off_radius = 1;
     options.m_timestep       = 1;
-    BoundsCorrection       border (options.m_bounds);
-    Algorithm              algorithm (options);
-    ParticleWriter         writer = ParticleWriter (0);
-    ParticlesGridTestClass particlesGrid (options, border, algorithm, writer);
-    std::vector<Vec3f>     allParticles;
-    std::vector<Vec3l>     allParticlesIndicees;
-    int                    count = 0;
+    BoundsCorrection   border (options.m_bounds);
+    Algorithm          algorithm (options);
+    ParticleWriter     writer = ParticleWriter (0);
+    DatastructureGrid  particlesGrid (options, border, algorithm, writer);
+    std::vector<Vec3f> allParticles;
+    int                count = 0;
     for (int x = 0; x < 5; x++) {
         for (int y = 0; y < 5; y++) {
             for (int z = 0; z < 5; z++) {
                 Vec3f vec = Vec3f (x, y, z) * 0.5;
                 allParticles.push_back (vec);
-                allParticlesIndicees.push_back (Vec3l ());
                 particlesGrid.add_particle (vec, Vec3f (count--, 0, 0) + vec);
             }
         }
     }
     algorithm.test_prepare (-count);
-    for (int idx_x = 0; idx_x < particlesGrid.get_size ().x; idx_x++) {
-        for (int idx_y = 0; idx_y < particlesGrid.get_size ().y; idx_y++) {
-            for (int idx_z = 0; idx_z < particlesGrid.get_size ().z; idx_z++) {
-                ParticleCell& cell = particlesGrid.public_get_cell_at (idx_x, idx_y, idx_z);
-                for (unsigned int o = 0; o < cell.m_ids.size (); o++) {
-                    allParticlesIndicees[cell.m_ids[o]] = Vec3l (idx_x, idx_y, idx_z);
-                }
-            }
-        }
-    }
     particlesGrid.run_simulation_iteration ();
     BOOST_CHECK_EQUAL (particlesGrid.get_particle_count (), -count);
     for (unsigned int i = 0; i < allParticles.size (); i++) {
@@ -348,36 +280,6 @@ BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_2) {
         }
         printf ("\n");
     }
-    printf ("errors\n");
-    for (unsigned int i = 0; i < allParticles.size (); i++) {
-        for (unsigned int j = 0; j < allParticles.size (); j++) {
-            float distance = (allParticles[i] - allParticles[j]).length ();
-            int   target   = (distance < options.m_cut_off_radius) && (i != j);
-            int   current  = algorithm.m_step_2_helper[i][j];
-            if (target > current) {
-                printf ("missing :: %d ( %ld | %ld | %ld ) <-> %d ( %ld | %ld | %ld )\n",
-                        i,
-                        allParticlesIndicees[i].x,
-                        allParticlesIndicees[i].y,
-                        allParticlesIndicees[i].z,
-                        j,
-                        allParticlesIndicees[j].x,
-                        allParticlesIndicees[j].y,
-                        allParticlesIndicees[j].z);
-            }
-            if (current > 1) {
-                printf ("double :: %d ( %ld | %ld | %ld ) <-> %d ( %ld | %ld | %ld )\n",
-                        i,
-                        allParticlesIndicees[i].x,
-                        allParticlesIndicees[i].y,
-                        allParticlesIndicees[i].z,
-                        j,
-                        allParticlesIndicees[j].x,
-                        allParticlesIndicees[j].y,
-                        allParticlesIndicees[j].z);
-            }
-        }
-    }
 }
 BOOST_AUTO_TEST_CASE (test_serialize) {
     s_options options;
@@ -387,13 +289,13 @@ BOOST_AUTO_TEST_CASE (test_serialize) {
     options.m_bounds         = Vec3f (size, size, size);
     options.m_cut_off_radius = 1;
     options.m_timestep       = 1;
-    BoundsCorrection       border (options.m_bounds);
-    Algorithm              algorithm (options);
-    ParticleWriter         writer = ParticleWriter (count_3 * count_3 * count_3);
-    ParticlesGridTestClass particlesGrid (options, border, algorithm, writer);
-    std::vector<Vec3f>     allParticles;
-    std::vector<Vec3l>     allParticlesIndicees;
-    int                    count = 0;
+    BoundsCorrection   border (options.m_bounds);
+    Algorithm          algorithm (options);
+    ParticleWriter     writer = ParticleWriter (count_3 * count_3 * count_3);
+    DatastructureGrid  particlesGrid (options, border, algorithm, writer);
+    std::vector<Vec3f> allParticles;
+    std::vector<Vec3l> allParticlesIndicees;
+    int                count = 0;
     for (int x = 0; x < count_3; x++) {
         for (int y = 0; y < count_3; y++) {
             for (int z = 0; z < count_3; z++) {
