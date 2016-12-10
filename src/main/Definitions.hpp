@@ -11,6 +11,7 @@
 #include <omp.h>
 #endif
 #include "options/EnumAlgorithmType.hpp"
+#include "options/EnumDatastructureType.hpp"
 #include "options/EnumGeneratorType.hpp"
 #include "options/EnumOutputType.hpp"
 #include <cstdlib>
@@ -47,13 +48,6 @@ static std::map<e_particle_variable, const char*> g_enum_particle_variable_to_st
     ENUM_TO_STRING_ENTRY (e_particle_variable, ACCELERATION),
     ENUM_TO_STRING_ENTRY (e_particle_variable, PARTICLE_TYPE),
 };
-
-enum e_data_structure { GRID, LIST, LISTEDGIRD };
-
-static std::map<e_data_structure, const char*> g_enum_data_structure_variable_to_string_map =
-    { ENUM_TO_STRING_ENTRY (e_data_structure, GRID),
-      ENUM_TO_STRING_ENTRY (e_data_structure, LIST),
-      ENUM_TO_STRING_ENTRY (e_data_structure, LISTEDGIRD) };
 
 #include "tools/Benchmark.hpp"
 #include "tools/Debug.hpp"

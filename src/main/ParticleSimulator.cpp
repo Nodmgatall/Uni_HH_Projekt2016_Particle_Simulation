@@ -26,10 +26,10 @@ ParticleSimulator::ParticleSimulator (s_options& p_options)
   m_algorithm (new AlgorithmLennardJones (p_options)), m_datastructure (0) {
     Benchmark::begin ("ParticleSimulator");
     switch (m_options.m_data_structure) {
-        case e_data_structure::GRID:
+        case e_datastructure_type::GRID:
             m_datastructure = new DatastructureGrid (m_options, *m_border, *m_algorithm, *m_writer);
             break;
-        case e_data_structure::LIST:
+        case e_datastructure_type::LIST:
             m_datastructure = new DatastructureList (m_options, *m_border, *m_algorithm, *m_writer);
             break;
         default:
