@@ -19,6 +19,7 @@ class AlgorithmBase {
     AlgorithmBase (s_options& p_options) : m_options (p_options) {
     }
     virtual ~AlgorithmBase () {
+        (void) m_options;
     }
     virtual void step_1 (const data_type& p_position_ax,
                          const data_type& p_position_ay,

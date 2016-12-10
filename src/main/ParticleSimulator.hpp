@@ -19,7 +19,6 @@ class ParticleSimulator {
     s_options&          m_options;
     GeneratorBase*      m_generator;
     ParticleWriterBase* m_writer;
-    bool                m_save_config;
     BorderBase*         m_border;
     AlgorithmBase*      m_algorithm;
     DatastructureBase*  m_datastructure;

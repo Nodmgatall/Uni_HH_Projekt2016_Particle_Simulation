@@ -22,7 +22,7 @@
 ParticleSimulator::ParticleSimulator (s_options& p_options)
 : m_options (p_options), m_generator (GeneratorFactory::build (p_options)),
   m_writer (new ParticleWriterCSV (p_options.m_write_modes, std::string (log_folder) + "/data")),
-  m_save_config (false), m_border (new BorderWrapparound (p_options.m_bounds)),
+  m_border (new BorderWrapparound (p_options.m_bounds)),
   m_algorithm (new AlgorithmLennardJones (p_options)), m_datastructure (0) {
     Benchmark::begin ("ParticleSimulator");
     switch (m_options.m_data_structure) {
