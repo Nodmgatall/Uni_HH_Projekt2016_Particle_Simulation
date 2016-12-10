@@ -11,12 +11,12 @@ ParticleSimulator::ParticleSimulator (s_options& p_options) //
                                                     m_border,
                                                     m_algorithm,
                                                     m_writer)), //
-      m_generator (GeneratorFactory::build (m_options)) {
+      m_input (InputFactory::build (m_options)) {
     Benchmark::begin ("ParticleSimulator");
     if (m_options.m_in_file_name.length () > 0) {
         DEBUG_BEGIN << "loading from file: " << m_options.m_in_file_name << DEBUG_END;
     } else {
-        m_generator.generate (&m_datastructure);
+        m_input.generate (&m_datastructure);
     }
     Benchmark::end ();
 }

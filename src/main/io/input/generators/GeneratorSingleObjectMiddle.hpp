@@ -8,10 +8,10 @@
 #ifndef SRC_GENERATORS_GENERATORSINGLEOBJECTMIDDLE_HPP_
 #define SRC_GENERATORS_GENERATORSINGLEOBJECTMIDDLE_HPP_
 
-#include "GeneratorBase.hpp"
+#include "../InputBase.hpp"
 #include <math.h>
 
-class GeneratorSingleObjectMiddle : public GeneratorBase {
+class GeneratorSingleObjectMiddle : public InputBase {
   public:
     GeneratorSingleObjectMiddle (s_options& p_options);
     virtual ~GeneratorSingleObjectMiddle ();

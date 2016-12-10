@@ -10,7 +10,7 @@
 
 #include "algorithms/AlgorithmFactory.hpp"
 #include "datastructures/DatastructureFactory.hpp"
-#include "io/input/generators/GeneratorFactory.hpp"
+#include "io/input/InputFactory.hpp"
 
 #include <functional>
 #include <getopt.h>
@@ -25,7 +25,7 @@ class ParticleSimulator {
     BorderBase         m_border;
     AlgorithmBase      m_algorithm;
     DatastructureBase  m_datastructure;
-    GeneratorBase      m_generator;
+    InputBase          m_input;
 
   public:
     ParticleSimulator (s_options& p_options);

@@ -14,6 +14,7 @@
 #include "options/EnumDatastructureType.hpp"
 #include "options/EnumGeneratorType.hpp"
 #include "options/EnumOutputType.hpp"
+#include <cstdio>
 #include <cstdlib>
 #include <ctime>
 #include <exception>
@@ -22,10 +23,12 @@
 #include <map>
 #include <math.h>
 #include <memory>
+#include <memory>
 #include <sstream>
 #include <string>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <unistd.h>
 #include <unistd.h>
 #include <vector>
 

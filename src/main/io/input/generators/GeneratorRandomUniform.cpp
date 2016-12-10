@@ -7,7 +7,7 @@
 
 #include "GeneratorRandomUniform.hpp"
 
-GeneratorRandomUniform::GeneratorRandomUniform (s_options& p_options) : GeneratorBase (p_options) {
+GeneratorRandomUniform::GeneratorRandomUniform (s_options& p_options) : InputBase (p_options) {
     m_stucture_name = "ParticleGeneratorRandomUniform";
 }
 

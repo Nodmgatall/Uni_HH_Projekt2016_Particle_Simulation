@@ -8,7 +8,7 @@
 #include "GeneratorSingleObjectMiddle.hpp"
 
 GeneratorSingleObjectMiddle::GeneratorSingleObjectMiddle (s_options& p_options)
-: GeneratorBase (p_options) {
+: InputBase (p_options) {
     m_stucture_name = "ParticleGeneratorSingleObjectMiddle";
 }
 

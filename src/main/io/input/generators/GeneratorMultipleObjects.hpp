@@ -8,9 +8,9 @@
 #ifndef SRC_MAIN_GENERATORS_PARTICLEGENERATORMULTIPLEOBJECTS_HPP_
 #define SRC_MAIN_GENERATORS_PARTICLEGENERATORMULTIPLEOBJECTS_HPP_
 
-#include "GeneratorBase.hpp"
+#include "../InputBase.hpp"
 
-class GeneratorMultipleObjects : public GeneratorBase {
+class GeneratorMultipleObjects : public InputBase {
   public:
     GeneratorMultipleObjects (s_options& p_options);
     virtual ~GeneratorMultipleObjects ();

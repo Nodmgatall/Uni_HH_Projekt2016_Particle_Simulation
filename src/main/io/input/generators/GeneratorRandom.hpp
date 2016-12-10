@@ -8,9 +8,9 @@
 #ifndef SRC_GENERATORS_GENERATORRANDOM_HPP_
 #define SRC_GENERATORS_GENERATORRANDOM_HPP_
 
-#include "GeneratorBase.hpp"
+#include "../InputBase.hpp"
 
-class GeneratorRandom : public GeneratorBase {
+class GeneratorRandom : public InputBase {
   public:
     GeneratorRandom (s_options& p_options);
     virtual ~GeneratorRandom ();

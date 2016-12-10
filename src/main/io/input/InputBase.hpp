@@ -8,19 +8,20 @@
 #ifndef SRC_GENERATORS_PARTICLEGENERATORBASE_HPP_
 #define SRC_GENERATORS_PARTICLEGENERATORBASE_HPP_
 
-#include "../../../Definitions.hpp"
-#include "../../../datastructures/DatastructureBase.hpp"
-#include "../../../options/Options.hpp"
-class GeneratorBase {
+#include "../../Definitions.hpp"
+#include "../../datastructures/DatastructureBase.hpp"
+#include "../../options/Options.hpp"
+
+class InputBase {
   protected:
     s_options&  m_options;
     std::string m_stucture_name;
 
   public:
-    GeneratorBase (s_options& p_options)
+    InputBase (s_options& p_options)
     : m_options (p_options), m_stucture_name ("ParticleGeneratorBase") {
     }
-    virtual ~GeneratorBase () {
+    virtual ~InputBase () {
     }
     const std::string& get_stucture_name () const {
         return m_stucture_name;

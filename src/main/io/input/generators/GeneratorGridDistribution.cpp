@@ -8,7 +8,7 @@
 #include "GeneratorGridDistribution.hpp"
 
 GeneratorGridDistribution::GeneratorGridDistribution (s_options& p_options)
-: GeneratorBase (p_options) {
+: InputBase (p_options) {
     m_stucture_name = "ParticleGeneratorGridDistribution";
 }
 

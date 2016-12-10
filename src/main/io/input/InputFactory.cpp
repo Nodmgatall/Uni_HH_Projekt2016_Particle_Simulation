@@ -5,9 +5,9 @@
  *      Author: benjamin
  */
 
-#include "GeneratorFactory.hpp"
+#include "InputFactory.hpp"
 
-GeneratorBase GeneratorFactory::build (s_options& p_options) {
+InputBase InputFactory::build (s_options& p_options) {
     switch (p_options.m_mode) {
         case e_generator_type::RANDOM:
             return GeneratorRandom (p_options);

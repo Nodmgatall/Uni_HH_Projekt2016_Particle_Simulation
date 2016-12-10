@@ -7,7 +7,7 @@
 
 #include "GeneratorRandom.hpp"
 
-GeneratorRandom::GeneratorRandom (s_options& p_options) : GeneratorBase (p_options) {
+GeneratorRandom::GeneratorRandom (s_options& p_options) : InputBase (p_options) {
     m_stucture_name = "ParticleGeneratorRandom";
 }
 

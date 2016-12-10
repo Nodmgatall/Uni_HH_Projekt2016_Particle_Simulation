@@ -7,8 +7,7 @@
 
 #include "GeneratorMultipleObjects.hpp"
 
-GeneratorMultipleObjects::GeneratorMultipleObjects (s_options& p_options)
-: GeneratorBase (p_options) {
+GeneratorMultipleObjects::GeneratorMultipleObjects (s_options& p_options) : InputBase (p_options) {
     m_stucture_name = "ParticleGeneratorMultipleObjects";
 }
 

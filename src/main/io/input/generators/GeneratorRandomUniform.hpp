@@ -8,9 +8,9 @@
 #ifndef SRC_MAIN_GENERATORS_GENERATORRANDOMUNIFORM_HPP_
 #define SRC_MAIN_GENERATORS_GENERATORRANDOMUNIFORM_HPP_
 
-#include "GeneratorBase.hpp"
+#include "../InputBase.hpp"
 
-class GeneratorRandomUniform : public GeneratorBase {
+class GeneratorRandomUniform : public InputBase {
   public:
     GeneratorRandomUniform (s_options& p_options);
     virtual ~GeneratorRandomUniform ();
