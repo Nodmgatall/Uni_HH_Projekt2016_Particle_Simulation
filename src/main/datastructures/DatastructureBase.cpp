@@ -13,23 +13,3 @@ DatastructureBase::DatastructureBase (s_options&          p_options,
 : m_options (p_options), m_border (p_border), m_algorithm (p_algorithm),
   m_particle_writer (p_particle_writer) {
 }
-
-void DatastructureBase::run_simulation_iteration (unsigned long p_iteration_number) {
-    (void) p_iteration_number;
-}
-
-void DatastructureBase::add_particle (Vec3f p_position) {
-    (void) p_position;
-}
-
-void DatastructureBase::add_particle (Vec3f p_position, Vec3f p_velocity) {
-    (void) p_position;
-    (void) p_velocity;
-}
-
-unsigned long DatastructureBase::get_particle_count () {
-    return 0;
-}
-
-void DatastructureBase::serialize () {
-}
