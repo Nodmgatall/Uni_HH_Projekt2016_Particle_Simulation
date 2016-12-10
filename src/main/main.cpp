@@ -39,8 +39,8 @@ int main (int argc, char** argv) {
     print_header ();
     s_options options;
 
-    std::unique_ptr<OptionHandler> option_handler (new OptionHandler ());
-    option_handler->handle_options (argc, argv, options);
+    OptionHandler option_handler;
+    option_handler.handle_options (argc, argv, options);
 
     ParticleSimulator particle_simulator (options);
 
