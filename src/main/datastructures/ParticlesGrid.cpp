@@ -100,10 +100,10 @@ void ParticlesGrid::serialize () {
     m_particle_writer.start ();
     for (ParticleCell cell : m_cells) {
         if (!(cell.m_ids.empty ())) {
-            m_particle_writer.saveData (&(cell.m_positions_x[m_idx_a]),
-                                        &(cell.m_positions_y[m_idx_a]),
-                                        &(cell.m_positions_z[m_idx_a]),
-                                        &(cell.m_ids));
+            m_particle_writer.saveData (cell.m_positions_x[m_idx_a],
+                                        cell.m_positions_y[m_idx_a],
+                                        cell.m_positions_z[m_idx_a],
+                                        cell.m_ids);
         }
     }
     m_particle_writer.end ();

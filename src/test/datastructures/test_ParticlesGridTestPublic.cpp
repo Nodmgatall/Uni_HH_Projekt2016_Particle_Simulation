@@ -16,20 +16,36 @@
 
 class ParticleWriter : public ParticleWriterBase {
   public:
-    void saveData (std::vector<data_type>*     p_positions_x,
-                   std::vector<data_type>*     p_positions_y,
-                   std::vector<data_type>*     p_positions_z,
-                   std::vector<unsigned long>* p_ids) {
+    bool             m_start_called;
+    bool             m_end_called;
+    std::vector<int> m_ids_saved;
+    void saveData (std::vector<data_type>&     p_positions_x,
+                   std::vector<data_type>&     p_positions_y,
+                   std::vector<data_type>&     p_positions_z,
+                   std::vector<unsigned long>& p_ids) {
         (void) p_positions_x;
         (void) p_positions_y;
         (void) p_positions_z;
-        (void) p_ids;
+        for (unsigned int i = 0; i < p_ids.size (); i++)
+            m_ids_saved[p_ids[i]]++;
     }
-    ParticleWriter () {
+    ParticleWriter (int p_expected_max_id) : m_start_called (false), m_end_called (true) {
+        m_ids_saved.reserve (p_expected_max_id);
+        for (int i = 0; i < p_expected_max_id; i++) {
+            m_ids_saved.push_back (0);
+        }
     }
     void start () {
+        BOOST_CHECK_EQUAL (m_end_called, true);
+        BOOST_CHECK_EQUAL (m_start_called, false);
+        m_start_called = true;
+        m_end_called   = false;
     }
     void end () {
+        BOOST_CHECK_EQUAL (m_end_called, false);
+        BOOST_CHECK_EQUAL (m_start_called, true);
+        m_end_called   = true;
+        m_start_called = false;
     }
 };
 
@@ -210,7 +226,7 @@ BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_1) {
     options.m_timestep       = 1;
     BoundsCorrection border (options.m_bounds);
     Algorithm        algorithm (options);
-    ParticleWriter   writer = ParticleWriter ();
+    ParticleWriter   writer = ParticleWriter (0);
     ;
     ParticlesGridTestClass particlesGrid (options, border, algorithm, writer);
     std::vector<Vec3f>     allParticles;
@@ -274,10 +290,9 @@ BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_2) {
     options.m_bounds         = Vec3f (size, size, size);
     options.m_cut_off_radius = 1;
     options.m_timestep       = 1;
-    BoundsCorrection border (options.m_bounds);
-    Algorithm        algorithm (options);
-    ParticleWriter   writer = ParticleWriter ();
-    ;
+    BoundsCorrection       border (options.m_bounds);
+    Algorithm              algorithm (options);
+    ParticleWriter         writer = ParticleWriter (0);
     ParticlesGridTestClass particlesGrid (options, border, algorithm, writer);
     std::vector<Vec3f>     allParticles;
     std::vector<Vec3l>     allParticlesIndicees;
@@ -364,7 +379,36 @@ BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_2) {
         }
     }
 }
-
+BOOST_AUTO_TEST_CASE (test_serialize) {
+    s_options options;
+    memset (&options, 0, sizeof (s_options));
+    int size                 = 4;
+    int count_3              = 5;
+    options.m_bounds         = Vec3f (size, size, size);
+    options.m_cut_off_radius = 1;
+    options.m_timestep       = 1;
+    BoundsCorrection       border (options.m_bounds);
+    Algorithm              algorithm (options);
+    ParticleWriter         writer = ParticleWriter (count_3 * count_3 * count_3);
+    ParticlesGridTestClass particlesGrid (options, border, algorithm, writer);
+    std::vector<Vec3f>     allParticles;
+    std::vector<Vec3l>     allParticlesIndicees;
+    int                    count = 0;
+    for (int x = 0; x < count_3; x++) {
+        for (int y = 0; y < count_3; y++) {
+            for (int z = 0; z < count_3; z++) {
+                Vec3f vec = Vec3f (x, y, z) * 0.5;
+                allParticles.push_back (vec);
+                allParticlesIndicees.push_back (Vec3l ());
+                particlesGrid.add_particle (vec, Vec3f (count--, 0, 0) + vec);
+            }
+        }
+    }
+    particlesGrid.serialize ();
+    for (int i = 0; i < count_3 * count_3 * count_3; i++) {
+        BOOST_CHECK_EQUAL (writer.m_ids_saved[i], 1);
+    }
+}
 /*
  public:
  void serialize ();

@@ -17,14 +17,14 @@ void ParticleFileWriter::start () {
                                                                 // NICHT std::endl
                                                                 // !!!!!
 }
-void ParticleFileWriter::saveData (std::vector<data_type>*     p_positions_x,
-                                   std::vector<data_type>*     p_positions_y,
-                                   std::vector<data_type>*     p_positions_z,
-                                   std::vector<unsigned long>* p_ids) {
-    unsigned long count = p_ids[0].size ();
+void ParticleFileWriter::saveData (std::vector<data_type>&     p_positions_x,
+                                   std::vector<data_type>&     p_positions_y,
+                                   std::vector<data_type>&     p_positions_z,
+                                   std::vector<unsigned long>& p_ids) {
+    unsigned long count = p_ids.size ();
     for (unsigned long i = 0; i < count; i++) {
-        m_file << p_ids[0][i];
-        m_file << ", " << p_positions_x[0][i] << ", " << p_positions_y[0][i] << ", " << p_positions_z[0][i];
+        m_file << p_ids[i];
+        m_file << ", " << p_positions_x[i] << ", " << p_positions_y[i] << ", " << p_positions_z[i];
         m_file << "\n";
     }
 }

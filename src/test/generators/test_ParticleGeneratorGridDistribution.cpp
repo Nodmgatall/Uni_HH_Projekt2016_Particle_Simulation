@@ -16,10 +16,10 @@
 
 class ParticleWriter : public ParticleWriterBase {
   public:
-    void saveData (std::vector<data_type>*     p_positions_x,
-                   std::vector<data_type>*     p_positions_y,
-                   std::vector<data_type>*     p_positions_z,
-                   std::vector<unsigned long>* p_ids) {
+    void saveData (std::vector<data_type>&     p_positions_x,
+                   std::vector<data_type>&     p_positions_y,
+                   std::vector<data_type>&     p_positions_z,
+                   std::vector<unsigned long>& p_ids) {
         (void) p_positions_x;
         (void) p_positions_y;
         (void) p_positions_z;

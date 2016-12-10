@@ -404,7 +404,7 @@ void ParticlesList::calculate_distances_squared (data_type*    p_distances_squar
 void ParticlesList::serialize () {
     Benchmark::begin ("saving the data", false);
     m_particle_writer.start ();
-    m_particle_writer.saveData (&m_positions_x, &m_positions_y, &m_positions_z, &m_particle_ids);
+    m_particle_writer.saveData (m_positions_x, m_positions_y, m_positions_z, m_particle_ids);
     m_particle_writer.end ();
     Benchmark::end ();
 }
