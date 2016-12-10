@@ -63,7 +63,7 @@ BOOST_AUTO_TEST_CASE (test1) {
     ParticleGeneratorGridDistribution  generator (options);
     ParticleBoundsCorrectionWraparound border (options.m_bounds);
     AlgorithmLennardJones              algorithm (options);
-    ParticleFileWriter                 writer (options.m_write_modes);
+    ParticleFileWriter                 writer (options.m_write_modes, "");
     std::shared_ptr<ParticlesBase>     particles =
         std::make_shared<Particles> (options, border, algorithm, writer);
     generator.generate (particles);

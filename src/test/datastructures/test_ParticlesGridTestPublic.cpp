@@ -191,7 +191,7 @@ BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_1) {
     options.m_timestep       = 1;
     BoundsCorrection       border (options.m_bounds);
     Algorithm              algorithm (options);
-    ParticleFileWriter     writer (options.m_write_modes);
+    ParticleFileWriter     writer (options.m_write_modes, "");
     ParticlesGridTestClass particlesGrid (options, border, algorithm, writer);
     std::vector<Vec3f>     allParticles;
     int                    count = 0;
@@ -256,7 +256,7 @@ BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_2) {
     options.m_timestep       = 1;
     BoundsCorrection       border (options.m_bounds);
     Algorithm              algorithm (options);
-    ParticleFileWriter     writer (options.m_write_modes);
+    ParticleFileWriter     writer (options.m_write_modes, "");
     ParticlesGridTestClass particlesGrid (options, border, algorithm, writer);
     std::vector<Vec3f>     allParticles;
     std::vector<Vec3l>     allParticlesIndicees;

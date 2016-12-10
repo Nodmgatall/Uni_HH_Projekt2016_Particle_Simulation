@@ -21,8 +21,8 @@ class ParticleFileWriter {
                    std::vector<data_type>*     p_positions_z,
                    std::vector<unsigned long>* ids);
 
-    ParticleFileWriter (std::map<e_particle_variable, bool>& p_write_modes);
-    void set_file_name_base (const std::string& file_name_base);
+    ParticleFileWriter (std::map<e_particle_variable, bool>& p_write_modes, const std::string& p_file_name_base);
+
     void start ();
     void end ();
 };

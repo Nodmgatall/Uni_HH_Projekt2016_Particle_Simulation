@@ -21,10 +21,9 @@
 
 ParticleSimulator::ParticleSimulator (s_options& p_options)
 : m_options (p_options), m_particle_generator (ParticleGeneratorFactory::build (p_options)),
-  m_particles (0), m_particle_file_writer (p_options.m_write_modes), m_save_config (false),
-  m_particle_bounds_correction (p_options.m_bounds), m_algorithm (p_options) {
-    DEBUG_BEGIN << "ParticleSimulator()" << DEBUG_END;
-    m_particle_file_writer.set_file_name_base (std::string (log_folder) + "/data");
+  m_particles (0),
+  m_particle_file_writer (p_options.m_write_modes, std::string (log_folder) + "/data"),
+  m_save_config (false), m_particle_bounds_correction (p_options.m_bounds), m_algorithm (p_options) {
 }
 
 void ParticleSimulator::simulate () {
