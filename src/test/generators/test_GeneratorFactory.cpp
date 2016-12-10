@@ -23,37 +23,37 @@ BOOST_AUTO_TEST_CASE (testGeneratorInvalidException) {
 BOOST_AUTO_TEST_CASE (testParticleGeneratorRandom) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
-    options.m_mode           = e_generator_type::RANDOM;
-    GeneratorBase* generator = GeneratorFactory::build (options);
-    BOOST_CHECK_EQUAL (generator->get_stucture_name (), "ParticleGeneratorRandom");
+    options.m_mode          = e_generator_type::RANDOM;
+    GeneratorBase generator = GeneratorFactory::build (options);
+    BOOST_CHECK_EQUAL (generator.get_stucture_name (), "ParticleGeneratorRandom");
 }
 BOOST_AUTO_TEST_CASE (testParticleGeneratorSingleObjectMiddle) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
-    options.m_mode           = e_generator_type::SINGLE_OBJECT_MIDDLE;
-    GeneratorBase* generator = GeneratorFactory::build (options);
-    BOOST_CHECK_EQUAL (generator->get_stucture_name (), "ParticleGeneratorSingleObjectMiddle");
+    options.m_mode          = e_generator_type::SINGLE_OBJECT_MIDDLE;
+    GeneratorBase generator = GeneratorFactory::build (options);
+    BOOST_CHECK_EQUAL (generator.get_stucture_name (), "ParticleGeneratorSingleObjectMiddle");
 }
 BOOST_AUTO_TEST_CASE (testParticleGeneratorGridDistribution) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
-    options.m_mode           = e_generator_type::GRID_DISTRIBUTION;
-    GeneratorBase* generator = GeneratorFactory::build (options);
-    BOOST_CHECK_EQUAL (generator->get_stucture_name (), "ParticleGeneratorGridDistribution");
+    options.m_mode          = e_generator_type::GRID_DISTRIBUTION;
+    GeneratorBase generator = GeneratorFactory::build (options);
+    BOOST_CHECK_EQUAL (generator.get_stucture_name (), "ParticleGeneratorGridDistribution");
 }
 BOOST_AUTO_TEST_CASE (testParticleGeneratorMulipleObjects) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
-    options.m_mode           = e_generator_type::MULTIPLE_OBJECTS;
-    GeneratorBase* generator = GeneratorFactory::build (options);
-    BOOST_CHECK_EQUAL (generator->get_stucture_name (), "ParticleGeneratorMultipleObjects");
+    options.m_mode          = e_generator_type::MULTIPLE_OBJECTS;
+    GeneratorBase generator = GeneratorFactory::build (options);
+    BOOST_CHECK_EQUAL (generator.get_stucture_name (), "ParticleGeneratorMultipleObjects");
 }
 BOOST_AUTO_TEST_CASE (testParticleGeneratorRandomUniform) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
-    options.m_mode           = e_generator_type::RANDOM_UNIFORM;
-    GeneratorBase* generator = GeneratorFactory::build (options);
-    BOOST_CHECK_EQUAL (generator->get_stucture_name (), "ParticleGeneratorRandomUniform");
+    options.m_mode          = e_generator_type::RANDOM_UNIFORM;
+    GeneratorBase generator = GeneratorFactory::build (options);
+    BOOST_CHECK_EQUAL (generator.get_stucture_name (), "ParticleGeneratorRandomUniform");
 }
 BOOST_AUTO_TEST_CASE (testParticleGeneratorError) {
     s_options options;

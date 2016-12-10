@@ -32,7 +32,7 @@ class AlgorithmTypeInvalidException : public std::exception {
     }
     const char* what () const throw () {
         char* text = (char*) malloc (100);
-        sprintf (text, "algorithm type ( %s ) is invalid", g_algorithm_names[m_algorithm_type]);
+        sprintf (text, "algorithm type ( %s ) is invalid", g_algorithm_names[m_algorithm_type - 1]);
         return text;
     }
 };

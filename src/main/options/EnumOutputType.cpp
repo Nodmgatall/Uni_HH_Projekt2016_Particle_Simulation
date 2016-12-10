@@ -17,7 +17,7 @@ std::ostream& operator<< (std::ostream& stream, const e_output_type p_output_typ
         case e_output_type::GROMACS:
         case e_output_type::VMD:
         case e_output_type::VTK:
-            return stream << g_output_names[p_output_type];
+            return stream << g_output_names[p_output_type - 1];
         default:
             throw OutputTypeInvalidException (p_output_type);
     }

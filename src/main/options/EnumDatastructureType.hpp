@@ -28,7 +28,7 @@ class DatastructureTypeInvalidException : public std::exception {
     }
     const char* what () const throw () {
         char* text = (char*) malloc (100);
-        sprintf (text, "datastructure type ( %s ) is invalid", g_datastructure_names[m_datastructure_type]);
+        sprintf (text, "datastructure type ( %s ) is invalid", g_datastructure_names[m_datastructure_type - 1]);
         return text;
     }
 };

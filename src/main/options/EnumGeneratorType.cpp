@@ -18,7 +18,7 @@ std::ostream& operator<< (std::ostream& stream, const e_generator_type p_generat
         case e_generator_type::SINGLE_OBJECT_MIDDLE:
         case e_generator_type::GRID_DISTRIBUTION:
         case e_generator_type::MULTIPLE_OBJECTS:
-            return stream << g_generator_names[p_generator_type];
+            return stream << g_generator_names[p_generator_type - 1];
         default:
             throw GeneratorTypeInvalidException (p_generator_type);
     }

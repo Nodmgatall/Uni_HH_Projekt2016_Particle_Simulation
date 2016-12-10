@@ -17,10 +17,17 @@ class GeneratorBase {
     std::string m_stucture_name;
 
   public:
-    virtual void generate (DatastructureBase* p_particles) = 0;
-    GeneratorBase (s_options& p_options);
-    virtual ~GeneratorBase ();
-    const std::string& get_stucture_name () const;
+    GeneratorBase (s_options& p_options)
+    : m_options (p_options), m_stucture_name ("ParticleGeneratorBase") {
+    }
+    virtual ~GeneratorBase () {
+    }
+    const std::string& get_stucture_name () const {
+        return m_stucture_name;
+    }
+    virtual void generate (DatastructureBase* p_particles) {
+        (void) p_particles;
+    }
 };
 
 #endif /* SRC_GENERATORS_PARTICLEGENERATORBASE_HPP_ */

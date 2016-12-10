@@ -96,16 +96,16 @@ void DatastructureGrid::add_particle (Vec3f p_current_position, Vec3f p_current_
  */
 void DatastructureGrid::serialize () {
     Benchmark::begin ("saving the data", false);
-    m_particle_writer.start ();
+    m_writer.start ();
     for (ParticleCell cell : m_cells) {
         if (!(cell.m_ids.empty ())) {
-            m_particle_writer.saveData (cell.m_positions_x[m_idx_a],
-                                        cell.m_positions_y[m_idx_a],
-                                        cell.m_positions_z[m_idx_a],
-                                        cell.m_ids);
+            m_writer.saveData (cell.m_positions_x[m_idx_a],
+                               cell.m_positions_y[m_idx_a],
+                               cell.m_positions_z[m_idx_a],
+                               cell.m_ids);
         }
     }
-    m_particle_writer.end ();
+    m_writer.end ();
     Benchmark::end ();
 }
 /**

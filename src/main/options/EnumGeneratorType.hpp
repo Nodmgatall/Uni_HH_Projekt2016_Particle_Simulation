@@ -34,7 +34,7 @@ class GeneratorTypeInvalidException : public std::exception {
     }
     const char* what () const throw () {
         char* text = (char*) malloc (100);
-        sprintf (text, "algorithm type ( %s ) is invalid", g_generator_names[m_generator_type]);
+        sprintf (text, "algorithm type ( %s ) is invalid", g_generator_names[m_generator_type - 1]);
         return text;
     }
 };

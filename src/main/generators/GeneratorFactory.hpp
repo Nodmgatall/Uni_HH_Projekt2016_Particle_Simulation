@@ -51,7 +51,7 @@ class GeneratorNotImplementedException : public std::exception {
 };
 class GeneratorFactory {
   public:
-    static GeneratorBase* build (s_options& p_options);
+    static GeneratorBase build (s_options& p_options);
 };
 
 #endif /* SRC_GENERATOR_HPP_ */

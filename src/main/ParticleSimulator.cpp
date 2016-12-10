@@ -20,39 +20,24 @@
 #include "generators/GeneratorFactory.hpp"
 
 ParticleSimulator::ParticleSimulator (s_options& p_options)
-: m_options (p_options), m_generator (GeneratorFactory::build (p_options)),
-  m_writer (new ParticleWriterCSV (p_options.m_write_modes, std::string (log_folder) + "/data")),
-  m_border (new BorderWrapparound (p_options.m_bounds)),
-  m_algorithm (new AlgorithmLennardJones (p_options)), m_datastructure (0) {
+: m_options (p_options),
+  m_writer (ParticleWriterCSV (p_options.m_write_modes, std::string (log_folder) + "/data")),
+  m_border (BorderWrapparound (m_options.m_bounds)), m_algorithm (AlgorithmLennardJones (m_options)),
+  m_datastructure (DatastructureFactory::build (m_options, m_border, m_algorithm, m_writer)),
+  m_generator (GeneratorFactory::build (m_options)) {
     Benchmark::begin ("ParticleSimulator");
-    switch (m_options.m_data_structure) {
-        case e_datastructure_type::GRID:
-            m_datastructure = new DatastructureGrid (m_options, *m_border, *m_algorithm, *m_writer);
-            break;
-        case e_datastructure_type::LIST:
-            m_datastructure = new DatastructureList (m_options, *m_border, *m_algorithm, *m_writer);
-            break;
-        default:
-            std::cout << "Mixture of list and grind not implemented" << std::endl;
-            exit (EXIT_SUCCESS);
-    }
     if (m_options.m_in_file_name.length () > 0) {
         DEBUG_BEGIN << "loading from file: " << m_options.m_in_file_name << DEBUG_END;
     } else {
-        m_generator->generate (m_datastructure);
+        m_generator.generate (&m_datastructure);
     }
     Benchmark::end ();
 }
 ParticleSimulator::~ParticleSimulator () {
-    delete (m_generator);
-    delete (m_writer);
-    delete (m_border);
-    delete (m_algorithm);
-    delete (m_datastructure);
 }
 void ParticleSimulator::simulate () {
     Benchmark::begin ("Simulation");
-    m_datastructure->serialize ();
+    m_datastructure.serialize ();
     data_type     current_time = 0.0;
     data_type     max_run_time;
     int           timesteps_until_next_write = m_options.m_write_fequency;
@@ -66,11 +51,11 @@ void ParticleSimulator::simulate () {
     while (current_time < max_run_time) {
         Benchmark::begin ("Simulating the time-step");
         DEBUG_BEGIN << DEBUG_VAR (current_time) << DEBUG_END;
-        m_datastructure->run_simulation_iteration (iteration_number);
+        m_datastructure.run_simulation_iteration (iteration_number);
         current_time += m_options.m_timestep;
         timesteps_until_next_write--;
         if (!timesteps_until_next_write) {
-            m_datastructure->serialize ();
+            m_datastructure.serialize ();
             timesteps_until_next_write = m_options.m_write_fequency;
         }
         iteration_number++;

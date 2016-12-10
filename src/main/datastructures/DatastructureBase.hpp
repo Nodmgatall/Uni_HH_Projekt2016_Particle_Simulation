@@ -16,17 +16,31 @@ class DatastructureBase {
     s_options&          m_options;
     BorderBase&         m_border;
     AlgorithmBase&      m_algorithm;
-    ParticleWriterBase& m_particle_writer;
+    ParticleWriterBase& m_writer;
 
   public:
     virtual ~DatastructureBase () {
     }
-    DatastructureBase (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, ParticleWriterBase& p_particle_writer);
-    std::string  get_structure_name ();
-    virtual void run_simulation_iteration (unsigned long p_iteration_number = 0) = 0;
-    virtual void add_particle (Vec3f p_position)                                 = 0;
-    virtual void add_particle (Vec3f p_position, Vec3f p_velocity) = 0;
-    virtual unsigned long get_particle_count () = 0;
-    virtual void          serialize ()          = 0;
+    DatastructureBase (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, ParticleWriterBase& p_writer)
+    : m_options (p_options), m_border (p_border), m_algorithm (p_algorithm), m_writer (p_writer) {
+    }
+    std::string get_structure_name () {
+        return m_stucture_name;
+    }
+    virtual void run_simulation_iteration (unsigned long p_iteration_number = 0) {
+        (void) p_iteration_number;
+    }
+    virtual void add_particle (Vec3f p_position) {
+        (void) p_position;
+    }
+    virtual void add_particle (Vec3f p_position, Vec3f p_velocity) {
+        (void) p_position;
+        (void) p_velocity;
+    }
+    virtual unsigned long get_particle_count () {
+        return 0;
+    }
+    virtual void serialize () {
+    }
 };
 #endif
