@@ -7,9 +7,9 @@
 
 #include "EnumInputType.hpp"
 
-const char* g_input_names[] = { "UNDEFINED",         "RANDOM",
-                                "RANDOM_UNIFORM",    "SINGLE_OBJECT_MIDDLE",
-                                "GRID_DISTRIBUTION", "MULTIPLE_OBJECTS" };
+const char* g_input_names[] =
+    { "UNDEFINED",        "RANDOM", "RANDOM_UNIFORM", "SINGLE_OBJECT_MIDDLE", "GRID_DISTRIBUTION",
+      "MULTIPLE_OBJECTS", "CSV" };
 
 std::ostream& operator<< (std::ostream& stream, const e_input_type p_input_type) {
     switch (p_input_type) {
@@ -18,7 +18,8 @@ std::ostream& operator<< (std::ostream& stream, const e_input_type p_input_type)
         case e_input_type::SINGLE_OBJECT_MIDDLE:
         case e_input_type::GRID_DISTRIBUTION:
         case e_input_type::MULTIPLE_OBJECTS:
-            return stream << g_input_names[p_input_type - 1];
+        case e_input_type::CSV:
+            return stream << g_input_names[static_cast<int> (p_input_type) - 1];
         default:
             throw InputTypeInvalidException (p_input_type);
     }

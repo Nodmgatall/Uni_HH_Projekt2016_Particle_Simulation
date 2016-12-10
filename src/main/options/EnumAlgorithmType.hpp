@@ -10,7 +10,7 @@
 
 #include <ostream>
 
-enum e_algorithm_type {
+enum class e_algorithm_type {
     LENNARD_JONES                  = 1,
     SMOTHED_PARTICLE_HYDRODYNAMICS = 2,
     DISSIPATIVE_PARTICLE_DYNAMICS  = 3
@@ -32,7 +32,9 @@ class AlgorithmTypeInvalidException : public std::exception {
     }
     const char* what () const throw () {
         char* text = (char*) malloc (100);
-        sprintf (text, "algorithm type ( %s ) is invalid", g_algorithm_names[m_algorithm_type - 1]);
+        sprintf (text,
+                 "algorithm type ( %s ) is invalid",
+                 g_algorithm_names[static_cast<int> (m_algorithm_type) - 1]);
         return text;
     }
 };

@@ -93,44 +93,44 @@ void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_opti
 
             // Generator modes
             case 4:
-                p_options.m_input_type = MULTIPLE_OBJECTS;
+                p_options.m_input_type = e_input_type::MULTIPLE_OBJECTS;
                 generator_mode_set++;
                 break;
             case 5:
-                p_options.m_input_type = RANDOM;
+                p_options.m_input_type = e_input_type::RANDOM;
                 generator_mode_set++;
                 break;
             case 6:
-                p_options.m_input_type = RANDOM_UNIFORM;
+                p_options.m_input_type = e_input_type::RANDOM_UNIFORM;
                 generator_mode_set++;
                 break;
             case 7:
-                p_options.m_input_type = SINGLE_OBJECT_MIDDLE;
+                p_options.m_input_type = e_input_type::SINGLE_OBJECT_MIDDLE;
                 generator_mode_set++;
                 break;
             case 8:
-                p_options.m_input_type = GRID_DISTRIBUTION;
+                p_options.m_input_type = e_input_type::GRID_DISTRIBUTION;
                 generator_mode_set++;
                 break;
 
             // Algorithm types
             case 9:
-                p_options.m_algorithm_type = LENNARD_JONES;
+                p_options.m_algorithm_type = e_algorithm_type::LENNARD_JONES;
 
                 break;
             case 10:
-                p_options.m_algorithm_type = SMOTHED_PARTICLE_HYDRODYNAMICS;
+                p_options.m_algorithm_type = e_algorithm_type::SMOTHED_PARTICLE_HYDRODYNAMICS;
                 break;
             case 11:
-                p_options.m_algorithm_type = DISSIPATIVE_PARTICLE_DYNAMICS;
+                p_options.m_algorithm_type = e_algorithm_type::DISSIPATIVE_PARTICLE_DYNAMICS;
                 break;
 
             // Data structures
             case 12:
-                p_options.m_data_structure = GRID;
+                p_options.m_data_structure = e_datastructure_type::GRID;
                 break;
             case 13:
-                p_options.m_data_structure = LIST;
+                p_options.m_data_structure = e_datastructure_type::LIST;
                 break;
             // config options
             case 28:

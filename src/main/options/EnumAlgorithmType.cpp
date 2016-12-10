@@ -14,7 +14,7 @@ std::ostream& operator<< (std::ostream& stream, const e_algorithm_type p_algorit
         case e_algorithm_type::LENNARD_JONES:
         case e_algorithm_type::SMOTHED_PARTICLE_HYDRODYNAMICS:
         case e_algorithm_type::DISSIPATIVE_PARTICLE_DYNAMICS:
-            return stream << g_algorithm_names[p_algorithm_type - 1];
+            return stream << g_algorithm_names[static_cast<int> (p_algorithm_type) - 1];
         default:
             throw AlgorithmTypeInvalidException (p_algorithm_type);
     }

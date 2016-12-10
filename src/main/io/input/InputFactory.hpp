@@ -12,6 +12,7 @@
 #include "../../datastructures/DatastructureBase.hpp"
 #include "../../options/Options.hpp"
 #include "InputBase.hpp"
+#include "file/FileReaderCSV.hpp"
 #include "generators/GeneratorGridDistribution.hpp"
 #include "generators/GeneratorMultipleObjects.hpp"
 #include "generators/GeneratorRandom.hpp"

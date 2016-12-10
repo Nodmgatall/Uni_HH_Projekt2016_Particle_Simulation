@@ -22,9 +22,9 @@ BOOST_AUTO_TEST_CASE (calculate_distance_vectors) {
     Vec3f                  bounds (3, 3, 3);
 
     s_options options = {
-        LENNARD_JONES,
+        e_algorithm_type::LENNARD_JONES,
         false,
-        CSV,
+        e_output_type::CSV,
         "",
         "",
         1000,
@@ -32,7 +32,7 @@ BOOST_AUTO_TEST_CASE (calculate_distance_vectors) {
         false,
         1,
         1.0,
-        GRID,
+        e_datastructure_type::GRID,
         { { ID, false }, { POSITION, false }, { VELOCITY, false }, { ACCELERATION, false }, { PARTICLE_TYPE, false } }
     };
     BorderWrapparound     border (bounds);
@@ -71,9 +71,9 @@ BOOST_AUTO_TEST_CASE (calculate_distances_squared) {
     Vec3f                  bounds (3, 3, 3);
 
     s_options options = {
-        LENNARD_JONES,
+        e_algorithm_type::LENNARD_JONES,
         false,
-        CSV,
+        e_output_type::CSV,
         "",
         "",
         1000,
@@ -81,7 +81,7 @@ BOOST_AUTO_TEST_CASE (calculate_distances_squared) {
         false,
         1,
         1.0,
-        GRID,
+        e_datastructure_type::GRID,
         { { ID, false }, { POSITION, false }, { VELOCITY, false }, { ACCELERATION, false }, { PARTICLE_TYPE, false } }
     };
     BorderWrapparound     border (bounds);
@@ -107,9 +107,9 @@ BOOST_AUTO_TEST_CASE (build_lists) {
     Vec3f                  bounds (3, 3, 3);
 
     s_options options = {
-        LENNARD_JONES,
+        e_algorithm_type::LENNARD_JONES,
         false,
-        CSV,
+        e_output_type::CSV,
         "",
         "",
         1000,
@@ -117,7 +117,7 @@ BOOST_AUTO_TEST_CASE (build_lists) {
         false,
         1,
         1.0,
-        GRID,
+        e_datastructure_type::GRID,
         { { ID, false }, { POSITION, false }, { VELOCITY, false }, { ACCELERATION, false }, { PARTICLE_TYPE, false } }
     };
     BorderWrapparound     border (bounds);

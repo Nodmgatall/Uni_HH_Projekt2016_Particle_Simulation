@@ -14,7 +14,7 @@ std::ostream& operator<< (std::ostream& stream, const e_datastructure_type p_dat
         case e_datastructure_type::GRID:
         case e_datastructure_type::LIST:
         case e_datastructure_type::LISTEDGIRD:
-            return stream << g_datastructure_names[p_datastructure_type - 1];
+            return stream << g_datastructure_names[static_cast<int> (p_datastructure_type) - 1];
         default:
             throw DatastructureTypeInvalidException (p_datastructure_type);
     }
