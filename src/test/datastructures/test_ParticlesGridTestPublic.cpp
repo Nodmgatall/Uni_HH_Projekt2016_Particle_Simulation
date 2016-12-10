@@ -409,7 +409,3 @@ BOOST_AUTO_TEST_CASE (test_serialize) {
         BOOST_CHECK_EQUAL (writer.m_ids_saved[i], 1);
     }
 }
-/*
- public:
- void serialize ();
- */
