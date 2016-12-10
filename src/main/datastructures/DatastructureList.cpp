@@ -8,10 +8,10 @@
 #include "DatastructureList.hpp"
 
 DatastructureList::DatastructureList (s_options&          p_options,
-                                      BorderBase&         p_particle_bounds_correction,
+                                      BorderBase&         p_border,
                                       AlgorithmBase&      p_algorithm,
                                       ParticleWriterBase& p_particle_writer)
-: DatastructureBase (p_options, p_particle_bounds_correction, p_algorithm, p_particle_writer),
+: DatastructureBase (p_options, p_border, p_algorithm, p_particle_writer),
   m_average_list_length (0.16), m_next_list_size_multiplier (1.1) {
     m_stucture_name                  = "List";
     m_cutoff_radius                  = 0;

@@ -17,12 +17,12 @@
 class ParticleSimulator {
   private:
     s_options&             m_options;
-    ParticleGeneratorBase* m_particle_generator;
-    ParticleWriterBase*    m_particle_file_writer;
+    ParticleGeneratorBase* m_generator;
+    ParticleWriterBase*    m_writer;
     bool                   m_save_config;
     BorderBase*            m_border;
     AlgorithmBase*         m_algorithm;
-    DatastructureBase*     m_particles;
+    DatastructureBase*     m_datastructure;
 
   public:
     ParticleSimulator (s_options& p_options);

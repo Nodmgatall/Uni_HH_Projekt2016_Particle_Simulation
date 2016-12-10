@@ -1,10 +1,10 @@
 #include "DatastructureGrid.hpp"
 
 DatastructureGrid::DatastructureGrid (s_options&          p_options,
-                                      BorderBase&         p_particle_bounds_correction,
+                                      BorderBase&         p_border,
                                       AlgorithmBase&      p_algorithm,
                                       ParticleWriterBase& p_particle_writer)
-: DatastructureBase (p_options, p_particle_bounds_correction, p_algorithm, p_particle_writer),
+: DatastructureBase (p_options, p_border, p_algorithm, p_particle_writer),
   m_iterations_between_rearange_particles (20) {
     unsigned int idx_x, idx_y, idx_z;
     long         max_usefull_size         = pow (m_options.m_particle_count, 1.0 / 3.0);

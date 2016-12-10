@@ -63,10 +63,7 @@ class DatastructureList : public DatastructureBase {
     std::vector<std::vector<data_type>> m_mat_accelerations_y;
     std::vector<std::vector<data_type>> m_mat_accelerations_z;
 
-    DatastructureList (s_options&          p_options,
-                       BorderBase&         p_particle_bounds_correction,
-                       AlgorithmBase&      p_algorithm,
-                       ParticleWriterBase& p_particle_writer);
+    DatastructureList (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, ParticleWriterBase& p_particle_writer);
 
     ~DatastructureList ();
     void add_particle (Vec3f p_position);
