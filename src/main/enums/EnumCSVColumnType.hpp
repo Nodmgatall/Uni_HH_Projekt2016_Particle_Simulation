@@ -8,6 +8,7 @@
 #ifndef SRC_MAIN_ENUMS_ENUMCSVCOLUMNTYPE_HPP_
 #define SRC_MAIN_ENUMS_ENUMCSVCOLUMNTYPE_HPP_
 
+#include <cstring>
 #include <ostream>
 
 enum class e_csv_column_type {
@@ -23,6 +24,8 @@ std::ostream& operator<< (std::ostream& stream, const e_csv_column_type p_csv_co
 extern const char* g_csv_column_names[];
 
 extern const char* g_printed_csv_column_names[][3];
+
+std::pair<e_csv_column_type, int>* get_enum_for_printed_csv_column_name (const char* string);
 
 class CSVColumnTypeInvalidException : public std::exception {
   private:

@@ -32,9 +32,10 @@ class DatastructureBase {
     virtual void add_particle (Vec3f p_position) {
         (void) p_position;
     }
-    virtual void add_particle (Vec3f p_position, Vec3f p_velocity) {
+    virtual void add_particle (Vec3f p_position, Vec3f p_velocity, int p_id = -1) {
         (void) p_position;
         (void) p_velocity;
+        (void) p_id;
     }
     virtual unsigned long get_particle_count () {
         return 0;

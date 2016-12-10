@@ -21,7 +21,7 @@ class DatastructureGrid : public DatastructureBase {
     /**
      * the index for the "next" inserted particle
      */
-    unsigned long m_max_id;
+    long m_max_id;
     /**
      * the cells in which the particles are stored
      */
@@ -66,7 +66,7 @@ class DatastructureGrid : public DatastructureBase {
     void serialize ();
     void run_simulation_iteration (unsigned long p_iteration_number = 0);
     void add_particle (Vec3f p_current_position);
-    void add_particle (Vec3f p_current_position, Vec3f p_current_velocity);
+    void add_particle (Vec3f p_current_position, Vec3f p_current_velocity, int p_id = -1);
     unsigned long get_particle_count ();
 };
 #endif

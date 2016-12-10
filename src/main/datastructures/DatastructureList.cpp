@@ -39,9 +39,10 @@ void DatastructureList::add_particle (Vec3f p_position) {
     }
 }
 
-void DatastructureList::add_particle (Vec3f p_position, Vec3f p_velocity) {
+void DatastructureList::add_particle (Vec3f p_position, Vec3f p_velocity, int p_id) {
     (void) p_velocity;
     add_particle (p_position);
+    (void) p_id;
     //    add_particle (p_position); // TODO
 }
 

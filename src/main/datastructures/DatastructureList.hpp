@@ -65,7 +65,7 @@ class DatastructureList : public DatastructureBase {
 
     ~DatastructureList ();
     void add_particle (Vec3f p_position);
-    void add_particle (Vec3f p_position, Vec3f p_velocity);
+    void add_particle (Vec3f p_position, Vec3f p_velocity, int p_id = -1);
     unsigned long get_particle_count ();
     void run_simulation_iteration (unsigned long p_iteration_number);
     void build_lists ();

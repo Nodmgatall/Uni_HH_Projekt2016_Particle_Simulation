@@ -60,8 +60,9 @@ class Particles : public DatastructureBase {
         BOOST_CHECK_LE (p_current_position.y, m_options.m_bounds.y);
         BOOST_CHECK_LE (p_current_position.z, m_options.m_bounds.z);
     }
-    void add_particle (Vec3f p_current_position, Vec3f p_current_velocity) {
+    void add_particle (Vec3f p_current_position, Vec3f p_current_velocity, int p_id = -1) {
         (void) p_current_velocity;
+        (void) p_id;
         m_particle_count++;
         BOOST_CHECK_GE (p_current_position.x, 0);
         BOOST_CHECK_GE (p_current_position.y, 0);
