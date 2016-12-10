@@ -94,7 +94,6 @@ void ParticlesGrid::add_particle (Vec3f p_current_position, Vec3f p_current_velo
 }
 /**
  * saves all particles to an file
- * @param p_file_writer the wrapper which holds the file and formats the output
  */
 void ParticlesGrid::serialize () {
     Benchmark::begin ("saving the data", false);
