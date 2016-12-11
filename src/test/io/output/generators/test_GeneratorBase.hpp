@@ -7,14 +7,14 @@
 
 #ifndef BOOST_TEST_DYN_LINK
 // this code is never executed !! -->>
-#include "../../main/io/input/generators/GeneratorRandom.hpp"
+#include "../../../../main/io/input/generators/GeneratorRandom.hpp"
 typedef GeneratorRandom GeneratorUnderTest;
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "GeneratorRandom"
 //<<-- this code is never executed !!
 #endif
-#include "../../main/algorithms/AlgorithmLennardJones.hpp"
-#include "../../main/borders/BorderWrapparound.hpp"
+#include "../../../../main/algorithms/AlgorithmLennardJones.hpp"
+#include "../../../../main/borders/BorderWrapparound.hpp"
 #include <boost/test/unit_test.hpp>
 #include <cstring>
 

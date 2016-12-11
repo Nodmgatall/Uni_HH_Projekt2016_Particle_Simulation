@@ -5,7 +5,7 @@
  *      Author: benjamin
  */
 #ifndef BOOST_TEST_DYN_LINK
-#include "../../main/io/input/generators/GeneratorSingleObjectMiddle.hpp"
+#include "../../../../main/io/input/generators/GeneratorSingleObjectMiddle.hpp"
 typedef GeneratorSingleObjectMiddle GeneratorUnderTest;
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "GeneratorBaseSingleObjectMiddle"
