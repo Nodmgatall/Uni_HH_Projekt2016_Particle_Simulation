@@ -6,16 +6,16 @@
  */
 #ifndef BOOST_TEST_DYN_LINK
 // this code is never executed !! -->>
-#include "../../main/datastructures/DatastructureGrid.hpp"
+#include "datastructures/DatastructureGrid.hpp"
 typedef DatastructureGrid DatastructureUnderTest;
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "DatastructureBaseGrid"
 //<<-- this code is never executed !!
 #endif
 
-#include "../../main/algorithms/AlgorithmBase.hpp"
-#include "../../main/borders/BorderBase.hpp"
-#include "../../main/io/output/WriterBase.hpp"
+#include "algorithms/AlgorithmBase.hpp"
+#include "borders/BorderBase.hpp"
+#include "io/output/WriterBase.hpp"
 #include <boost/test/unit_test.hpp>
 #include <cstring>
 

@@ -6,8 +6,8 @@
  */
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "BorderWrapparound"
-#include "../../main/Vec3.hpp"
-#include "../../main/borders/BorderWrapparound.hpp"
+#include "Vec3.hpp"
+#include "borders/BorderWrapparound.hpp"
 #include <boost/test/unit_test.hpp>
 
 BOOST_AUTO_TEST_CASE (test1) {

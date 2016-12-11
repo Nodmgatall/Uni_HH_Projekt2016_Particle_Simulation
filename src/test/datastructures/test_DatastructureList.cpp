@@ -1,10 +1,10 @@
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "DatastructureList"
 
-#include "../../main/algorithms/AlgorithmLennardJones.hpp"
-#include "../../main/borders/BorderWrapparound.hpp"
-#include "../../main/datastructures/DatastructureList.hpp"
-#include "../../main/io/output/file/FileWriterCSV.hpp"
+#include "algorithms/AlgorithmLennardJones.hpp"
+#include "borders/BorderWrapparound.hpp"
+#include "datastructures/DatastructureList.hpp"
+#include "io/output/file/FileWriterCSV.hpp"
 #include <boost/test/unit_test.hpp>
 void generate_test_particle_list () {
 }

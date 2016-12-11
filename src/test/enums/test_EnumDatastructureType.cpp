@@ -6,7 +6,7 @@
  */
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "EnumDatastructureType"
-#include "../../main/enums/EnumDatastructureType.hpp"
+#include "enums/EnumDatastructureType.hpp"
 #include <boost/test/unit_test.hpp>
 #include <sstream>
 

@@ -7,10 +7,10 @@
  */
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "DatastructureFactory"
-#include "../../main/algorithms/AlgorithmBase.hpp"
-#include "../../main/borders/BorderBase.hpp"
-#include "../../main/datastructures/DatastructureFactory.hpp"
-#include "../../main/io/output/WriterBase.hpp"
+#include "algorithms/AlgorithmBase.hpp"
+#include "borders/BorderBase.hpp"
+#include "datastructures/DatastructureFactory.hpp"
+#include "io/output/WriterBase.hpp"
 #include <boost/test/unit_test.hpp>
 #include <cstring>
 class ParticleWriter : public WriterBase {

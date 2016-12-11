@@ -8,7 +8,7 @@
  */
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "AlgorithmFactory"
-#include "../../main/algorithms/AlgorithmFactory.hpp"
+#include "algorithms/AlgorithmFactory.hpp"
 
 #include <boost/test/unit_test.hpp>
 #include <cstring>

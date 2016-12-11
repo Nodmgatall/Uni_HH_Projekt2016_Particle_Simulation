@@ -6,7 +6,7 @@
  */
 
 #ifndef BOOST_TEST_DYN_LINK
-#include "../../main/datastructures/DatastructureList.hpp"
+#include "datastructures/DatastructureList.hpp"
 typedef DatastructureList DatastructureUnderTest;
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "DatastructureBaseList"

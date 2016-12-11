@@ -6,7 +6,7 @@
  */
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "EnumCSVColumnType"
-#include "../../main/enums/EnumCSVColumnType.hpp"
+#include "enums/EnumCSVColumnType.hpp"
 #include <boost/test/unit_test.hpp>
 #include <sstream>
 

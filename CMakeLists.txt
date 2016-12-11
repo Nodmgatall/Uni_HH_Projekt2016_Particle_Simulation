@@ -41,7 +41,8 @@ endif()
 
 if(Boost_FOUND)
 	enable_testing ()
-	add_definitions("-I${CMAKE_SOURCE_DIR}/src/main")
+	set(ENV{CTEST_OUTPUT_ON_FAILURE} TRUE)
+	include_directories(${Boost_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/src/main)
 	add_library(particle_simulation_test_lib STATIC ${sources} )
 	
 	add_test(NAME particle_simulation.x 
@@ -61,7 +62,6 @@ if(Boost_FOUND)
 	endif()
 	set_target_properties(particle_simulation_test_lib PROPERTIES COMPILE_FLAGS "-O0 -g -fprofile-arcs -ftest-coverage")
 	set_target_properties(particle_simulation_test_lib PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Testing/Binary)
-	set(ENV{CTEST_OUTPUT_ON_FAILURE} TRUE)
 	file(GLOB_RECURSE test_sources src/test*.cpp)
 	foreach(testSrc ${test_sources})	        
 		get_filename_component(testName ${testSrc} NAME_WE)

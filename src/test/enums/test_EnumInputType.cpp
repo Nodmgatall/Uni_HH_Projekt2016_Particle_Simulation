@@ -6,7 +6,7 @@
  */
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "EnumInputType"
-#include "../../main/enums/EnumInputType.hpp"
+#include "enums/EnumInputType.hpp"
 #include <boost/test/unit_test.hpp>
 #include <sstream>
 
