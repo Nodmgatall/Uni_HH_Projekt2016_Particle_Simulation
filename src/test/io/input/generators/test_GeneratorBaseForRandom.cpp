@@ -6,7 +6,7 @@
  *      Author: benjamin
  */
 #ifndef BOOST_TEST_DYN_LINK
-#include "../../../../main/io/input/generators/GeneratorRandom.hpp"
+#include "io/input/generators/GeneratorRandom.hpp"
 typedef GeneratorRandom GeneratorUnderTest;
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "GeneratorBaseRandom"

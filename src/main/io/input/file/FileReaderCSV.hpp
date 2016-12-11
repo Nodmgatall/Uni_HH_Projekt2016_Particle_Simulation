@@ -11,6 +11,11 @@
 #include "../InputBase.hpp"
 
 class FileReaderCSV : public InputBase {
+  protected:
+    static inline void ltrim (std::string& s);
+    static inline void rtrim (std::string& s);
+    static inline void trim (std::string& s);
+
   public:
     FileReaderCSV (s_options& p_options, DatastructureBase& p_datastructure);
     virtual ~FileReaderCSV ();

@@ -157,14 +157,17 @@ class BoundsCorrection : public BorderBase {
         return true;
     }
 };
-class Particles : public DatastructureBase {
+class Datastructure : public DatastructureBase {
   public:
     int m_particle_count;
-    Particles (s_options& p_options, BorderBase& p_particle_bounds_correction, AlgorithmBase& p_algorithm, WriterBase& p_particle_file_writer)
+    Datastructure (s_options&     p_options,
+                   BorderBase&    p_particle_bounds_correction,
+                   AlgorithmBase& p_algorithm,
+                   WriterBase&    p_particle_file_writer)
     : DatastructureBase (p_options, p_particle_bounds_correction, p_algorithm, p_particle_file_writer),
       m_particle_count (0) {
     }
-    ~Particles () {
+    ~Datastructure () {
     }
     void serialize () {
     }
@@ -202,7 +205,7 @@ BOOST_AUTO_TEST_CASE (test1) {
     BoundsCorrection border (options.m_bounds);
     Algorithm        algorithm (options);
     ParticleWriter   writer    = ParticleWriter (0);
-    Particles        particles = Particles (options, border, algorithm, writer);
+    Datastructure    particles = Datastructure (options, border, algorithm, writer);
     BOOST_CHECK_EQUAL (InputFactory::build (options, particles)->get_structure_name (),
                        "FileReaderCSV");
 }
@@ -213,7 +216,7 @@ BOOST_AUTO_TEST_CASE (test2) {
     BoundsCorrection border (options.m_bounds);
     Algorithm        algorithm (options);
     ParticleWriter   writer    = ParticleWriter (0);
-    Particles        particles = Particles (options, border, algorithm, writer);
+    Datastructure    particles = Datastructure (options, border, algorithm, writer);
     BOOST_CHECK_EQUAL (InputFactory::build (options, particles)->get_structure_name (),
                        "GeneratorGridDistribution");
 }
@@ -224,7 +227,7 @@ BOOST_AUTO_TEST_CASE (test3) {
     BoundsCorrection border (options.m_bounds);
     Algorithm        algorithm (options);
     ParticleWriter   writer    = ParticleWriter (0);
-    Particles        particles = Particles (options, border, algorithm, writer);
+    Datastructure    particles = Datastructure (options, border, algorithm, writer);
     BOOST_CHECK_EQUAL (InputFactory::build (options, particles)->get_structure_name (),
                        "GeneratorMultipleObjects");
 }
@@ -235,7 +238,7 @@ BOOST_AUTO_TEST_CASE (test4) {
     BoundsCorrection border (options.m_bounds);
     Algorithm        algorithm (options);
     ParticleWriter   writer    = ParticleWriter (0);
-    Particles        particles = Particles (options, border, algorithm, writer);
+    Datastructure    particles = Datastructure (options, border, algorithm, writer);
     BOOST_CHECK_EQUAL (InputFactory::build (options, particles)->get_structure_name (),
                        "GeneratorRandom");
 }
@@ -246,7 +249,7 @@ BOOST_AUTO_TEST_CASE (test5) {
     BoundsCorrection border (options.m_bounds);
     Algorithm        algorithm (options);
     ParticleWriter   writer    = ParticleWriter (0);
-    Particles        particles = Particles (options, border, algorithm, writer);
+    Datastructure    particles = Datastructure (options, border, algorithm, writer);
     BOOST_CHECK_EQUAL (InputFactory::build (options, particles)->get_structure_name (),
                        "GeneratorRandomUniform");
 }
@@ -257,7 +260,7 @@ BOOST_AUTO_TEST_CASE (test6) {
     BoundsCorrection border (options.m_bounds);
     Algorithm        algorithm (options);
     ParticleWriter   writer    = ParticleWriter (0);
-    Particles        particles = Particles (options, border, algorithm, writer);
+    Datastructure    particles = Datastructure (options, border, algorithm, writer);
     BOOST_CHECK_EQUAL (InputFactory::build (options, particles)->get_structure_name (),
                        "GeneratorSingleObjectMiddle");
 }
@@ -267,6 +270,6 @@ BOOST_AUTO_TEST_CASE (test7) {
     BoundsCorrection border (options.m_bounds);
     Algorithm        algorithm (options);
     ParticleWriter   writer    = ParticleWriter (0);
-    Particles        particles = Particles (options, border, algorithm, writer);
+    Datastructure    particles = Datastructure (options, border, algorithm, writer);
     BOOST_CHECK_THROW (InputFactory::build (options, particles), InputTypeInvalidException);
 }

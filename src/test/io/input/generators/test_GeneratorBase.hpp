@@ -7,14 +7,14 @@
 
 #ifndef BOOST_TEST_DYN_LINK
 // this code is never executed !! -->>
-#include "../../../../main/io/input/generators/GeneratorRandom.hpp"
+#include "io/input/generators/GeneratorRandom.hpp"
 typedef GeneratorRandom GeneratorUnderTest;
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "GeneratorRandom"
 //<<-- this code is never executed !!
 #endif
-#include "../../../../main/algorithms/AlgorithmLennardJones.hpp"
-#include "../../../../main/borders/BorderWrapparound.hpp"
+#include "algorithms/AlgorithmLennardJones.hpp"
+#include "borders/BorderWrapparound.hpp"
 #include <boost/test/unit_test.hpp>
 #include <cstring>
 
@@ -37,14 +37,17 @@ class ParticleWriter : public WriterBase {
     }
 };
 
-class Particles : public DatastructureBase {
+class Datastructure : public DatastructureBase {
   public:
     int m_particle_count;
-    Particles (s_options& p_options, BorderBase& p_particle_bounds_correction, AlgorithmBase& p_algorithm, WriterBase& p_particle_file_writer)
+    Datastructure (s_options&     p_options,
+                   BorderBase&    p_particle_bounds_correction,
+                   AlgorithmBase& p_algorithm,
+                   WriterBase&    p_particle_file_writer)
     : DatastructureBase (p_options, p_particle_bounds_correction, p_algorithm, p_particle_file_writer),
       m_particle_count (0) {
     }
-    ~Particles () {
+    ~Datastructure () {
     }
     void serialize () {
     }
@@ -84,7 +87,7 @@ BOOST_AUTO_TEST_CASE (test1) {
     BorderWrapparound     border (options.m_bounds);
     AlgorithmLennardJones algorithm (options);
     ParticleWriter        writer    = ParticleWriter ();
-    Particles             particles = Particles (options, border, algorithm, writer);
+    Datastructure         particles = Datastructure (options, border, algorithm, writer);
     GeneratorUnderTest    generator (options, particles);
     generator.initialize_datastructure ();
     BOOST_CHECK_EQUAL (particles.get_particle_count (), 10L);
