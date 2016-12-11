@@ -38,20 +38,22 @@ run: build_release
 	cd .. && ./particle_simulation.x -p 100 -l 0.1 -f 1 -r 2.5 -t 0.005
 
 test: 
-	rm -rf ../Testing
+	rm -rf ../Testing/Coverage/*
+	rm -rf ../Testing/Binary/*
+	rm -rf ../Testing/Temporary/*
 	$(MAKE) cmake build
-	lcov --directory ../CMakeFiles/ --capture --initial --output-file ../Testing/coverage_init.info
+	lcov --directory ../CMakeFiles/ --capture --initial --output-file ../Testing/Coverage/coverage_init.info
 	cd .. && $(MAKE) check
-	lcov --directory ../CMakeFiles/ --capture --output-file ../Testing/coverage_test.info
-	lcov --add-tracefile ../Testing/coverage_init.info --add-tracefile ../Testing/coverage_test.info --output-file ../Testing/coverage_combined.info
-	lcov --extract ../Testing/coverage_combined.info "*/src/main/*" --output-file ../Testing/coverage.info
-	genhtml ../Testing/coverage.info --output-directory ../Testing/coverage_out --demangle-cpp
+	lcov --directory ../CMakeFiles/ --capture --output-file ../Testing/Coverage/coverage_test.info
+	lcov --add-tracefile ../Testing/Coverage/coverage_init.info --add-tracefile ../Testing/Coverage/coverage_test.info --output-file ../Testing/Coverage/coverage_combined.info
+	lcov --extract ../Testing/Coverage/coverage_combined.info "*/src/main/*" --output-file ../Testing/Coverage/coverage.info
+	genhtml ../Testing/Coverage/coverage.info --output-directory ../Testing/Coverage/coverage_out --demangle-cpp
 
 code_coverage_only:
-	lcov --directory ../CMakeFiles/ --capture --output-file ../Testing/coverage_test.info
-	lcov --add-tracefile ../Testing/coverage_init.info --add-tracefile ../Testing/coverage_test.info --output-file ../Testing/coverage_combined.info
-	lcov --extract ../Testing/coverage_combined.info "*/src/main/*" --output-file ../Testing/coverage.info
-	genhtml ../Testing/coverage.info --output-directory ../Testing/coverage_out --demangle-cpp
+	lcov --directory ../CMakeFiles/ --capture --output-file ../Testing/Coverage/coverage_test.info
+	lcov --add-tracefile ../Testing/Coverage/coverage_init.info --add-tracefile ../Testing/Coverage/coverage_test.info --output-file ../Testing/Coverage/coverage_combined.info
+	lcov --extract ../Testing/Coverage/coverage_combined.info "*/src/main/*" --output-file ../Testing/Coverage/coverage.info
+	genhtml ../Testing/Coverage/coverage.info --output-directory ../Testing/Coverage/coverage_out --demangle-cpp
 
 show_log:
 	cat ../Testing/Temporary/LastTest.log
