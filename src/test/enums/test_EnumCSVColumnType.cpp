@@ -114,3 +114,8 @@ BOOST_AUTO_TEST_CASE (test_get_enum_for_printed_csv_column_name_11) {
     BOOST_CHECK_EQUAL (val->first, e_csv_column_type::PARTICLE_TYPE);
     BOOST_CHECK_EQUAL (val->second, 0);
 }
+BOOST_AUTO_TEST_CASE (test_get_enum_for_printed_csv_column_name_12) {
+    std::pair<e_csv_column_type, int>* val =
+        get_enum_for_printed_csv_column_name ("dieseZeileGibtEsNicht");
+    BOOST_CHECK_EQUAL (val, (void*) 0);
+}
