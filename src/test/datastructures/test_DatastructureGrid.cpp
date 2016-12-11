@@ -551,13 +551,3 @@ BOOST_AUTO_TEST_CASE (test_step_3) {
     BOOST_CHECK_EQUAL (particlesGrid.public_get_cell_at (1, 2, 1).m_ids[0], 5);
     BOOST_CHECK_EQUAL (particlesGrid.public_get_cell_at (1, 1, 2).m_ids[0], 6);
 }
-BOOST_AUTO_TEST_CASE (test_getStructureName) {
-    s_options options;
-    memset (&options, 0, sizeof (s_options));
-    options.m_bounds = Vec3f (5, 5, 5);
-    BoundsCorrection  border (options.m_bounds);
-    Algorithm         algorithm (options);
-    ParticleWriter    writer = ParticleWriter ();
-    DatastructureGrid particlesGrid (options, border, algorithm, writer);
-    BOOST_CHECK_EQUAL (particlesGrid.get_structure_name (), "Grid");
-}

@@ -9,6 +9,7 @@
 
 FileWriterCSV::FileWriterCSV (std::map<e_csv_column_type, bool>& p_write_modes, const std::string& p_file_name_base)
 : WriterBase (), m_timestep (0), m_file_name_base (p_file_name_base), m_write_modes (p_write_modes) {
+    m_stucture_name = "FileWriterCSV";
 }
 void FileWriterCSV::start () {
     m_file = std::ofstream (m_file_name_base + std::to_string (m_timestep) + ".csv");

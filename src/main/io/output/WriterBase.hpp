@@ -11,10 +11,16 @@
 #include "../../Definitions.hpp"
 
 class WriterBase {
+  protected:
+    std::string m_stucture_name;
+
   public:
     WriterBase () {
     }
     virtual ~WriterBase () {
+    }
+    std::string get_structure_name () {
+        return m_stucture_name;
     }
     virtual void saveData (std::vector<data_type>&     p_positions_x,
                            std::vector<data_type>&     p_positions_y,

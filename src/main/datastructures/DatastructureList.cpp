@@ -8,7 +8,7 @@
 DatastructureList::DatastructureList (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_particle_writer)
 : DatastructureBase (p_options, p_border, p_algorithm, p_particle_writer),
   m_average_list_length (0.16), m_next_list_size_multiplier (1.1) {
-    m_stucture_name                  = "List";
+    m_stucture_name                  = "DatastructureList";
     m_cutoff_radius                  = 0;
     m_last_id                        = 0;
     m_duration_list                  = 0;

@@ -9,13 +9,14 @@
 
 GeneratorSingleObjectMiddle::GeneratorSingleObjectMiddle (s_options& p_options, DatastructureBase& p_datastructure)
 : InputBase (p_options, p_datastructure) {
+    m_stucture_name = "GeneratorSingleObjectMiddle";
 }
 
 GeneratorSingleObjectMiddle::~GeneratorSingleObjectMiddle () {
 }
 
 void GeneratorSingleObjectMiddle::initialize_datastructure () {
-    Benchmark::begin ("ParticleGeneratorSingleObjectMiddle");
+    Benchmark::begin (m_stucture_name);
     data_type     temp     = pow (m_options.m_particle_count, 1.0f / 3.0f);
     Vec3f         bounds_2 = m_options.m_bounds / 2;
     unsigned int  tempInt  = temp;

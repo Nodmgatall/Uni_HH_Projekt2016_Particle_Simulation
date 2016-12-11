@@ -16,12 +16,16 @@ class InputBase {
   protected:
     s_options&         m_options;
     DatastructureBase& m_datastructure;
+    std::string        m_stucture_name;
 
   public:
     InputBase (s_options& p_options, DatastructureBase& p_datastructure)
     : m_options (p_options), m_datastructure (p_datastructure) {
     }
     virtual ~InputBase () {
+    }
+    std::string get_structure_name () {
+        return m_stucture_name;
     }
     virtual void initialize_datastructure () = 0;
 };

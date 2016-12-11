@@ -9,6 +9,7 @@
 
 GeneratorRandomUniform::GeneratorRandomUniform (s_options& p_options, DatastructureBase& p_datastructure)
 : InputBase (p_options, p_datastructure) {
+    m_stucture_name = "GeneratorRandomUniform";
 }
 
 GeneratorRandomUniform::~GeneratorRandomUniform () {

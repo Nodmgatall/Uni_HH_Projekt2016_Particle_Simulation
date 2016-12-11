@@ -2,10 +2,10 @@
 
 DatastructureGrid::DatastructureGrid (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_particle_writer)
 : DatastructureBase (p_options, p_border, p_algorithm, p_particle_writer) {
+    m_stucture_name = "DatastructureGrid";
     unsigned int idx_x, idx_y, idx_z;
     long         max_usefull_size         = pow (m_options.m_particle_count, 1.0 / 3.0);
     m_iterations_until_rearange_particles = m_options.m_max_iterations_between_datastructure_rebuild;
-    m_stucture_name                       = "Grid";
     m_max_id                              = 0;
     m_idx_a = !(m_idx_b = 0);
     // cut_off_radius*1.2 to allow particles to move before reconstruction of

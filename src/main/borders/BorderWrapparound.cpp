@@ -8,6 +8,7 @@
 #include "BorderWrapparound.hpp"
 
 BorderWrapparound::BorderWrapparound (Vec3f& p_bounds) : BorderBase (p_bounds) {
+    m_stucture_name = "BorderWrapparound";
 }
 
 BorderWrapparound::~BorderWrapparound () {
