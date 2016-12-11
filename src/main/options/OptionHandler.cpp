@@ -57,7 +57,10 @@ void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_opti
 
     };
     for (index = 1; index < (signed) g_csv_column_names.size (); index++) {
-        options.push_back ({ g_csv_column_names[index], required_argument, 0, write_modes_index * 1000 + index });
+        options.push_back ({ (std::string ("WRITE_") + g_csv_column_names[index]).c_str (),
+                             required_argument,
+                             0,
+                             write_modes_index * 1000 + index });
     }
 
     /*clang-format on */
@@ -201,41 +204,32 @@ void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_opti
 }
 void OptionHandler::print_choosen_options (s_options& p_options) {
     Benchmark::begin ("Print-Options");
-    (void) p_options;
-    // DEBUG_BEGIN << "algorithm     :" << m_algorithm << DEBUG_END;
-    // DEBUG_BEGIN << "particles:" << m_particles << DEBUG_END;
-    DEBUG_BEGIN << "generator seed : " << p_options.m_seed << DEBUG_END;
-    DEBUG_BEGIN << "generator mode : " << p_options.m_input_type << DEBUG_END;
-    DEBUG_BEGIN << "algorithm_type : " << p_options.m_algorithm_type << DEBUG_END;
-    DEBUG_BEGIN << "autotuneing    : " << p_options.m_autotuneing << DEBUG_END;
-    DEBUG_BEGIN << "data_format    : " << p_options.m_output_type << DEBUG_END;
-    DEBUG_BEGIN << "file_in_name   : " << p_options.m_in_file_name << DEBUG_END;
-    DEBUG_BEGIN << "file_out_name  : " << p_options.m_out_file_name << DEBUG_END;
-    DEBUG_BEGIN << "particle_count : " << p_options.m_particle_count << DEBUG_END;
-    DEBUG_BEGIN << "run_time_limit : " << p_options.m_run_time_limit << DEBUG_END;
-    DEBUG_BEGIN << "timestep       : " << p_options.m_timestep << DEBUG_END;
-    DEBUG_BEGIN << "verbose        : " << p_options.m_verbose << DEBUG_END;
-    DEBUG_BEGIN << "write_fequency : " << p_options.m_write_fequency << DEBUG_END;
-    DEBUG_BEGIN << "cut_off_radius : " << p_options.m_cut_off_radius << DEBUG_END;
+    int index;
+    DEBUG_BEGIN << "algorithm_type                               " << p_options.m_algorithm_type << DEBUG_END;
+    DEBUG_BEGIN << "autotuneing                                  " << p_options.m_autotuneing << DEBUG_END;
+    DEBUG_BEGIN << "output_type                                  " << p_options.m_output_type << DEBUG_END;
+    DEBUG_BEGIN << "in_file_name                                 " << p_options.m_in_file_name << DEBUG_END;
+    DEBUG_BEGIN << "out_file_name                                " << p_options.m_out_file_name << DEBUG_END;
+    DEBUG_BEGIN << "run_time_limit                               " << p_options.m_run_time_limit << DEBUG_END;
+    DEBUG_BEGIN << "timestep                                     " << p_options.m_timestep << DEBUG_END;
+    DEBUG_BEGIN << "verbose                                      " << p_options.m_verbose << DEBUG_END;
+    DEBUG_BEGIN << "write_fequency                               " << p_options.m_write_fequency << DEBUG_END;
+    DEBUG_BEGIN << "cut_off_radius                               " << p_options.m_cut_off_radius << DEBUG_END;
+    DEBUG_BEGIN << "data_structure                               " << p_options.m_data_structure << DEBUG_END;
+    DEBUG_BEGIN << "input_type                                   " << p_options.m_input_type << DEBUG_END;
+    DEBUG_BEGIN << "seed                                         " << p_options.m_seed << DEBUG_END;
+    DEBUG_BEGIN << "particle_count                               " << p_options.m_particle_count << DEBUG_END;
+    DEBUG_BEGIN << "max_iterations                               " << p_options.m_max_iterations << DEBUG_END;
+    DEBUG_BEGIN << "bounds                                       " << p_options.m_bounds << DEBUG_END;
+    DEBUG_BEGIN << "max_iterations_between_datastructure_rebuild "
+                << p_options.m_max_iterations_between_datastructure_rebuild << DEBUG_END;
     DEBUG_BEGIN << "write_modes    : [ID";
-    if (p_options.m_write_modes[e_csv_column_type::POSITION]) {
-        g_debug_stream << ", " << e_csv_column_type::POSITION;
-    }
-    if (p_options.m_write_modes[e_csv_column_type::VELOCITY]) {
-        g_debug_stream << ", " << e_csv_column_type::VELOCITY;
-    }
-    if (p_options.m_write_modes[e_csv_column_type::ACCELERATION]) {
-        g_debug_stream << ", " << e_csv_column_type::ACCELERATION;
-    }
-    if (p_options.m_write_modes[e_csv_column_type::PARTICLE_TYPE]) {
-        g_debug_stream << ", " << e_csv_column_type::PARTICLE_TYPE;
+    for (index = 2; index < (signed) g_csv_column_names.size (); index++) {
+        if (p_options.m_write_modes[static_cast<e_csv_column_type> (index)]) {
+            g_debug_stream << ", " << g_csv_column_names[index];
+        }
     }
     g_debug_stream << "]" << DEBUG_END;
-    /*
-     macro_debug("generator_mode :" ,
-     p_options.particle_generator->get_generator_mode());
-     macro_debug("data_structure :" , p_options.particles->get_structure_name());
-     */
     Benchmark::end ();
 }
 
@@ -245,29 +239,37 @@ void OptionHandler::print_usage_generation_mode () {
 }
 
 void OptionHandler::print_usage_particle_sim () {
+    int index;
     std::cout << "Usage:" << std::endl;
-    std::cout << "Write options:" << std::endl;
-    std::cout << "  --write_velo" << std::endl;
-    std::cout << "  --write_pos" << std::endl;
-    std::cout << "  --write_accel" << std::endl;
-    std::cout << "  --write_type" << std::endl << std::endl;
-
-    std::cout << "Particle generator modes:" << std::endl;
-    std::cout << "  --multiple_objects" << std::endl;
-    std::cout << "  --random" << std::endl;
-    std::cout << "  --random_uniform" << std::endl;
-    std::cout << "  --single_object_middle" << std::endl;
-    std::cout << "  --uniform_dist" << std::endl << std::endl;
-
-    std::cout << "Algorihm types:" << std::endl;
-    std::cout << "  --lennard" << std::endl;
-    std::cout << "  --smothed" << std::endl;
-    std::cout << "  --dissapative" << std::endl << std::endl;
-
-    std::cout << "Data structure types" << std::endl;
-    std::cout << "  --grid" << std::endl;
-    std::cout << "  --list" << std::endl << std::endl;
-
+    //
+    std::cout << "--algorithm=< " << g_algorithm_names[1];
+    for (index = 1; index < (signed) g_algorithm_names.size (); index++) {
+        std::cout << " | " << g_algorithm_names[index];
+    }
+    std::cout << " >" << std::endl;
+    //
+    std::cout << "--data_structure=< " << g_datastructure_names[1];
+    for (index = 1; index < (signed) g_datastructure_names.size (); index++) {
+        std::cout << " | " << g_datastructure_names[index];
+    }
+    std::cout << " >" << std::endl;
+    //
+    std::cout << "--input=< " << g_input_names[1];
+    for (index = 1; index < (signed) g_input_names.size (); index++) {
+        std::cout << " | " << g_input_names[index];
+    }
+    std::cout << " >" << std::endl;
+    //
+    std::cout << "--output=< " << g_output_names[1];
+    for (index = 1; index < (signed) g_output_names.size (); index++) {
+        std::cout << " | " << g_output_names[index];
+    }
+    std::cout << " >" << std::endl;
+    //
+    for (index = 1; index < (signed) g_csv_column_names.size (); index++) {
+        std::cout << "--WRITE_" << g_csv_column_names[index];
+    }
+    //
     std::cout << "Simulation parameters" << std::endl;
     std::cout << "  -v | --verbose" << std::endl;
     std::cout << "  -s | --seed" << std::endl;
