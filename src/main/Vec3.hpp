@@ -9,6 +9,7 @@
 #define SRC_VEC3_HPP_
 
 #include "DataType.hpp"
+#include <istream>
 #include <math.h>
 #include <ostream>
 
@@ -74,8 +75,26 @@ struct Vec3 {
     inline T length () {
         return sqrt (x * x + y * y + z * z);
     }
-    inline friend std::ostream& operator<< (std::ostream& stream, const Vec3<T> vec) {
+    inline friend std::ostream& operator<< (std::ostream& stream, const Vec3<T>& vec) {
         return stream << "Vec3(" << vec.x << "," << vec.y << "," << vec.z << ")";
+    }
+    inline friend std::istream& operator>> (std::istream& stream, Vec3<T>& vec) {
+        while ((stream.peek () == ' ') || (stream.peek () == '(') || (stream.peek () == '[')) {
+            stream.ignore ();
+        }
+        stream >> vec.x;
+        while ((stream.peek () == ' ') || (stream.peek () == '/') || (stream.peek () == '|')) {
+            stream.ignore ();
+        }
+        stream >> vec.y;
+        while ((stream.peek () == ' ') || (stream.peek () == '/') || (stream.peek () == '|')) {
+            stream.ignore ();
+        }
+        stream >> vec.z;
+        while ((stream.peek () == ' ') || (stream.peek () == ')') || (stream.peek () == ']')) {
+            stream.ignore ();
+        }
+        return stream;
     }
 };
 

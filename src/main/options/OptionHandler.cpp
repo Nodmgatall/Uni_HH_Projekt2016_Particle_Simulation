@@ -11,51 +11,44 @@ int indexInArray (std::vector<const char*> elements, char* element) {
 
 void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_options) {
     Benchmark::begin ("OptionHandler");
-
-    int         argv_index;
-    bool        save_config         = false;
-    bool        load_config         = false;
-    bool        list_configs        = false;
-    bool        config_feature_used = false;
-    bool        print_config        = true;
-    bool        print_saved_config  = false;
-    std::string config_name         = "";
-    int         algorithm_set       = 0;
-    int         data_format_set     = 0;
-    int         generator_mode_set  = 0;
-    int         index;
-    const int   algorithm_type_index     = 1;
-    const int   datastructure_type_index = 2;
-    const int   input_type_index         = 3;
-    const int   output_type_index        = 4;
-    const int   write_modes_index        = 5;
-    /*clang-format off */
+    int                 argv_index;
+    bool                save_config              = false;
+    bool                load_config              = false;
+    bool                list_configs             = false;
+    bool                config_feature_used      = false;
+    bool                print_config             = true;
+    bool                print_saved_config       = false;
+    std::string         config_name              = "";
+    int                 index                    = 0;
+    const int           algorithm_type_index     = 1;
+    const int           datastructure_type_index = 2;
+    const int           input_type_index         = 3;
+    const int           output_type_index        = 4;
+    const int           write_modes_index        = 5;
     std::vector<option> options = { { "algorithm", required_argument, 0, algorithm_type_index * 1000 },
                                     { "data_structure", required_argument, 0, datastructure_type_index * 1000 },
                                     { "input", required_argument, 0, input_type_index * 1000 },
                                     { "output", required_argument, 0, output_type_index * 1000 },
-
-                                    // Verbose option
-                                    { "verbose", no_argument, 0, 'v' },
-
-                                    // Simulation parameters
-                                    { "seed", required_argument, 0, 's' },
-                                    { "particle_count", required_argument, 0, 'p' },
-                                    { "run_time_limit", required_argument, 0, 'l' },
-                                    { "timestep", required_argument, 0, 't' },
-                                    { "dynamic", no_argument, 0, 'd' },
+                                    // simulation options
+                                    { "autotuneing", no_argument, 0, 'a' },
+                                    { "bounds", required_argument, 0, 'b' },
                                     { "write_fequency", required_argument, 0, 'f' },
-                                    { "cutoff_radius", required_argument, 0, 'r' },
-                                    { "iterations", required_argument, 0, 'i' },
-
-                                    // Misc
                                     { "help", no_argument, 0, 'h' },
+                                    { "in_file_name", required_argument, 0, 'i' },
+                                    { "run_time_limit", required_argument, 0, 'l' },
+                                    { "max_iterations", required_argument, 0, 'm' },
+                                    { "out_file_name", required_argument, 0, 'o' },
+                                    { "particle_count", required_argument, 0, 'p' },
+                                    { "cut_off_radius", required_argument, 0, 'r' },
+                                    { "seed", required_argument, 0, 's' },
+                                    { "timestep", required_argument, 0, 't' },
+                                    { "verbose", no_argument, 0, 'v' },
+                                    { "max_iterations_between_datastructure_rebuild", required_argument, 0, 6000 },
+                                    // Misc
                                     { "load_config", required_argument, 0, 28 },
                                     { "print_config", required_argument, 0, 29 },
                                     { "list_configs", no_argument, 0, 30 },
-                                    { "save_config", required_argument, 0, 31 }
-
-    };
+                                    { "save_config", required_argument, 0, 31 } };
     for (index = 1; index < (signed) g_csv_column_names.size (); index++) {
         options.push_back ({ (std::string ("WRITE_") + g_csv_column_names[index]).c_str (),
                              required_argument,
@@ -63,7 +56,6 @@ void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_opti
                              write_modes_index * 1000 + index });
     }
 
-    /*clang-format on */
     opterr = 0;
     int long_options;
     while ((argv_index = getopt_long (p_argc, p_argv, "vs:p:l:t:dr:f:i:h", &options[0], &long_options)) != -1) {
@@ -94,8 +86,66 @@ void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_opti
                 p_options.m_write_modes[static_cast<e_csv_column_type> (argv_index % 1000)] =
                     !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
                 break;
-            default:
+            default: {
+                std::stringstream line (optarg);
                 switch (argv_index) {
+                    case 'a': {
+                        p_options.m_autotuneing = true;
+                        break;
+                    }
+                    case 'b': {
+                        line >> p_options.m_bounds;
+                        break;
+                    }
+                    case 'f': {
+                        line >> p_options.m_write_fequency;
+                        break;
+                    }
+                    case 'h': {
+                        print_usage_particle_sim ();
+                        exit (EXIT_SUCCESS);
+                        break;
+                    }
+                    case 'i': {
+                        line >> p_options.m_in_file_name;
+                        break;
+                    }
+                    case 'l': {
+                        line >> p_options.m_run_time_limit;
+                        break;
+                    }
+                    case 'm': {
+                        line >> p_options.m_max_iterations;
+                        break;
+                    }
+                    case 'o': {
+                        line >> p_options.m_out_file_name;
+                        break;
+                    }
+                    case 'p': {
+                        line >> p_options.m_particle_count;
+                        break;
+                    }
+                    case 'r':
+                        line >> p_options.m_cut_off_radius;
+                        break;
+                    case 's': {
+                        line >> p_options.m_seed;
+                        break;
+                    }
+                    case 't': {
+                        line >> p_options.m_timestep;
+                        break;
+                    }
+                    case 'v': {
+                        p_options.m_verbose = true;
+                        break;
+                    }
+                    case 6000: {
+                        line >> p_options.m_max_iterations_between_datastructure_rebuild;
+                        break;
+                    }
+
                     // config options
                     case 28:
                         config_feature_used = true;
@@ -117,46 +167,6 @@ void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_opti
                         save_config         = true;
                         config_name         = std::string (optarg);
                         break;
-                    case 'v': {
-                        p_options.m_verbose = true;
-                        break;
-                    }
-                    case 's': {
-                        p_options.m_seed = std::stoi (optarg);
-                        break;
-                    }
-                    case 'p': {
-                        p_options.m_particle_count = std::stoi (optarg);
-                        break;
-                    }
-                    case 'f': {
-                        p_options.m_write_fequency = std::stoi (optarg);
-                        break;
-                    }
-                    case 'r':
-                        p_options.m_cut_off_radius = std::stof (optarg);
-                        break;
-                    case 'l': {
-                        p_options.m_run_time_limit = std::stof (optarg);
-                        break;
-                    }
-                    case 't': {
-                        p_options.m_timestep = std::stof (optarg);
-                        break;
-                    }
-                    case 'd': {
-                        p_options.m_autotuneing = true;
-                        break;
-                    }
-                    case 'i': {
-                        p_options.m_max_iterations = std::stoi (optarg);
-                        break;
-                    }
-                    case 'h': {
-                        print_usage_particle_sim ();
-                        exit (EXIT_SUCCESS);
-                        break;
-                    }
                     case '?': {
                         std::cout << "Error: unkown option" << std::endl;
                         print_usage_particle_sim ();
@@ -164,19 +174,8 @@ void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_opti
                         break;
                     }
                 }
+            }
         }
-    }
-    if (generator_mode_set > 1) {
-        std::cout << "Error: multiple generator modes set" << std::endl;
-        exit (EXIT_SUCCESS);
-    }
-    if (algorithm_set > 1) {
-        std::cout << "Error: multiple algorithms set" << std::endl;
-        exit (EXIT_SUCCESS);
-    }
-    if (data_format_set > 1) {
-        std::cout << "Error: multiple data formats set" << std::endl;
-        exit (EXIT_SUCCESS);
     }
     if (config_feature_used == true) {
         ConfigLoader config_loader;
@@ -274,7 +273,7 @@ void OptionHandler::print_usage_particle_sim () {
     std::cout << "  -r | --cut_off_radius" << std::endl;
     std::cout << "  -t | --timestep" << std::endl;
     std::cout << "  -h | --help" << std::endl;
-    std::cout << "  -d | --dynamic" << std::endl << std::endl;
+    std::cout << "  -a | --autotuneing" << std::endl << std::endl;
 
     std::cout << "Config options" << std::endl;
     std::cout << "  --load_confing " << std::endl;
