@@ -12,27 +12,27 @@
 
 BOOST_AUTO_TEST_CASE (testException1) {
     InputTypeInvalidException exception (e_input_type::RANDOM);
-    BOOST_CHECK_EQUAL (exception.what (), "algorithm type ( RANDOM ) is invalid");
+    BOOST_CHECK_EQUAL (exception.what (), "input type ( RANDOM ) is invalid");
 }
 BOOST_AUTO_TEST_CASE (testException2) {
     InputTypeInvalidException exception (e_input_type::RANDOM_UNIFORM);
-    BOOST_CHECK_EQUAL (exception.what (), "algorithm type ( RANDOM_UNIFORM ) is invalid");
+    BOOST_CHECK_EQUAL (exception.what (), "input type ( RANDOM_UNIFORM ) is invalid");
 }
 BOOST_AUTO_TEST_CASE (testException3) {
     InputTypeInvalidException exception (e_input_type::SINGLE_OBJECT_MIDDLE);
-    BOOST_CHECK_EQUAL (exception.what (), "algorithm type ( SINGLE_OBJECT_MIDDLE ) is invalid");
+    BOOST_CHECK_EQUAL (exception.what (), "input type ( SINGLE_OBJECT_MIDDLE ) is invalid");
 }
 BOOST_AUTO_TEST_CASE (testException4) {
     InputTypeInvalidException exception (e_input_type::GRID_DISTRIBUTION);
-    BOOST_CHECK_EQUAL (exception.what (), "algorithm type ( GRID_DISTRIBUTION ) is invalid");
+    BOOST_CHECK_EQUAL (exception.what (), "input type ( GRID_DISTRIBUTION ) is invalid");
 }
 BOOST_AUTO_TEST_CASE (testException5) {
     InputTypeInvalidException exception (e_input_type::MULTIPLE_OBJECTS);
-    BOOST_CHECK_EQUAL (exception.what (), "algorithm type ( MULTIPLE_OBJECTS ) is invalid");
+    BOOST_CHECK_EQUAL (exception.what (), "input type ( MULTIPLE_OBJECTS ) is invalid");
 }
 BOOST_AUTO_TEST_CASE (testException6) {
     InputTypeInvalidException exception (e_input_type::CSV);
-    BOOST_CHECK_EQUAL (exception.what (), "algorithm type ( CSV ) is invalid");
+    BOOST_CHECK_EQUAL (exception.what (), "input type ( CSV ) is invalid");
 }
 BOOST_AUTO_TEST_CASE (testString1) {
     std::stringstream s;
