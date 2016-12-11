@@ -12,14 +12,16 @@
 
 class WriterBase {
   public:
-    WriterBase ();
-    virtual ~WriterBase ();
+    WriterBase () {
+    }
+    virtual ~WriterBase () {
+    }
     virtual void saveData (std::vector<data_type>&     p_positions_x,
                            std::vector<data_type>&     p_positions_y,
                            std::vector<data_type>&     p_positions_z,
-                           std::vector<unsigned long>& p_ids);
-    virtual void start ();
-    virtual void end ();
+                           std::vector<unsigned long>& p_ids) = 0;
+    virtual void start ()                                     = 0;
+    virtual void end ()                                       = 0;
 };
 
 #endif /* SRC_MAIN_IO_PARTICLEWRITERBASE_HPP_ */

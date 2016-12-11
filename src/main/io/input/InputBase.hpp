@@ -23,8 +23,7 @@ class InputBase {
     }
     virtual ~InputBase () {
     }
-    virtual void initialize_datastructure () {
-    }
+    virtual void initialize_datastructure () = 0;
 };
 
 #endif /* SRC_GENERATORS_PARTICLEGENERATORBASE_HPP_ */

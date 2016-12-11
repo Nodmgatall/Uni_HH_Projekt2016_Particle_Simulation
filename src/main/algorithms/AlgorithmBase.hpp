@@ -26,14 +26,7 @@ class AlgorithmBase {
                          const data_type& p_position_az,
                          data_type&       p_position_bx,
                          data_type&       p_position_by,
-                         data_type&       p_position_bz) {
-        (void) p_position_ax;
-        (void) p_position_ay;
-        (void) p_position_az;
-        (void) p_position_bx;
-        (void) p_position_by;
-        (void) p_position_bz;
-    }
+                         data_type&       p_position_bz) = 0;
     virtual void step_2 (const data_type&       p_position_aix,
                          const data_type&       p_position_aiy,
                          const data_type&       p_position_aiz,
@@ -47,22 +40,7 @@ class AlgorithmBase {
                          data_type* const       p_position_bjy,
                          data_type* const       p_position_bjz,
                          const unsigned long    p_index_j_begin,
-                         const unsigned long    p_index_j_end) {
-        (void) p_position_aix;
-        (void) p_position_aiy;
-        (void) p_position_aiz;
-        (void) p_position_bix;
-        (void) p_position_biy;
-        (void) p_position_biz;
-        (void) p_position_ajx;
-        (void) p_position_ajy;
-        (void) p_position_ajz;
-        (void) p_position_bjx;
-        (void) p_position_bjy;
-        (void) p_position_bjz;
-        (void) p_index_j_begin;
-        (void) p_index_j_end;
-    }
+                         const unsigned long    p_index_j_end) = 0;
 };
 
 #endif /* SRC_MAIN_ALGORITHMS_ALGORITHMBASE_HPP_ */
