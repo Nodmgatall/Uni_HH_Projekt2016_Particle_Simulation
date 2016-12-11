@@ -13,7 +13,6 @@ class OptionHandler {
   private:
     void print_choosen_options (s_options& p_options);
     void print_usage_particle_sim ();
-    void print_usage_generation_mode ();
 };
 
 #endif

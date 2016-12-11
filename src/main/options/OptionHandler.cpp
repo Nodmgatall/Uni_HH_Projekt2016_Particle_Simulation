@@ -233,11 +233,6 @@ void OptionHandler::print_choosen_options (s_options& p_options) {
     Benchmark::end ();
 }
 
-void OptionHandler::print_usage_generation_mode () {
-    std::cout << "Usage:" << std::endl;
-    std::cout << "-g [generation_mode]" << std::endl;
-}
-
 void OptionHandler::print_usage_particle_sim () {
     int index;
     std::cout << "Usage:" << std::endl;
