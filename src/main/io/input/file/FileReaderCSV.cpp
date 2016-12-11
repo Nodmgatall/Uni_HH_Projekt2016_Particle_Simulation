@@ -82,7 +82,6 @@ void FileReaderCSV::initialize_datastructure () {
                                 found++;
                                 break;
                             }
-                            default: { break; }
                         }
                         break;
                     }
@@ -103,7 +102,6 @@ void FileReaderCSV::initialize_datastructure () {
                                 found++;
                                 break;
                             }
-                            default: { break; }
                         }
                         break;
                     }
