@@ -21,7 +21,7 @@
 
 class InputFactory {
   public:
-    static InputBase build (s_options& p_options, DatastructureBase& p_datastructure);
+    static InputBase* build (s_options& p_options, DatastructureBase& p_datastructure);
 };
 
 #endif /* SRC_GENERATOR_HPP_ */

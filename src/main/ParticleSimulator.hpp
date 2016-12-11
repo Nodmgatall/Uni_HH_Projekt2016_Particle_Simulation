@@ -20,12 +20,12 @@
 
 class ParticleSimulator {
   private:
-    s_options         m_options;
-    WriterBase        m_writer;
-    BorderBase        m_border;
-    AlgorithmBase     m_algorithm;
-    DatastructureBase m_datastructure;
-    InputBase         m_input;
+    s_options          m_options;
+    WriterBase*        m_writer;
+    BorderBase*        m_border;
+    AlgorithmBase*     m_algorithm;
+    DatastructureBase* m_datastructure;
+    InputBase*         m_input;
 
   public:
     ParticleSimulator (s_options& p_options);

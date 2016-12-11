@@ -19,7 +19,7 @@
 
 class DatastructureFactory {
   public:
-    static DatastructureBase
+    static DatastructureBase*
         build (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_writer);
 };
 

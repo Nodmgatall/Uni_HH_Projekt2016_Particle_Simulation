@@ -14,7 +14,7 @@
 
 class AlgorithmFactory {
   public:
-    static AlgorithmBase build (s_options& p_options);
+    static AlgorithmBase* build (s_options& p_options);
 };
 
 #endif /* SRC_MAIN_ALGORITHMS_ALGORITHMFACTORY_HPP_ */
