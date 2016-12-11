@@ -53,7 +53,7 @@ code_coverage_only:
 	lcov --directory ../CMakeFiles/ --capture --output-file ../Testing/Coverage/coverage_test.info
 	lcov --add-tracefile ../Testing/Coverage/coverage_init.info --add-tracefile ../Testing/Coverage/coverage_test.info --output-file ../Testing/Coverage/coverage_combined.info
 	lcov --extract ../Testing/Coverage/coverage_combined.info "*/src/main/*" --output-file ../Testing/Coverage/coverage.info
-	genhtml ../Testing/Coverage/coverage.info --output-directory ../Testing/Coverage/coverage_out --demangle-cpp
+	genhtml ../Testing/Coverage/coverage.info --output-directory ../Testing/Coverage --demangle-cpp
 
 show_log:
 	cat ../Testing/Temporary/LastTest.log
