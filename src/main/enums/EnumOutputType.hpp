@@ -8,6 +8,7 @@
 #ifndef SRC_MAIN_OPTIONS_ENUM_OUTPUT_TYPE_HPP_
 #define SRC_MAIN_OPTIONS_ENUM_OUTPUT_TYPE_HPP_
 
+#include <exception>
 #include <ostream>
 
 enum class e_output_type { CSV = 1, LAMMPS = 2, ESPRESSO = 3, GROMACS = 4, VMD = 5, VTK = 6 };

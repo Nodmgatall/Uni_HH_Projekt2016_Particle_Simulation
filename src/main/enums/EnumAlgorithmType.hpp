@@ -8,6 +8,7 @@
 #ifndef SRC_MAIN_OPTIONS_ENUM_ALGORITHM_TYPE_HPP_
 #define SRC_MAIN_OPTIONS_ENUM_ALGORITHM_TYPE_HPP_
 
+#include <exception>
 #include <ostream>
 
 enum class e_algorithm_type {

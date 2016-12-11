@@ -8,6 +8,7 @@
 #ifndef SRC_MAIN_OPTIONS_ENUM_DATASTRUCTURE_TYPE_HPP_
 #define SRC_MAIN_OPTIONS_ENUM_DATASTRUCTURE_TYPE_HPP_
 
+#include <exception>
 #include <ostream>
 
 enum class e_datastructure_type { GRID = 1, LIST = 2, LISTEDGIRD = 3 };

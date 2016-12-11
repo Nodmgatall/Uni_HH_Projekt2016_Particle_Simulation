@@ -9,6 +9,7 @@
 #define SRC_MAIN_ENUMS_ENUMCSVCOLUMNTYPE_HPP_
 
 #include <cstring>
+#include <exception>
 #include <ostream>
 
 enum class e_csv_column_type {
