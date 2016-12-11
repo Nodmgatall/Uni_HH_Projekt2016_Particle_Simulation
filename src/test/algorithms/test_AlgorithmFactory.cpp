@@ -1,4 +1,5 @@
 
+
 /*
  * test_LennardJonesAlgorithm.cpp
  *
@@ -8,6 +9,7 @@
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "AlgorithmFactory"
 #include "../../main/algorithms/AlgorithmFactory.hpp"
+
 #include <boost/test/unit_test.hpp>
 #include <cstring>
 BOOST_AUTO_TEST_CASE (test1) {
