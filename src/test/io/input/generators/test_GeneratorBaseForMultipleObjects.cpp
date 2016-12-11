@@ -1,3 +1,4 @@
+
 /*
  * test_DatastructureBaseForGrid.cpp
  *
@@ -9,5 +10,5 @@
 typedef GeneratorMultipleObjects GeneratorUnderTest;
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "GeneratorBaseMultipleObjects"
-#include "test_GeneratorBase.hpp"
+#include "../../input/generators/test_GeneratorBase.hpp"
 #endif

@@ -9,6 +9,8 @@
 
 InputBase* InputFactory::build (s_options& p_options, DatastructureBase& p_datastructure) {
     switch (p_options.m_input_type) {
+        case e_input_type::CSV:
+            return new FileReaderCSV (p_options, p_datastructure);
         case e_input_type::RANDOM:
             return new GeneratorRandom (p_options, p_datastructure);
         case e_input_type::SINGLE_OBJECT_MIDDLE:

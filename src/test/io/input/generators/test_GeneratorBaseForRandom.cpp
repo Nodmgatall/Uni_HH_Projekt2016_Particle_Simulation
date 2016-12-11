@@ -1,3 +1,4 @@
+
 /*
  * test_DatastructureBaseForGrid.cpp
  *
@@ -9,5 +10,5 @@
 typedef GeneratorRandom GeneratorUnderTest;
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "GeneratorBaseRandom"
-#include "test_GeneratorBase.hpp"
+#include "../../input/generators/test_GeneratorBase.hpp"
 #endif
