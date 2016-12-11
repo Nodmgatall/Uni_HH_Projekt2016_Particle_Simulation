@@ -1,7 +1,13 @@
 #include "OptionHandler.hpp"
-#include <getopt.h>
-#include <map>
-#include <vector>
+
+int indexInArray (std::vector<const char*> elements, char* element) {
+    unsigned int index;
+    for (index = 0; index < elements.size (); index++)
+        if (0 == strcmp (elements[index], element)) {
+            return index;
+        }
+    return -1;
+}
 
 void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_options) {
     Benchmark::begin ("OptionHandler");
@@ -17,28 +23,17 @@ void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_opti
     int         algorithm_set       = 0;
     int         data_format_set     = 0;
     int         generator_mode_set  = 0;
+    int         index;
+    const int   algorithm_type_index     = 1;
+    const int   datastructure_type_index = 2;
+    const int   input_type_index         = 3;
+    const int   output_type_index        = 4;
+    const int   write_modes_index        = 5;
     /*clang-format off */
-    std::vector<option> options = { // Variable write options
-                                    { "write_velo", required_argument, 0, 0 },
-                                    { "write_pos", required_argument, 0, 1 },
-                                    { "write_accel", required_argument, 0, 2 },
-                                    { "write_type", required_argument, 0, 3 },
-
-                                    // Generator modes
-                                    { "multiple_objects", no_argument, 0, 4 },
-                                    { "random", no_argument, 0, 5 },
-                                    { "random_uniform", no_argument, 0, 6 },
-                                    { "single_object_middle", no_argument, 0, 7 },
-                                    { "uniform_dist", no_argument, 0, 8 },
-
-                                    // Algorithms
-                                    { "lennard", no_argument, 0, 9 },
-                                    { "smothed", no_argument, 0, 10 },
-                                    { "dissipative", no_argument, 0, 11 },
-
-                                    // data structure
-                                    { "grid", no_argument, 0, 12 },
-                                    { "list", no_argument, 0, 13 },
+    std::vector<option> options = { { "algorithm", required_argument, 0, algorithm_type_index * 1000 },
+                                    { "data_structure", required_argument, 0, datastructure_type_index * 1000 },
+                                    { "input", required_argument, 0, input_type_index * 1000 },
+                                    { "output", required_argument, 0, output_type_index * 1000 },
 
                                     // Verbose option
                                     { "verbose", no_argument, 0, 'v' },
@@ -59,7 +54,12 @@ void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_opti
                                     { "print_config", required_argument, 0, 29 },
                                     { "list_configs", no_argument, 0, 30 },
                                     { "save_config", required_argument, 0, 31 }
+
     };
+    for (index = 1; index < (signed) g_csv_column_names.size (); index++) {
+        options.push_back ({ g_csv_column_names[index], required_argument, 0, write_modes_index * 1000 + index });
+    }
+
     /*clang-format on */
     opterr = 0;
     int long_options;
@@ -72,134 +72,95 @@ void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_opti
                       << std::endl;
             exit (EXIT_SUCCESS);
         }
-        switch (argv_index) {
-            // Write modes
-            case 0:
-                p_options.m_write_modes[e_csv_column_type::VELOCITY] =
+        switch (argv_index / 1000) {
+            case algorithm_type_index:
+                p_options.m_algorithm_type =
+                    static_cast<e_algorithm_type> (indexInArray (g_algorithm_names, optarg));
+                break;
+            case datastructure_type_index:
+                p_options.m_data_structure =
+                    static_cast<e_datastructure_type> (indexInArray (g_datastructure_names, optarg));
+                break;
+            case input_type_index:
+                p_options.m_input_type = static_cast<e_input_type> (indexInArray (g_input_names, optarg));
+                break;
+            case output_type_index:
+                p_options.m_output_type = static_cast<e_output_type> (indexInArray (g_output_names, optarg));
+                break;
+            case write_modes_index:
+                p_options.m_write_modes[static_cast<e_csv_column_type> (argv_index % 1000)] =
                     !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
                 break;
-            case 1:
-                p_options.m_write_modes[e_csv_column_type::POSITION] =
-                    !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
-                break;
-            case 2:
-                p_options.m_write_modes[e_csv_column_type::ACCELERATION] =
-                    !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
-                break;
+            default:
+                switch (argv_index) {
+                    // config options
+                    case 28:
+                        config_feature_used = true;
+                        load_config         = true;
+                        config_name         = std::string (optarg);
+                        break;
+                    case 29:
+                        config_feature_used = true;
+                        print_saved_config  = true;
+                        config_name         = std::string (optarg);
+                        break;
+                    case 30:
+                        config_feature_used = true;
+                        list_configs        = true;
+                        break;
+                    case 31:
 
-            case 3:
-                p_options.m_write_modes[e_csv_column_type::PARTICLE_TYPE] =
-                    !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
-                break;
-
-            // Generator modes
-            case 4:
-                p_options.m_input_type = e_input_type::MULTIPLE_OBJECTS;
-                generator_mode_set++;
-                break;
-            case 5:
-                p_options.m_input_type = e_input_type::RANDOM;
-                generator_mode_set++;
-                break;
-            case 6:
-                p_options.m_input_type = e_input_type::RANDOM_UNIFORM;
-                generator_mode_set++;
-                break;
-            case 7:
-                p_options.m_input_type = e_input_type::SINGLE_OBJECT_MIDDLE;
-                generator_mode_set++;
-                break;
-            case 8:
-                p_options.m_input_type = e_input_type::GRID_DISTRIBUTION;
-                generator_mode_set++;
-                break;
-
-            // Algorithm types
-            case 9:
-                p_options.m_algorithm_type = e_algorithm_type::LENNARD_JONES;
-
-                break;
-            case 10:
-                p_options.m_algorithm_type = e_algorithm_type::SMOTHED_PARTICLE_HYDRODYNAMICS;
-                break;
-            case 11:
-                p_options.m_algorithm_type = e_algorithm_type::DISSIPATIVE_PARTICLE_DYNAMICS;
-                break;
-
-            // Data structures
-            case 12:
-                p_options.m_data_structure = e_datastructure_type::GRID;
-                break;
-            case 13:
-                p_options.m_data_structure = e_datastructure_type::LIST;
-                break;
-            // config options
-            case 28:
-                config_feature_used = true;
-                load_config         = true;
-                config_name         = std::string (optarg);
-                break;
-            case 29:
-                config_feature_used = true;
-                print_saved_config  = true;
-                config_name         = std::string (optarg);
-                break;
-            case 30:
-                config_feature_used = true;
-                list_configs        = true;
-                break;
-            case 31:
-
-                config_feature_used = true;
-                save_config         = true;
-                config_name         = std::string (optarg);
-                break;
-            case 'v': {
-                p_options.m_verbose = true;
-                break;
-            }
-            case 's': {
-                p_options.m_seed = std::stoi (optarg);
-                break;
-            }
-            case 'p': {
-                p_options.m_particle_count = std::stoi (optarg);
-                break;
-            }
-            case 'f': {
-                p_options.m_write_fequency = std::stoi (optarg);
-                break;
-            }
-            case 'r':
-                p_options.m_cut_off_radius = std::stof (optarg);
-                break;
-            case 'l': {
-                p_options.m_run_time_limit = std::stof (optarg);
-                break;
-            }
-            case 't': {
-                p_options.m_timestep = std::stof (optarg);
-                break;
-            }
-            case 'd': {
-                p_options.m_autotuneing = true;
-                break;
-            }
-            case 'i': {
-                p_options.m_max_iterations = std::stoi (optarg);
-                break;
-            }
-            case 'h': {
-                print_usage_particle_sim ();
-                exit (EXIT_SUCCESS);
-                break;
-            }
-            case '?': {
-                std::cout << "Error: unkown option" << std::endl;
-                print_usage_particle_sim ();
-                exit (EXIT_SUCCESS);
-                break;
-            }
+                        config_feature_used = true;
+                        save_config         = true;
+                        config_name         = std::string (optarg);
+                        break;
+                    case 'v': {
+                        p_options.m_verbose = true;
+                        break;
+                    }
+                    case 's': {
+                        p_options.m_seed = std::stoi (optarg);
+                        break;
+                    }
+                    case 'p': {
+                        p_options.m_particle_count = std::stoi (optarg);
+                        break;
+                    }
+                    case 'f': {
+                        p_options.m_write_fequency = std::stoi (optarg);
+                        break;
+                    }
+                    case 'r':
+                        p_options.m_cut_off_radius = std::stof (optarg);
+                        break;
+                    case 'l': {
+                        p_options.m_run_time_limit = std::stof (optarg);
+                        break;
+                    }
+                    case 't': {
+                        p_options.m_timestep = std::stof (optarg);
+                        break;
+                    }
+                    case 'd': {
+                        p_options.m_autotuneing = true;
+                        break;
+                    }
+                    case 'i': {
+                        p_options.m_max_iterations = std::stoi (optarg);
+                        break;
+                    }
+                    case 'h': {
+                        print_usage_particle_sim ();
+                        exit (EXIT_SUCCESS);
+                        break;
+                    }
+                    case '?': {
+                        std::cout << "Error: unkown option" << std::endl;
+                        print_usage_particle_sim ();
+                        exit (EXIT_SUCCESS);
+                        break;
+                    }
+                }
         }
     }
     if (generator_mode_set > 1) {

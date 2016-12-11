@@ -24,7 +24,7 @@ const char* g_printed_csv_column_names[]
                                               { "ParticleType", 0, 0 } };
 
 std::pair<e_csv_column_type, int>* get_enum_for_printed_csv_column_name (const char* string) {
-    for (int i = 0; i < 6; i++) {
+    for (int i = 1; i < (signed) g_csv_column_names.size (); i++) {
         for (int j = 0; j < 3; j++) {
             if (g_printed_csv_column_names[i][j]) {
                 if (0 == strcmp (string, g_printed_csv_column_names[i][j])) {

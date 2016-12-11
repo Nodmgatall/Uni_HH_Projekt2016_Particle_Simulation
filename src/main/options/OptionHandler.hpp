@@ -1,12 +1,10 @@
 #ifndef OPTION_HANDLER_HPP
 #define OPTION_HANDLER_HPP
 
-#include <map>
-#include <vector>
-
 #include "Definitions.hpp"
 #include "Options.hpp"
 #include "io/config/ConfigLoader.hpp"
+#include <getopt.h>
 
 class OptionHandler {
   public:
