@@ -232,52 +232,120 @@ void OptionHandler::print_choosen_options (s_options& p_options) {
     Benchmark::end ();
 }
 
-void OptionHandler::print_usage_particle_sim () {
+void OptionHandler::print_usage_algorithm () {
     int index;
-    std::cout << "Usage:" << std::endl;
-    //
     std::cout << "--algorithm=< " << g_algorithm_names[1];
     for (index = 1; index < (signed) g_algorithm_names.size (); index++) {
         std::cout << " | " << g_algorithm_names[index];
     }
     std::cout << " >" << std::endl;
-    //
+}
+void OptionHandler::print_usage_data_structure () {
+    int index;
     std::cout << "--data_structure=< " << g_datastructure_names[1];
     for (index = 1; index < (signed) g_datastructure_names.size (); index++) {
         std::cout << " | " << g_datastructure_names[index];
     }
     std::cout << " >" << std::endl;
-    //
+}
+void OptionHandler::print_usage_input () {
+    int index;
     std::cout << "--input=< " << g_input_names[1];
     for (index = 1; index < (signed) g_input_names.size (); index++) {
         std::cout << " | " << g_input_names[index];
     }
     std::cout << " >" << std::endl;
-    //
+}
+void OptionHandler::print_usage_output () {
+    int index;
     std::cout << "--output=< " << g_output_names[1];
     for (index = 1; index < (signed) g_output_names.size (); index++) {
         std::cout << " | " << g_output_names[index];
     }
     std::cout << " >" << std::endl;
-    //
+}
+void OptionHandler::print_usage_write_modes () {
+    int index;
     for (index = 1; index < (signed) g_csv_column_names.size (); index++) {
         std::cout << "--WRITE_" << g_csv_column_names[index];
     }
-    //
-    std::cout << "Simulation parameters" << std::endl;
-    std::cout << "  -v | --verbose" << std::endl;
-    std::cout << "  -s | --seed" << std::endl;
-    std::cout << "  -p | --particle_count" << std::endl;
-    std::cout << "  -l | --run_time_limit" << std::endl;
-    std::cout << "  -f | --write_fequency" << std::endl;
-    std::cout << "  -r | --cut_off_radius" << std::endl;
-    std::cout << "  -t | --timestep" << std::endl;
-    std::cout << "  -h | --help" << std::endl;
-    std::cout << "  -a | --autotuneing" << std::endl << std::endl;
+}
+void OptionHandler::print_usage_autotuneing () {
+    std::cout << "--autotuneing    | -a" << std::endl;
+}
+void OptionHandler::print_usage_bounds () {
+    std::cout << "--bounds         | -b" << std::endl;
+}
+void OptionHandler::print_usage_write_fequency () {
+    std::cout << "--write_fequency | -f" << std::endl;
+}
+void OptionHandler::print_usage_help () {
+    std::cout << "--help           | -h" << std::endl;
+}
+void OptionHandler::print_usage_in_file_name () {
+    std::cout << "--in_file_name   | -i" << std::endl;
+}
+void OptionHandler::print_usage_run_time_limit () {
+    std::cout << "--run_time_limit | -l" << std::endl;
+}
+void OptionHandler::print_usage_max_iterations () {
+    std::cout << "--max_iterations | -m" << std::endl;
+}
+void OptionHandler::print_usage_out_file_name () {
+    std::cout << "--out_file_name  | -o" << std::endl;
+}
+void OptionHandler::print_usage_particle_count () {
+    std::cout << "--particle_count | -p" << std::endl;
+}
+void OptionHandler::print_usage_cut_off_radius () {
+    std::cout << "--cut_off_radius | -r" << std::endl;
+}
+void OptionHandler::print_usage_seed () {
+    std::cout << "--seed           | -s" << std::endl;
+}
+void OptionHandler::print_usage_timestep () {
+    std::cout << "--timestep       | -t" << std::endl;
+}
+void OptionHandler::print_usage_verbose () {
+    std::cout << "--verbose        | -v" << std::endl;
+}
+void OptionHandler::print_usage_load_confing () {
+    std::cout << "--load_confing   " << std::endl;
+}
+void OptionHandler::print_usage_print_config () {
+    std::cout << "--print_config   " << std::endl;
+}
+void OptionHandler::print_usage_list_configs () {
+    std::cout << "--list_configs   " << std::endl;
+}
+void OptionHandler::print_usage_save_config () {
+    std::cout << "--save_config    " << std::endl;
+}
 
-    std::cout << "Config options" << std::endl;
-    std::cout << "  --load_confing " << std::endl;
-    std::cout << "  --print_config" << std::endl;
-    std::cout << "  --list_configs" << std::endl;
-    std::cout << "  --save_config" << std::endl;
+void OptionHandler::print_usage_particle_sim () {
+    std::cout << "Usage:" << std::endl;
+    print_usage_algorithm ();
+    print_usage_data_structure ();
+    print_usage_input ();
+    print_usage_output ();
+    print_usage_write_modes ();
+    //
+    print_usage_autotuneing ();
+    print_usage_bounds ();
+    print_usage_write_fequency ();
+    print_usage_help ();
+    print_usage_in_file_name ();
+    print_usage_run_time_limit ();
+    print_usage_max_iterations ();
+    print_usage_out_file_name ();
+    print_usage_particle_count ();
+    print_usage_cut_off_radius ();
+    print_usage_seed ();
+    print_usage_timestep ();
+    print_usage_verbose ();
+    //
+    print_usage_load_confing ();
+    print_usage_print_config ();
+    print_usage_list_configs ();
+    print_usage_save_config ();
 }
