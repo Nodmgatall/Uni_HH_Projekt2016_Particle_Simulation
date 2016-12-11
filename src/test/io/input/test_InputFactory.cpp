@@ -8,7 +8,7 @@
  */
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "AlgorithmFactory"
-#include "../../../main/io/input/InputFactory.hpp"
+#include "io/input/InputFactory.hpp"
 #include <boost/test/unit_test.hpp>
 #include <cstring>
 class ParticleWriter : public WriterBase {

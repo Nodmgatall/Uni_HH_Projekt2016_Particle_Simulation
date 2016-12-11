@@ -10,5 +10,5 @@
 typedef GeneratorMultipleObjects GeneratorUnderTest;
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "GeneratorBaseMultipleObjects"
-#include "../../input/generators/test_GeneratorBase.hpp"
+#include "io/input/generators/test_GeneratorBase.hpp"
 #endif

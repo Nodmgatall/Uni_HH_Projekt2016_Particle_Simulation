@@ -8,8 +8,8 @@
 #ifndef SRC_MAIN_ALGORITHMS_ALGORITHMBASE_HPP_
 #define SRC_MAIN_ALGORITHMS_ALGORITHMBASE_HPP_
 
-#include "../Definitions.hpp"
-#include "../options/Options.hpp"
+#include "Definitions.hpp"
+#include "options/Options.hpp"
 
 class AlgorithmBase {
   protected:

@@ -8,9 +8,9 @@
 #ifndef SRC_GENERATORS_PARTICLEGENERATORBASE_HPP_
 #define SRC_GENERATORS_PARTICLEGENERATORBASE_HPP_
 
-#include "../../Definitions.hpp"
-#include "../../datastructures/DatastructureBase.hpp"
-#include "../../options/Options.hpp"
+#include "Definitions.hpp"
+#include "datastructures/DatastructureBase.hpp"
+#include "options/Options.hpp"
 
 class InputBase {
   protected:

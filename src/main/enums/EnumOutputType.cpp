@@ -5,7 +5,7 @@
  *      Author: benjamin
  */
 
-#include "../enums/EnumOutputType.hpp"
+#include "enums/EnumOutputType.hpp"
 
 const char* g_output_names[] = { "UNDEFINED",
                                  "CSV",

@@ -8,7 +8,7 @@
 #ifndef SRC_GENERATORS_GENERATORSINGLEOBJECTMIDDLE_HPP_
 #define SRC_GENERATORS_GENERATORSINGLEOBJECTMIDDLE_HPP_
 
-#include "../InputBase.hpp"
+#include "io/input/InputBase.hpp"
 #include <math.h>
 
 class GeneratorSingleObjectMiddle : public InputBase {

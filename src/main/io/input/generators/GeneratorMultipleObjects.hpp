@@ -8,7 +8,7 @@
 #ifndef SRC_MAIN_GENERATORS_PARTICLEGENERATORMULTIPLEOBJECTS_HPP_
 #define SRC_MAIN_GENERATORS_PARTICLEGENERATORMULTIPLEOBJECTS_HPP_
 
-#include "../InputBase.hpp"
+#include "io/input/InputBase.hpp"
 
 class GeneratorMultipleObjects : public InputBase {
   public:

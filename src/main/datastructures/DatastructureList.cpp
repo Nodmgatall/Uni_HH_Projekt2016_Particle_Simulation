@@ -1,9 +1,9 @@
 #include <iostream>
 #include <vector>
 
-#include "../Vec3.hpp"
-#include "../tools/Debug.hpp"
 #include "DatastructureList.hpp"
+#include "Vec3.hpp"
+#include "tools/Debug.hpp"
 
 DatastructureList::DatastructureList (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_particle_writer)
 : DatastructureBase (p_options, p_border, p_algorithm, p_particle_writer),

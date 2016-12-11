@@ -7,7 +7,7 @@
 
 #ifndef SRC_ALGORITHMS_PARTICLEBOUNDSCORRECTION_HPP_
 #define SRC_ALGORITHMS_PARTICLEBOUNDSCORRECTION_HPP_
-#include "../Vec3.hpp"
+#include "Vec3.hpp"
 class BorderBase {
   protected:
     Vec3f&      m_bounds;

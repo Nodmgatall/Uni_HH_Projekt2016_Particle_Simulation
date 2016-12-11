@@ -1,11 +1,11 @@
 #ifndef PARTICLE_HPP
 #define PARTICLE_HPP
-#include "../Definitions.hpp"
-#include "../Vec3.hpp"
-#include "../algorithms/AlgorithmBase.hpp"
-#include "../borders/BorderBase.hpp"
-#include "../io/output/file/FileWriterCSV.hpp"
-#include "../options/Options.hpp"
+#include "Definitions.hpp"
+#include "Vec3.hpp"
+#include "algorithms/AlgorithmBase.hpp"
+#include "borders/BorderBase.hpp"
+#include "io/output/file/FileWriterCSV.hpp"
+#include "options/Options.hpp"
 #include <iostream>
 #include <vector>
 

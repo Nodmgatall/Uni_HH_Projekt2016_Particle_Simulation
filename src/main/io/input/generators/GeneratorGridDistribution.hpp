@@ -8,7 +8,7 @@
 #ifndef SRC_GENERATORS_GENERATORGRIDDISTRIBUTION_HPP_
 #define SRC_GENERATORS_GENERATORGRIDDISTRIBUTION_HPP_
 
-#include "../InputBase.hpp"
+#include "io/input/InputBase.hpp"
 
 class GeneratorGridDistribution : public InputBase {
   public:

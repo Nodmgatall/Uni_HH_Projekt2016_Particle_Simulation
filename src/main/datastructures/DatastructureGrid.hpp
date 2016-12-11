@@ -1,9 +1,9 @@
 #ifndef PARTICLESGRID_HPP
 #define PARTICLESGRID_HPP
 
-#include "../Definitions.hpp"
-#include "../Vec3.hpp"
 #include "DatastructureBase.hpp"
+#include "Definitions.hpp"
+#include "Vec3.hpp"
 
 struct ParticleCell {
     std::vector<data_type>     m_positions_x[2];

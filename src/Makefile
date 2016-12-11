@@ -38,9 +38,10 @@ run: build_release
 	cd .. && ./particle_simulation.x -p 100 -l 0.1 -f 1 -r 2.5 -t 0.005
 
 test: 
-	rm -rf ../Testing/Coverage/*
+	rm -rf ../Testing/Coverage
 	rm -rf ../Testing/Binary/*
 	rm -rf ../Testing/Temporary/*
+	mkdir ../Testing/Coverage
 	$(MAKE) cmake build
 	lcov --directory ../CMakeFiles/ --capture --initial --output-file ../Testing/Coverage/coverage_init.info
 	cd .. && $(MAKE) check

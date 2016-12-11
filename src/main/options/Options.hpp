@@ -1,6 +1,6 @@
 #ifndef OPTIONS_SIMULATION_HPP
 #define OPTIONS_SIMULATION_HPP
-#include "../Definitions.hpp"
+#include "Definitions.hpp"
 #include <map>
 #include <vector>
 

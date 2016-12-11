@@ -8,7 +8,7 @@
 #ifndef SRC_GENERATORS_GENERATORRANDOM_HPP_
 #define SRC_GENERATORS_GENERATORRANDOM_HPP_
 
-#include "../InputBase.hpp"
+#include "io/input/InputBase.hpp"
 
 class GeneratorRandom : public InputBase {
   public:

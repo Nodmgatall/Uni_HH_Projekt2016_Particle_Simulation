@@ -8,7 +8,7 @@
 #ifndef SRC_MAIN_GENERATORS_GENERATORRANDOMUNIFORM_HPP_
 #define SRC_MAIN_GENERATORS_GENERATORRANDOMUNIFORM_HPP_
 
-#include "../InputBase.hpp"
+#include "io/input/InputBase.hpp"
 
 class GeneratorRandomUniform : public InputBase {
   public:

@@ -8,7 +8,7 @@
 #ifndef SRC_MAIN_IO_PARTICLEWRITERBASE_HPP_
 #define SRC_MAIN_IO_PARTICLEWRITERBASE_HPP_
 
-#include "../../Definitions.hpp"
+#include "Definitions.hpp"
 
 class WriterBase {
   protected:

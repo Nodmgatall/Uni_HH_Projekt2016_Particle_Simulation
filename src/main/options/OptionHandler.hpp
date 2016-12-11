@@ -4,9 +4,9 @@
 #include <map>
 #include <vector>
 
-#include "../Definitions.hpp"
-#include "../io/config/ConfigLoader.hpp"
+#include "Definitions.hpp"
 #include "Options.hpp"
+#include "io/config/ConfigLoader.hpp"
 
 class OptionHandler {
   public:

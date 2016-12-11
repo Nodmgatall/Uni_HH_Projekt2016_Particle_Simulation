@@ -8,9 +8,9 @@
 #ifndef SRC_MAIN_ALGORITHMS_ALGORITHMFACTORY_HPP_
 #define SRC_MAIN_ALGORITHMS_ALGORITHMFACTORY_HPP_
 
-#include "../options/Options.hpp"
 #include "AlgorithmBase.hpp"
 #include "AlgorithmLennardJones.hpp"
+#include "options/Options.hpp"
 
 class AlgorithmFactory {
   public:

@@ -16,6 +16,8 @@ add_definitions("-Wall -Wextra -Werror -W -Wshadow -Wunused-variable \
  -Wunused-parameter -Wunused-function -Wunused -Wno-system-headers \
  -Wno-deprecated -Woverloaded-virtual -Wwrite-strings -pedantic")
 
+include_directories(${Boost_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/src/main)
+
 find_package(Boost 1.62 COMPONENTS system serialization unit_test_framework)
 if(Boost_FOUND)
 	include_directories(${Boost_INCLUDE_DIRS})
@@ -42,7 +44,9 @@ endif()
 if(Boost_FOUND)
 	enable_testing ()
 	set(ENV{CTEST_OUTPUT_ON_FAILURE} TRUE)
-	include_directories(${Boost_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/src/main)
+	
+include_directories(${Boost_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/src/test)
+
 	add_library(particle_simulation_test_lib STATIC ${sources} )
 	
 	add_test(NAME particle_simulation.x 

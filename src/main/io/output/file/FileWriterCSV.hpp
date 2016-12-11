@@ -8,7 +8,7 @@
 #ifndef SRC_PARTICLEFILEWRITER_HPP_
 #define SRC_PARTICLEFILEWRITER_HPP_
 
-#include "../WriterBase.hpp"
+#include "io/output/WriterBase.hpp"
 
 class FileWriterCSV : public WriterBase {
   protected:

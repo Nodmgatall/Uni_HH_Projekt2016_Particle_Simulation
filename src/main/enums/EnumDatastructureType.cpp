@@ -5,7 +5,7 @@
  *      Author: benjamin
  */
 
-#include "../enums/EnumDatastructureType.hpp"
+#include "enums/EnumDatastructureType.hpp"
 
 const char* g_datastructure_names[] = { "UNDEFINED", "GRID", "LIST", "LISTEDGIRD" };
 

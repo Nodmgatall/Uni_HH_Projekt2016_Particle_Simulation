@@ -5,7 +5,7 @@
  *      Author: benjamin
  */
 
-#include "../enums/EnumInputType.hpp"
+#include "enums/EnumInputType.hpp"
 
 const char* g_input_names[] =
     { "UNDEFINED",        "RANDOM", "RANDOM_UNIFORM", "SINGLE_OBJECT_MIDDLE", "GRID_DISTRIBUTION",
