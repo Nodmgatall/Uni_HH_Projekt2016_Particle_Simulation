@@ -180,22 +180,22 @@ BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_1) {
     {
         Vec3f vec = Vec3f (0.5, 0.5, 0.5);
         allParticles.push_back (vec);
-        particlesGrid.add_particle (vec, Vec3f (count--, 0, 0) + vec);
+        particlesGrid.add_particle (vec, Vec3f (count--, 0, 0) + vec, 0);
     }
     {
         Vec3f vec = Vec3f (0.6, 0.5, 0.5);
         allParticles.push_back (vec);
-        particlesGrid.add_particle (vec, Vec3f (count--, 0, 0) + vec);
+        particlesGrid.add_particle (vec, Vec3f (count--, 0, 0) + vec, 1);
     }
     {
         Vec3f vec = Vec3f (0.76, 0.5, 0.5);
         allParticles.push_back (vec);
-        particlesGrid.add_particle (vec, Vec3f (count--, 0, 0) + vec);
+        particlesGrid.add_particle (vec, Vec3f (count--, 0, 0) + vec, 2);
     }
     {
         Vec3f vec = Vec3f (2.8, 0.5, 0.5);
         allParticles.push_back (vec);
-        particlesGrid.add_particle (vec, Vec3f (count--, 0, 0) + vec);
+        particlesGrid.add_particle (vec, Vec3f (count--, 0, 0) + vec, 3);
     }
     algorithm.test_prepare (-count);
     BOOST_CHECK_EQUAL (particlesGrid.get_particle_count (), -count);

@@ -2,10 +2,11 @@
 #include "ParticleSimulator.hpp"
 
 ParticleSimulator::ParticleSimulator (s_options& p_options)
-: m_options (p_options),
-  m_writer (FileWriterCSV (p_options.m_write_modes, std::string (log_folder) + "/data")),
-  m_border (BorderWrapparound (m_options.m_bounds)), m_algorithm (AlgorithmFactory::build (m_options)),
-  m_datastructure (DatastructureFactory::build (m_options, m_border, m_algorithm, m_writer)),
+: m_options (p_options),                                                                      //
+  m_writer (FileWriterCSV (p_options.m_write_modes, std::string (log_folder) + "/data")),     //
+  m_border (BorderWrapparound (m_options.m_bounds)),                                          //
+  m_algorithm (AlgorithmFactory::build (m_options)),                                          //
+  m_datastructure (DatastructureFactory::build (m_options, m_border, m_algorithm, m_writer)), //
   m_input (InputFactory::build (m_options, m_datastructure)) {
     m_input.initialize_datastructure ();
 }
