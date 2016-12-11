@@ -10,6 +10,7 @@
 
 #include <exception>
 #include <ostream>
+#include <vector>
 
 enum class e_algorithm_type {
     LENNARD_JONES                  = 1,
@@ -19,7 +20,7 @@ enum class e_algorithm_type {
 
 std::ostream& operator<< (std::ostream& stream, const e_algorithm_type p_algorithm_type);
 
-extern const char* g_algorithm_names[];
+extern std::vector<const char*> g_algorithm_names;
 
 class AlgorithmTypeInvalidException : public std::exception {
   private:

@@ -10,6 +10,7 @@
 
 #include <exception>
 #include <ostream>
+#include <vector>
 
 enum class e_input_type {
     RANDOM               = 1,
@@ -22,7 +23,7 @@ enum class e_input_type {
 
 std::ostream& operator<< (std::ostream& stream, const e_input_type p_input_type);
 
-extern const char* g_input_names[];
+extern std::vector<const char*> g_input_names;
 
 class InputTypeInvalidException : public std::exception {
   private:

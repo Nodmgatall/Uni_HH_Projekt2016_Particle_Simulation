@@ -6,8 +6,7 @@
 void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_options) {
     Benchmark::begin ("OptionHandler");
 
-    int argv_index;
-
+    int         argv_index;
     bool        save_config         = false;
     bool        load_config         = false;
     bool        list_configs        = false;
@@ -15,11 +14,9 @@ void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_opti
     bool        print_config        = true;
     bool        print_saved_config  = false;
     std::string config_name         = "";
-
-    int algorithm_set      = 0;
-    int data_format_set    = 0;
-    int generator_mode_set = 0;
-
+    int         algorithm_set       = 0;
+    int         data_format_set     = 0;
+    int         generator_mode_set  = 0;
     /*clang-format off */
     std::vector<option> options = { // Variable write options
                                     { "write_velo", required_argument, 0, 0 },

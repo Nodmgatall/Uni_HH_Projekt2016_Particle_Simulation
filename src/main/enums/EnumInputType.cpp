@@ -7,20 +7,14 @@
 
 #include "enums/EnumInputType.hpp"
 
-const char* g_input_names[] =
+std::vector<const char*> g_input_names =
     { "UNDEFINED",        "RANDOM", "RANDOM_UNIFORM", "SINGLE_OBJECT_MIDDLE", "GRID_DISTRIBUTION",
       "MULTIPLE_OBJECTS", "CSV" };
 
 std::ostream& operator<< (std::ostream& stream, const e_input_type p_input_type) {
-    switch (p_input_type) {
-        case e_input_type::RANDOM:
-        case e_input_type::RANDOM_UNIFORM:
-        case e_input_type::SINGLE_OBJECT_MIDDLE:
-        case e_input_type::GRID_DISTRIBUTION:
-        case e_input_type::MULTIPLE_OBJECTS:
-        case e_input_type::CSV:
-            return stream << g_input_names[static_cast<int> (p_input_type)];
-        default:
-            throw InputTypeInvalidException (p_input_type);
-    }
+    int index = static_cast<int> (p_input_type);
+    if ((index < (signed) g_input_names.size ()) && (index > 0))
+        return stream << g_input_names[index];
+    else
+        throw InputTypeInvalidException (p_input_type);
 }

@@ -7,15 +7,15 @@
 
 #include "enums/EnumAlgorithmType.hpp"
 
-const char* g_algorithm_names[] = { "UNDEFINED", "LENNARD_JONES", "SMOTHED_PARTICLE_HYDRODYNAMICS", "DISSIPATIVE_PARTICLE_DYNAMICS" };
+std::vector<const char*> g_algorithm_names = { "UNDEFINED",
+                                               "LENNARD_JONES",
+                                               "SMOTHED_PARTICLE_HYDRODYNAMICS",
+                                               "DISSIPATIVE_PARTICLE_DYNAMICS" };
 
 std::ostream& operator<< (std::ostream& stream, const e_algorithm_type p_algorithm_type) {
-    switch (p_algorithm_type) {
-        case e_algorithm_type::LENNARD_JONES:
-        case e_algorithm_type::SMOTHED_PARTICLE_HYDRODYNAMICS:
-        case e_algorithm_type::DISSIPATIVE_PARTICLE_DYNAMICS:
-            return stream << g_algorithm_names[static_cast<int> (p_algorithm_type)];
-        default:
-            throw AlgorithmTypeInvalidException (p_algorithm_type);
-    }
+    int index = static_cast<int> (p_algorithm_type);
+    if ((index < (signed) g_algorithm_names.size ()) && (index > 0))
+        return stream << g_algorithm_names[index];
+    else
+        throw AlgorithmTypeInvalidException (p_algorithm_type);
 }

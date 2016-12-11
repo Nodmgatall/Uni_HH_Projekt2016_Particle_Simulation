@@ -11,6 +11,7 @@
 #include <cstring>
 #include <exception>
 #include <ostream>
+#include <vector>
 
 enum class e_csv_column_type {
     ID            = 1,
@@ -22,7 +23,7 @@ enum class e_csv_column_type {
 
 std::ostream& operator<< (std::ostream& stream, const e_csv_column_type p_csv_column_type);
 
-extern const char* g_csv_column_names[];
+extern std::vector<const char*> g_csv_column_names;
 
 extern const char* g_printed_csv_column_names[][3];
 

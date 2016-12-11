@@ -10,12 +10,13 @@
 
 #include <exception>
 #include <ostream>
+#include <vector>
 
 enum class e_output_type { CSV = 1, LAMMPS = 2, ESPRESSO = 3, GROMACS = 4, VMD = 5, VTK = 6 };
 
 std::ostream& operator<< (std::ostream& stream, const e_output_type p_output_type);
 
-extern const char* g_output_names[];
+extern std::vector<const char*> g_output_names;
 
 class OutputTypeInvalidException : public std::exception {
   private:

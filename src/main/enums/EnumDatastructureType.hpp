@@ -10,12 +10,13 @@
 
 #include <exception>
 #include <ostream>
+#include <vector>
 
 enum class e_datastructure_type { GRID = 1, LIST = 2, LISTEDGIRD = 3 };
 
 std::ostream& operator<< (std::ostream& stream, const e_datastructure_type p_datastructure_type);
 
-extern const char* g_datastructure_names[];
+extern std::vector<const char*> g_datastructure_names;
 
 class DatastructureTypeInvalidException : public std::exception {
   private:
