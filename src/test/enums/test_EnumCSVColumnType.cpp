@@ -59,3 +59,58 @@ BOOST_AUTO_TEST_CASE (testStringException) {
     std::stringstream s;
     BOOST_CHECK_THROW (s << (static_cast<e_csv_column_type> (0)), CSVColumnTypeInvalidException);
 }
+BOOST_AUTO_TEST_CASE (test_get_enum_for_printed_csv_column_name_1) {
+    std::pair<e_csv_column_type, int>* val = get_enum_for_printed_csv_column_name ("ID");
+    BOOST_CHECK_EQUAL (val->first, e_csv_column_type::ID);
+    BOOST_CHECK_EQUAL (val->second, 0);
+}
+BOOST_AUTO_TEST_CASE (test_get_enum_for_printed_csv_column_name_2) {
+    std::pair<e_csv_column_type, int>* val = get_enum_for_printed_csv_column_name ("VelocityX");
+    BOOST_CHECK_EQUAL (val->first, e_csv_column_type::VELOCITY);
+    BOOST_CHECK_EQUAL (val->second, 0);
+}
+BOOST_AUTO_TEST_CASE (test_get_enum_for_printed_csv_column_name_3) {
+    std::pair<e_csv_column_type, int>* val = get_enum_for_printed_csv_column_name ("VelocityY");
+    BOOST_CHECK_EQUAL (val->first, e_csv_column_type::VELOCITY);
+    BOOST_CHECK_EQUAL (val->second, 1);
+}
+BOOST_AUTO_TEST_CASE (test_get_enum_for_printed_csv_column_name_4) {
+    std::pair<e_csv_column_type, int>* val = get_enum_for_printed_csv_column_name ("VelocityZ");
+    BOOST_CHECK_EQUAL (val->first, e_csv_column_type::VELOCITY);
+    BOOST_CHECK_EQUAL (val->second, 2);
+}
+BOOST_AUTO_TEST_CASE (test_get_enum_for_printed_csv_column_name_5) {
+    std::pair<e_csv_column_type, int>* val = get_enum_for_printed_csv_column_name ("PositionX");
+    BOOST_CHECK_EQUAL (val->first, e_csv_column_type::POSITION);
+    BOOST_CHECK_EQUAL (val->second, 0);
+}
+BOOST_AUTO_TEST_CASE (test_get_enum_for_printed_csv_column_name_6) {
+    std::pair<e_csv_column_type, int>* val = get_enum_for_printed_csv_column_name ("PositionY");
+    BOOST_CHECK_EQUAL (val->first, e_csv_column_type::POSITION);
+    BOOST_CHECK_EQUAL (val->second, 1);
+}
+BOOST_AUTO_TEST_CASE (test_get_enum_for_printed_csv_column_name_7) {
+    std::pair<e_csv_column_type, int>* val = get_enum_for_printed_csv_column_name ("PositionZ");
+    BOOST_CHECK_EQUAL (val->first, e_csv_column_type::POSITION);
+    BOOST_CHECK_EQUAL (val->second, 2);
+}
+BOOST_AUTO_TEST_CASE (test_get_enum_for_printed_csv_column_name_8) {
+    std::pair<e_csv_column_type, int>* val = get_enum_for_printed_csv_column_name ("AccelerationX");
+    BOOST_CHECK_EQUAL (val->first, e_csv_column_type::ACCELERATION);
+    BOOST_CHECK_EQUAL (val->second, 0);
+}
+BOOST_AUTO_TEST_CASE (test_get_enum_for_printed_csv_column_name_9) {
+    std::pair<e_csv_column_type, int>* val = get_enum_for_printed_csv_column_name ("AccelerationY");
+    BOOST_CHECK_EQUAL (val->first, e_csv_column_type::ACCELERATION);
+    BOOST_CHECK_EQUAL (val->second, 1);
+}
+BOOST_AUTO_TEST_CASE (test_get_enum_for_printed_csv_column_name_10) {
+    std::pair<e_csv_column_type, int>* val = get_enum_for_printed_csv_column_name ("AccelerationZ");
+    BOOST_CHECK_EQUAL (val->first, e_csv_column_type::ACCELERATION);
+    BOOST_CHECK_EQUAL (val->second, 2);
+}
+BOOST_AUTO_TEST_CASE (test_get_enum_for_printed_csv_column_name_11) {
+    std::pair<e_csv_column_type, int>* val = get_enum_for_printed_csv_column_name ("ParticleType");
+    BOOST_CHECK_EQUAL (val->first, e_csv_column_type::PARTICLE_TYPE);
+    BOOST_CHECK_EQUAL (val->second, 0);
+}

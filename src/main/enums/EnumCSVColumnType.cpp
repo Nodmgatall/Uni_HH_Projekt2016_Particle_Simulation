@@ -16,17 +16,20 @@ const char* g_csv_column_names[] = { "UNDEFINED",
                                      "TYPE" };
 
 const char* g_printed_csv_column_names[]
-                                      [3] = { { "ID", "", "" },
+                                      [3] = { { 0, 0, 0 },
+                                              { "ID", 0, 0 },
                                               { "VelocityX", "VelocityY", "VelocityZ" },
                                               { "PositionX", "PositionY", "PositionZ" },
                                               { "AccelerationX", "AccelerationY", "AccelerationZ" },
-                                              { "ParticleType", "", "" } };
+                                              { "ParticleType", 0, 0 } };
 
 std::pair<e_csv_column_type, int>* get_enum_for_printed_csv_column_name (const char* string) {
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 6; i++) {
         for (int j = 0; j < 3; j++) {
-            if (strcmp (string, g_printed_csv_column_names[i][j])) {
-                return new std::pair<e_csv_column_type, int> (static_cast<e_csv_column_type> (i + 1), j);
+            if (g_printed_csv_column_names[i][j]) {
+                if (0 == strcmp (string, g_printed_csv_column_names[i][j])) {
+                    return new std::pair<e_csv_column_type, int> (static_cast<e_csv_column_type> (i), j);
+                }
             }
         }
     }
