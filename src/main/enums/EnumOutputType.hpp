@@ -27,7 +27,7 @@ class OutputTypeInvalidException : public std::exception {
     }
     const char* what () const throw () {
         char* text = (char*) malloc (100);
-        sprintf (text, "algorithm type ( %s ) is invalid", g_output_names[static_cast<int> (m_output_type) - 1]);
+        sprintf (text, "algorithm type ( %s ) is invalid", g_output_names[static_cast<int> (m_output_type)]);
         return text;
     }
 };

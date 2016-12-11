@@ -39,9 +39,7 @@ class CSVColumnTypeInvalidException : public std::exception {
     }
     const char* what () const throw () {
         char* text = (char*) malloc (100);
-        sprintf (text,
-                 "csv_column type ( %s ) is invalid",
-                 g_csv_column_names[static_cast<int> (m_csv_column_type) - 1]);
+        sprintf (text, "csv_column type ( %s ) is invalid", g_csv_column_names[static_cast<int> (m_csv_column_type)]);
         return text;
     }
 };
