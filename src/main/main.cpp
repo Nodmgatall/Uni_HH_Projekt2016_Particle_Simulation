@@ -2,17 +2,6 @@
 #include "ParticleSimulator.hpp"
 #include "options/OptionHandler.hpp"
 
-void print_header () {
-    m_standard_stream << std::endl;
-    m_standard_stream << "=======================================================" << std::endl;
-    m_standard_stream << "                  Particle Simulation                  " << std::endl;
-    m_standard_stream << "=======================================================" << std::endl;
-    m_standard_stream << "            Benjamin Wanke, Oliver Heidmann            " << std::endl;
-    m_standard_stream << "                      Supervisior                      " << std::endl;
-    m_standard_stream << "                    Philipp Neumann                    " << std::endl;
-    m_standard_stream << "=======================================================" << std::endl;
-    m_standard_stream << "=======================================================" << std::endl;
-}
 void createOutputDirectory () {
     time_t     current_time;
     struct tm* time_info;
@@ -36,7 +25,6 @@ void createOutputDirectory () {
 }
 int main (int argc, char** argv) {
     createOutputDirectory ();
-    print_header ();
     s_options options;
 
     OptionHandler option_handler;

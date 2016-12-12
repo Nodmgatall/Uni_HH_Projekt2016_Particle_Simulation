@@ -13,7 +13,7 @@ int OptionHandler::indexInArray (std::vector<const char*> elements, char* elemen
 }
 
 void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_options) {
-    Benchmark::begin ("OptionHandler");
+    print_header ();
     int                 argv_index;
     bool                save_config              = false;
     bool                load_config              = false;
@@ -199,7 +199,6 @@ void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_opti
             config_loader.load_config (config_name, p_options);
         }
     }
-    Benchmark::end ();
     if (print_config) {
         print_choosen_options (p_options);
         if (print_saved_config == true) {
@@ -240,218 +239,289 @@ void OptionHandler::print_choosen_options (s_options& p_options) {
         << ss.str () << std::endl;
     Benchmark::end ();
 }
-
+void OptionHandler::print_header () {
+    m_standard_stream //
+        << std::endl
+        << "+==============================================================================+" << std::endl
+        << "|                             Particle Simulation                              |" << std::endl
+        << "+==============================================================================+" << std::endl
+        << "|                       Benjamin Wanke, Oliver Heidmann                        |" << std::endl
+        << "|                                 Supervisior                                  |" << std::endl
+        << "|                               Philipp Neumann                                |" << std::endl
+        << "+==============================================================================+" << std::endl
+        << "+==============================================================================+" << std::endl;
+}
 void OptionHandler::print_usage_algorithm () {
     int index;
     m_standard_stream //
-        << "  --algorithm=         " << g_algorithm_names[1];
+        << "| --algorithm=         " << g_algorithm_names[1]
+        << std::string (56 - strlen (g_algorithm_names[1]), ' ') << "|" << std::endl;
     for (index = 2; index < (signed) g_algorithm_names.size (); index++) {
-        m_standard_stream << std::endl << "                       " << g_algorithm_names[index];
+        m_standard_stream //
+            << "|                      " << g_algorithm_names[index]
+            << std::string (56 - strlen (g_algorithm_names[index]), ' ') << "|" << std::endl;
     }
-    m_standard_stream << std::endl;
     m_standard_stream //
-        << "                           This option specifies the method to calculate the    " << std::endl
-        << "                           forces between the particles. Based on the forces the" << std::endl
-        << "                           movement is calculated.                              " << std::endl;
+        << "|                          This option specifies the method to calculate the   |" << std::endl
+        << "|                          forces between the particles. Based on the forces   |" << std::endl
+        << "|                          the movement is calculated.                         |" << std::endl;
 }
 void OptionHandler::print_usage_data_structure () {
     int index;
     m_standard_stream //
-        << "  --data_structure=    " << g_datastructure_names[1];
+        << "| --data_structure=    " << g_datastructure_names[1]
+        << std::string (56 - strlen (g_datastructure_names[1]), ' ') << "|" << std::endl;
     for (index = 2; index < (signed) g_datastructure_names.size (); index++) {
-        m_standard_stream << std::endl << "                       " << g_datastructure_names[index];
+        m_standard_stream //
+            << "|                      " << g_datastructure_names[index]
+            << std::string (56 - strlen (g_datastructure_names[index]), ' ') << "|" << std::endl;
     }
-    m_standard_stream << std::endl;
     m_standard_stream //
-        << "                           This option specifies the datastructure which stores " << std::endl
-        << "                           the particles. The different datastructures have     " << std::endl
-        << "                           different advantages based on the particle-placement." << std::endl
-        << "                           this option must not be used together with           " << std::endl
-        << "                           'autotuneing'.                                       " << std::endl;
+        << "|                          This option specifies the datastructure which       |" << std::endl
+        << "|                          stores the particles. The different datastructures  |" << std::endl
+        << "|                          have different advantages based on the              |" << std::endl
+        << "|                          particle-placement. This option must not be used    |" << std::endl
+        << "|                          together with 'autotuneing'.                        |" << std::endl;
 }
 void OptionHandler::print_usage_input () {
     int index;
     m_standard_stream //
-        << "  --input=             " << g_input_names[1];
+        << "| --input=             " << g_input_names[1]
+        << std::string (56 - strlen (g_input_names[1]), ' ') << "|" << std::endl;
     for (index = 2; index < (signed) g_input_names.size (); index++) {
-        m_standard_stream << std::endl << "                       " << g_input_names[index];
+        m_standard_stream //
+            << "|                      " << g_input_names[index]
+            << std::string (56 - strlen (g_input_names[index]), ' ') << "|" << std::endl;
     }
-    m_standard_stream << std::endl;
     m_standard_stream //
-        << "                           This option specifies how the particles are loaded   " << std::endl
-        << "                           into the simulation.                                 " << std::endl
-        << "                           If the name contains 'GENERATOR' then the particles  " << std::endl
-        << "                           are generated at runtime based on 'count', 'bounds'  " << std::endl
-        << "                           and 'seed'.                                          " << std::endl
-        << "                           If the name contains 'FILE' then the particles are   " << std::endl
-        << "                           loaded from a file with the specified type from the  " << std::endl
-        << "                           file specified by 'in_file_name'.                    " << std::endl;
+        << "|                          This option specifies how the particles are loaded  |" << std::endl
+        << "|                          into the simulation.                                |" << std::endl
+        << "|                          If the name contains 'GENERATOR' then the particles |" << std::endl
+        << "|                          are generated at runtime based on 'count', 'bounds' |" << std::endl
+        << "|                          and 'seed'.                                         |" << std::endl
+        << "|                          If the name contains 'FILE' then the particles are  |" << std::endl
+        << "|                          loaded from a file with the specified type from the |" << std::endl
+        << "|                          file specified by 'in_file_name'.                   |" << std::endl;
 }
 void OptionHandler::print_usage_output () {
     int index;
     m_standard_stream //
-        << "  --output=            " << g_output_names[1];
+        << "| --output=            " << g_output_names[1]
+        << std::string (56 - strlen (g_output_names[1]), ' ') << "|" << std::endl;
     for (index = 2; index < (signed) g_output_names.size (); index++) {
-        m_standard_stream << std::endl << "                       " << g_output_names[index];
+        m_standard_stream //
+            << "|                      " << g_output_names[index]
+            << std::string (56 - strlen (g_output_names[index]), ' ') << "|" << std::endl;
     }
     m_standard_stream //
-        << std::endl
-        << "                           This option specifies how the particles are saved    " << std::endl
-        << "                           from the simulation. Particles are saved before the  " << std::endl
-        << "                           first iteration, and then every 'write_fequency'     " << std::endl
-        << "                           iterations.                                          " << std::endl;
+
+        << "|                          This option specifies how the particles are saved   |" << std::endl
+        << "|                          from the simulation. Particles are saved before the |" << std::endl
+        << "|                          first iteration, and then every 'write_fequency'    |" << std::endl
+        << "|                          iterations.                                         |" << std::endl;
 }
 void OptionHandler::print_usage_write_modes () {
     int index;
     for (index = 1; index < (signed) g_csv_column_names.size (); index++) {
         m_standard_stream //
-            << "  --WRITE_" << g_csv_column_names[index] << std::endl;
+            << "| --WRITE_" << g_csv_column_names[index]
+            << std::string (69 - strlen (g_csv_column_names[index]), ' ') << "|" << std::endl;
     }
     m_standard_stream //
-        << "                           If 'output' is set to 'FILE_CSV' then this options   " << std::endl
-        << "                           defines which data from the individual particles     " << std::endl
-        << "                           should be stored on disk. If 'output' is set to      " << std::endl
-        << "                           something else, than this option must not be used.   " << std::endl;
+        << "|                          If 'output' is set to 'FILE_CSV' then this options  |" << std::endl
+        << "|                          defines which data from the individual particles    |" << std::endl
+        << "|                          should be stored on disk. If 'output' is set to     |" << std::endl
+        << "|                          something else, than this option must not be used.  |" << std::endl;
 }
 void OptionHandler::print_usage_autotuneing () {
     m_standard_stream //
-        << "  --autotuneing                                                                 " << std::endl
-        << "   -a                      If 'autotuneing' is enabled, then the program will   " << std::endl
-        << "                           choose the best datastructure based on the given     " << std::endl
-        << "                           particles. This option must not be used together with" << std::endl
-        << "                           the 'datastructure' option.                          " << std::endl;
+        << "| --autotuneing                                                                |" << std::endl
+        << "|  -a                      If 'autotuneing' is enabled, then the program will  |" << std::endl
+        << "|                          choose the best datastructure based on the given    |" << std::endl
+        << "|                          particles. This option must not be used together    |" << std::endl
+        << "|                          with the 'datastructure' option.                    |" << std::endl;
 }
 void OptionHandler::print_usage_bounds () {
     m_standard_stream //
-        << "  --bounds=(float/float/float)                                                  " << std::endl
-        << "   -b                      This option specifies in which space the particles   " << std::endl
-        << "                           can move. If particles move outside of the given     " << std::endl
-        << "                           bounds, than the datastructure may move them back    " << std::endl
-        << "                           into the bounds.                                     " << std::endl;
+        << "| --bounds=(float/float/float)                                                 |" << std::endl
+        << "|  -b                      This option specifies in which space the particles  |" << std::endl
+        << "|                          can move. If particles move outside of the given    |" << std::endl
+        << "|                          bounds, than the datastructure may move them back   |" << std::endl
+        << "|                          into the bounds.                                    |" << std::endl;
 }
 void OptionHandler::print_usage_write_fequency () {
     m_standard_stream //
-        << "  --write_fequency=(integer)                                                    " << std::endl
-        << "   -f                      This option specifies the count of iterations until  " << std::endl
-        << "                           the particles are saved to the next file. Larger     " << std::endl
-        << "                           numbers result in a better performance, but the data " << std::endl
-        << "                           between the saves is lost.                           " << std::endl;
+        << "| --write_fequency=(integer)                                                   |" << std::endl
+        << "|  -f                      This option specifies the count of iterations until |" << std::endl
+        << "|                          the particles are saved to the next file. Larger    |" << std::endl
+        << "|                          numbers result in a better performance, but the     |" << std::endl
+        << "|                          data between the saves is lost.                     |" << std::endl;
 }
 void OptionHandler::print_usage_help () {
     m_standard_stream //
-        << "  --help                                                                        " << std::endl
-        << "   -h                      prints help for all possible options.                " << std::endl;
+        << "| --help                                                                       |" << std::endl
+        << "|  -h                      prints help for all possible options.               |" << std::endl;
 }
 void OptionHandler::print_usage_in_file_name () {
     m_standard_stream //
-        << "  --in_file_name=(string)                                                       " << std::endl
-        << "   -i                      This option specifies the file name in which the     " << std::endl
-        << "                           initial particles are stored. Must be used together  " << std::endl
-        << "                           an 'input' which is based on file.                   " << std::endl;
+        << "| --in_file_name=(string)                                                      |" << std::endl
+        << "|  -i                      This option specifies the file name in which the    |" << std::endl
+        << "|                          initial particles are stored. Must be used together |" << std::endl
+        << "|                          an 'input' which is based on file.                  |" << std::endl;
 }
 void OptionHandler::print_usage_run_time_limit () {
     m_standard_stream //
-        << "  --run_time_limit=(float)                                                      " << std::endl
-        << "   -l                      Defines the time at which the simulation should end. " << std::endl
-        << "                           each simulation starts at time 0. Time increases     " << std::endl
-        << "                           every iteration based on 'timestep'. Must not be used" << std::endl
-        << "                           together with 'max_iterations'.                      " << std::endl;
+        << "| --run_time_limit=(float)                                                     |" << std::endl
+        << "|  -l                      Defines the time at which the simulation should     |" << std::endl
+        << "|                          end. each simulation starts at time 0. Time         |" << std::endl
+        << "|                          increases every iteration based on 'timestep'. Must |" << std::endl
+        << "|                          not be used together with 'max_iterations'.         |" << std::endl;
 }
 void OptionHandler::print_usage_max_iterations () {
     m_standard_stream //
-        << "  --max_iterations=(integer)                                                    " << std::endl
-        << "   -m                      Defines the number of iterations which should be     " << std::endl
-        << "                           simulated. Must not be used together with the        " << std::endl
-        << "                           'run_time_limit' option.                             " << std::endl;
+        << "| --max_iterations=(integer)                                                   |" << std::endl
+        << "|  -m                      Defines the number of iterations which should be    |" << std::endl
+        << "|                          simulated. Must not be used together with the       |" << std::endl
+        << "|                          'run_time_limit' option.                            |" << std::endl;
 }
 void OptionHandler::print_usage_out_file_name () {
     m_standard_stream //
-        << "  --out_file_name=(string)                                                      " << std::endl
-        << "   -o                      The particles are stored in files starting with the  " << std::endl
-        << "                           path and name provided by 'out_file_name'. After the " << std::endl
-        << "                           file base is an increasing number which specifies    " << std::endl
-        << "                           the file order. The file-ending is chosen            " << std::endl
-        << "                           automatically based on the 'output' option.          " << std::endl;
+        << "| --out_file_name=(string)                                                     |" << std::endl
+        << "|  -o                      The particles are stored in files starting with the |" << std::endl
+        << "|                          path and name provided by 'out_file_name'. After    |" << std::endl
+        << "|                          the file base is an increasing number which         |" << std::endl
+        << "|                          specifies the file order. The file-ending is chosen |" << std::endl
+        << "|                          automatically based on the 'output' option.         |" << std::endl;
 }
 void OptionHandler::print_usage_particle_count () {
     m_standard_stream //
-        << "  --particle_count=(integer)                                                    " << std::endl
-        << "   -p                      Specifies the particle count for the simulation. Must" << std::endl
-        << "                           be used if the specified input is based on           " << std::endl
-        << "                           'GENERATOR'.                                         " << std::endl;
+        << "| --particle_count=(integer)                                                   |" << std::endl
+        << "|  -p                      Specifies the particle count for the simulation.    |" << std::endl
+        << "|                          Must be used if the specified input is based on     |" << std::endl
+        << "|                          'GENERATOR'.                                        |" << std::endl;
 }
 void OptionHandler::print_usage_cut_off_radius () {
     m_standard_stream //
-        << "  --cut_off_radius=(float)                                                      " << std::endl
-        << "   -r                      Defines the max radius at which particles should     " << std::endl
-        << "                           interact with each other. If particles are more than " << std::endl
-        << "                           this defined distance from each other, then no       " << std::endl
-        << "                           interaction will be calculated.                      " << std::endl;
+        << "| --cut_off_radius=(float)                                                     |" << std::endl
+        << "|  -r                      Defines the max radius at which particles should    |" << std::endl
+        << "|                          interact with each other. If particles are more     |" << std::endl
+        << "|                          than this defined distance from each other, then no |" << std::endl
+        << "|                          interaction will be calculated.                     |" << std::endl;
 }
 void OptionHandler::print_usage_seed () {
     m_standard_stream //
-        << "  --seed=(integer)                                                              " << std::endl
-        << "   -s                      Specifies the seed used for generation. Must be used " << std::endl
-        << "                           if the specified input is based on 'GENERATOR'.      " << std::endl;
+        << "| --seed=(integer)                                                             |" << std::endl
+        << "|  -s                      Specifies the seed used for generation. Must be     |" << std::endl
+        << "|                          used if the specified input is based on 'GENERATOR'.|" << std::endl;
 }
 void OptionHandler::print_usage_timestep () {
     m_standard_stream //
-        << "  --timestep=(float)                                                            " << std::endl
-        << "   -t                      Specifies the deltatime calculated in each iteration." << std::endl;
+        << "| --timestep=(float)                                                           |" << std::endl
+        << "|  -t                      Specifies the deltatime calculated in each          |" << std::endl
+        << "|                          iteration.                                          |" << std::endl;
 }
 void OptionHandler::print_usage_verbose () {
     m_standard_stream //
-        << "  --verbose                                                                     " << std::endl
-        << "   -v                      If set, the program prints more messages to console. " << std::endl;
+        << "| --verbose                                                                    |" << std::endl
+        << "|  -v                      If set, the program prints more messages to         |" << std::endl
+        << "|                          console.                                            |" << std::endl;
 }
 void OptionHandler::print_usage_max_iterations_between_datastructure_rebuild () {
     m_standard_stream //
-        << "  --max_iterations_between_datastructure_rebuild                                " << std::endl
-        << "                           Specifies the iteration count after which the        " << std::endl
-        << "                           datastructure should reorder its internal structure. " << std::endl;
+        << "| --max_iterations_between_datastructure_rebuild                               |" << std::endl
+        << "|                          Specifies the iteration count after which the       |" << std::endl
+        << "|                          datastructure should reorder its internal           |" << std::endl
+        << "|                          structure.                                          |" << std::endl;
 }
 void OptionHandler::print_usage_load_confing () {
     m_standard_stream //
-        << "  --load_confing               " << std::endl;
+        << "| --load_confing                                                               |" << std::endl;
 }
 void OptionHandler::print_usage_print_config () {
     m_standard_stream //
-        << "  --print_config               " << std::endl;
+        << "| --print_config                                                               |" << std::endl;
 }
 void OptionHandler::print_usage_list_configs () {
     m_standard_stream //
-        << "  --list_configs               " << std::endl;
+        << "| --list_configs                                                               |" << std::endl;
 }
 void OptionHandler::print_usage_save_config () {
     m_standard_stream //
-        << "  --save_config                " << std::endl;
+        << "| --save_config                                                                |" << std::endl;
 }
 
 void OptionHandler::print_usage_particle_sim () {
-    m_standard_stream << "Usage:" << std::endl;
-    print_usage_algorithm ();
-    print_usage_data_structure ();
-    print_usage_input ();
-    print_usage_output ();
-    print_usage_write_modes ();
-    //
-    print_usage_autotuneing ();
-    print_usage_bounds ();
-    print_usage_write_fequency ();
+    m_standard_stream //
+        << "|                                                                              |" << std::endl
+        << "|                               general  options                               |" << std::endl
+        << "|                                                                              |" << std::endl;
     print_usage_help ();
+    print_usage_verbose ();
+    m_standard_stream //
+        << "|                                                                              |" << std::endl
+        << "+==============================================================================+" << std::endl
+        << "|                                                                              |" << std::endl
+        << "|                          options for  the algorithm                          |" << std::endl
+        << "|                                                                              |" << std::endl;
+    print_usage_algorithm ();
+    print_usage_cut_off_radius ();
+    print_usage_timestep ();
+    m_standard_stream //
+        << "|                                                                              |" << std::endl
+        << "+==============================================================================+" << std::endl
+        << "|                                                                              |" << std::endl
+        << "|                        options for  the datastructure                        |" << std::endl
+        << "|                                                                              |" << std::endl;
+    print_usage_data_structure ();
+    print_usage_autotuneing ();
+    print_usage_max_iterations_between_datastructure_rebuild ();
+    m_standard_stream //
+        << "|                                                                              |" << std::endl
+        << "+==============================================================================+" << std::endl
+        << "|                                                                              |" << std::endl
+        << "|                            options for  the input                            |" << std::endl
+        << "|                                                                              |" << std::endl;
+    print_usage_input ();
     print_usage_in_file_name ();
+    print_usage_particle_count ();
+    print_usage_seed ();
+    m_standard_stream //
+        << "|                                                                              |" << std::endl
+        << "+==============================================================================+" << std::endl
+        << "|                                                                              |" << std::endl
+        << "|                            options for the output                            |" << std::endl
+        << "|                                                                              |" << std::endl;
+    print_usage_output ();
+    print_usage_out_file_name ();
+    print_usage_write_fequency ();
+    print_usage_write_modes ();
+    m_standard_stream //
+        << "|                                                                              |" << std::endl
+        << "+==============================================================================+" << std::endl
+        << "|                                                                              |" << std::endl
+        << "|                         options for  the termination                         |" << std::endl
+        << "|                                                                              |" << std::endl;
     print_usage_run_time_limit ();
     print_usage_max_iterations ();
-    print_usage_out_file_name ();
-    print_usage_particle_count ();
-    print_usage_cut_off_radius ();
-    print_usage_seed ();
-    print_usage_timestep ();
-    print_usage_verbose ();
-    print_usage_max_iterations_between_datastructure_rebuild ();
+    m_standard_stream //
+        << "|                                                                              |" << std::endl
+        << "+==============================================================================+" << std::endl
+        << "|                                                                              |" << std::endl
+        << "|                                other  options                                |" << std::endl
+        << "|                                                                              |" << std::endl;
+    print_usage_bounds ();
+    m_standard_stream //
+        << "|                                                                              |" << std::endl
+        << "+==============================================================================+" << std::endl
+        << "|                                                                              |" << std::endl
+        << "|                                config options                                |" << std::endl
+        << "|                                                                              |" << std::endl;
     //
     print_usage_load_confing ();
     print_usage_print_config ();
     print_usage_list_configs ();
     print_usage_save_config ();
+    m_standard_stream //
+        << "|                                                                              |" << std::endl
+        << "+==============================================================================+" << std::endl;
 }

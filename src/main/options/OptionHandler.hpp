@@ -35,6 +35,7 @@ class OptionHandler {
     //
     void print_choosen_options (s_options& p_options);
     void print_usage_particle_sim ();
+    void print_header ();
 
   public:
     OptionHandler ();
