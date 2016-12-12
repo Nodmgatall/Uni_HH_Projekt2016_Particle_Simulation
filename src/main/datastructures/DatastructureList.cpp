@@ -174,24 +174,12 @@ void DatastructureList::build_lists_smarter (data_type*    p_distances_x,
             //   std::cout << "dvpi: " << dist_vector_part_idx << std::endl;
             if (p_distances_squared[distance_section_start + dist_vector_part_idx] < cutoff_radius_squared) {
                 /* clang-format off */
-             //   std::cout << dist_vector_part_idx << " " << distance_section_start << std::endl;
-             //   std::cout << dist_vector_part_idx + cur_list_idx + 1 << std::endl;
                 m_mat_positions_x[cur_list_idx].push_back(m_positions_x[dist_vector_part_idx + cur_list_idx + 1]);
                 m_mat_positions_y[cur_list_idx].push_back(m_positions_y[dist_vector_part_idx + cur_list_idx + 1]);
                 m_mat_positions_z[cur_list_idx].push_back(m_positions_z[dist_vector_part_idx + cur_list_idx + 1]);
-/*
-                m_mat_velocities_x[cur_list_idx].push_back(m_velocities_x[dist_vector_part_idx + cur_list_idx + 1]);
-                m_mat_velocities_y[cur_list_idx].push_back(m_velocities_y[dist_vector_part_idx + cur_list_idx + 1]);
-                m_mat_velocities_z[cur_list_idx].push_back(m_velocities_z[dist_vector_part_idx + cur_list_idx + 1]);
-*/
                 m_mat_positions_x[dist_vector_part_idx + cur_list_idx + 1].push_back(m_positions_x[cur_list_idx]);
                 m_mat_positions_y[dist_vector_part_idx + cur_list_idx + 1].push_back(m_positions_y[cur_list_idx]);
                 m_mat_positions_z[dist_vector_part_idx + cur_list_idx + 1].push_back(m_positions_z[cur_list_idx]);
-/*
-                m_mat_velocities_x[dist_vector_part_idx + cur_list_idx + 1].push_back(m_velocities_x[cur_list_idx]);
-                m_mat_velocities_y[dist_vector_part_idx + cur_list_idx + 1].push_back(m_velocities_y[cur_list_idx]);
-                m_mat_velocities_z[dist_vector_part_idx + cur_list_idx + 1].push_back(m_velocities_z[cur_list_idx]);
-*/
                 /* clang-format on */
             }
             if (m_mat_positions_x.size () == listed_size) {
@@ -216,7 +204,7 @@ void DatastructureList::build_lists_smarter (data_type*    p_distances_x,
     m_listed_velocities_z.shrink_to_fit ();
 }
 
-void DatastructureList::build_lists () {
+void DatastructureList::build_lists () {/*
     macro_debug_1 ("starting building neighbour lists");
     unsigned long particle_cnt          = get_particle_count ();
     data_type     cutoff_radius_squared = 0.8;
@@ -313,7 +301,7 @@ void DatastructureList::build_lists () {
     m_listed_velocities_z.shrink_to_fit ();
     macro_debug ("shrunk list ranges to: ", m_particle_list_ranges.size ())
         macro_debug ("shrunk lists to: ", m_positions_x.size ())
-            macro_debug_1 ("finished building neighbour lists")
+            macro_debug_1 ("finished building neighbour lists")*/
 }
 
 void DatastructureList::setup_iteration () {
@@ -343,6 +331,7 @@ void DatastructureList::calculate_distance_vectors (unsigned long p_particle_idx
                                                     data_type*    p_positions_z,
                                                     unsigned long start_idx,
                                                     unsigned long end_idx) {
+    Benchmark::begin("Calculating distance vectors");
     unsigned long cur_dist_idx;
     data_type     x = p_positions_x[p_particle_idx];
     data_type     y = p_positions_y[p_particle_idx];
@@ -361,6 +350,7 @@ void DatastructureList::calculate_distance_vectors (unsigned long p_particle_idx
     for (cur_dist_idx = 0; cur_dist_idx < end_idx; cur_dist_idx++) {
         p_distances_z[start_idx + cur_dist_idx] = z - p_positions_z[p_particle_idx + cur_dist_idx + 1];
     }
+    Benchmark::end();
 }
 void DatastructureList::calculate_distances_squared (data_type*    p_distances_squared,
                                                      data_type*    p_distances_x,
