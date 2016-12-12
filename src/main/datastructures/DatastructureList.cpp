@@ -202,104 +202,105 @@ void DatastructureList::build_lists_smarter (data_type*    p_distances_x,
     m_listed_velocities_z.shrink_to_fit ();
 }
 
-void DatastructureList::build_lists () {/*
-    macro_debug_1 ("starting building neighbour lists");
-    unsigned long particle_cnt          = get_particle_count ();
-    data_type     cutoff_radius_squared = 0.8;
-    unsigned long current_list_idx      = 0;
-    unsigned long next_free_list_entry  = 0;
+void DatastructureList::build_lists () { /*
+     macro_debug_1 ("starting building neighbour lists");
+     unsigned long particle_cnt          = get_particle_count ();
+     data_type     cutoff_radius_squared = 0.8;
+     unsigned long current_list_idx      = 0;
+     unsigned long next_free_list_entry  = 0;
 
-    // TODO: Idea: dont let them be initialized each time we need to build the
-    // lists
-    // instead make them a member; pro: minmal performance improvement, con:
-    // memory need * (4/3)
-    unsigned long listed_size = particle_cnt * (particle_cnt * (0.25));
-    m_verbose_stream << "listed size: " << listed_size << std::endl;
-    m_listed_positions_x.resize (listed_size);
-    m_listed_positions_y.resize (listed_size);
-    m_listed_positions_z.resize (listed_size);
+     // TODO: Idea: dont let them be initialized each time we need to build the
+     // lists
+     // instead make them a member; pro: minmal performance improvement, con:
+     // memory need * (4/3)
+     unsigned long listed_size = particle_cnt * (particle_cnt * (0.25));
+     m_verbose_stream << "listed size: " << listed_size << std::endl;
+     m_listed_positions_x.resize (listed_size);
+     m_listed_positions_y.resize (listed_size);
+     m_listed_positions_z.resize (listed_size);
 
-    m_listed_velocities_x.resize (listed_size);
-    m_listed_velocities_y.resize (listed_size);
-    m_listed_velocities_z.resize (listed_size);
+     m_listed_velocities_x.resize (listed_size);
+     m_listed_velocities_y.resize (listed_size);
+     m_listed_velocities_z.resize (listed_size);
 
-    std::vector<data_type> distances_x (particle_cnt);
-    std::vector<data_type> distances_y (particle_cnt);
-    std::vector<data_type> distances_z (particle_cnt);
+     std::vector<data_type> distances_x (particle_cnt);
+     std::vector<data_type> distances_y (particle_cnt);
+     std::vector<data_type> distances_z (particle_cnt);
 
-    unsigned long current_entries = 0;
-    m_particle_list_ranges        = std::vector<unsigned long> (listed_size * 2);
-    std::vector<data_type> distances_squared (particle_cnt - 1);
-    for (unsigned long cur_idx = 0; cur_idx < particle_cnt; cur_idx++) {
-        // in front of idx;
-        calculate_distance_vectors (cur_idx,
-                                    &distances_x[0],
-                                    &distances_y[0],
-                                    &distances_z[0],
-                                    &m_positions_x[0],
-                                    &m_positions_y[0],
-                                    &m_positions_z[0],
-                                    0,
-                                    cur_idx);
-        // after idx
-        calculate_distance_vectors (cur_idx,
-                                    &distances_x[cur_idx],
-                                    &distances_y[cur_idx],
-                                    &distances_z[cur_idx],
-                                    &m_positions_x[cur_idx + 1],
-                                    &m_positions_y[cur_idx + 1],
-                                    &m_positions_z[cur_idx + 1],
-                                    cur_idx + 1,
-                                    particle_cnt);
+     unsigned long current_entries = 0;
+     m_particle_list_ranges        = std::vector<unsigned long> (listed_size * 2);
+     std::vector<data_type> distances_squared (particle_cnt - 1);
+     for (unsigned long cur_idx = 0; cur_idx < particle_cnt; cur_idx++) {
+         // in front of idx;
+         calculate_distance_vectors (cur_idx,
+                                     &distances_x[0],
+                                     &distances_y[0],
+                                     &distances_z[0],
+                                     &m_positions_x[0],
+                                     &m_positions_y[0],
+                                     &m_positions_z[0],
+                                     0,
+                                     cur_idx);
+         // after idx
+         calculate_distance_vectors (cur_idx,
+                                     &distances_x[cur_idx],
+                                     &distances_y[cur_idx],
+                                     &distances_z[cur_idx],
+                                     &m_positions_x[cur_idx + 1],
+                                     &m_positions_y[cur_idx + 1],
+                                     &m_positions_z[cur_idx + 1],
+                                     cur_idx + 1,
+                                     particle_cnt);
 
-        calculate_distances_squared (
-            &distances_squared[0], &distances_x[0], &distances_y[0], &distances_z[0], particle_cnt - 1);
-        m_particle_list_ranges[current_list_idx] = next_free_list_entry;
-        current_list_idx++;
+         calculate_distances_squared (
+             &distances_squared[0], &distances_x[0], &distances_y[0], &distances_z[0], particle_cnt
+     - 1);
+         m_particle_list_ranges[current_list_idx] = next_free_list_entry;
+         current_list_idx++;
 
-        int cnt_neighbours = 0;
-        for (unsigned long other_idx = 0; other_idx < particle_cnt - 1; other_idx++) {
-            if (distances_squared[other_idx] < cutoff_radius_squared) {
-                m_listed_positions_x[next_free_list_entry]  = m_positions_x[other_idx];
-                m_listed_positions_y[next_free_list_entry]  = m_positions_y[other_idx];
-                m_listed_positions_z[next_free_list_entry]  = m_positions_z[other_idx];
-                m_listed_velocities_x[next_free_list_entry] = m_velocities_x[other_idx];
-                m_listed_velocities_y[next_free_list_entry] = m_velocities_y[other_idx];
-                m_listed_velocities_z[next_free_list_entry] = m_velocities_z[other_idx];
-                next_free_list_entry++;
-                current_entries++;
-                cnt_neighbours++;
-            }
+         int cnt_neighbours = 0;
+         for (unsigned long other_idx = 0; other_idx < particle_cnt - 1; other_idx++) {
+             if (distances_squared[other_idx] < cutoff_radius_squared) {
+                 m_listed_positions_x[next_free_list_entry]  = m_positions_x[other_idx];
+                 m_listed_positions_y[next_free_list_entry]  = m_positions_y[other_idx];
+                 m_listed_positions_z[next_free_list_entry]  = m_positions_z[other_idx];
+                 m_listed_velocities_x[next_free_list_entry] = m_velocities_x[other_idx];
+                 m_listed_velocities_y[next_free_list_entry] = m_velocities_y[other_idx];
+                 m_listed_velocities_z[next_free_list_entry] = m_velocities_z[other_idx];
+                 next_free_list_entry++;
+                 current_entries++;
+                 cnt_neighbours++;
+             }
 
-            if (current_entries == m_listed_positions_x.size ()) {
-                listed_size = listed_size * m_next_list_size_multiplier;
-                macro_debug ("resizing lists to: ", listed_size)
+             if (current_entries == m_listed_positions_x.size ()) {
+                 listed_size = listed_size * m_next_list_size_multiplier;
+                 macro_debug ("resizing lists to: ", listed_size)
 
-                        m_verbose_stream
-                    << "lol " << current_entries << " " << listed_size << std::endl;
+                         m_verbose_stream
+                     << "lol " << current_entries << " " << listed_size << std::endl;
 
-                m_particle_list_ranges.resize (listed_size * 2);
-                m_listed_positions_x.resize (listed_size);
-                m_listed_positions_y.resize (listed_size);
-                m_listed_positions_z.resize (listed_size);
-                m_listed_velocities_x.resize (listed_size);
-                m_listed_velocities_y.resize (listed_size);
-                m_listed_velocities_z.resize (listed_size);
-            }
-        }
-        macro_debug ("found neigbours cnt:", cnt_neighbours)
-            m_particle_list_ranges[current_list_idx++] = next_free_list_entry;
-    }
-    m_particle_list_ranges.shrink_to_fit ();
-    m_listed_positions_x.shrink_to_fit ();
-    m_listed_positions_y.shrink_to_fit ();
-    m_listed_positions_z.shrink_to_fit ();
-    m_listed_velocities_x.shrink_to_fit ();
-    m_listed_velocities_y.shrink_to_fit ();
-    m_listed_velocities_z.shrink_to_fit ();
-    macro_debug ("shrunk list ranges to: ", m_particle_list_ranges.size ())
-        macro_debug ("shrunk lists to: ", m_positions_x.size ())
-            macro_debug_1 ("finished building neighbour lists")*/
+                 m_particle_list_ranges.resize (listed_size * 2);
+                 m_listed_positions_x.resize (listed_size);
+                 m_listed_positions_y.resize (listed_size);
+                 m_listed_positions_z.resize (listed_size);
+                 m_listed_velocities_x.resize (listed_size);
+                 m_listed_velocities_y.resize (listed_size);
+                 m_listed_velocities_z.resize (listed_size);
+             }
+         }
+         macro_debug ("found neigbours cnt:", cnt_neighbours)
+             m_particle_list_ranges[current_list_idx++] = next_free_list_entry;
+     }
+     m_particle_list_ranges.shrink_to_fit ();
+     m_listed_positions_x.shrink_to_fit ();
+     m_listed_positions_y.shrink_to_fit ();
+     m_listed_positions_z.shrink_to_fit ();
+     m_listed_velocities_x.shrink_to_fit ();
+     m_listed_velocities_y.shrink_to_fit ();
+     m_listed_velocities_z.shrink_to_fit ();
+     macro_debug ("shrunk list ranges to: ", m_particle_list_ranges.size ())
+         macro_debug ("shrunk lists to: ", m_positions_x.size ())
+             macro_debug_1 ("finished building neighbour lists")*/
 }
 
 void DatastructureList::setup_iteration () {
@@ -329,7 +330,7 @@ void DatastructureList::calculate_distance_vectors (unsigned long p_particle_idx
                                                     data_type*    p_positions_z,
                                                     unsigned long start_idx,
                                                     unsigned long end_idx) {
-    Benchmark::begin("Calculating distance vectors");
+    Benchmark::begin ("Calculating distance vectors");
     unsigned long cur_dist_idx;
     data_type     x = p_positions_x[p_particle_idx];
     data_type     y = p_positions_y[p_particle_idx];
@@ -348,7 +349,7 @@ void DatastructureList::calculate_distance_vectors (unsigned long p_particle_idx
     for (cur_dist_idx = 0; cur_dist_idx < end_idx; cur_dist_idx++) {
         p_distances_z[start_idx + cur_dist_idx] = z - p_positions_z[p_particle_idx + cur_dist_idx + 1];
     }
-    Benchmark::end();
+    Benchmark::end ();
 }
 void DatastructureList::calculate_distances_squared (data_type*    p_distances_squared,
                                                      data_type*    p_distances_x,
