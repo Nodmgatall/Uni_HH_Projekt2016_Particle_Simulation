@@ -137,5 +137,5 @@ BOOST_AUTO_TEST_CASE (print) {
     std::stringstream stream;
     stream << obja;
     std::string string = stream.str ();
-    BOOST_CHECK_EQUAL (string, std::string ("Vec3(2,3,4)"));
+    BOOST_CHECK_EQUAL (string, std::string ("Vec(2,3,4)"));
 }

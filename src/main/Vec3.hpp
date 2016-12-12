@@ -9,12 +9,6 @@
 #define SRC_VEC3_HPP_
 
 #include "DataType.hpp"
-#if defined(BOOST_AVAILABLE)
-#include <boost/archive/xml_iarchive.hpp>
-#include <boost/archive/xml_oarchive.hpp>
-#include <boost/serialization/export.hpp>
-#include <boost/serialization/nvp.hpp>
-#endif
 #include <istream>
 #include <math.h>
 #include <ostream>
@@ -82,9 +76,18 @@ struct Vec3 {
         return sqrt (x * x + y * y + z * z);
     }
     inline friend std::ostream& operator<< (std::ostream& stream, const Vec3<T>& vec) {
-        return stream << "Vec3(" << vec.x << "," << vec.y << "," << vec.z << ")";
+        return stream << "Vec(" << vec.x << "," << vec.y << "," << vec.z << ")";
     }
     inline friend std::istream& operator>> (std::istream& stream, Vec3<T>& vec) {
+        if (stream.peek () == 'V') {
+            stream.ignore ();
+            if (stream.peek () == 'e') {
+                stream.ignore ();
+                if (stream.peek () == 'c') {
+                    stream.ignore ();
+                }
+            }
+        }
         while ((stream.peek () == ' ') || (stream.peek () == '(') || (stream.peek () == '[')) {
             stream.ignore ();
         }
@@ -102,16 +105,6 @@ struct Vec3 {
         }
         return stream;
     }
-#if defined(BOOST_AVAILABLE)
-    friend class boost::serialization::access;
-    template <class Archive>
-    void serialize (Archive& archive, const unsigned int version) {
-        (void) version;
-        archive& boost::serialization::make_nvp ("x", x);
-        archive& boost::serialization::make_nvp ("y", y);
-        archive& boost::serialization::make_nvp ("z", z);
-    }
-#endif
 };
 typedef Vec3<data_type> Vec3f;
 typedef Vec3<long>      Vec3l;

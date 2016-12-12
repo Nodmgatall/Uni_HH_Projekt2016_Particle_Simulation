@@ -9,6 +9,7 @@
 #define SRC_MAIN_IO_INPUT_FILE_FILEREADERCSV_HPP_
 
 #include "io/input/InputBase.hpp"
+#include <algorithm>
 
 class FileReaderCSV : public InputBase {
   protected:

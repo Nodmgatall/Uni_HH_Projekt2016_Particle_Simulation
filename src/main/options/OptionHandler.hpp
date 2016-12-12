@@ -3,11 +3,6 @@
 
 #include "Definitions.hpp"
 #include "Options.hpp"
-#if defined(BOOST_AVAILABLE)
-#include <boost/archive/xml_iarchive.hpp>
-#include <boost/archive/xml_oarchive.hpp>
-#include <boost/serialization/nvp.hpp>
-#endif
 #include <getopt.h>
 
 class OptionHandler {
