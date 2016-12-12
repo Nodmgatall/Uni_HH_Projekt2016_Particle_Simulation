@@ -43,9 +43,8 @@ void OptionHandler::load_config (s_options& p_options, const std::string p_filen
 }
 int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_options) {
     print_header ();
+    bool                help_printed = false;
     int                 argv_index;
-    bool                help_defined                                       = false;
-    bool                help_printed                                       = false;
     bool                should_save_config                                 = false;
     bool                should_print_config                                = false;
     bool                should_load_config                                 = false;
@@ -70,7 +69,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                                     { "bounds", required_argument, 0, 'b' },
                                     { "count", required_argument, 0, 'c' },
                                     { "write_fequency", required_argument, 0, 'f' },
-                                    { "help", no_argument, 0, 'h' },
+                                    { "help", optional_argument, 0, 'h' },
                                     { "in_file_name", required_argument, 0, 'i' },
                                     { "run_time_limit", required_argument, 0, 'l' },
                                     { "max_iterations", required_argument, 0, 'm' },
@@ -97,62 +96,33 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
 
     while ((argv_index = getopt_long (p_argc, p_argv, "ab::c::f::hi::l::m::o::r::s::t::v", options.data (), &long_options)) !=
            -1) {
+        m_standard_stream << DEBUG_VAR (argv_index) << std::endl;
         std::stringstream line;
         if (optarg) {
+            m_standard_stream << DEBUG_VAR (optarg) << std::endl;
             line.str (optarg);
         }
         switch (argv_index / 1000) {
             case algorithm_type_index:
-                if (help_defined) {
-                    print_usage_algorithm ();
-                    help_printed = true;
-                } else {
-                    p_options.m_algorithm_type =
-                        static_cast<e_algorithm_type> (indexInArray (g_algorithm_names, optarg));
-                }
+                p_options.m_algorithm_type =
+                    static_cast<e_algorithm_type> (indexInArray (g_algorithm_names, optarg));
                 break;
             case datastructure_type_index:
-                if (help_defined) {
-                    print_usage_data_structure ();
-                    help_printed = true;
-                } else {
-                    p_options.m_data_structure =
-                        static_cast<e_datastructure_type> (indexInArray (g_datastructure_names, optarg));
-                }
+                p_options.m_data_structure =
+                    static_cast<e_datastructure_type> (indexInArray (g_datastructure_names, optarg));
                 break;
             case input_type_index:
-                if (help_defined) {
-                    print_usage_input ();
-                    help_printed = true;
-                } else {
-                    p_options.m_input_type = static_cast<e_input_type> (indexInArray (g_input_names, optarg));
-                }
+                p_options.m_input_type = static_cast<e_input_type> (indexInArray (g_input_names, optarg));
                 break;
             case output_type_index:
-                if (help_defined) {
-                    print_usage_output ();
-                    help_printed = true;
-                } else {
-                    p_options.m_output_type =
-                        static_cast<e_output_type> (indexInArray (g_output_names, optarg));
-                }
+                p_options.m_output_type = static_cast<e_output_type> (indexInArray (g_output_names, optarg));
                 break;
             case write_modes_index:
-                if (help_defined) {
-                    print_usage_write_modes ();
-                    help_printed = true;
-                } else {
-                    p_options.m_write_modes[static_cast<e_csv_column_type> (argv_index % 1000)] =
-                        !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
-                }
+                p_options.m_write_modes[static_cast<e_csv_column_type> (argv_index % 1000)] =
+                    !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
                 break;
             case max_iterations_between_datastructure_rebuild_index: {
-                if (help_defined) {
-                    print_usage_max_iterations_between_datastructure_rebuild ();
-                    help_printed = true;
-                } else {
-                    line >> p_options.m_max_iterations_between_datastructure_rebuild;
-                }
+                line >> p_options.m_max_iterations_between_datastructure_rebuild;
                 break;
             }
             case load_config_index:
@@ -169,130 +139,111 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
             default: {
                 switch (argv_index) {
                     case 'a': {
-                        if (help_defined) {
-                            print_usage_autotuneing ();
-                            help_printed = true;
-                        } else {
-                            p_options.m_autotuneing = true;
-                        }
+                        p_options.m_autotuneing = true;
                         break;
                     }
                     case 'b': {
-                        if (help_defined) {
-                            print_usage_bounds ();
-                            help_printed = true;
-                        } else {
-                            line >> p_options.m_bounds;
-                        }
+                        line >> p_options.m_bounds;
                         break;
                     }
                     case 'c': {
-                        if (help_defined) {
-                            print_usage_particle_count ();
-                            help_printed = true;
-                        } else {
-                            line >> p_options.m_particle_count;
-                        }
+                        line >> p_options.m_particle_count;
                         break;
                     }
                     case 'f': {
-                        if (help_defined) {
-                            print_usage_write_fequency ();
-                            help_printed = true;
-                        } else {
-                            line >> p_options.m_write_fequency;
-                        }
+                        line >> p_options.m_write_fequency;
                         break;
                     }
                     case 'h': {
-                        help_defined = true;
+                        help_printed = true;
+                        if (optarg) {
+                            if (!strcmp (optarg, "algorithm")) {
+                                print_usage_algorithm ();
+                            } else if (!strcmp (optarg, "data_structure")) {
+                                print_usage_data_structure ();
+                            } else if (!strcmp (optarg, "input")) {
+                                print_usage_input ();
+                            } else if (!strcmp (optarg, "output")) {
+                                print_usage_output ();
+                            } else if (!strcmp (optarg, "autotuneing")) {
+                                print_usage_autotuneing ();
+                            } else if (!strcmp (optarg, "bounds")) {
+                                print_usage_bounds ();
+                            } else if (!strcmp (optarg, "count")) {
+                                print_usage_particle_count ();
+                            } else if (!strcmp (optarg, "write_fequency")) {
+                                print_usage_write_fequency ();
+                            } else if (!strcmp (optarg, "in_file_name")) {
+                                print_usage_in_file_name ();
+                            } else if (!strcmp (optarg, "run_time_limit")) {
+                                print_usage_run_time_limit ();
+                            } else if (!strcmp (optarg, "max_iterations")) {
+                                print_usage_max_iterations ();
+                            } else if (!strcmp (optarg, "out_file_name")) {
+                                print_usage_out_file_name ();
+                            } else if (!strcmp (optarg, "cut_off_radius")) {
+                                print_usage_cut_off_radius ();
+                            } else if (!strcmp (optarg, "seed")) {
+                                print_usage_seed ();
+                            } else if (!strcmp (optarg, "timestep")) {
+                                print_usage_timestep ();
+                            } else if (!strcmp (optarg, "verbose")) {
+                                print_usage_verbose ();
+                            } else if (!strcmp (optarg,
+                                                "max_iterations_between_datastructure_rebuild")) {
+                                print_usage_max_iterations_between_datastructure_rebuild ();
+                            } else if (!strcmp (optarg, "load_config")) {
+                                print_usage_load_config ();
+                            } else if (!strcmp (optarg, "save_config")) {
+                                print_usage_save_config ();
+                            } else if (!strcmp (optarg, "print_config")) {
+                                print_usage_print_config ();
+                            } else {
+                                print_usage_particle_sim ();
+                            }
+                        } else {
+                            print_usage_particle_sim ();
+                        }
                         break;
                     }
                     case 'i': {
-                        if (help_defined) {
-                            print_usage_in_file_name ();
-                            help_printed = true;
-                        } else {
-                            p_options.m_in_file_name = line.str ();
-                        }
+                        p_options.m_in_file_name = line.str ();
                         break;
                     }
                     case 'l': {
-                        if (help_defined) {
-                            print_usage_run_time_limit ();
-                            help_printed = true;
-                        } else {
-                            line >> run_time_limit;
-                        }
+                        line >> run_time_limit;
                         break;
                     }
                     case 'm': {
-                        if (help_defined) {
-                            print_usage_max_iterations ();
-                            help_printed = true;
-                        } else {
-                            line >> p_options.m_max_iterations;
-                        }
+                        line >> p_options.m_max_iterations;
                         break;
                     }
                     case 'o': {
-                        if (help_defined) {
-                            print_usage_out_file_name ();
-                            help_printed = true;
-                        } else {
-                            p_options.m_out_file_name = line.str ();
-                        }
+                        p_options.m_out_file_name = line.str ();
                         break;
                     }
                     case 'r':
-                        if (help_defined) {
-                            print_usage_cut_off_radius ();
-                            help_printed = true;
-                        } else {
-                            line >> p_options.m_cut_off_radius;
-                        }
+                        line >> p_options.m_cut_off_radius;
                         break;
                     case 's': {
-                        if (help_defined) {
-                            print_usage_seed ();
-                            help_printed = true;
-                        } else {
-                            line >> p_options.m_seed;
-                        }
+                        line >> p_options.m_seed;
                         break;
                     }
                     case 't': {
-                        if (help_defined) {
-                            print_usage_timestep ();
-                            help_printed = true;
-                        } else {
-                            line >> p_options.m_timestep;
-                        }
+                        line >> p_options.m_timestep;
                         break;
                     }
                     case 'v': {
-                        if (help_defined) {
-                            print_usage_verbose ();
-                            help_printed = true;
-                        } else {
-                            p_options.m_verbose = true;
-                        }
+                        p_options.m_verbose = true;
                         break;
                     }
                     case '?': {
                         m_standard_stream << "Error: unknown option" << std::endl;
-                        help_defined = true;
                         break;
                     }
                 }
             }
         }
-    }
-    if (help_defined) {
-        if (!help_printed) {
-            print_usage_particle_sim ();
-        }
-        return 1;
     }
     if (run_time_limit > -1) {
         p_options.m_max_iterations = run_time_limit / p_options.m_timestep;
@@ -307,7 +258,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
         print_choosen_options (p_options);
     }
     g_verbose = p_options.m_verbose;
-    return 0;
+    return help_printed;
 }
 void OptionHandler::print_choosen_options (s_options& p_options) {
     Benchmark::begin ("Print-Options");
@@ -534,7 +485,7 @@ void OptionHandler::print_usage_max_iterations_between_datastructure_rebuild () 
         << "|                          datastructure should reorder its internal           |" << std::endl
         << "|                          structure.                                          |" << std::endl;
 }
-void OptionHandler::print_usage_load_confing () {
+void OptionHandler::print_usage_load_config () {
     m_standard_stream //
         << "| --load_confing=(string)                                                      |" << std::endl
         << "|                          Loads the options from the given xml file.          |" << std::endl;
@@ -618,7 +569,7 @@ void OptionHandler::print_usage_particle_sim () {
         << "|                                config options                                |" << std::endl
         << "|                                                                              |" << std::endl;
     //
-    print_usage_load_confing ();
+    print_usage_load_config ();
     print_usage_save_config ();
     print_usage_print_config ();
     m_standard_stream //
