@@ -11,22 +11,21 @@ int indexInArray (std::vector<const char*> elements, char* element) {
 
 void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_options) {
     Benchmark::begin ("OptionHandler");
-    int         argv_index;
-    bool        save_config              = false;
-    bool        load_config              = false;
-    bool        list_configs             = false;
-    bool        config_feature_used      = false;
-    bool        print_config             = true;
-    bool        print_saved_config       = false;
-    std::string config_name              = "";
-    int         long_options             = 0;
-    int         index                    = 0;
-    const int   algorithm_type_index     = 1;
-    const int   datastructure_type_index = 2;
-    const int   input_type_index         = 3;
-    const int   output_type_index        = 4;
-    const int   write_modes_index        = 5;
-    DEBUG_BEGIN << "a" << DEBUG_END;
+    int                 argv_index;
+    bool                save_config              = false;
+    bool                load_config              = false;
+    bool                list_configs             = false;
+    bool                config_feature_used      = false;
+    bool                print_config             = true;
+    bool                print_saved_config       = false;
+    std::string         config_name              = "";
+    int                 long_options             = 0;
+    int                 index                    = 0;
+    const int           algorithm_type_index     = 1;
+    const int           datastructure_type_index = 2;
+    const int           input_type_index         = 3;
+    const int           output_type_index        = 4;
+    const int           write_modes_index        = 5;
     std::vector<option> options = { { "algorithm", required_argument, 0, algorithm_type_index * 1000 },
                                     { "data_structure", required_argument, 0, datastructure_type_index * 1000 },
                                     { "input", required_argument, 0, input_type_index * 1000 },
@@ -57,9 +56,7 @@ void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_opti
                              0,
                              write_modes_index * 1000 + index });
     }
-
     opterr = 0;
-    DEBUG_BEGIN << "b" << DEBUG_END;
     while ((argv_index = getopt_long (p_argc, p_argv, "vs:p:l:t:dr:f:i:h", &options[0], &long_options)) != -1) {
         if (optarg && (strcmp (optarg, "-h") == 0 || strcmp (optarg, "--help") == 0)) {
             // TODO:  Display help from option
@@ -282,12 +279,24 @@ void OptionHandler::print_usage_output () {
         std::cout << " | " << g_output_names[index];
     }
     std::cout << " >" << std::endl;
+    std::cout
+        << "                           This option specifies how the particles are saved    " << std::endl
+        << "                           from the simulation. Particles are saved before the  " << std::endl
+        << "                           first iteration, and then every 'write_fequency'     " << std::endl
+        << "                           iterations. The particles are stored in files        " << std::endl
+        << "                           starting with the path and name provided by          " << std::endl
+        << "                           'out_file_name'.                                     " << std::endl;
 }
 void OptionHandler::print_usage_write_modes () {
     int index;
     for (index = 1; index < (signed) g_csv_column_names.size (); index++) {
         std::cout << "  --WRITE_" << g_csv_column_names[index];
     }
+    std::cout << std::endl;
+    std::cout
+        << "                           If 'output' is set to 'CSV' then this option defines " << std::endl
+        << "                           which data from the individual particles should be   " << std::endl
+        << "                           stored on disk.                                      " << std::endl;
 }
 void OptionHandler::print_usage_autotuneing () {
     std::cout << "  --autotuneing    | -a" << std::endl;
