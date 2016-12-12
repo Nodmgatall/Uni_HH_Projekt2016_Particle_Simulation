@@ -13,12 +13,12 @@
 #include <vector>
 
 enum class e_input_type {
-    RANDOM               = 1,
-    RANDOM_UNIFORM       = 2,
-    SINGLE_OBJECT_MIDDLE = 3,
-    GRID_DISTRIBUTION    = 4,
-    MULTIPLE_OBJECTS     = 5,
-    CSV                  = 6,
+    GENERATOR_RANDOM               = 1,
+    GENERATOR_RANDOM_UNIFORM       = 2,
+    GENERATOR_SINGLE_OBJECT_MIDDLE = 3,
+    GENERATOR_GRID_DISTRIBUTION    = 4,
+    GENERATOR_MULTIPLE_OBJECTS     = 5,
+    FILE_CSV                       = 6,
 };
 
 std::ostream& operator<< (std::ostream& stream, const e_input_type p_input_type);

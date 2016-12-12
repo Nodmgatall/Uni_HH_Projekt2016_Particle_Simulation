@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_CASE (calculate_distance_vectors) {
 
     s_options options = { e_algorithm_type::LENNARD_JONES,
                           false,
-                          e_output_type::CSV,
+                          e_output_type::FILE_CSV,
                           "",
                           "",
                           1000,
@@ -74,7 +74,7 @@ BOOST_AUTO_TEST_CASE (calculate_distances_squared) {
 
     s_options options = { e_algorithm_type::LENNARD_JONES,
                           false,
-                          e_output_type::CSV,
+                          e_output_type::FILE_CSV,
                           "",
                           "",
                           1000,
@@ -112,7 +112,7 @@ BOOST_AUTO_TEST_CASE (build_lists) {
 
     s_options options = { e_algorithm_type::LENNARD_JONES,
                           false,
-                          e_output_type::CSV,
+                          e_output_type::FILE_CSV,
                           "",
                           "",
                           1000,

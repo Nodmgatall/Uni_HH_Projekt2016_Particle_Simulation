@@ -13,7 +13,7 @@ struct s_options {
     friend class boost::serialization::access;
     e_algorithm_type     m_algorithm_type = e_algorithm_type::LENNARD_JONES;
     bool                 m_autotuneing    = false;
-    e_output_type        m_output_type    = e_output_type::CSV;
+    e_output_type        m_output_type    = e_output_type::FILE_CSV;
     std::string          m_in_file_name   = "";
     std::string          m_out_file_name  = "";
     data_type            m_run_time_limit = 1000;
@@ -27,11 +27,11 @@ struct s_options {
                                                         { e_csv_column_type::VELOCITY, true },
                                                         { e_csv_column_type::ACCELERATION, true },
                                                         { e_csv_column_type::PARTICLE_TYPE, false } };
-    e_input_type  m_input_type                                   = e_input_type::GRID_DISTRIBUTION;
-    unsigned int  m_seed                                         = 123456789;
-    unsigned long m_particle_count                               = 0;
-    unsigned long m_max_iterations                               = 0;
-    Vec3f         m_bounds                                       = Vec3f (5.0f, 5.0f, 5.0f);
+    e_input_type  m_input_type     = e_input_type::GENERATOR_GRID_DISTRIBUTION;
+    unsigned int  m_seed           = 123456789;
+    unsigned long m_particle_count = 0;
+    unsigned long m_max_iterations = 0;
+    Vec3f         m_bounds         = Vec3f (5.0f, 5.0f, 5.0f);
     int           m_max_iterations_between_datastructure_rebuild = 20;
 
     template <class Archive>

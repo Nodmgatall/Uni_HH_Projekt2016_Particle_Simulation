@@ -12,7 +12,14 @@
 #include <ostream>
 #include <vector>
 
-enum class e_output_type { CSV = 1, LAMMPS = 2, ESPRESSO = 3, GROMACS = 4, VMD = 5, VTK = 6 };
+enum class e_output_type {
+    FILE_CSV      = 1,
+    FILE_LAMMPS   = 2,
+    FILE_ESPRESSO = 3,
+    FILE_GROMACS  = 4,
+    FILE_VMD      = 5,
+    FILE_VTK      = 6
+};
 
 std::ostream& operator<< (std::ostream& stream, const e_output_type p_output_type);
 

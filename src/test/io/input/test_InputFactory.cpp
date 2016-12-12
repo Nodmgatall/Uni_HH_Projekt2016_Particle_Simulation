@@ -201,7 +201,7 @@ class Datastructure : public DatastructureBase {
 BOOST_AUTO_TEST_CASE (test1) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
-    options.m_input_type = e_input_type::CSV;
+    options.m_input_type = e_input_type::FILE_CSV;
     BoundsCorrection border (options.m_bounds);
     Algorithm        algorithm (options);
     ParticleWriter   writer    = ParticleWriter (0);
@@ -212,7 +212,7 @@ BOOST_AUTO_TEST_CASE (test1) {
 BOOST_AUTO_TEST_CASE (test2) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
-    options.m_input_type = e_input_type::GRID_DISTRIBUTION;
+    options.m_input_type = e_input_type::GENERATOR_GRID_DISTRIBUTION;
     BoundsCorrection border (options.m_bounds);
     Algorithm        algorithm (options);
     ParticleWriter   writer    = ParticleWriter (0);
@@ -223,7 +223,7 @@ BOOST_AUTO_TEST_CASE (test2) {
 BOOST_AUTO_TEST_CASE (test3) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
-    options.m_input_type = e_input_type::MULTIPLE_OBJECTS;
+    options.m_input_type = e_input_type::GENERATOR_MULTIPLE_OBJECTS;
     BoundsCorrection border (options.m_bounds);
     Algorithm        algorithm (options);
     ParticleWriter   writer    = ParticleWriter (0);
@@ -234,7 +234,7 @@ BOOST_AUTO_TEST_CASE (test3) {
 BOOST_AUTO_TEST_CASE (test4) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
-    options.m_input_type = e_input_type::RANDOM;
+    options.m_input_type = e_input_type::GENERATOR_RANDOM;
     BoundsCorrection border (options.m_bounds);
     Algorithm        algorithm (options);
     ParticleWriter   writer    = ParticleWriter (0);
@@ -245,7 +245,7 @@ BOOST_AUTO_TEST_CASE (test4) {
 BOOST_AUTO_TEST_CASE (test5) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
-    options.m_input_type = e_input_type::RANDOM_UNIFORM;
+    options.m_input_type = e_input_type::GENERATOR_RANDOM_UNIFORM;
     BoundsCorrection border (options.m_bounds);
     Algorithm        algorithm (options);
     ParticleWriter   writer    = ParticleWriter (0);
@@ -256,7 +256,7 @@ BOOST_AUTO_TEST_CASE (test5) {
 BOOST_AUTO_TEST_CASE (test6) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
-    options.m_input_type = e_input_type::SINGLE_OBJECT_MIDDLE;
+    options.m_input_type = e_input_type::GENERATOR_SINGLE_OBJECT_MIDDLE;
     BoundsCorrection border (options.m_bounds);
     Algorithm        algorithm (options);
     ParticleWriter   writer    = ParticleWriter (0);
