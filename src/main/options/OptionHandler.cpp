@@ -1,8 +1,5 @@
 #include "OptionHandler.hpp"
 
-OptionHandler::OptionHandler () {
-}
-
 int OptionHandler::indexInArray (std::vector<const char*> elements, char* element) {
     unsigned int index;
     for (index = 0; index < elements.size (); index++)

@@ -44,7 +44,6 @@ class OptionHandler {
     void print_usage_print_config ();
 
   public:
-    OptionHandler ();
     int handle_options (int p_argc, char** p_argv, s_options& p_options);
 };
 
