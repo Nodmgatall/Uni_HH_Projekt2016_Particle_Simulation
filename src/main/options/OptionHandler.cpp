@@ -236,11 +236,12 @@ void OptionHandler::print_choosen_options (s_options& p_options) {
 
 void OptionHandler::print_usage_algorithm () {
     int index;
-    std::cout << "  --algorithm=< " << g_algorithm_names[1];
+    std::cout //
+        << "  --algorithm=         " << g_algorithm_names[1];
     for (index = 2; index < (signed) g_algorithm_names.size (); index++) {
-        std::cout << " | " << g_algorithm_names[index];
+        std::cout << std::endl << "                       " << g_algorithm_names[index];
     }
-    std::cout << " >" << std::endl;
+    std::cout << std::endl;
     std::cout //
         << "                           This option specifies the method to calculate the    " << std::endl
         << "                           forces between the particles. Based on the forces the" << std::endl
@@ -248,11 +249,12 @@ void OptionHandler::print_usage_algorithm () {
 }
 void OptionHandler::print_usage_data_structure () {
     int index;
-    std::cout << "  --data_structure=< " << g_datastructure_names[1];
+    std::cout //
+        << "  --data_structure=    " << g_datastructure_names[1];
     for (index = 2; index < (signed) g_datastructure_names.size (); index++) {
-        std::cout << " | " << g_datastructure_names[index];
+        std::cout << std::endl << "                       " << g_datastructure_names[index];
     }
-    std::cout << " >" << std::endl;
+    std::cout << std::endl;
     std::cout //
         << "                           This option specifies the datastructure which stores " << std::endl
         << "                           the particles. The different datastructures have     " << std::endl
@@ -262,11 +264,12 @@ void OptionHandler::print_usage_data_structure () {
 }
 void OptionHandler::print_usage_input () {
     int index;
-    std::cout << "  --input=< " << g_input_names[1];
+    std::cout //
+        << "  --input=             " << g_input_names[1];
     for (index = 2; index < (signed) g_input_names.size (); index++) {
-        std::cout << " | " << g_input_names[index];
+        std::cout << std::endl << "                       " << g_input_names[index];
     }
-    std::cout << " >" << std::endl;
+    std::cout << std::endl;
     std::cout //
         << "                           This option specifies how the particles are loaded   " << std::endl
         << "                           into the simulation.                                 " << std::endl
@@ -279,12 +282,13 @@ void OptionHandler::print_usage_input () {
 }
 void OptionHandler::print_usage_output () {
     int index;
-    std::cout << "  --output=< " << g_output_names[1];
+    std::cout //
+        << "  --output=            " << g_output_names[1];
     for (index = 2; index < (signed) g_output_names.size (); index++) {
-        std::cout << " | " << g_output_names[index];
+        std::cout << std::endl << "                       " << g_output_names[index];
     }
     std::cout //
-        << " >" << std::endl
+        << std::endl
         << "                           This option specifies how the particles are saved    " << std::endl
         << "                           from the simulation. Particles are saved before the  " << std::endl
         << "                           first iteration, and then every 'write_fequency'     " << std::endl
@@ -293,10 +297,10 @@ void OptionHandler::print_usage_output () {
 void OptionHandler::print_usage_write_modes () {
     int index;
     for (index = 1; index < (signed) g_csv_column_names.size (); index++) {
-        std::cout << "  --WRITE_" << g_csv_column_names[index];
+        std::cout //
+            << "  --WRITE_" << g_csv_column_names[index] << std::endl;
     }
     std::cout //
-        << std::endl
         << "                           If 'output' is set to 'FILE_CSV' then this options   " << std::endl
         << "                           defines which data from the individual particles     " << std::endl
         << "                           should be stored on disk. If 'output' is set to      " << std::endl
@@ -304,59 +308,59 @@ void OptionHandler::print_usage_write_modes () {
 }
 void OptionHandler::print_usage_autotuneing () {
     std::cout //
-        << "  --autotuneing                | -a" << std::endl
-        << "                           If 'autotuneing' is enabled, then the program will   " << std::endl
+        << "  --autotuneing                                                                 " << std::endl
+        << "   -a                      If 'autotuneing' is enabled, then the program will   " << std::endl
         << "                           choose the best datastructure based on the given     " << std::endl
         << "                           particles. This option must not be used together with" << std::endl
         << "                           the 'datastructure' option.                          " << std::endl;
 }
 void OptionHandler::print_usage_bounds () {
     std::cout //
-        << "  --bounds=(float/float/float) | -b" << std::endl
-        << "                           This option specifies in which space the particles   " << std::endl
+        << "  --bounds=(float/float/float)                                                  " << std::endl
+        << "   -b                      This option specifies in which space the particles   " << std::endl
         << "                           can move. If particles move outside of the given     " << std::endl
         << "                           bounds, than the datastructure may move them back    " << std::endl
         << "                           into the bounds.                                     " << std::endl;
 }
 void OptionHandler::print_usage_write_fequency () {
     std::cout //
-        << "  --write_fequency=(integer)   | -f" << std::endl
-        << "                           This option specifies the count of iterations until  " << std::endl
+        << "  --write_fequency=(integer)                                                    " << std::endl
+        << "   -f                      This option specifies the count of iterations until  " << std::endl
         << "                           the particles are saved to the next file. Larger     " << std::endl
         << "                           numbers result in a better performance, but the data " << std::endl
         << "                           between the saves is lost.                           " << std::endl;
 }
 void OptionHandler::print_usage_help () {
     std::cout //
-        << "  --help                       | -h" << std::endl
-        << "                           prints help for all possible options.                " << std::endl;
+        << "  --help                                                                        " << std::endl
+        << "   -h                      prints help for all possible options.                " << std::endl;
 }
 void OptionHandler::print_usage_in_file_name () {
     std::cout //
-        << "  --in_file_name=(string)      | -i" << std::endl
-        << "                           This option specifies the file name in which the     " << std::endl
+        << "  --in_file_name=(string)                                                       " << std::endl
+        << "   -i                      This option specifies the file name in which the     " << std::endl
         << "                           initial particles are stored. Must be used together  " << std::endl
         << "                           an 'input' which is based on file.                   " << std::endl;
 }
 void OptionHandler::print_usage_run_time_limit () {
     std::cout //
-        << "  --run_time_limit=(float)     | -l" << std::endl
-        << "                           Defines the time at which the simulation should end. " << std::endl
+        << "  --run_time_limit=(float)                                                      " << std::endl
+        << "   -l                      Defines the time at which the simulation should end. " << std::endl
         << "                           each simulation starts at time 0. Time increases     " << std::endl
         << "                           every iteration based on 'timestep'. Must not be used" << std::endl
         << "                           together with 'max_iterations'.                      " << std::endl;
 }
 void OptionHandler::print_usage_max_iterations () {
     std::cout //
-        << "  --max_iterations=(integer)   | -m" << std::endl
-        << "                           Defines the number of iterations which should be     " << std::endl
+        << "  --max_iterations=(integer)                                                    " << std::endl
+        << "   -m                      Defines the number of iterations which should be     " << std::endl
         << "                           simulated. Must not be used together with the        " << std::endl
         << "                           'run_time_limit' option.                             " << std::endl;
 }
 void OptionHandler::print_usage_out_file_name () {
     std::cout //
-        << "  --out_file_name=(string)     | -i" << std::endl
-        << "                           The particles are stored in files starting with the  " << std::endl
+        << "  --out_file_name=(string)                                                      " << std::endl
+        << "   -o                      The particles are stored in files starting with the  " << std::endl
         << "                           path and name provided by 'out_file_name'. After the " << std::endl
         << "                           file base is an increasing number which specifies    " << std::endl
         << "                           the file order. The file-ending is chosen            " << std::endl
@@ -364,34 +368,34 @@ void OptionHandler::print_usage_out_file_name () {
 }
 void OptionHandler::print_usage_particle_count () {
     std::cout //
-        << "  --particle_count             | -p" << std::endl
-        << "                           Specifies the particle count for the simulation. Must" << std::endl
+        << "  --particle_count=(integer)                                                    " << std::endl
+        << "   -p                      Specifies the particle count for the simulation. Must" << std::endl
         << "                           be used if the specified input is based on           " << std::endl
         << "                           'GENERATOR'.                                         " << std::endl;
 }
 void OptionHandler::print_usage_cut_off_radius () {
     std::cout //
-        << "  --cut_off_radius             | -r" << std::endl
-        << "                           Defines the max radius at which particles should     " << std::endl
+        << "  --cut_off_radius=(float)                                                      " << std::endl
+        << "   -r                      Defines the max radius at which particles should     " << std::endl
         << "                           interact with each other. If particles are more than " << std::endl
         << "                           this defined distance from each other, then no       " << std::endl
         << "                           interaction will be calculated.                      " << std::endl;
 }
 void OptionHandler::print_usage_seed () {
     std::cout //
-        << "  --seed                       | -s" << std::endl
-        << "                           Specifies the seed used for generation. Must be used " << std::endl
+        << "  --seed=(integer)                                                              " << std::endl
+        << "   -s                      Specifies the seed used for generation. Must be used " << std::endl
         << "                           if the specified input is based on 'GENERATOR'.      " << std::endl;
 }
 void OptionHandler::print_usage_timestep () {
     std::cout //
-        << "  --timestep                   | -t" << std::endl
-        << "                           Specifies the deltatime calculated in each iteration." << std::endl;
+        << "  --timestep=(float)                                                            " << std::endl
+        << "   -t                      Specifies the deltatime calculated in each iteration." << std::endl;
 }
 void OptionHandler::print_usage_verbose () {
     std::cout //
-        << "  --verbose                    | -v" << std::endl
-        << "                           If set, the program prints more messages to console. " << std::endl;
+        << "  --verbose                                                                     " << std::endl
+        << "   -v                      If set, the program prints more messages to console. " << std::endl;
 }
 void OptionHandler::print_usage_load_confing () {
     std::cout //
