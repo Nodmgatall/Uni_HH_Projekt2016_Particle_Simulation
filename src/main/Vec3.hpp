@@ -9,6 +9,9 @@
 #define SRC_VEC3_HPP_
 
 #include "DataType.hpp"
+#include <boost/archive/xml_iarchive.hpp>
+#include <boost/archive/xml_oarchive.hpp>
+#include <boost/serialization/nvp.hpp>
 #include <istream>
 #include <math.h>
 #include <ostream>
@@ -95,6 +98,15 @@ struct Vec3 {
             stream.ignore ();
         }
         return stream;
+    }
+
+    friend class boost::serialization::access;
+    template <class Archive>
+    void serialize (Archive& archive, const unsigned int version) {
+        (void) version;
+        archive& boost::serialization::make_nvp ("x", x);
+        archive& boost::serialization::make_nvp ("y", y);
+        archive& boost::serialization::make_nvp ("z", z);
     }
 };
 

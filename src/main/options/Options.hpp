@@ -1,16 +1,13 @@
 #ifndef OPTIONS_SIMULATION_HPP
 #define OPTIONS_SIMULATION_HPP
 #include "Definitions.hpp"
-#include <map>
-#include <vector>
-
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/serialization/map.hpp>
 #include <boost/serialization/nvp.hpp>
-
+#include <map>
+#include <vector>
 struct s_options {
-    friend class boost::serialization::access;
     e_algorithm_type     m_algorithm_type = e_algorithm_type::LENNARD_JONES;
     bool                 m_autotuneing    = false;
     e_output_type        m_output_type    = e_output_type::FILE_CSV;
@@ -32,7 +29,6 @@ struct s_options {
     unsigned long m_max_iterations = 0;
     Vec3f         m_bounds         = Vec3f (5.0f, 5.0f, 5.0f);
     int           m_max_iterations_between_datastructure_rebuild = 20;
-
     friend class boost::serialization::access;
     template <class Archive>
     void serialize (Archive& archive, const unsigned int version) {
