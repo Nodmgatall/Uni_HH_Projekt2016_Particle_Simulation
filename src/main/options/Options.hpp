@@ -33,6 +33,7 @@ struct s_options {
     Vec3f         m_bounds         = Vec3f (5.0f, 5.0f, 5.0f);
     int           m_max_iterations_between_datastructure_rebuild = 20;
 
+    friend class boost::serialization::access;
     template <class Archive>
     void serialize (Archive& archive, const unsigned int version) {
         (void) version;

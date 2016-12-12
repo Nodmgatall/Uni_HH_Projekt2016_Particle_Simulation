@@ -11,32 +11,43 @@ int OptionHandler::indexInArray (std::vector<const char*> elements, char* elemen
         }
     return -1;
 }
-
+void OptionHandler::save_config (const s_options& p_options, const std::string p_filename) {
+    std::ofstream                stream (p_filename, std::ofstream::trunc | std::ofstream::out);
+    boost::archive::xml_oarchive xml (stream);
+    xml << boost::serialization::make_nvp ("Options", p_options);
+    stream.close ();
+}
+void OptionHandler::load_config (s_options& p_options, const std::string p_filename) {
+    std::ifstream                stream (p_filename, std::ifstream::binary | std::ifstream::in);
+    boost::archive::xml_iarchive xml (stream);
+    xml >> boost::serialization::make_nvp ("Options", p_options);
+    stream.close ();
+}
 int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_options) {
     print_header ();
     int                 argv_index;
-    bool                help_defined             = false;
-    bool                help_printed             = false;
-    bool                save_config              = false;
-    bool                load_config              = false;
-    bool                list_configs             = false;
-    bool                config_feature_used      = false;
-    bool                print_config             = true;
-    bool                print_saved_config       = false;
-    std::string         config_name              = "";
-    float               run_time_limit           = -1;
-    int                 long_options             = 0;
-    int                 index                    = 0;
-    const int           algorithm_type_index     = 1;
-    const int           datastructure_type_index = 2;
-    const int           input_type_index         = 3;
-    const int           output_type_index        = 4;
-    const int           write_modes_index        = 5;
+    bool                help_defined                                       = false;
+    bool                help_printed                                       = false;
+    bool                should_save_config                                 = false;
+    bool                should_print_config                                = false;
+    bool                should_load_config                                 = false;
+    std::string         config_name                                        = "";
+    float               run_time_limit                                     = -1;
+    int                 long_options                                       = 0;
+    int                 index                                              = 0;
+    const int           algorithm_type_index                               = 1;
+    const int           datastructure_type_index                           = 2;
+    const int           input_type_index                                   = 3;
+    const int           output_type_index                                  = 4;
+    const int           write_modes_index                                  = 5;
+    const int           max_iterations_between_datastructure_rebuild_index = 6;
+    const int           load_config_index                                  = 7;
+    const int           save_config_index                                  = 8;
+    const int           print_config_index                                 = 9;
     std::vector<option> options = { { "algorithm", required_argument, 0, algorithm_type_index * 1000 },
                                     { "data_structure", required_argument, 0, datastructure_type_index * 1000 },
                                     { "input", required_argument, 0, input_type_index * 1000 },
                                     { "output", required_argument, 0, output_type_index * 1000 },
-                                    // simulation options
                                     { "autotuneing", no_argument, 0, 'a' },
                                     { "bounds", required_argument, 0, 'b' },
                                     { "count", required_argument, 0, 'c' },
@@ -50,12 +61,13 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                                     { "seed", required_argument, 0, 's' },
                                     { "timestep", required_argument, 0, 't' },
                                     { "verbose", no_argument, 0, 'v' },
-                                    { "max_iterations_between_datastructure_rebuild", required_argument, 0, 6000 },
-                                    // Misc
-                                    { "load_config", required_argument, 0, 28 },
-                                    { "print_config", required_argument, 0, 29 },
-                                    { "list_configs", no_argument, 0, 30 },
-                                    { "save_config", required_argument, 0, 31 } };
+                                    { "max_iterations_between_datastructure_rebuild",
+                                      required_argument,
+                                      0,
+                                      max_iterations_between_datastructure_rebuild_index * 1000 },
+                                    { "load_config", required_argument, 0, load_config_index * 1000 },
+                                    { "save_config", required_argument, 0, save_config_index * 1000 },
+                                    { "print_config", required_argument, 0, print_config_index * 1000 } };
     for (index = 1; index < (signed) g_csv_column_names.size (); index++) {
         options.push_back ({ (std::string ("WRITE_") + g_csv_column_names[index]).c_str (),
                              required_argument,
@@ -65,6 +77,10 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
     opterr = 0;
     while ((argv_index = getopt_long (p_argc, p_argv, "ab::c::f::hi::l::m::o::r::s::t::v", &options[0], &long_options)) !=
            -1) {
+        std::stringstream line;
+        if (optarg) {
+            line.str (optarg);
+        }
         switch (argv_index / 1000) {
             case algorithm_type_index:
                 if (help_defined) {
@@ -110,11 +126,27 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                         !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
                 }
                 break;
-            default: {
-                std::stringstream line;
-                if (optarg) {
-                    line.str (optarg);
+            case max_iterations_between_datastructure_rebuild_index: {
+                if (help_defined) {
+                    print_usage_max_iterations_between_datastructure_rebuild ();
+                    help_printed = true;
+                } else {
+                    line >> p_options.m_max_iterations_between_datastructure_rebuild;
                 }
+                break;
+            }
+            case load_config_index:
+                should_load_config = true;
+                config_name        = line.str ();
+                break;
+            case save_config_index:
+                should_save_config = true;
+                config_name        = line.str ();
+                break;
+            case print_config_index:
+                should_print_config = true;
+                break;
+            default: {
                 switch (argv_index) {
                     case 'a': {
                         if (help_defined) {
@@ -227,34 +259,6 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                         }
                         break;
                     }
-                    case 6000: {
-                        if (help_defined) {
-                            print_usage_max_iterations_between_datastructure_rebuild ();
-                            help_printed = true;
-                        } else {
-                            line >> p_options.m_max_iterations_between_datastructure_rebuild;
-                        }
-                        break;
-                    }
-                    case 28:
-                        config_feature_used = true;
-                        load_config         = true;
-                        config_name         = std::string (optarg);
-                        break;
-                    case 29:
-                        config_feature_used = true;
-                        print_saved_config  = true;
-                        config_name         = std::string (optarg);
-                        break;
-                    case 30:
-                        config_feature_used = true;
-                        list_configs        = true;
-                        break;
-                    case 31:
-                        config_feature_used = true;
-                        save_config         = true;
-                        config_name         = std::string (optarg);
-                        break;
                     case '?': {
                         m_standard_stream << "Error: unknown option" << std::endl;
                         help_defined = true;
@@ -273,27 +277,14 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
     if (run_time_limit > -1) {
         p_options.m_max_iterations = run_time_limit / p_options.m_timestep;
     }
-    if (config_feature_used == true) {
-        ConfigLoader config_loader;
-        if (list_configs == true) {
-            config_loader.list_configs ();
-            exit (EXIT_SUCCESS);
-        }
-        if (save_config == true) {
-            config_loader.save_config (config_name, p_options);
-        }
-        if (load_config == true) {
-            config_loader.load_config (config_name, p_options);
-        }
-        if (print_saved_config == true) {
-            config_loader.load_config (config_name, p_options);
-        }
+    if (should_load_config == true) {
+        load_config (p_options, config_name);
     }
-    if (print_config) {
+    if (should_save_config == true) {
+        save_config (p_options, config_name);
+    }
+    if (should_print_config) {
         print_choosen_options (p_options);
-        if (print_saved_config == true) {
-            exit (EXIT_SUCCESS);
-        }
     }
     g_verbose = p_options.m_verbose;
 
@@ -405,7 +396,6 @@ void OptionHandler::print_usage_output () {
             << std::string (56 - strlen (g_output_names[index]), ' ') << "|" << std::endl;
     }
     m_standard_stream //
-
         << "|                          This option specifies how the particles are saved   |" << std::endl
         << "|                          from the simulation. Particles are saved before the |" << std::endl
         << "|                          first iteration, and then every 'write_fequency'    |" << std::endl
@@ -526,19 +516,18 @@ void OptionHandler::print_usage_max_iterations_between_datastructure_rebuild () 
 }
 void OptionHandler::print_usage_load_confing () {
     m_standard_stream //
-        << "| --load_confing                                                               |" << std::endl;
-}
-void OptionHandler::print_usage_print_config () {
-    m_standard_stream //
-        << "| --print_config                                                               |" << std::endl;
-}
-void OptionHandler::print_usage_list_configs () {
-    m_standard_stream //
-        << "| --list_configs                                                               |" << std::endl;
+        << "| --load_confing=(string)                                                      |" << std::endl
+        << "|                          Loads the options from the given xml file.          |" << std::endl;
 }
 void OptionHandler::print_usage_save_config () {
     m_standard_stream //
-        << "| --save_config                                                                |" << std::endl;
+        << "| --save_config=(string)                                                       |" << std::endl
+        << "|                          Saves the options from the given xml file.          |" << std::endl;
+}
+void OptionHandler::print_usage_print_config () {
+    m_standard_stream //
+        << "| --print_config                                                               |" << std::endl
+        << "|                          Prints the effective options to console/logfile     |" << std::endl;
 }
 
 void OptionHandler::print_usage_particle_sim () {
@@ -610,9 +599,8 @@ void OptionHandler::print_usage_particle_sim () {
         << "|                                                                              |" << std::endl;
     //
     print_usage_load_confing ();
-    print_usage_print_config ();
-    print_usage_list_configs ();
     print_usage_save_config ();
+    print_usage_print_config ();
     m_standard_stream //
         << "|                                                                              |" << std::endl
         << "+==============================================================================+" << std::endl;
