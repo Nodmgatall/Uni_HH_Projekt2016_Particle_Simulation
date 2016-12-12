@@ -8,6 +8,7 @@
 
 class OptionHandler {
   protected:
+    int indexInArray (std::vector<const char*> elements, char* element);
     void print_usage_algorithm ();
     void print_usage_data_structure ();
     void print_usage_input ();
@@ -26,6 +27,7 @@ class OptionHandler {
     void print_usage_seed ();
     void print_usage_timestep ();
     void print_usage_verbose ();
+    void print_max_iterations_between_datastructure_rebuild();
     void print_usage_load_confing ();
     void print_usage_print_config ();
     void print_usage_list_configs ();
@@ -35,6 +37,7 @@ class OptionHandler {
     void print_usage_particle_sim ();
 
   public:
+    OptionHandler ();
     void handle_options (int p_argc, char** p_argv, s_options& p_options);
 };
 

@@ -1,6 +1,9 @@
 #include "OptionHandler.hpp"
 
-int indexInArray (std::vector<const char*> elements, char* element) {
+OptionHandler::OptionHandler () {
+}
+
+int OptionHandler::indexInArray (std::vector<const char*> elements, char* element) {
     unsigned int index;
     for (index = 0; index < elements.size (); index++)
         if (0 == strcmp (elements[index], element)) {
@@ -397,6 +400,13 @@ void OptionHandler::print_usage_verbose () {
         << "  --verbose                                                                     " << std::endl
         << "   -v                      If set, the program prints more messages to console. " << std::endl;
 }
+void OptionHandler::print_max_iterations_between_datastructure_rebuild () {
+    std::cout //
+        << "  --max_iterations_between_datastructure_rebuild                                " << std::endl
+        << "                           Specifies the iteration count after which the        " << std::endl
+        << "                           datastructure should reorder its internal structure. " << std::endl;
+
+}
 void OptionHandler::print_usage_load_confing () {
     std::cout //
         << "  --load_confing               " << std::endl;
@@ -435,6 +445,7 @@ void OptionHandler::print_usage_particle_sim () {
     print_usage_seed ();
     print_usage_timestep ();
     print_usage_verbose ();
+    print_max_iterations_between_datastructure_rebuild();
     //
     print_usage_load_confing ();
     print_usage_print_config ();
