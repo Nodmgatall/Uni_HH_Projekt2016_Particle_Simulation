@@ -28,7 +28,8 @@ int main (int argc, char** argv) {
     s_options options;
 
     OptionHandler option_handler;
-    option_handler.handle_options (argc, argv, options);
+    if (int return_value = option_handler.handle_options (argc, argv, options))
+        return return_value;
 
     ParticleSimulator particle_simulator (options);
 

@@ -39,7 +39,7 @@ class OptionHandler {
 
   public:
     OptionHandler ();
-    void handle_options (int p_argc, char** p_argv, s_options& p_options);
+    int handle_options (int p_argc, char** p_argv, s_options& p_options);
 };
 
 #endif

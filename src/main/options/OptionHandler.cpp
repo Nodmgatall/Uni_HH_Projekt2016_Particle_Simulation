@@ -12,9 +12,11 @@ int OptionHandler::indexInArray (std::vector<const char*> elements, char* elemen
     return -1;
 }
 
-void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_options) {
+int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_options) {
     print_header ();
     int                 argv_index;
+    bool                help_defined             = false;
+    bool                help_printed             = false;
     bool                save_config              = false;
     bool                load_config              = false;
     bool                list_configs             = false;
@@ -61,94 +63,194 @@ void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_opti
                              write_modes_index * 1000 + index });
     }
     opterr = 0;
-    while ((argv_index = getopt_long (p_argc, p_argv, "vs:p:l:t:dr:f:i:h", &options[0], &long_options)) != -1) {
-        if (optarg && (strcmp (optarg, "-h") == 0 || strcmp (optarg, "--help") == 0)) {
-            // TODO:  Display help from option
-            m_standard_stream << "here should the help for the choosen operator be printed, "
-                                 "sadly this is "
-                                 "not implemented"
-                              << std::endl;
-            exit (EXIT_SUCCESS);
-        }
+    while ((argv_index = getopt_long (p_argc, p_argv, "ab::c::f::hi::l::m::o::r::s::t::v", &options[0], &long_options)) !=
+           -1) {
+        m_standard_stream << DEBUG_VAR (argv_index) << DEBUG_VAR (optarg) << std::endl;
         switch (argv_index / 1000) {
             case algorithm_type_index:
-                p_options.m_algorithm_type =
-                    static_cast<e_algorithm_type> (indexInArray (g_algorithm_names, optarg));
+                if (help_defined) {
+                    print_usage_algorithm ();
+                    help_printed = true;
+                } else {
+                    m_standard_stream << DEBUG_VAR (algorithm_type_index) << std::endl;
+                    p_options.m_algorithm_type =
+                        static_cast<e_algorithm_type> (indexInArray (g_algorithm_names, optarg));
+                }
                 break;
             case datastructure_type_index:
-                p_options.m_data_structure =
-                    static_cast<e_datastructure_type> (indexInArray (g_datastructure_names, optarg));
+                if (help_defined) {
+                    print_usage_data_structure ();
+                    help_printed = true;
+                } else {
+                    m_standard_stream << DEBUG_VAR (datastructure_type_index) << std::endl;
+                    p_options.m_data_structure =
+                        static_cast<e_datastructure_type> (indexInArray (g_datastructure_names, optarg));
+                }
                 break;
             case input_type_index:
-                p_options.m_input_type = static_cast<e_input_type> (indexInArray (g_input_names, optarg));
+                if (help_defined) {
+                    print_usage_input ();
+                    help_printed = true;
+                } else {
+                    m_standard_stream << DEBUG_VAR (input_type_index) << std::endl;
+                    p_options.m_input_type = static_cast<e_input_type> (indexInArray (g_input_names, optarg));
+                }
                 break;
             case output_type_index:
-                p_options.m_output_type = static_cast<e_output_type> (indexInArray (g_output_names, optarg));
+                if (help_defined) {
+                    print_usage_output ();
+                    help_printed = true;
+                } else {
+                    m_standard_stream << DEBUG_VAR (output_type_index) << std::endl;
+                    m_standard_stream << DEBUG_VAR (indexInArray (g_output_names, optarg)) << std::endl;
+                    m_standard_stream
+                        << DEBUG_VAR (static_cast<e_output_type> (indexInArray (g_output_names, optarg)))
+                        << std::endl;
+                    p_options.m_output_type =
+                        static_cast<e_output_type> (indexInArray (g_output_names, optarg));
+                    m_standard_stream << DEBUG_VAR ("here") << std::endl;
+                }
                 break;
             case write_modes_index:
-                p_options.m_write_modes[static_cast<e_csv_column_type> (argv_index % 1000)] =
-                    !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
+                if (help_defined) {
+                    print_usage_write_modes ();
+                    help_printed = true;
+                } else {
+                    m_standard_stream << DEBUG_VAR (write_modes_index) << std::endl;
+                    m_standard_stream << DEBUG_VAR (argv_index % 1000) << std::endl;
+                    m_standard_stream << DEBUG_VAR (p_options.m_write_modes.size ()) << std::endl;
+                    p_options.m_write_modes[static_cast<e_csv_column_type> (argv_index % 1000)] =
+                        !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
+                }
                 break;
             default: {
                 std::stringstream line;
+                m_standard_stream << DEBUG_VAR ("aaaaa") << std::endl;
                 if (optarg) {
+                    m_standard_stream << DEBUG_VAR (optarg) << std::endl;
+                    m_standard_stream << DEBUG_VAR ("bbbbb") << std::endl;
                     line.str (optarg);
                 }
+                m_standard_stream << DEBUG_VAR (line.str ()) << std::endl;
                 switch (argv_index) {
                     case 'a': {
-                        p_options.m_autotuneing = true;
+                        if (help_defined) {
+                            print_usage_autotuneing ();
+                            help_printed = true;
+                        } else {
+                            p_options.m_autotuneing = true;
+                        }
                         break;
                     }
                     case 'b': {
-                        line >> p_options.m_bounds;
+                        if (help_defined) {
+                            print_usage_bounds ();
+                            help_printed = true;
+                        } else {
+                            line >> p_options.m_bounds;
+                        }
                         break;
                     }
                     case 'c': {
-                        line >> p_options.m_particle_count;
+                        if (help_defined) {
+                            print_usage_particle_count ();
+                            help_printed = true;
+                        } else {
+                            line >> p_options.m_particle_count;
+                        }
                         break;
                     }
                     case 'f': {
-                        line >> p_options.m_write_fequency;
+                        if (help_defined) {
+                            print_usage_write_fequency ();
+                            help_printed = true;
+                        } else {
+                            line >> p_options.m_write_fequency;
+                        }
                         break;
                     }
                     case 'h': {
-                        print_usage_particle_sim ();
-                        exit (EXIT_SUCCESS);
+                        help_defined = true;
                         break;
                     }
                     case 'i': {
-                        p_options.m_in_file_name = line.str ();
+                        if (help_defined) {
+                            print_usage_in_file_name ();
+                            help_printed = true;
+                        } else {
+                            p_options.m_in_file_name = line.str ();
+                        }
                         break;
                     }
                     case 'l': {
-                        line >> run_time_limit;
+                        if (help_defined) {
+                            print_usage_run_time_limit ();
+                            help_printed = true;
+                        } else {
+                            line >> run_time_limit;
+                        }
                         break;
                     }
                     case 'm': {
-                        line >> p_options.m_max_iterations;
+                        if (help_defined) {
+                            print_usage_max_iterations ();
+                            help_printed = true;
+                        } else {
+                            line >> p_options.m_max_iterations;
+                        }
                         break;
                     }
                     case 'o': {
-                        p_options.m_out_file_name = line.str ();
+                        if (help_defined) {
+                            print_usage_out_file_name ();
+                            help_printed = true;
+                        } else {
+                            p_options.m_out_file_name = line.str ();
+                        }
                         break;
                     }
                     case 'r':
-                        line >> p_options.m_cut_off_radius;
+                        if (help_defined) {
+                            print_usage_cut_off_radius ();
+                            help_printed = true;
+                        } else {
+                            line >> p_options.m_cut_off_radius;
+                        }
                         break;
                     case 's': {
-                        line >> p_options.m_seed;
+                        if (help_defined) {
+                            print_usage_seed ();
+                            help_printed = true;
+                        } else {
+                            line >> p_options.m_seed;
+                        }
                         break;
                     }
                     case 't': {
-                        line >> p_options.m_timestep;
+                        if (help_defined) {
+                            print_usage_timestep ();
+                            help_printed = true;
+                        } else {
+                            line >> p_options.m_timestep;
+                        }
                         break;
                     }
                     case 'v': {
-                        p_options.m_verbose = true;
+                        if (help_defined) {
+                            print_usage_verbose ();
+                            help_printed = true;
+                        } else {
+                            p_options.m_verbose = true;
+                        }
                         break;
                     }
                     case 6000: {
-                        line >> p_options.m_max_iterations_between_datastructure_rebuild;
+                        if (help_defined) {
+                            print_usage_max_iterations_between_datastructure_rebuild ();
+                            help_printed = true;
+                        } else {
+                            line >> p_options.m_max_iterations_between_datastructure_rebuild;
+                        }
                         break;
                     }
                     case 28:
@@ -171,14 +273,19 @@ void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_opti
                         config_name         = std::string (optarg);
                         break;
                     case '?': {
-                        m_standard_stream << "Error: unkown option" << std::endl;
-                        print_usage_particle_sim ();
-                        exit (EXIT_SUCCESS);
+                        m_standard_stream << "Error: unknown option" << std::endl;
+                        help_defined = true;
                         break;
                     }
                 }
             }
         }
+    }
+    if (help_defined) {
+        if (!help_printed) {
+            print_usage_particle_sim ();
+        }
+        return 1;
     }
     if (run_time_limit > -1) {
         p_options.m_max_iterations = run_time_limit / p_options.m_timestep;
@@ -206,6 +313,8 @@ void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_opti
         }
     }
     g_verbose = p_options.m_verbose;
+
+    return 0;
 }
 void OptionHandler::print_choosen_options (s_options& p_options) {
     Benchmark::begin ("Print-Options");
@@ -245,10 +354,9 @@ void OptionHandler::print_header () {
         << "+==============================================================================+" << std::endl
         << "|                             Particle Simulation                              |" << std::endl
         << "+==============================================================================+" << std::endl
-        << "|                       Benjamin Wanke, Oliver Heidmann                        |" << std::endl
-        << "|                                 Supervisior                                  |" << std::endl
+        << "|                       Benjamin Warnke, Oliver Heidmann                       |" << std::endl
+        << "|                                  Supervisor                                  |" << std::endl
         << "|                               Philipp Neumann                                |" << std::endl
-        << "+==============================================================================+" << std::endl
         << "+==============================================================================+" << std::endl;
 }
 void OptionHandler::print_usage_algorithm () {
@@ -395,7 +503,7 @@ void OptionHandler::print_usage_out_file_name () {
 }
 void OptionHandler::print_usage_particle_count () {
     m_standard_stream //
-        << "| --particle_count=(integer)                                                   |" << std::endl
+        << "| --count=(integer)                                                            |" << std::endl
         << "|  -p                      Specifies the particle count for the simulation.    |" << std::endl
         << "|                          Must be used if the specified input is based on     |" << std::endl
         << "|                          'GENERATOR'.                                        |" << std::endl;
@@ -417,7 +525,7 @@ void OptionHandler::print_usage_seed () {
 void OptionHandler::print_usage_timestep () {
     m_standard_stream //
         << "| --timestep=(float)                                                           |" << std::endl
-        << "|  -t                      Specifies the deltatime calculated in each          |" << std::endl
+        << "|  -t                      Specifies the time-delta calculated in each         |" << std::endl
         << "|                          iteration.                                          |" << std::endl;
 }
 void OptionHandler::print_usage_verbose () {
@@ -452,6 +560,7 @@ void OptionHandler::print_usage_save_config () {
 
 void OptionHandler::print_usage_particle_sim () {
     m_standard_stream //
+        << "+==============================================================================+" << std::endl
         << "|                                                                              |" << std::endl
         << "|                               general  options                               |" << std::endl
         << "|                                                                              |" << std::endl;
