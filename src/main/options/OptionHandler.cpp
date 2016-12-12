@@ -11,20 +11,22 @@ int indexInArray (std::vector<const char*> elements, char* element) {
 
 void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_options) {
     Benchmark::begin ("OptionHandler");
-    int                 argv_index;
-    bool                save_config              = false;
-    bool                load_config              = false;
-    bool                list_configs             = false;
-    bool                config_feature_used      = false;
-    bool                print_config             = true;
-    bool                print_saved_config       = false;
-    std::string         config_name              = "";
-    int                 index                    = 0;
-    const int           algorithm_type_index     = 1;
-    const int           datastructure_type_index = 2;
-    const int           input_type_index         = 3;
-    const int           output_type_index        = 4;
-    const int           write_modes_index        = 5;
+    int         argv_index;
+    bool        save_config              = false;
+    bool        load_config              = false;
+    bool        list_configs             = false;
+    bool        config_feature_used      = false;
+    bool        print_config             = true;
+    bool        print_saved_config       = false;
+    std::string config_name              = "";
+    int         long_options             = 0;
+    int         index                    = 0;
+    const int   algorithm_type_index     = 1;
+    const int   datastructure_type_index = 2;
+    const int   input_type_index         = 3;
+    const int   output_type_index        = 4;
+    const int   write_modes_index        = 5;
+    DEBUG_BEGIN << "a" << DEBUG_END;
     std::vector<option> options = { { "algorithm", required_argument, 0, algorithm_type_index * 1000 },
                                     { "data_structure", required_argument, 0, datastructure_type_index * 1000 },
                                     { "input", required_argument, 0, input_type_index * 1000 },
@@ -32,13 +34,13 @@ void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_opti
                                     // simulation options
                                     { "autotuneing", no_argument, 0, 'a' },
                                     { "bounds", required_argument, 0, 'b' },
+                                    { "count", required_argument, 0, 'c' },
                                     { "write_fequency", required_argument, 0, 'f' },
                                     { "help", no_argument, 0, 'h' },
                                     { "in_file_name", required_argument, 0, 'i' },
                                     { "run_time_limit", required_argument, 0, 'l' },
                                     { "max_iterations", required_argument, 0, 'm' },
                                     { "out_file_name", required_argument, 0, 'o' },
-                                    { "particle_count", required_argument, 0, 'p' },
                                     { "cut_off_radius", required_argument, 0, 'r' },
                                     { "seed", required_argument, 0, 's' },
                                     { "timestep", required_argument, 0, 't' },
@@ -57,7 +59,7 @@ void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_opti
     }
 
     opterr = 0;
-    int long_options;
+    DEBUG_BEGIN << "b" << DEBUG_END;
     while ((argv_index = getopt_long (p_argc, p_argv, "vs:p:l:t:dr:f:i:h", &options[0], &long_options)) != -1) {
         if (optarg && (strcmp (optarg, "-h") == 0 || strcmp (optarg, "--help") == 0)) {
             // TODO:  Display help from option
@@ -87,7 +89,10 @@ void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_opti
                     !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
                 break;
             default: {
-                std::stringstream line (optarg);
+                std::stringstream line;
+                if (optarg) {
+                    line.str (optarg);
+                }
                 switch (argv_index) {
                     case 'a': {
                         p_options.m_autotuneing = true;
@@ -95,6 +100,10 @@ void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_opti
                     }
                     case 'b': {
                         line >> p_options.m_bounds;
+                        break;
+                    }
+                    case 'c': {
+                        line >> p_options.m_particle_count;
                         break;
                     }
                     case 'f': {
@@ -107,7 +116,7 @@ void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_opti
                         break;
                     }
                     case 'i': {
-                        line >> p_options.m_in_file_name;
+                        p_options.m_in_file_name = line.str ();
                         break;
                     }
                     case 'l': {
@@ -119,11 +128,7 @@ void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_opti
                         break;
                     }
                     case 'o': {
-                        line >> p_options.m_out_file_name;
-                        break;
-                    }
-                    case 'p': {
-                        line >> p_options.m_particle_count;
+                        p_options.m_out_file_name = line.str ();
                         break;
                     }
                     case 'r':
@@ -145,8 +150,6 @@ void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_opti
                         line >> p_options.m_max_iterations_between_datastructure_rebuild;
                         break;
                     }
-
-                    // config options
                     case 28:
                         config_feature_used = true;
                         load_config         = true;
@@ -162,7 +165,6 @@ void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_opti
                         list_configs        = true;
                         break;
                     case 31:
-
                         config_feature_used = true;
                         save_config         = true;
                         config_name         = std::string (optarg);
@@ -217,7 +219,7 @@ void OptionHandler::print_choosen_options (s_options& p_options) {
     DEBUG_BEGIN << "data_structure                               " << p_options.m_data_structure << DEBUG_END;
     DEBUG_BEGIN << "input_type                                   " << p_options.m_input_type << DEBUG_END;
     DEBUG_BEGIN << "seed                                         " << p_options.m_seed << DEBUG_END;
-    DEBUG_BEGIN << "particle_count                               " << p_options.m_particle_count << DEBUG_END;
+    DEBUG_BEGIN << "count                                        " << p_options.m_particle_count << DEBUG_END;
     DEBUG_BEGIN << "max_iterations                               " << p_options.m_max_iterations << DEBUG_END;
     DEBUG_BEGIN << "bounds                                       " << p_options.m_bounds << DEBUG_END;
     DEBUG_BEGIN << "max_iterations_between_datastructure_rebuild "
@@ -234,32 +236,49 @@ void OptionHandler::print_choosen_options (s_options& p_options) {
 
 void OptionHandler::print_usage_algorithm () {
     int index;
-    std::cout << "--algorithm=< " << g_algorithm_names[1];
-    for (index = 1; index < (signed) g_algorithm_names.size (); index++) {
+    std::cout << "  --algorithm=< " << g_algorithm_names[1];
+    for (index = 2; index < (signed) g_algorithm_names.size (); index++) {
         std::cout << " | " << g_algorithm_names[index];
     }
     std::cout << " >" << std::endl;
+    std::cout
+        << "                           This option specifies the method to calculate the    " << std::endl
+        << "                           forces between the particles. Based on the forces the" << std::endl
+        << "                           movement is calculated                               " << std::endl;
 }
 void OptionHandler::print_usage_data_structure () {
     int index;
-    std::cout << "--data_structure=< " << g_datastructure_names[1];
-    for (index = 1; index < (signed) g_datastructure_names.size (); index++) {
+    std::cout << "  --data_structure=< " << g_datastructure_names[1];
+    for (index = 2; index < (signed) g_datastructure_names.size (); index++) {
         std::cout << " | " << g_datastructure_names[index];
     }
     std::cout << " >" << std::endl;
+    std::cout
+        << "                           This option specifies the data-structure which stores" << std::endl
+        << "                           the particles. The different data-structures have    " << std::endl
+        << "                           different advantages based on the particle-placement " << std::endl;
 }
 void OptionHandler::print_usage_input () {
     int index;
-    std::cout << "--input=< " << g_input_names[1];
-    for (index = 1; index < (signed) g_input_names.size (); index++) {
+    std::cout << "  --input=< " << g_input_names[1];
+    for (index = 2; index < (signed) g_input_names.size (); index++) {
         std::cout << " | " << g_input_names[index];
     }
     std::cout << " >" << std::endl;
+    std::cout
+        << "                           This option specifies how the particles are loaded   " << std::endl
+        << "                           into the simulation.                                 " << std::endl
+        << "                           If the name contains 'Generator' then the particles  " << std::endl
+        << "                           are generated at runtime based on 'count', 'bounds'  " << std::endl
+        << "                           and 'seed'.                                          " << std::endl
+        << "                           If the name contains 'File' then the particles are   " << std::endl
+        << "                           loaded from a file with the specified type from the  " << std::endl
+        << "                           file specified by 'in_file_name'                     " << std::endl;
 }
 void OptionHandler::print_usage_output () {
     int index;
-    std::cout << "--output=< " << g_output_names[1];
-    for (index = 1; index < (signed) g_output_names.size (); index++) {
+    std::cout << "  --output=< " << g_output_names[1];
+    for (index = 2; index < (signed) g_output_names.size (); index++) {
         std::cout << " | " << g_output_names[index];
     }
     std::cout << " >" << std::endl;
@@ -267,59 +286,59 @@ void OptionHandler::print_usage_output () {
 void OptionHandler::print_usage_write_modes () {
     int index;
     for (index = 1; index < (signed) g_csv_column_names.size (); index++) {
-        std::cout << "--WRITE_" << g_csv_column_names[index];
+        std::cout << "  --WRITE_" << g_csv_column_names[index];
     }
 }
 void OptionHandler::print_usage_autotuneing () {
-    std::cout << "--autotuneing    | -a" << std::endl;
+    std::cout << "  --autotuneing    | -a" << std::endl;
 }
 void OptionHandler::print_usage_bounds () {
-    std::cout << "--bounds         | -b" << std::endl;
+    std::cout << "  --bounds         | -b" << std::endl;
 }
 void OptionHandler::print_usage_write_fequency () {
-    std::cout << "--write_fequency | -f" << std::endl;
+    std::cout << "  --write_fequency | -f" << std::endl;
 }
 void OptionHandler::print_usage_help () {
-    std::cout << "--help           | -h" << std::endl;
+    std::cout << "  --help           | -h" << std::endl;
 }
 void OptionHandler::print_usage_in_file_name () {
-    std::cout << "--in_file_name   | -i" << std::endl;
+    std::cout << "  --in_file_name   | -i" << std::endl;
 }
 void OptionHandler::print_usage_run_time_limit () {
-    std::cout << "--run_time_limit | -l" << std::endl;
+    std::cout << "  --run_time_limit | -l" << std::endl;
 }
 void OptionHandler::print_usage_max_iterations () {
-    std::cout << "--max_iterations | -m" << std::endl;
+    std::cout << "  --max_iterations | -m" << std::endl;
 }
 void OptionHandler::print_usage_out_file_name () {
-    std::cout << "--out_file_name  | -o" << std::endl;
+    std::cout << "  --out_file_name  | -o" << std::endl;
 }
 void OptionHandler::print_usage_particle_count () {
-    std::cout << "--particle_count | -p" << std::endl;
+    std::cout << "  --particle_count | -p" << std::endl;
 }
 void OptionHandler::print_usage_cut_off_radius () {
-    std::cout << "--cut_off_radius | -r" << std::endl;
+    std::cout << "  --cut_off_radius | -r" << std::endl;
 }
 void OptionHandler::print_usage_seed () {
-    std::cout << "--seed           | -s" << std::endl;
+    std::cout << "  --seed           | -s" << std::endl;
 }
 void OptionHandler::print_usage_timestep () {
-    std::cout << "--timestep       | -t" << std::endl;
+    std::cout << "  --timestep       | -t" << std::endl;
 }
 void OptionHandler::print_usage_verbose () {
-    std::cout << "--verbose        | -v" << std::endl;
+    std::cout << "  --verbose        | -v" << std::endl;
 }
 void OptionHandler::print_usage_load_confing () {
-    std::cout << "--load_confing   " << std::endl;
+    std::cout << "  --load_confing   " << std::endl;
 }
 void OptionHandler::print_usage_print_config () {
-    std::cout << "--print_config   " << std::endl;
+    std::cout << "  --print_config   " << std::endl;
 }
 void OptionHandler::print_usage_list_configs () {
-    std::cout << "--list_configs   " << std::endl;
+    std::cout << "  --list_configs   " << std::endl;
 }
 void OptionHandler::print_usage_save_config () {
-    std::cout << "--save_config    " << std::endl;
+    std::cout << "  --save_config    " << std::endl;
 }
 
 void OptionHandler::print_usage_particle_sim () {
