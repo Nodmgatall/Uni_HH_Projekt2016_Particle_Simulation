@@ -427,7 +427,8 @@ BOOST_AUTO_TEST_CASE (test_help2) {
                                       "--help=load_config",
                                       "--help=save_config",
                                       "--help=print_config"
-                                      "--help=this_option_does_not_exist" };
+                                      "--help=this_option_does_not_exist",
+                                      "--print_config" };
     int res = handler.handle_options ((int) args.size (), const_cast<char**> (args.data ()), options_test);
     BOOST_CHECK_EQUAL (res, 1);
 }

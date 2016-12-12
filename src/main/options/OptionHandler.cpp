@@ -9,6 +9,7 @@ int OptionHandler::indexInArray (std::vector<const char*> elements, char* elemen
     return -1;
 }
 #if defined(BOOST_AVAILABLE)
+typedef std::map<e_csv_column_type, bool>  t_map__e_csv_column_type__boolean;
 BOOST_CLASS_EXPORT_GUID (s_options, "s_options")
 BOOST_CLASS_IMPLEMENTATION (s_options, boost::serialization::object_serializable)
 BOOST_CLASS_TRACKING (s_options, boost::serialization::track_never)
@@ -18,6 +19,9 @@ BOOST_CLASS_TRACKING (Vec3f, boost::serialization::track_never)
 BOOST_CLASS_EXPORT_GUID (Vec3l, "Vec3l")
 BOOST_CLASS_IMPLEMENTATION (Vec3l, boost::serialization::object_serializable)
 BOOST_CLASS_TRACKING (Vec3l, boost::serialization::track_never)
+BOOST_CLASS_EXPORT_GUID (t_map__e_csv_column_type__boolean, "map__e_csv_column_type__boolean")
+BOOST_CLASS_IMPLEMENTATION (t_map__e_csv_column_type__boolean, boost::serialization::object_serializable)
+BOOST_CLASS_TRACKING (t_map__e_csv_column_type__boolean, boost::serialization::track_never)
 #endif
 void OptionHandler::save_config (const s_options& p_options, const std::string p_filename) {
 #if defined(BOOST_AVAILABLE)
@@ -96,10 +100,8 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
 
     while ((argv_index = getopt_long (p_argc, p_argv, "ab::c::f::h::i::l::m::o::r::s::t::v", options.data (), &long_options)) !=
            -1) {
-        m_standard_stream << DEBUG_VAR (argv_index) << std::endl;
         std::stringstream line;
         if (optarg) {
-            m_standard_stream << DEBUG_VAR (optarg) << std::endl;
             line.str (optarg);
         }
         switch (argv_index / 1000) {
@@ -261,9 +263,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
     return help_printed;
 }
 void OptionHandler::print_choosen_options (s_options& p_options) {
-    Benchmark::begin ("Print-Options");
     int index;
-
     m_standard_stream
         << "algorithm_type                               " << p_options.m_algorithm_type << std::endl
         << "autotuneing                                  " << p_options.m_autotuneing << std::endl
@@ -291,7 +291,6 @@ void OptionHandler::print_choosen_options (s_options& p_options) {
     }
     ss << "]" << std::endl;
     m_standard_stream << "write_modes                                  " << ss.str () << std::endl;
-    Benchmark::end ();
 }
 void OptionHandler::print_header () {
     m_standard_stream //
