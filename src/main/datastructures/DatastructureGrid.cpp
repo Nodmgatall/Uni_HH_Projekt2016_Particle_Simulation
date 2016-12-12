@@ -1,14 +1,11 @@
 #include "DatastructureGrid.hpp"
 
-DatastructureGrid::DatastructureGrid (s_options&          p_options,
-                                      BorderBase&         p_border,
-                                      AlgorithmBase&      p_algorithm,
-                                      ParticleWriterBase& p_particle_writer)
+DatastructureGrid::DatastructureGrid (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_particle_writer)
 : DatastructureBase (p_options, p_border, p_algorithm, p_particle_writer) {
+    m_stucture_name = "DatastructureGrid";
     unsigned int idx_x, idx_y, idx_z;
     long         max_usefull_size         = pow (m_options.m_particle_count, 1.0 / 3.0);
     m_iterations_until_rearange_particles = m_options.m_max_iterations_between_datastructure_rebuild;
-    m_stucture_name                       = "Grid";
     m_max_id                              = 0;
     m_idx_a = !(m_idx_b = 0);
     // cut_off_radius*1.2 to allow particles to move before reconstruction of
@@ -81,7 +78,14 @@ void DatastructureGrid::add_particle (Vec3f p_current_position) {
  * @param p_position the position of the new particle
  * @param p_velocity the initial velocity
  */
-void DatastructureGrid::add_particle (Vec3f p_current_position, Vec3f p_current_velocity) {
+void DatastructureGrid::add_particle (Vec3f p_current_position, Vec3f p_current_velocity, int p_id) {
+    long id = 0;
+    if (p_id >= 0) {
+        id       = p_id;
+        m_max_id = MAX (m_max_id, p_id + 1);
+    } else {
+        id = m_max_id++;
+    }
     Vec3f old_position = p_current_position - p_current_velocity * m_options.m_timestep;
     m_border.updatePosition (p_current_position.x,
                              p_current_position.y,
@@ -89,23 +93,23 @@ void DatastructureGrid::add_particle (Vec3f p_current_position, Vec3f p_current_
                              old_position.x,
                              old_position.y,
                              old_position.z);
-    get_cell_for_particle (p_current_position).add_particle (p_current_position, old_position, m_idx_a, m_max_id++);
+    get_cell_for_particle (p_current_position).add_particle (p_current_position, old_position, m_idx_a, id);
 }
 /**
  * saves all particles to an file
  */
 void DatastructureGrid::serialize () {
     Benchmark::begin ("saving the data", false);
-    m_particle_writer.start ();
+    m_writer.start ();
     for (ParticleCell cell : m_cells) {
         if (!(cell.m_ids.empty ())) {
-            m_particle_writer.saveData (cell.m_positions_x[m_idx_a],
-                                        cell.m_positions_y[m_idx_a],
-                                        cell.m_positions_z[m_idx_a],
-                                        cell.m_ids);
+            m_writer.saveData (cell.m_positions_x[m_idx_a],
+                               cell.m_positions_y[m_idx_a],
+                               cell.m_positions_z[m_idx_a],
+                               cell.m_ids);
         }
     }
-    m_particle_writer.end ();
+    m_writer.end ();
     Benchmark::end ();
 }
 /**

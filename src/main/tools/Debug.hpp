@@ -7,17 +7,20 @@
 #ifndef DEBUG_HPP_
 #define DEBUG_HPP_
 
-#include "../Definitions.hpp"
-#include "../Vec3.hpp"
+#include "Definitions.hpp"
+#include "Vec3.hpp"
 #include <fstream>
 #include <iostream>
 
-struct s_debug_stream : std::ofstream {
-    int  m_indent_count;
-    bool m_last_char_was_std_endl;
-    s_debug_stream () : m_indent_count (0), m_last_char_was_std_endl (true) {
+struct s_file_and_console_stream : std::ofstream {
+    int         m_indent_count;
+    bool        m_last_char_was_std_endl;
+    std::string m_file_and_line;
+    s_file_and_console_stream ()
+    : m_indent_count (0), m_last_char_was_std_endl (true),
+      m_file_and_line (std::string (__FILE__) + ":" + std::to_string (__LINE__) + " -> ") {
     }
-    s_debug_stream& operator<< (std::ostream& (*manipulator) (std::ostream&) ) {
+    s_file_and_console_stream& operator<< (std::ostream& (*manipulator) (std::ostream&) ) {
         manipulator (std::cout);
         manipulator (static_cast<std::ofstream&> (*this));
         m_last_char_was_std_endl = true;
@@ -28,7 +31,7 @@ struct s_debug_stream : std::ofstream {
     void print (const T& var) {
         if (m_last_char_was_std_endl) {
             std::cout << std::string (m_indent_count * 4, ' ');
-            static_cast<std::ofstream&> (*this) << std::string (m_indent_count * 4, ' ');
+            static_cast<std::ofstream&> (*this) << m_file_and_line << std::string (m_indent_count * 4, ' ');
         }
         std::cout << var;
         static_cast<std::ofstream&> (*this) << var;
@@ -37,36 +40,21 @@ struct s_debug_stream : std::ofstream {
     //////////////////////////////////////////////////////////////////////
     // veränderter output --->>>>
     //////////////////////////////////////////////////////////////////////
-    s_debug_stream& operator<< (const bool& var) {
+    s_file_and_console_stream& operator<< (const bool& var) {
         print (var ? "ON" : "OFF");
         return *this;
     }
-    s_debug_stream& operator<< (const e_generator_mode& var) {
-        print (g_enum_generator_mode_to_string_map[var]);
-        return *this;
-    }
-    s_debug_stream& operator<< (const e_algorithm_type& var) {
-        print (g_enum_algorithm_type_to_string_map[var]);
-        return *this;
-    }
-    s_debug_stream& operator<< (const e_data_format& var) {
-        print (g_enum_data_format_to_string_map[var]);
-        return *this;
-    }
-    s_debug_stream& operator<< (const e_particle_variable& var) {
-        print (g_enum_particle_variable_to_string_map[var]);
-        return *this;
-    }
+
     //////////////////////////////////////////////////////////////////////
     //<<<<--- veränderter output
     //////////////////////////////////////////////////////////////////////
     template <typename T>
-    s_debug_stream& operator<< (const T& var) {
+    s_file_and_console_stream& operator<< (const T& var) {
         print (var);
         return *this;
     }
     template <typename T>
-    s_debug_stream& operator>> (const T& var) {
+    s_file_and_console_stream& operator>> (const T& var) {
         static_cast<std::ofstream&> (*this) << var;
         return *this;
     }
@@ -78,28 +66,35 @@ struct s_debug_stream : std::ofstream {
         if (m_indent_count > 0)
             m_indent_count--;
     }
+
+    s_file_and_console_stream& set_file_and_line (const char* p_file, long p_line) {
+        m_file_and_line = std::string (p_file) + ":" + std::to_string (p_line) + " -> ";
+        ;
+        return *this;
+    }
 };
-extern char           log_folder[29];
-extern s_debug_stream g_debug_stream;
 
-#ifndef RELEASE
-#define macro_debug_1(x) g_debug_stream >> __FILE__ >> ":" >> __LINE__ >> " : " << x << std::endl;
-#define macro_debug(x, y) \
-    g_debug_stream >> __FILE__ >> ":" >> __LINE__ >> " : " << x << " = " << y << std::endl;
+extern char                      log_folder[29];
+extern s_file_and_console_stream g_log_file;
+extern bool                      g_verbose;
 
-#define DEBUG_BEGIN g_debug_stream >> __FILE__ >> ":" >> __LINE__ >> " -> "
-
+#if !defined(RELEASE)
+#define DEBUG_ELIMINATOR if (0)
+#elif defined(DEBUG)
+#define DEBUG_ELIMINATOR if (0)
 #else
-
-#define macro_debug(x, y)
-#define macro_debug_2(x, y)
-#define DEBUG_BEGIN \
-    if (0)          \
-    g_debug_stream >> __FILE__ >> ":" >> __LINE__ >> " -> "
-
+#define DEBUG_ELIMINATOR if (1)
 #endif
 
+#define VERBOSE_ELIMONATOR if (g_verbose)
+
+#define m_standard_stream g_log_file.set_file_and_line (__FILE__, __LINE__)
+#define m_error_stream g_log_file.set_file_and_line (__FILE__, __LINE__)
+#define m_debug_stream DEBUG_ELIMINATOR     g_log_file.set_file_and_line (__FILE__, __LINE__)
+#define m_verbose_stream VERBOSE_ELIMONATOR g_log_file.set_file_and_line (__FILE__, __LINE__)
+
+#define macro_debug_1(x) m_debug_stream << x << std::endl;
+#define macro_debug(x, y) m_debug_stream << x << " = " << y << std::endl;
+
 #define DEBUG_VAR(var) #var << " = " << var
-#define DEBUG_END std::endl
-#define DEBUG_ENDL std::endl << std::endl
 #endif /* DEBUG_HPP_ */

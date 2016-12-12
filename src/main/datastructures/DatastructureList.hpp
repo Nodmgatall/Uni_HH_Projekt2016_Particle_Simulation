@@ -1,8 +1,6 @@
 #ifndef PARTICLELIST_HPP
 #define PARTICLELIST_HPP
 
-#include "../IO/ParticleFileLoader.hpp"
-#include "../IO/ParticleWriterBase.hpp"
 #include "DatastructureBase.hpp"
 #include <vector>
 
@@ -63,11 +61,11 @@ class DatastructureList : public DatastructureBase {
     std::vector<std::vector<data_type>> m_mat_accelerations_y;
     std::vector<std::vector<data_type>> m_mat_accelerations_z;
 
-    DatastructureList (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, ParticleWriterBase& p_particle_writer);
+    DatastructureList (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_particle_writer);
 
     ~DatastructureList ();
     void add_particle (Vec3f p_position);
-    void add_particle (Vec3f p_position, Vec3f p_velocity);
+    void add_particle (Vec3f p_position, Vec3f p_velocity, int p_id = -1);
     unsigned long get_particle_count ();
     void run_simulation_iteration (unsigned long p_iteration_number);
     void build_lists ();

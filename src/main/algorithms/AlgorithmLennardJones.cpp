@@ -7,10 +7,11 @@
 
 #include "AlgorithmLennardJones.hpp"
 AlgorithmLennardJones::AlgorithmLennardJones (s_options& p_options) : AlgorithmBase (p_options) {
-    A_ij = 48 * p_options.m_timestep * p_options.m_timestep;
-    B_ij = 24 * p_options.m_timestep * p_options.m_timestep;
-    m_i  = 1;
-    m_j  = 1;
+    m_stucture_name = "AlgorithmLennardJones";
+    A_ij            = 48 * p_options.m_timestep * p_options.m_timestep;
+    B_ij            = 24 * p_options.m_timestep * p_options.m_timestep;
+    m_i             = 1;
+    m_j             = 1;
 }
 void AlgorithmLennardJones::step_1_local (const data_type& p_position_a, data_type& p_position_b) {
     p_position_b = p_position_a * 2 - p_position_b;

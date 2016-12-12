@@ -1,10 +1,10 @@
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE "VerletListTests"
+#define BOOST_TEST_MODULE "DatastructureList"
 
-#include "../../main/IO/ParticleWriterCSV.hpp"
-#include "../../main/algorithms/AlgorithmLennardJones.hpp"
-#include "../../main/borders/BorderWrapparound.hpp"
-#include "../../main/datastructures/DatastructureList.hpp"
+#include "algorithms/AlgorithmLennardJones.hpp"
+#include "borders/BorderWrapparound.hpp"
+#include "datastructures/DatastructureList.hpp"
+#include "io/output/file/FileWriterCSV.hpp"
 #include <boost/test/unit_test.hpp>
 void generate_test_particle_list () {
 }
@@ -21,23 +21,24 @@ BOOST_AUTO_TEST_CASE (calculate_distance_vectors) {
     std::vector<data_type> expected_z_distances = { 0, 0, 0, 0, 0, 0 };
     Vec3f                  bounds (3, 3, 3);
 
-    s_options options = {
-        LENNARD_JONES,
-        false,
-        CSV,
-        "",
-        "",
-        1000,
-        1,
-        false,
-        1,
-        1.0,
-        GRID,
-        { { ID, false }, { POSITION, false }, { VELOCITY, false }, { ACCELERATION, false }, { PARTICLE_TYPE, false } }
-    };
+    s_options options = { e_algorithm_type::LENNARD_JONES,
+                          false,
+                          e_output_type::FILE_CSV,
+                          "",
+                          "",
+                          1000,
+                          1,
+                          false,
+                          1,
+                          e_datastructure_type::GRID,
+                          { { e_csv_column_type::ID, false },
+                            { e_csv_column_type::POSITION, false },
+                            { e_csv_column_type::VELOCITY, false },
+                            { e_csv_column_type::ACCELERATION, false },
+                            { e_csv_column_type::PARTICLE_TYPE, false } } };
     BorderWrapparound     border (bounds);
     AlgorithmLennardJones algorithm (options);
-    ParticleWriterCSV     writer (options.m_write_modes, "");
+    FileWriterCSV         writer (options.m_write_modes, "");
     DatastructureList     particle_list (options, border, algorithm, writer);
 
     unsigned long start_pos      = 0;
@@ -55,13 +56,13 @@ BOOST_AUTO_TEST_CASE (calculate_distance_vectors) {
         start_pos += (4 - (i + 1));
     }
     for (unsigned long i = 0; i < 6; i++) {
-        std::cout << x_distances[i] << " " << expected_x_distances[i] << std::endl;
-        std::cout << y_distances[i] << " " << expected_y_distances[i] << std::endl;
-        std::cout << z_distances[i] << " " << expected_z_distances[i] << std::endl;
+        m_standard_stream << x_distances[i] << " " << expected_x_distances[i] << std::endl;
+        m_standard_stream << y_distances[i] << " " << expected_y_distances[i] << std::endl;
+        m_standard_stream << z_distances[i] << " " << expected_z_distances[i] << std::endl;
         BOOST_CHECK_EQUAL (x_distances[i], expected_x_distances[i]);
         BOOST_CHECK_EQUAL (y_distances[i], expected_y_distances[i]);
         BOOST_CHECK_EQUAL (z_distances[i], expected_z_distances[i]);
-        std::cout << "====" << std::endl;
+        m_standard_stream << "====" << std::endl;
     }
 }
 BOOST_AUTO_TEST_CASE (calculate_distances_squared) {
@@ -70,23 +71,24 @@ BOOST_AUTO_TEST_CASE (calculate_distances_squared) {
     std::vector<data_type> z_distances = { 0, 0, 0, 0, 0, 0 };
     Vec3f                  bounds (3, 3, 3);
 
-    s_options options = {
-        LENNARD_JONES,
-        false,
-        CSV,
-        "",
-        "",
-        1000,
-        1,
-        false,
-        1,
-        1.0,
-        GRID,
-        { { ID, false }, { POSITION, false }, { VELOCITY, false }, { ACCELERATION, false }, { PARTICLE_TYPE, false } }
-    };
+    s_options options = { e_algorithm_type::LENNARD_JONES,
+                          false,
+                          e_output_type::FILE_CSV,
+                          "",
+                          "",
+                          1000,
+                          1,
+                          false,
+                          1,
+                          e_datastructure_type::GRID,
+                          { { e_csv_column_type::ID, false },
+                            { e_csv_column_type::POSITION, false },
+                            { e_csv_column_type::VELOCITY, false },
+                            { e_csv_column_type::ACCELERATION, false },
+                            { e_csv_column_type::PARTICLE_TYPE, false } } };
     BorderWrapparound     border (bounds);
     AlgorithmLennardJones algorithm (options);
-    ParticleWriterCSV     writer (options.m_write_modes, "");
+    FileWriterCSV         writer (options.m_write_modes, "");
     DatastructureList     particle_list (options, border, algorithm, writer);
 
     unsigned long          distances_count = 6;
@@ -106,23 +108,24 @@ BOOST_AUTO_TEST_CASE (build_lists) {
     std::vector<data_type> z_distances = { 0, 0, 0, 0, 0, 0 };
     Vec3f                  bounds (3, 3, 3);
 
-    s_options options = {
-        LENNARD_JONES,
-        false,
-        CSV,
-        "",
-        "",
-        1000,
-        1,
-        false,
-        1,
-        1.0,
-        GRID,
-        { { ID, false }, { POSITION, false }, { VELOCITY, false }, { ACCELERATION, false }, { PARTICLE_TYPE, false } }
-    };
+    s_options options = { e_algorithm_type::LENNARD_JONES,
+                          false,
+                          e_output_type::FILE_CSV,
+                          "",
+                          "",
+                          1000,
+                          1,
+                          false,
+                          1,
+                          e_datastructure_type::GRID,
+                          { { e_csv_column_type::ID, false },
+                            { e_csv_column_type::POSITION, false },
+                            { e_csv_column_type::VELOCITY, false },
+                            { e_csv_column_type::ACCELERATION, false },
+                            { e_csv_column_type::PARTICLE_TYPE, false } } };
     BorderWrapparound     border (bounds);
     AlgorithmLennardJones algorithm (options);
-    ParticleWriterCSV     writer (options.m_write_modes, "");
+    FileWriterCSV         writer (options.m_write_modes, "");
     DatastructureList     particle_list (options, border, algorithm, writer);
 
     particle_list.m_positions_x            = { 1.5, 1.5, 1.5, 0.75 };

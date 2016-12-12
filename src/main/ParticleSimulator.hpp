@@ -2,12 +2,16 @@
 #define PARTICLE_SIMULATOR_HPP
 
 #include "Definitions.hpp"
-#include "IO/OptionHandler.hpp"
-#include "IO/ParticleWriterCSV.hpp"
-#include "algorithms/AlgorithmLennardJones.hpp"
+
+#include "options/OptionHandler.hpp"
+
 #include "borders/BorderWrapparound.hpp"
-#include "datastructures/DatastructureBase.hpp"
-#include "generators/GeneratorFactory.hpp"
+#include "io/output/file/FileWriterCSV.hpp"
+
+#include "algorithms/AlgorithmFactory.hpp"
+#include "datastructures/DatastructureFactory.hpp"
+#include "io/input/InputFactory.hpp"
+
 #include <functional>
 #include <getopt.h>
 #include <iostream>
@@ -16,13 +20,12 @@
 
 class ParticleSimulator {
   private:
-    s_options&          m_options;
-    GeneratorBase*      m_generator;
-    ParticleWriterBase* m_writer;
-    bool                m_save_config;
-    BorderBase*         m_border;
-    AlgorithmBase*      m_algorithm;
-    DatastructureBase*  m_datastructure;
+    s_options          m_options;
+    WriterBase*        m_writer;
+    BorderBase*        m_border;
+    AlgorithmBase*     m_algorithm;
+    DatastructureBase* m_datastructure;
+    InputBase*         m_input;
 
   public:
     ParticleSimulator (s_options& p_options);

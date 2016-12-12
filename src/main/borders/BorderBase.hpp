@@ -7,15 +7,19 @@
 
 #ifndef SRC_ALGORITHMS_PARTICLEBOUNDSCORRECTION_HPP_
 #define SRC_ALGORITHMS_PARTICLEBOUNDSCORRECTION_HPP_
-#include "../Vec3.hpp"
+#include "Vec3.hpp"
 class BorderBase {
   protected:
-    Vec3f& m_bounds;
+    Vec3f&      m_bounds;
+    std::string m_stucture_name;
 
   public:
     BorderBase (Vec3f& p_bounds) : m_bounds (p_bounds) {
     }
     virtual ~BorderBase () {
+    }
+    std::string get_structure_name () {
+        return m_stucture_name;
     }
     /**
      * check if the positions are within the cube between m_corner000 m_corner111.

@@ -1,19 +1,14 @@
 #include <iostream>
 #include <vector>
 
-#include "../IO/ParticleFileLoader.hpp"
-#include "../IO/ParticleWriterBase.hpp"
-#include "../Vec3.hpp"
-#include "../tools/Debug.hpp"
 #include "DatastructureList.hpp"
+#include "Vec3.hpp"
+#include "tools/Debug.hpp"
 
-DatastructureList::DatastructureList (s_options&          p_options,
-                                      BorderBase&         p_border,
-                                      AlgorithmBase&      p_algorithm,
-                                      ParticleWriterBase& p_particle_writer)
+DatastructureList::DatastructureList (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_particle_writer)
 : DatastructureBase (p_options, p_border, p_algorithm, p_particle_writer),
   m_average_list_length (0.16), m_next_list_size_multiplier (1.1) {
-    m_stucture_name                  = "List";
+    m_stucture_name                  = "DatastructureList";
     m_cutoff_radius                  = 0;
     m_last_id                        = 0;
     m_duration_list                  = 0;
@@ -26,7 +21,7 @@ DatastructureList::~DatastructureList () {
 void DatastructureList::add_particle (Vec3f p_position) {
     if (!m_unused_ids.empty ()) {
         m_unused_ids.erase (m_unused_ids.begin ());
-        std::cout << "Not implemented: program will exit" << std::endl;
+        m_standard_stream << "Not implemented: program will exit" << std::endl;
         exit (EXIT_SUCCESS);
     } else {
         m_particle_ids.push_back (m_last_id++);
@@ -44,9 +39,10 @@ void DatastructureList::add_particle (Vec3f p_position) {
     }
 }
 
-void DatastructureList::add_particle (Vec3f p_position, Vec3f p_velocity) {
+void DatastructureList::add_particle (Vec3f p_position, Vec3f p_velocity, int p_id) {
     (void) p_velocity;
-    (void) p_position;
+    add_particle (p_position);
+    (void) p_id;
     //    add_particle (p_position); // TODO
 }
 
@@ -54,7 +50,7 @@ void DatastructureList::run_simulation_iteration (unsigned long p_iteration_numb
     macro_debug_1 ("running iteration") unsigned long particle_count = m_positions_x.size ();
     unsigned long                                     last_particle  = particle_count - 1;
     //    unsigned long neighbour_cnt;
-    // std::cout << "cnt particles: " << particle_count << std::endl;
+    // m_verbose_stream << "cnt particles: " << particle_count << std::endl;
     unsigned long size_distance_vectors = ((particle_count * particle_count) - particle_count) / 2;
     std::vector<data_type> distances_x (size_distance_vectors);
     std::vector<data_type> distances_y (size_distance_vectors);
@@ -121,8 +117,8 @@ void DatastructureList::build_lists_smarter (data_type*    p_distances_x,
     data_type              cutoff_radius_squared     = 0.8;
     std::vector<data_type> distances (p_size_distance_vectors);
     unsigned long          listed_size = particle_count * (particle_count * (0.25));
-    std::cout << "listed size: " << listed_size << std::endl;
-    std::cout << "p_size_distance_vectors = " << p_size_distance_vectors << std::endl;
+    m_verbose_stream << "listed size: " << listed_size << std::endl;
+    m_verbose_stream << "p_size_distance_vectors = " << p_size_distance_vectors << std::endl;
     m_listed_positions_x.reserve (listed_size);
     m_listed_positions_y.reserve (listed_size);
     m_listed_positions_z.reserve (listed_size);
@@ -161,19 +157,21 @@ void DatastructureList::build_lists_smarter (data_type*    p_distances_x,
     m_mat_positions_x = std::vector<std::vector<float>> (particle_count, std::vector<float> ());
     m_mat_positions_y = std::vector<std::vector<float>> (particle_count, std::vector<float> ());
     m_mat_positions_z = std::vector<std::vector<float>> (particle_count, std::vector<float> ());
-    std::cout << particle_count << "<- particle_cnt" << std::endl;
+    m_verbose_stream << particle_count << "<- particle_cnt" << std::endl;
     // for all particles from index 0
     for (unsigned long distance_section_start = 0, range = particle_count - 1;
          distance_section_start < p_size_distance_vectors;
          distance_section_start += range, range--) {
-        // std::cout << "start: " << distance_section_start << std::endl;
-        //  std::cout << "range: " << range << std::endl;
+        // m_verbose_stream << "start: " << distance_section_start << std::endl;
+        //  m_verbose_stream << "range: " << range << std::endl;
         unsigned long cur_list_idx = particle_count - 1 - range;
-        //  std::cout << "cur_idx " << cur_list_idx << std::endl;
+        //  m_verbose_stream << "cur_idx " << cur_list_idx << std::endl;
         for (unsigned long dist_vector_part_idx = 0; dist_vector_part_idx < range; dist_vector_part_idx++) {
-            //   std::cout << "dvpi: " << dist_vector_part_idx << std::endl;
+            //   m_verbose_stream << "dvpi: " << dist_vector_part_idx << std::endl;
             if (p_distances_squared[distance_section_start + dist_vector_part_idx] < cutoff_radius_squared) {
                 /* clang-format off */
+             //   m_verbose_stream << dist_vector_part_idx << " " << distance_section_start << std::endl;
+             //   m_verbose_stream << dist_vector_part_idx + cur_list_idx + 1 << std::endl;
                 m_mat_positions_x[cur_list_idx].push_back(m_positions_x[dist_vector_part_idx + cur_list_idx + 1]);
                 m_mat_positions_y[cur_list_idx].push_back(m_positions_y[dist_vector_part_idx + cur_list_idx + 1]);
                 m_mat_positions_z[cur_list_idx].push_back(m_positions_z[dist_vector_part_idx + cur_list_idx + 1]);
@@ -216,7 +214,7 @@ void DatastructureList::build_lists () {/*
     // instead make them a member; pro: minmal performance improvement, con:
     // memory need * (4/3)
     unsigned long listed_size = particle_cnt * (particle_cnt * (0.25));
-    std::cout << "listed size: " << listed_size << std::endl;
+    m_verbose_stream << "listed size: " << listed_size << std::endl;
     m_listed_positions_x.resize (listed_size);
     m_listed_positions_y.resize (listed_size);
     m_listed_positions_z.resize (listed_size);
@@ -277,7 +275,7 @@ void DatastructureList::build_lists () {/*
                 listed_size = listed_size * m_next_list_size_multiplier;
                 macro_debug ("resizing lists to: ", listed_size)
 
-                        std::cout
+                        m_verbose_stream
                     << "lol " << current_entries << " " << listed_size << std::endl;
 
                 m_particle_list_ranges.resize (listed_size * 2);
@@ -393,9 +391,9 @@ void DatastructureList::calculate_distances_squared (data_type*    p_distances_s
 
 void DatastructureList::serialize () {
     Benchmark::begin ("saving the data", false);
-    m_particle_writer.start ();
-    m_particle_writer.saveData (m_positions_x, m_positions_y, m_positions_z, m_particle_ids);
-    m_particle_writer.end ();
+    m_writer.start ();
+    m_writer.saveData (m_positions_x, m_positions_y, m_positions_z, m_particle_ids);
+    m_writer.end ();
     Benchmark::end ();
 }
 /* most likely not used

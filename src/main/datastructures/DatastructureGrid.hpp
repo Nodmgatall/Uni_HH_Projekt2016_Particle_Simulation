@@ -1,9 +1,9 @@
 #ifndef PARTICLESGRID_HPP
 #define PARTICLESGRID_HPP
 
-#include "../Definitions.hpp"
-#include "../Vec3.hpp"
 #include "DatastructureBase.hpp"
+#include "Definitions.hpp"
+#include "Vec3.hpp"
 
 struct ParticleCell {
     std::vector<data_type>     m_positions_x[2];
@@ -21,7 +21,7 @@ class DatastructureGrid : public DatastructureBase {
     /**
      * the index for the "next" inserted particle
      */
-    unsigned long m_max_id;
+    long m_max_id;
     /**
      * the cells in which the particles are stored
      */
@@ -61,12 +61,12 @@ class DatastructureGrid : public DatastructureBase {
     void step_3_remove_wrong_particles_from_cell (ParticleCell& p_cell);
 
   public:
-    DatastructureGrid (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, ParticleWriterBase& p_particle_writer);
+    DatastructureGrid (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_particle_writer);
     ~DatastructureGrid ();
     void serialize ();
     void run_simulation_iteration (unsigned long p_iteration_number = 0);
     void add_particle (Vec3f p_current_position);
-    void add_particle (Vec3f p_current_position, Vec3f p_current_velocity);
+    void add_particle (Vec3f p_current_position, Vec3f p_current_velocity, int p_id = -1);
     unsigned long get_particle_count ();
 };
 #endif

@@ -8,17 +8,21 @@
 #ifndef SRC_MAIN_ALGORITHMS_ALGORITHMBASE_HPP_
 #define SRC_MAIN_ALGORITHMS_ALGORITHMBASE_HPP_
 
-#include "../Definitions.hpp"
-#include "../IO/Options.hpp"
+#include "Definitions.hpp"
+#include "options/Options.hpp"
 
 class AlgorithmBase {
-  private:
-    s_options& m_options;
+  protected:
+    s_options&  m_options;
+    std::string m_stucture_name;
 
   public:
     AlgorithmBase (s_options& p_options) : m_options (p_options) {
     }
     virtual ~AlgorithmBase () {
+    }
+    std::string get_structure_name () {
+        return m_stucture_name;
     }
     virtual void step_1 (const data_type& p_position_ax,
                          const data_type& p_position_ay,

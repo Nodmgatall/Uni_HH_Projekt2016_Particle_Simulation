@@ -1,0 +1,18 @@
+/*
+ * EnumDatastructureType.cpp
+ *
+ *  Created on: Dec 10, 2016
+ *      Author: benjamin
+ */
+
+#include "enums/EnumDatastructureType.hpp"
+
+std::vector<const char*> g_datastructure_names = { "UNDEFINED", "GRID", "LIST", "LISTEDGIRD" };
+
+std::ostream& operator<< (std::ostream& stream, const e_datastructure_type p_datastructure_type) {
+    int index = static_cast<int> (p_datastructure_type);
+    if ((index < (signed) g_datastructure_names.size ()) && (index > 0))
+        return stream << g_datastructure_names[index];
+    else
+        throw DatastructureTypeInvalidException (p_datastructure_type);
+}

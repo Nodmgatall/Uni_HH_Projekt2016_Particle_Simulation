@@ -6,15 +6,15 @@
  */
 
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE "ParticlesGrid"
-#include "../../main/IO/ParticleWriterBase.hpp"
-#include "../../main/algorithms/AlgorithmBase.hpp"
-#include "../../main/borders/BorderBase.hpp"
-#include "../../main/datastructures/DatastructureGrid.hpp"
+#define BOOST_TEST_MODULE "DatastructureGrid"
+#include "algorithms/AlgorithmBase.hpp"
+#include "borders/BorderBase.hpp"
+#include "datastructures/DatastructureGrid.hpp"
+#include "io/output/WriterBase.hpp"
 #include <boost/test/unit_test.hpp>
 #include <cstring>
 
-class ParticleWriter : public ParticleWriterBase {
+class ParticleWriter : public WriterBase {
   public:
     void saveData (std::vector<data_type>&     p_positions_x,
                    std::vector<data_type>&     p_positions_y,
@@ -200,10 +200,10 @@ class DatastructureGridTestClass : public DatastructureGrid {
     void public_step_3_remove_wrong_particles_from_cell (ParticleCell& p_cell) {
         step_3_remove_wrong_particles_from_cell (p_cell);
     }
-    DatastructureGridTestClass (s_options&          p_options,
-                                BorderBase&         p_particle_bounds_correction,
-                                AlgorithmBase&      p_algorithm,
-                                ParticleWriterBase& p_particle_file_writer)
+    DatastructureGridTestClass (s_options&     p_options,
+                                BorderBase&    p_particle_bounds_correction,
+                                AlgorithmBase& p_algorithm,
+                                WriterBase&    p_particle_file_writer)
     : DatastructureGrid (p_options, p_particle_bounds_correction, p_algorithm, p_particle_file_writer) {
     }
     ~DatastructureGridTestClass () {
