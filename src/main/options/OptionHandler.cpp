@@ -65,14 +65,12 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
     opterr = 0;
     while ((argv_index = getopt_long (p_argc, p_argv, "ab::c::f::hi::l::m::o::r::s::t::v", &options[0], &long_options)) !=
            -1) {
-        m_standard_stream << DEBUG_VAR (argv_index) << DEBUG_VAR (optarg) << std::endl;
         switch (argv_index / 1000) {
             case algorithm_type_index:
                 if (help_defined) {
                     print_usage_algorithm ();
                     help_printed = true;
                 } else {
-                    m_standard_stream << DEBUG_VAR (algorithm_type_index) << std::endl;
                     p_options.m_algorithm_type =
                         static_cast<e_algorithm_type> (indexInArray (g_algorithm_names, optarg));
                 }
@@ -82,7 +80,6 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                     print_usage_data_structure ();
                     help_printed = true;
                 } else {
-                    m_standard_stream << DEBUG_VAR (datastructure_type_index) << std::endl;
                     p_options.m_data_structure =
                         static_cast<e_datastructure_type> (indexInArray (g_datastructure_names, optarg));
                 }
@@ -92,7 +89,6 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                     print_usage_input ();
                     help_printed = true;
                 } else {
-                    m_standard_stream << DEBUG_VAR (input_type_index) << std::endl;
                     p_options.m_input_type = static_cast<e_input_type> (indexInArray (g_input_names, optarg));
                 }
                 break;
@@ -101,14 +97,8 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                     print_usage_output ();
                     help_printed = true;
                 } else {
-                    m_standard_stream << DEBUG_VAR (output_type_index) << std::endl;
-                    m_standard_stream << DEBUG_VAR (indexInArray (g_output_names, optarg)) << std::endl;
-                    m_standard_stream
-                        << DEBUG_VAR (static_cast<e_output_type> (indexInArray (g_output_names, optarg)))
-                        << std::endl;
                     p_options.m_output_type =
                         static_cast<e_output_type> (indexInArray (g_output_names, optarg));
-                    m_standard_stream << DEBUG_VAR ("here") << std::endl;
                 }
                 break;
             case write_modes_index:
@@ -116,22 +106,15 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                     print_usage_write_modes ();
                     help_printed = true;
                 } else {
-                    m_standard_stream << DEBUG_VAR (write_modes_index) << std::endl;
-                    m_standard_stream << DEBUG_VAR (argv_index % 1000) << std::endl;
-                    m_standard_stream << DEBUG_VAR (p_options.m_write_modes.size ()) << std::endl;
                     p_options.m_write_modes[static_cast<e_csv_column_type> (argv_index % 1000)] =
                         !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
                 }
                 break;
             default: {
                 std::stringstream line;
-                m_standard_stream << DEBUG_VAR ("aaaaa") << std::endl;
                 if (optarg) {
-                    m_standard_stream << DEBUG_VAR (optarg) << std::endl;
-                    m_standard_stream << DEBUG_VAR ("bbbbb") << std::endl;
                     line.str (optarg);
                 }
-                m_standard_stream << DEBUG_VAR (line.str ()) << std::endl;
                 switch (argv_index) {
                     case 'a': {
                         if (help_defined) {
