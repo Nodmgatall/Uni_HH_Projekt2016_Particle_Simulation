@@ -28,7 +28,7 @@ endif
 build_release: format
 	cd .. && $(MAKE) particle_simulation.x -j 8 --no-print-directory
 
-build: build_release
+build: 
 	cd .. && $(MAKE) -j 8 --no-print-directory
 
 rmlog: format

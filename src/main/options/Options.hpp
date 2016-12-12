@@ -12,16 +12,16 @@
 #include <map>
 #include <vector>
 struct s_options {
-    e_algorithm_type     m_algorithm_type = e_algorithm_type::LENNARD_JONES;
-    bool                 m_autotuneing    = false;
-    e_output_type        m_output_type    = e_output_type::FILE_CSV;
-    std::string          m_in_file_name   = "";
-    std::string          m_out_file_name  = "";
-    data_type            m_timestep       = 1;
-    bool                 m_verbose        = false;
-    int                  m_write_fequency = 1;
-    data_type            m_cut_off_radius = 0.01;
-    e_datastructure_type m_data_structure = e_datastructure_type::GRID;
+    e_algorithm_type     m_algorithm_type      = e_algorithm_type::LENNARD_JONES;
+    bool                 m_autotuneing         = false;
+    e_output_type        m_output_type         = e_output_type::FILE_CSV;
+    std::string          m_in_file_name        = "";
+    std::string          m_out_file_name       = "";
+    data_type            m_timestep            = 1;
+    bool                 m_verbose             = false;
+    int                  m_write_fequency      = 1;
+    data_type            m_cut_off_radius      = 0.01;
+    e_datastructure_type m_data_structure_type = e_datastructure_type::GRID;
     std::map<e_csv_column_type, bool> m_write_modes = { { e_csv_column_type::ID, true },
                                                         { e_csv_column_type::POSITION, true },
                                                         { e_csv_column_type::VELOCITY, true },
@@ -35,27 +35,100 @@ struct s_options {
     int           m_max_iterations_between_datastructure_rebuild = 20;
 #if defined(BOOST_AVAILABLE)
     friend class boost::serialization::access;
+
     template <class Archive>
-    void serialize (Archive& archive, const unsigned int version) {
+    void save (Archive& archive, const unsigned int version) const {
         (void) version;
-        archive& boost::serialization::make_nvp ("autotuneing", m_autotuneing);
-        archive& boost::serialization::make_nvp ("output_type", m_output_type);
-        archive& boost::serialization::make_nvp ("in_file_name", m_in_file_name);
-        archive& boost::serialization::make_nvp ("out_file_name", m_out_file_name);
-        archive& boost::serialization::make_nvp ("timestep", m_timestep);
-        archive& boost::serialization::make_nvp ("verbose", m_verbose);
-        archive& boost::serialization::make_nvp ("write_fequency", m_write_fequency);
-        archive& boost::serialization::make_nvp ("cut_off_radius", m_cut_off_radius);
-        archive& boost::serialization::make_nvp ("data_structure", m_data_structure);
-        archive& boost::serialization::make_nvp ("write_modes", m_write_modes);
-        archive& boost::serialization::make_nvp ("input_type", m_input_type);
-        archive& boost::serialization::make_nvp ("seed", m_seed);
-        archive& boost::serialization::make_nvp ("particle_count", m_particle_count);
-        archive& boost::serialization::make_nvp ("max_iterations", m_max_iterations);
-        archive& boost::serialization::make_nvp ("bounds", m_bounds);
-        archive& boost::serialization::make_nvp ("max_iterations_between_datastructure_rebuild",
+        std::stringstream input_type;
+        std::stringstream output_type;
+        std::stringstream algorithm_type;
+        std::stringstream data_structure_type;
+        input_type << m_input_type;
+        output_type << m_output_type;
+        algorithm_type << m_algorithm_type;
+        data_structure_type << m_data_structure_type;
+        std::string c_input_type          = input_type.str ();
+        std::string c_output_type         = output_type.str ();
+        std::string c_algorithm_type      = algorithm_type.str ();
+        std::string c_data_structure_type = data_structure_type.str ();
+        archive&    boost::serialization::make_nvp ("algorithm_type", c_algorithm_type);
+        archive&    boost::serialization::make_nvp ("autotuneing", m_autotuneing);
+        archive&    boost::serialization::make_nvp ("output_type", c_output_type);
+        archive&    boost::serialization::make_nvp ("in_file_name", m_in_file_name);
+        archive&    boost::serialization::make_nvp ("out_file_name", m_out_file_name);
+        archive&    boost::serialization::make_nvp ("timestep", m_timestep);
+        archive&    boost::serialization::make_nvp ("verbose", m_verbose);
+        archive&    boost::serialization::make_nvp ("write_fequency", m_write_fequency);
+        archive&    boost::serialization::make_nvp ("cut_off_radius", m_cut_off_radius);
+        archive&    boost::serialization::make_nvp ("data_structure_type", c_data_structure_type);
+        archive&    boost::serialization::make_nvp ("write_modes", m_write_modes);
+        archive&    boost::serialization::make_nvp ("input_type", c_input_type);
+        archive&    boost::serialization::make_nvp ("seed", m_seed);
+        archive&    boost::serialization::make_nvp ("particle_count", m_particle_count);
+        archive&    boost::serialization::make_nvp ("max_iterations", m_max_iterations);
+        archive&    boost::serialization::make_nvp ("bounds", m_bounds);
+        archive&    boost::serialization::make_nvp ("max_iterations_between_datastructure_rebuild",
                                                  m_max_iterations_between_datastructure_rebuild);
     }
+    template <class Archive>
+    void load (Archive& archive, const unsigned int version) {
+        (void) version;
+        std::string c_input_type;
+        std::string c_output_type;
+        std::string c_algorithm_type;
+        std::string c_data_structure_type;
+        archive&    boost::serialization::make_nvp ("algorithm_type", c_algorithm_type);
+        archive&    boost::serialization::make_nvp ("autotuneing", m_autotuneing);
+        archive&    boost::serialization::make_nvp ("output_type", c_output_type);
+        archive&    boost::serialization::make_nvp ("in_file_name", m_in_file_name);
+        archive&    boost::serialization::make_nvp ("out_file_name", m_out_file_name);
+        archive&    boost::serialization::make_nvp ("timestep", m_timestep);
+        archive&    boost::serialization::make_nvp ("verbose", m_verbose);
+        archive&    boost::serialization::make_nvp ("write_fequency", m_write_fequency);
+        archive&    boost::serialization::make_nvp ("cut_off_radius", m_cut_off_radius);
+        archive&    boost::serialization::make_nvp ("data_structure_type", c_data_structure_type);
+        archive&    boost::serialization::make_nvp ("write_modes", m_write_modes);
+        archive&    boost::serialization::make_nvp ("input_type", c_input_type);
+        archive&    boost::serialization::make_nvp ("seed", m_seed);
+        archive&    boost::serialization::make_nvp ("particle_count", m_particle_count);
+        archive&    boost::serialization::make_nvp ("max_iterations", m_max_iterations);
+        archive&    boost::serialization::make_nvp ("bounds", m_bounds);
+        archive&    boost::serialization::make_nvp ("max_iterations_between_datastructure_rebuild",
+                                                 m_max_iterations_between_datastructure_rebuild);
+        std::stringstream input_type (c_input_type);
+        std::stringstream output_type (c_output_type);
+        std::stringstream algorithm_type (c_algorithm_type);
+        std::stringstream data_structure_type (c_data_structure_type);
+        input_type >> m_input_type;
+        output_type >> m_output_type;
+        algorithm_type >> m_algorithm_type;
+        data_structure_type >> m_data_structure_type;
+    }
+    BOOST_SERIALIZATION_SPLIT_MEMBER ()
+
+/*
+
+template <class Archive>
+void serialize (Archive& archive, const unsigned int version) {
+    (void) version;
+    archive& boost::serialization::make_nvp ("autotuneing", m_autotuneing);
+    archive& boost::serialization::make_nvp ("output_type", m_output_type);
+    archive& boost::serialization::make_nvp ("in_file_name", m_in_file_name);
+    archive& boost::serialization::make_nvp ("out_file_name", m_out_file_name);
+    archive& boost::serialization::make_nvp ("timestep", m_timestep);
+    archive& boost::serialization::make_nvp ("verbose", m_verbose);
+    archive& boost::serialization::make_nvp ("write_fequency", m_write_fequency);
+    archive& boost::serialization::make_nvp ("cut_off_radius", m_cut_off_radius);
+    archive& boost::serialization::make_nvp ("data_structure", m_data_structure);
+    archive& boost::serialization::make_nvp ("write_modes", m_write_modes);
+    archive& boost::serialization::make_nvp ("input_type", m_input_type);
+    archive& boost::serialization::make_nvp ("seed", m_seed);
+    archive& boost::serialization::make_nvp ("particle_count", m_particle_count);
+    archive& boost::serialization::make_nvp ("max_iterations", m_max_iterations);
+    archive& boost::serialization::make_nvp ("bounds", m_bounds);
+    archive& boost::serialization::make_nvp ("max_iterations_between_datastructure_rebuild",
+                                             m_max_iterations_between_datastructure_rebuild);
+}*/
 #endif
 };
 #endif

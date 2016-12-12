@@ -8,6 +8,7 @@
 #ifndef SRC_MAIN_OPTIONS_ENUM_INPUT_TYPE_HPP_
 #define SRC_MAIN_OPTIONS_ENUM_INPUT_TYPE_HPP_
 
+#include <cstring>
 #include <exception>
 #include <ostream>
 #include <vector>
@@ -21,7 +22,8 @@ enum class e_input_type {
     FILE_CSV                       = 6,
 };
 
-std::ostream& operator<< (std::ostream& stream, const e_input_type p_input_type);
+std::ostream& operator<< (std::ostream& stream, const e_input_type& p_input_type);
+std::istream& operator>> (std::istream& stream, e_input_type& p_input_type);
 
 extern std::vector<const char*> g_input_names;
 

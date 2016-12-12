@@ -110,7 +110,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                     static_cast<e_algorithm_type> (indexInArray (g_algorithm_names, optarg));
                 break;
             case datastructure_type_index:
-                p_options.m_data_structure =
+                p_options.m_data_structure_type =
                     static_cast<e_datastructure_type> (indexInArray (g_datastructure_names, optarg));
                 break;
             case input_type_index:
@@ -274,7 +274,7 @@ void OptionHandler::print_choosen_options (s_options& p_options) {
         << "verbose                                      " << p_options.m_verbose << std::endl
         << "write_fequency                               " << p_options.m_write_fequency << std::endl
         << "cut_off_radius                               " << p_options.m_cut_off_radius << std::endl
-        << "data_structure                               " << p_options.m_data_structure << std::endl
+        << "data_structure                               " << p_options.m_data_structure_type << std::endl
         << "input_type                                   " << p_options.m_input_type << std::endl
         << "seed                                         " << p_options.m_seed << std::endl
         << "count                                        " << p_options.m_particle_count << std::endl

@@ -162,7 +162,7 @@ class BoundsCorrection : public BorderBase {
 BOOST_AUTO_TEST_CASE (test1) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
-    options.m_data_structure = e_datastructure_type::GRID;
+    options.m_data_structure_type = e_datastructure_type::GRID;
     BoundsCorrection border (options.m_bounds);
     Algorithm        algorithm (options);
     ParticleWriter   writer = ParticleWriter (0);
@@ -172,7 +172,7 @@ BOOST_AUTO_TEST_CASE (test1) {
 BOOST_AUTO_TEST_CASE (test2) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
-    options.m_data_structure = e_datastructure_type::LIST;
+    options.m_data_structure_type = e_datastructure_type::LIST;
     BoundsCorrection border (options.m_bounds);
     Algorithm        algorithm (options);
     ParticleWriter   writer = ParticleWriter (0);

@@ -8,6 +8,7 @@
 #ifndef SRC_MAIN_OPTIONS_ENUM_ALGORITHM_TYPE_HPP_
 #define SRC_MAIN_OPTIONS_ENUM_ALGORITHM_TYPE_HPP_
 
+#include <cstring>
 #include <exception>
 #include <ostream>
 #include <vector>
@@ -18,7 +19,8 @@ enum class e_algorithm_type {
     DISSIPATIVE_PARTICLE_DYNAMICS  = 3
 };
 
-std::ostream& operator<< (std::ostream& stream, const e_algorithm_type p_algorithm_type);
+std::ostream& operator<< (std::ostream& stream, const e_algorithm_type& p_algorithm_type);
+std::istream& operator>> (std::istream& stream, e_algorithm_type& p_algorithm_type);
 
 extern std::vector<const char*> g_algorithm_names;
 

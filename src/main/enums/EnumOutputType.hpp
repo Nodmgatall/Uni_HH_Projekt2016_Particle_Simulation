@@ -8,6 +8,7 @@
 #ifndef SRC_MAIN_OPTIONS_ENUM_OUTPUT_TYPE_HPP_
 #define SRC_MAIN_OPTIONS_ENUM_OUTPUT_TYPE_HPP_
 
+#include <cstring>
 #include <exception>
 #include <ostream>
 #include <vector>
@@ -21,7 +22,8 @@ enum class e_output_type {
     FILE_VTK      = 6
 };
 
-std::ostream& operator<< (std::ostream& stream, const e_output_type p_output_type);
+std::ostream& operator<< (std::ostream& stream, const e_output_type& p_output_type);
+std::istream& operator>> (std::istream& stream, e_output_type& p_output_type);
 
 extern std::vector<const char*> g_output_names;
 
