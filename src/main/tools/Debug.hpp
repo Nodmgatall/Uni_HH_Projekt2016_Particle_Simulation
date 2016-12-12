@@ -90,17 +90,8 @@ extern s_file_and_console_stream g_debug_stream;
 #define m_standard_stream g_debug_stream.set_file_and_line (__FILE__, __LINE__)
 #define m_error_stream g_debug_stream.set_file_and_line (__FILE__, __LINE__)
 
-#ifndef RELEASE
-#define macro_debug_1(x) g_debug_stream.set_file_and_line (__FILE__, __LINE__) << x << std::endl;
-#define macro_debug(x, y) \
-    g_debug_stream.set_file_and_line (__FILE__, __LINE__) << " : " << x << " = " << y << std::endl;
-
-#else
-
-#define macro_debug(x, y)
-#define macro_debug_2(x, y)
-
-#endif
+#define macro_debug_1(x) m_debug_stream << x << std::endl;
+#define macro_debug(x, y) m_debug_stream << x << " = " << y << std::endl;
 
 #define DEBUG_VAR(var) #var << " = " << var
 #endif /* DEBUG_HPP_ */
