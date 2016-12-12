@@ -33,28 +33,29 @@ struct s_options {
     Vec3f         m_bounds         = Vec3f (5.0f, 5.0f, 5.0f);
     int           m_max_iterations_between_datastructure_rebuild = 20;
 
+    friend class boost::serialization::access;
     template <class Archive>
     void serialize (Archive& archive, const unsigned int version) {
         (void) version;
-        archive& BOOST_SERIALIZATION_NVP (m_algorithm_type);
-        archive& BOOST_SERIALIZATION_NVP (m_autotuneing);
-        archive& BOOST_SERIALIZATION_NVP (m_output_type);
-        archive& BOOST_SERIALIZATION_NVP (m_in_file_name);
-        archive& BOOST_SERIALIZATION_NVP (m_out_file_name);
-        archive& BOOST_SERIALIZATION_NVP (m_timestep);
-        archive& BOOST_SERIALIZATION_NVP (m_verbose);
-        archive& BOOST_SERIALIZATION_NVP (m_write_fequency);
-        archive& BOOST_SERIALIZATION_NVP (m_cut_off_radius);
-        archive& BOOST_SERIALIZATION_NVP (m_data_structure);
-        archive& BOOST_SERIALIZATION_NVP (m_write_modes);
-        archive& BOOST_SERIALIZATION_NVP (m_input_type);
-        archive& BOOST_SERIALIZATION_NVP (m_seed);
-        archive& BOOST_SERIALIZATION_NVP (m_particle_count);
-        archive& BOOST_SERIALIZATION_NVP (m_max_iterations);
-        archive& BOOST_SERIALIZATION_NVP (m_bounds.x);
-        archive& BOOST_SERIALIZATION_NVP (m_bounds.y);
-        archive& BOOST_SERIALIZATION_NVP (m_bounds.z);
-        archive& BOOST_SERIALIZATION_NVP (m_max_iterations_between_datastructure_rebuild);
+        archive& boost::serialization::make_nvp ("autotuneing", m_autotuneing);
+        archive& boost::serialization::make_nvp ("output_type", m_output_type);
+        archive& boost::serialization::make_nvp ("in_file_name", m_in_file_name);
+        archive& boost::serialization::make_nvp ("out_file_name", m_out_file_name);
+        archive& boost::serialization::make_nvp ("timestep", m_timestep);
+        archive& boost::serialization::make_nvp ("verbose", m_verbose);
+        archive& boost::serialization::make_nvp ("write_fequency", m_write_fequency);
+        archive& boost::serialization::make_nvp ("cut_off_radius", m_cut_off_radius);
+        archive& boost::serialization::make_nvp ("data_structure", m_data_structure);
+        archive& boost::serialization::make_nvp ("write_modes", m_write_modes);
+        archive& boost::serialization::make_nvp ("input_type", m_input_type);
+        archive& boost::serialization::make_nvp ("seed", m_seed);
+        archive& boost::serialization::make_nvp ("particle_count", m_particle_count);
+        archive& boost::serialization::make_nvp ("max_iterations", m_max_iterations);
+        archive& boost::serialization::make_nvp ("bounds.x", m_bounds.x);
+        archive& boost::serialization::make_nvp ("bounds.y", m_bounds.y);
+        archive& boost::serialization::make_nvp ("bounds.z", m_bounds.z);
+        archive& boost::serialization::make_nvp ("max_iterations_between_datastructure_rebuild",
+                                                 m_max_iterations_between_datastructure_rebuild);
     }
 };
 #endif

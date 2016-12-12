@@ -3,7 +3,9 @@
 
 #include "Definitions.hpp"
 #include "Options.hpp"
-#include "io/config/ConfigLoader.hpp"
+#include <boost/archive/xml_iarchive.hpp>
+#include <boost/archive/xml_oarchive.hpp>
+#include <boost/serialization/nvp.hpp>
 #include <getopt.h>
 
 class OptionHandler {
@@ -29,13 +31,15 @@ class OptionHandler {
     void print_usage_verbose ();
     void print_usage_max_iterations_between_datastructure_rebuild ();
     void print_usage_load_confing ();
-    void print_usage_print_config ();
-    void print_usage_list_configs ();
     void print_usage_save_config ();
     //
     void print_choosen_options (s_options& p_options);
     void print_usage_particle_sim ();
     void print_header ();
+
+    void save_config (const s_options& p_options, const std::string p_filename);
+    void load_config (s_options& p_options, const std::string p_filename);
+    void print_usage_print_config ();
 
   public:
     OptionHandler ();
