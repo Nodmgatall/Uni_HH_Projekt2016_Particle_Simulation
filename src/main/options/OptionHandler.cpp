@@ -206,6 +206,7 @@ void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_opti
             exit (EXIT_SUCCESS);
         }
     }
+    g_verbose = p_options.m_verbose;
 }
 void OptionHandler::print_choosen_options (s_options& p_options) {
     Benchmark::begin ("Print-Options");
@@ -240,10 +241,10 @@ void OptionHandler::print_choosen_options (s_options& p_options) {
     m_standard_stream << "write_modes    : [ID";
     for (index = 2; index < (signed) g_csv_column_names.size (); index++) {
         if (p_options.m_write_modes[static_cast<e_csv_column_type> (index)]) {
-            g_debug_stream << ", " << g_csv_column_names[index];
+            g_log_file << ", " << g_csv_column_names[index];
         }
     }
-    g_debug_stream << "]" << std::endl;
+    g_log_file << "]" << std::endl;
     Benchmark::end ();
 }
 

@@ -75,7 +75,8 @@ struct s_file_and_console_stream : std::ofstream {
 };
 
 extern char                      log_folder[29];
-extern s_file_and_console_stream g_debug_stream;
+extern s_file_and_console_stream g_log_file;
+extern bool                      g_verbose;
 
 #if !defined(RELEASE)
 #define DEBUG_ELIMINATOR if (0)
@@ -85,10 +86,12 @@ extern s_file_and_console_stream g_debug_stream;
 #define DEBUG_ELIMINATOR if (1)
 #endif
 
-#define m_debug_stream DEBUG_ELIMINATOR g_debug_stream.set_file_and_line (__FILE__, __LINE__)
-#define m_verbose_stream g_debug_stream.set_file_and_line (__FILE__, __LINE__)
-#define m_standard_stream g_debug_stream.set_file_and_line (__FILE__, __LINE__)
-#define m_error_stream g_debug_stream.set_file_and_line (__FILE__, __LINE__)
+#define m_standard_stream g_log_file.set_file_and_line (__FILE__, __LINE__)
+#define m_error_stream g_log_file.set_file_and_line (__FILE__, __LINE__)
+#define m_debug_stream DEBUG_ELIMINATOR g_log_file.set_file_and_line (__FILE__, __LINE__)
+#define m_verbose_stream \
+    if (g_verbose)       \
+    g_log_file.set_file_and_line (__FILE__, __LINE__)
 
 #define macro_debug_1(x) m_debug_stream << x << std::endl;
 #define macro_debug(x, y) m_debug_stream << x << " = " << y << std::endl;

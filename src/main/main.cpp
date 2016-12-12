@@ -25,7 +25,7 @@ void createOutputDirectory () {
     if (mkdir (log_folder, 0700)) {
         // don't care ... but return value is used
     }
-    g_debug_stream.open (std::string (log_folder) + "/log.txt", std::fstream::out);
+    g_log_file.open (std::string (log_folder) + "/log.txt", std::fstream::out);
     if (unlink ("logdata/latest")) {
         // don't care ... but return value is used
     }
