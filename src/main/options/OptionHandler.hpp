@@ -27,7 +27,7 @@ class OptionHandler {
     void print_usage_seed ();
     void print_usage_timestep ();
     void print_usage_verbose ();
-    void print_max_iterations_between_datastructure_rebuild ();
+    void print_usage_max_iterations_between_datastructure_rebuild ();
     void print_usage_load_confing ();
     void print_usage_print_config ();
     void print_usage_list_configs ();
