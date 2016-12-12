@@ -56,13 +56,13 @@ BOOST_AUTO_TEST_CASE (calculate_distance_vectors) {
         start_pos += (4 - (i + 1));
     }
     for (unsigned long i = 0; i < 6; i++) {
-        std::cout << x_distances[i] << " " << expected_x_distances[i] << std::endl;
-        std::cout << y_distances[i] << " " << expected_y_distances[i] << std::endl;
-        std::cout << z_distances[i] << " " << expected_z_distances[i] << std::endl;
+        m_standard_stream << x_distances[i] << " " << expected_x_distances[i] << std::endl;
+        m_standard_stream << y_distances[i] << " " << expected_y_distances[i] << std::endl;
+        m_standard_stream << z_distances[i] << " " << expected_z_distances[i] << std::endl;
         BOOST_CHECK_EQUAL (x_distances[i], expected_x_distances[i]);
         BOOST_CHECK_EQUAL (y_distances[i], expected_y_distances[i]);
         BOOST_CHECK_EQUAL (z_distances[i], expected_z_distances[i]);
-        std::cout << "====" << std::endl;
+        m_standard_stream << "====" << std::endl;
     }
 }
 BOOST_AUTO_TEST_CASE (calculate_distances_squared) {

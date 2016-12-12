@@ -13,7 +13,7 @@ std::stack<bool>           Benchmark::m_section_print      = std::stack<bool> ()
 
 void Benchmark::begin (std::string p_section_name, bool p_print) {
     if (p_print) {
-        DEBUG_BEGIN << ">>>" << p_section_name << " :: starting" << std::endl;
+        m_verbose_stream << ">>>" << p_section_name << " :: starting" << std::endl;
         g_debug_stream.indent ();
     }
     struct timeval time_now;
@@ -39,10 +39,10 @@ void Benchmark::end () {
         g_debug_stream.unindent ();
     time_diff = ((time_now.tv_sec - time_begin.tv_sec) * 1000000u + time_now.tv_usec - time_begin.tv_usec) / 1.e6;
     if (print) {
-        DEBUG_BEGIN << "<<<" << section_name << " :: finished in " << std::fixed
-                    << std::setprecision (6) << std::setfill ('0') << time_diff << "s" << std::endl;
+        m_verbose_stream << "<<<" << section_name << " :: finished in " << std::fixed
+                         << std::setprecision (6) << std::setfill ('0') << time_diff << "s" << std::endl;
     } else {
-        DEBUG_BEGIN << "---spend " << std::fixed << std::setprecision (6) << std::setfill ('0')
-                    << time_diff << "s for " << section_name << std::endl;
+        m_verbose_stream << "---spend " << std::fixed << std::setprecision (6) << std::setfill ('0')
+                         << time_diff << "s for " << section_name << std::endl;
     }
 }

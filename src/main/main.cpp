@@ -3,15 +3,15 @@
 #include "options/OptionHandler.hpp"
 
 void print_header () {
-    DEBUG_BEGIN << std::endl;
-    DEBUG_BEGIN << "=======================================================" << std::endl;
-    DEBUG_BEGIN << "                  Particle Simulation                  " << std::endl;
-    DEBUG_BEGIN << "=======================================================" << std::endl;
-    DEBUG_BEGIN << "            Benjamin Wanke, Oliver Heidmann            " << std::endl;
-    DEBUG_BEGIN << "                      Supervisior                      " << std::endl;
-    DEBUG_BEGIN << "                    Philipp Neumann                    " << std::endl;
-    DEBUG_BEGIN << "=======================================================" << std::endl;
-    DEBUG_BEGIN << "=======================================================" << std::endl;
+    m_standard_stream << std::endl;
+    m_standard_stream << "=======================================================" << std::endl;
+    m_standard_stream << "                  Particle Simulation                  " << std::endl;
+    m_standard_stream << "=======================================================" << std::endl;
+    m_standard_stream << "            Benjamin Wanke, Oliver Heidmann            " << std::endl;
+    m_standard_stream << "                      Supervisior                      " << std::endl;
+    m_standard_stream << "                    Philipp Neumann                    " << std::endl;
+    m_standard_stream << "=======================================================" << std::endl;
+    m_standard_stream << "=======================================================" << std::endl;
 }
 void createOutputDirectory () {
     time_t     current_time;
@@ -30,7 +30,7 @@ void createOutputDirectory () {
         // don't care ... but return value is used
     }
     if (symlink ((std::string ("../") + log_folder).c_str (), "logdata/latest")) {
-        DEBUG_BEGIN << "symlink @ 'logdata/latest' failed" << std::endl;
+        m_error_stream << "symlink @ 'logdata/latest' failed" << std::endl;
         exit (1);
     }
 }

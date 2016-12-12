@@ -13,9 +13,12 @@
 #include <iostream>
 
 struct s_file_and_console_stream : std::ofstream {
-    int  m_indent_count;
-    bool m_last_char_was_std_endl;
-    s_file_and_console_stream () : m_indent_count (0), m_last_char_was_std_endl (true) {
+    int         m_indent_count;
+    bool        m_last_char_was_std_endl;
+    std::string m_file_and_line;
+    s_file_and_console_stream ()
+    : m_indent_count (0), m_last_char_was_std_endl (true),
+      m_file_and_line (std::string (__FILE__) + ":" + std::to_string (__LINE__) + " -> ") {
     }
     s_file_and_console_stream& operator<< (std::ostream& (*manipulator) (std::ostream&) ) {
         manipulator (std::cout);
@@ -28,7 +31,7 @@ struct s_file_and_console_stream : std::ofstream {
     void print (const T& var) {
         if (m_last_char_was_std_endl) {
             std::cout << std::string (m_indent_count * 4, ' ');
-            static_cast<std::ofstream&> (*this) << std::string (m_indent_count * 4, ' ');
+            static_cast<std::ofstream&> (*this) << m_file_and_line << std::string (m_indent_count * 4, ' ');
         }
         std::cout << var;
         static_cast<std::ofstream&> (*this) << var;
@@ -63,24 +66,39 @@ struct s_file_and_console_stream : std::ofstream {
         if (m_indent_count > 0)
             m_indent_count--;
     }
+
+    s_file_and_console_stream& set_file_and_line (const char* p_file, long p_line) {
+        m_file_and_line = std::string (p_file) + ":" + std::to_string (p_line) + " -> ";
+        ;
+        return *this;
+    }
 };
+
 extern char                      log_folder[29];
 extern s_file_and_console_stream g_debug_stream;
 
-#ifndef RELEASE
-#define macro_debug_1(x) g_debug_stream >> __FILE__ >> ":" >> __LINE__ >> " : " << x << std::endl;
-#define macro_debug(x, y) \
-    g_debug_stream >> __FILE__ >> ":" >> __LINE__ >> " : " << x << " = " << y << std::endl;
+#if !defined(RELEASE)
+#define DEBUG_ELIMINATOR if (0)
+#elif defined(DEBUG)
+#define DEBUG_ELIMINATOR if (0)
+#else
+#define DEBUG_ELIMINATOR if (1)
+#endif
 
-#define DEBUG_BEGIN g_debug_stream >> __FILE__ >> ":" >> __LINE__ >> " -> "
+#define m_debug_stream DEBUG_ELIMINATOR g_debug_stream.set_file_and_line (__FILE__, __LINE__)
+#define m_verbose_stream g_debug_stream.set_file_and_line (__FILE__, __LINE__)
+#define m_standard_stream g_debug_stream.set_file_and_line (__FILE__, __LINE__)
+#define m_error_stream g_debug_stream.set_file_and_line (__FILE__, __LINE__)
+
+#ifndef RELEASE
+#define macro_debug_1(x) g_debug_stream.set_file_and_line (__FILE__, __LINE__) << x << std::endl;
+#define macro_debug(x, y) \
+    g_debug_stream.set_file_and_line (__FILE__, __LINE__) << " : " << x << " = " << y << std::endl;
 
 #else
 
 #define macro_debug(x, y)
 #define macro_debug_2(x, y)
-#define DEBUG_BEGIN \
-    if (0)          \
-    g_debug_stream >> __FILE__ >> ":" >> __LINE__ >> " -> "
 
 #endif
 
