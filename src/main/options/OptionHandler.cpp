@@ -265,10 +265,10 @@ void OptionHandler::print_usage_input () {
     std::cout
         << "                           This option specifies how the particles are loaded   " << std::endl
         << "                           into the simulation.                                 " << std::endl
-        << "                           If the name contains 'Generator' then the particles  " << std::endl
+        << "                           If the name contains 'GENERATOR' then the particles  " << std::endl
         << "                           are generated at runtime based on 'count', 'bounds'  " << std::endl
         << "                           and 'seed'.                                          " << std::endl
-        << "                           If the name contains 'File' then the particles are   " << std::endl
+        << "                           If the name contains 'FILE' then the particles are   " << std::endl
         << "                           loaded from a file with the specified type from the  " << std::endl
         << "                           file specified by 'in_file_name'                     " << std::endl;
 }
@@ -285,7 +285,9 @@ void OptionHandler::print_usage_output () {
         << "                           first iteration, and then every 'write_fequency'     " << std::endl
         << "                           iterations. The particles are stored in files        " << std::endl
         << "                           starting with the path and name provided by          " << std::endl
-        << "                           'out_file_name'.                                     " << std::endl;
+        << "                           'out_file_name'. After the file base is an increasing" << std::endl
+        << "                           number which specifies the file order. The           " << std::endl
+        << "                           file-ending is '.csv'                                " << std::endl;
 }
 void OptionHandler::print_usage_write_modes () {
     int index;
@@ -294,9 +296,9 @@ void OptionHandler::print_usage_write_modes () {
     }
     std::cout << std::endl;
     std::cout
-        << "                           If 'output' is set to 'CSV' then this option defines " << std::endl
-        << "                           which data from the individual particles should be   " << std::endl
-        << "                           stored on disk.                                      " << std::endl;
+        << "                           If 'output' is set to 'FILE_CSV' then this option    " << std::endl
+        << "                           defines which data from the individual particles     " << std::endl
+        << "                           should be stored on disk.                            " << std::endl;
 }
 void OptionHandler::print_usage_autotuneing () {
     std::cout << "  --autotuneing    | -a" << std::endl;
