@@ -19,6 +19,7 @@ void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_opti
     bool                print_config             = true;
     bool                print_saved_config       = false;
     std::string         config_name              = "";
+    float               run_time_limit           = -1;
     int                 long_options             = 0;
     int                 index                    = 0;
     const int           algorithm_type_index     = 1;
@@ -117,7 +118,7 @@ void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_opti
                         break;
                     }
                     case 'l': {
-                        line >> p_options.m_run_time_limit;
+                        line >> run_time_limit;
                         break;
                     }
                     case 'm': {
@@ -176,6 +177,9 @@ void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_opti
             }
         }
     }
+    if (run_time_limit > -1) {
+        p_options.m_max_iterations = run_time_limit / p_options.m_timestep;
+    }
     if (config_feature_used == true) {
         ConfigLoader config_loader;
         if (list_configs == true) {
@@ -208,7 +212,6 @@ void OptionHandler::print_choosen_options (s_options& p_options) {
     DEBUG_BEGIN << "output_type                                  " << p_options.m_output_type << DEBUG_END;
     DEBUG_BEGIN << "in_file_name                                 " << p_options.m_in_file_name << DEBUG_END;
     DEBUG_BEGIN << "out_file_name                                " << p_options.m_out_file_name << DEBUG_END;
-    DEBUG_BEGIN << "run_time_limit                               " << p_options.m_run_time_limit << DEBUG_END;
     DEBUG_BEGIN << "timestep                                     " << p_options.m_timestep << DEBUG_END;
     DEBUG_BEGIN << "verbose                                      " << p_options.m_verbose << DEBUG_END;
     DEBUG_BEGIN << "write_fequency                               " << p_options.m_write_fequency << DEBUG_END;
@@ -251,9 +254,11 @@ void OptionHandler::print_usage_data_structure () {
     }
     std::cout << " >" << std::endl;
     std::cout
-        << "                           This option specifies the data-structure which stores" << std::endl
-        << "                           the particles. The different data-structures have    " << std::endl
-        << "                           different advantages based on the particle-placement " << std::endl;
+        << "                           This option specifies the datastructure which stores " << std::endl
+        << "                           the particles. The different datastructures have     " << std::endl
+        << "                           different advantages based on the particle-placement." << std::endl
+        << "                           this option must not be used together with           " << std::endl
+        << "                           'autotuneing'                                        " << std::endl;
 }
 void OptionHandler::print_usage_input () {
     int index;
@@ -287,7 +292,7 @@ void OptionHandler::print_usage_output () {
         << "                           starting with the path and name provided by          " << std::endl
         << "                           'out_file_name'. After the file base is an increasing" << std::endl
         << "                           number which specifies the file order. The           " << std::endl
-        << "                           file-ending is '.csv'                                " << std::endl;
+        << "                           file-ending is chosen automatically.                 " << std::endl;
 }
 void OptionHandler::print_usage_write_modes () {
     int index;
@@ -298,58 +303,80 @@ void OptionHandler::print_usage_write_modes () {
     std::cout
         << "                           If 'output' is set to 'FILE_CSV' then this option    " << std::endl
         << "                           defines which data from the individual particles     " << std::endl
-        << "                           should be stored on disk.                            " << std::endl;
+        << "                           should be stored on disk. If 'output' is set to      " << std::endl
+        << "                           something else, than this option must not be used    " << std::endl;
 }
 void OptionHandler::print_usage_autotuneing () {
-    std::cout << "  --autotuneing    | -a" << std::endl;
+    std::cout << "  --autotuneing                | -a" << std::endl;
+    std::cout
+        << "                           If 'autotuneing' is enabled, then the program will   " << std::endl
+        << "                           choose the best datastructure based on the given     " << std::endl
+        << "                           particles. This option must not be used together with" << std::endl
+        << "                           the 'datastructure' option.                          " << std::endl;
 }
 void OptionHandler::print_usage_bounds () {
-    std::cout << "  --bounds         | -b" << std::endl;
+    std::cout << "  --bounds=(float/float/float) | -b" << std::endl;
+    std::cout
+        << "                           This option specifies in which space the particles   " << std::endl
+        << "                           can move. If particles move outside of the given     " << std::endl
+        << "                           bounds, than the datastructure may move them back    " << std::endl
+        << "                           into the bounds.                                     " << std::endl;
 }
 void OptionHandler::print_usage_write_fequency () {
-    std::cout << "  --write_fequency | -f" << std::endl;
+    std::cout << "  --write_fequency=(integer)   | -f" << std::endl;
+    std::cout
+        << "                           This option specifies the count of iterations until  " << std::endl
+        << "                           the particles are saved to the next file. Larger     " << std::endl
+        << "                           numbers result in a better performance, but the data " << std::endl
+        << "                           between the saves is lost.                           " << std::endl;
 }
 void OptionHandler::print_usage_help () {
-    std::cout << "  --help           | -h" << std::endl;
+    std::cout << "  --help                       | -h" << std::endl;
+    std::cout << "                           prints help for all possible options.                "
+              << std::endl;
 }
 void OptionHandler::print_usage_in_file_name () {
-    std::cout << "  --in_file_name   | -i" << std::endl;
+    std::cout << "  --in_file_name               | -i" << std::endl;
+    std::cout
+        << "                           This option specifies the file name in which the     " << std::endl
+        << "                           initial particles are stored. Must be used together  " << std::endl
+        << "                           an 'input' which is based on file.                   " << std::endl;
 }
 void OptionHandler::print_usage_run_time_limit () {
-    std::cout << "  --run_time_limit | -l" << std::endl;
+    std::cout << "  --run_time_limit             | -l" << std::endl;
 }
 void OptionHandler::print_usage_max_iterations () {
-    std::cout << "  --max_iterations | -m" << std::endl;
+    std::cout << "  --max_iterations             | -m" << std::endl;
 }
 void OptionHandler::print_usage_out_file_name () {
-    std::cout << "  --out_file_name  | -o" << std::endl;
+    std::cout << "  --out_file_name              | -o" << std::endl;
 }
 void OptionHandler::print_usage_particle_count () {
-    std::cout << "  --particle_count | -p" << std::endl;
+    std::cout << "  --particle_count             | -p" << std::endl;
 }
 void OptionHandler::print_usage_cut_off_radius () {
-    std::cout << "  --cut_off_radius | -r" << std::endl;
+    std::cout << "  --cut_off_radius             | -r" << std::endl;
 }
 void OptionHandler::print_usage_seed () {
-    std::cout << "  --seed           | -s" << std::endl;
+    std::cout << "  --seed                       | -s" << std::endl;
 }
 void OptionHandler::print_usage_timestep () {
-    std::cout << "  --timestep       | -t" << std::endl;
+    std::cout << "  --timestep                   | -t" << std::endl;
 }
 void OptionHandler::print_usage_verbose () {
-    std::cout << "  --verbose        | -v" << std::endl;
+    std::cout << "  --verbose                    | -v" << std::endl;
 }
 void OptionHandler::print_usage_load_confing () {
-    std::cout << "  --load_confing   " << std::endl;
+    std::cout << "  --load_confing               " << std::endl;
 }
 void OptionHandler::print_usage_print_config () {
-    std::cout << "  --print_config   " << std::endl;
+    std::cout << "  --print_config               " << std::endl;
 }
 void OptionHandler::print_usage_list_configs () {
-    std::cout << "  --list_configs   " << std::endl;
+    std::cout << "  --list_configs               " << std::endl;
 }
 void OptionHandler::print_usage_save_config () {
-    std::cout << "  --save_config    " << std::endl;
+    std::cout << "  --save_config                " << std::endl;
 }
 
 void OptionHandler::print_usage_particle_sim () {

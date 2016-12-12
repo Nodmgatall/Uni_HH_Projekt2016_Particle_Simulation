@@ -19,16 +19,10 @@ ParticleSimulator::~ParticleSimulator () {
 }
 void ParticleSimulator::simulate () {
     Benchmark::begin ("Simulation");
-    unsigned long max_timesteps              = 0;
     int           timesteps_until_next_write = m_options.m_write_fequency;
     unsigned long iteration_number           = 0;
-    if (m_options.m_max_iterations > 0) {
-        max_timesteps = m_options.m_max_iterations;
-    } else {
-        max_timesteps = m_options.m_run_time_limit / m_options.m_timestep;
-    }
     m_datastructure->serialize ();
-    while (iteration_number < max_timesteps) {
+    while (iteration_number < m_options.m_max_iterations) {
         Benchmark::begin ("Simulating the time-step");
         m_datastructure->run_simulation_iteration (iteration_number);
         timesteps_until_next_write--;

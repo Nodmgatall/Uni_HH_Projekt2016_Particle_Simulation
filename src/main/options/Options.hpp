@@ -16,7 +16,6 @@ struct s_options {
     e_output_type        m_output_type    = e_output_type::FILE_CSV;
     std::string          m_in_file_name   = "";
     std::string          m_out_file_name  = "";
-    data_type            m_run_time_limit = 1000;
     data_type            m_timestep       = 1;
     bool                 m_verbose        = false;
     int                  m_write_fequency = 1;
@@ -42,7 +41,6 @@ struct s_options {
         archive& BOOST_SERIALIZATION_NVP (m_output_type);
         archive& BOOST_SERIALIZATION_NVP (m_in_file_name);
         archive& BOOST_SERIALIZATION_NVP (m_out_file_name);
-        archive& BOOST_SERIALIZATION_NVP (m_run_time_limit);
         archive& BOOST_SERIALIZATION_NVP (m_timestep);
         archive& BOOST_SERIALIZATION_NVP (m_verbose);
         archive& BOOST_SERIALIZATION_NVP (m_write_fequency);
