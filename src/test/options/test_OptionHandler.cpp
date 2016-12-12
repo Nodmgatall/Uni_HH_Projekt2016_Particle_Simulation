@@ -280,14 +280,6 @@ BOOST_AUTO_TEST_CASE (test_write_fequency) {
     BOOST_CHECK_EQUAL (memcmp (&options_test, &options_compare, sizeof (s_options)), 0);
     BOOST_CHECK_EQUAL (res, 0);
 }
-BOOST_AUTO_TEST_CASE (test_help) {
-    OptionHandler handler;
-    s_options     options_test;
-    memset (&options_test, 0, sizeof (s_options));
-    std::vector<const char*> args = { "./particle_simulation.x", "--help" };
-    int res = handler.handle_options ((int) args.size (), const_cast<char**> (args.data ()), options_test);
-    BOOST_CHECK_EQUAL (res, 1);
-}
 BOOST_AUTO_TEST_CASE (test_in_file_name) {
     OptionHandler handler;
     s_options     options_test;
@@ -401,6 +393,43 @@ BOOST_AUTO_TEST_CASE (test_max_iterations_between_datastructure_rebuild) {
                                       options_test);
     BOOST_CHECK_EQUAL (memcmp (&options_test, &options_compare, sizeof (s_options)), 0);
     BOOST_CHECK_EQUAL (res, 0);
+}
+BOOST_AUTO_TEST_CASE (test_help1) {
+    OptionHandler handler;
+    s_options     options_test;
+    memset (&options_test, 0, sizeof (s_options));
+    std::vector<const char*> args = { "./particle_simulation.x", "--help" };
+    int res = handler.handle_options ((int) args.size (), const_cast<char**> (args.data ()), options_test);
+    BOOST_CHECK_EQUAL (res, 1);
+}
+BOOST_AUTO_TEST_CASE (test_help2) {
+    OptionHandler handler;
+    s_options     options_test;
+    memset (&options_test, 0, sizeof (s_options));
+    std::vector<const char*> args = { "./particle_simulation.x",
+                                      "--help=algorithm",
+                                      "--help=data_structure",
+                                      "--help=input",
+                                      "--help=output",
+                                      "--help=autotuneing",
+                                      "--help=bounds",
+                                      "--help=count",
+                                      "--help=write_fequency",
+                                      "--help=in_file_name",
+                                      "--help=run_time_limit",
+                                      "--help=max_iterations",
+                                      "--help=out_file_name",
+                                      "--help=cut_off_radius",
+                                      "--help=seed",
+                                      "--help=timestep",
+                                      "--help=verbose",
+                                      "--help=max_iterations_between_datastructure_rebuild",
+                                      "--help=load_config",
+                                      "--help=save_config",
+                                      "--help=print_config"
+                                      "--help=this_option_does_not_exist" };
+    int res = handler.handle_options ((int) args.size (), const_cast<char**> (args.data ()), options_test);
+    BOOST_CHECK_EQUAL (res, 1);
 }
 
 /*
