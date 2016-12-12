@@ -210,41 +210,34 @@ void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_opti
 }
 void OptionHandler::print_choosen_options (s_options& p_options) {
     Benchmark::begin ("Print-Options");
-    int index;
-    m_standard_stream << "algorithm_type                               "
-                      << p_options.m_algorithm_type << std::endl;
-    m_standard_stream << "autotuneing                                  " << p_options.m_autotuneing
-                      << std::endl;
-    m_standard_stream << "output_type                                  " << p_options.m_output_type
-                      << std::endl;
-    m_standard_stream << "in_file_name                                 " << p_options.m_in_file_name
-                      << std::endl;
-    m_standard_stream << "out_file_name                                "
-                      << p_options.m_out_file_name << std::endl;
-    m_standard_stream << "timestep                                     " << p_options.m_timestep << std::endl;
-    m_standard_stream << "verbose                                      " << p_options.m_verbose << std::endl;
-    m_standard_stream << "write_fequency                               "
-                      << p_options.m_write_fequency << std::endl;
-    m_standard_stream << "cut_off_radius                               "
-                      << p_options.m_cut_off_radius << std::endl;
-    m_standard_stream << "data_structure                               "
-                      << p_options.m_data_structure << std::endl;
-    m_standard_stream << "input_type                                   " << p_options.m_input_type << std::endl;
-    m_standard_stream << "seed                                         " << p_options.m_seed << std::endl;
-    m_standard_stream << "count                                        "
-                      << p_options.m_particle_count << std::endl;
-    m_standard_stream << "max_iterations                               "
-                      << p_options.m_max_iterations << std::endl;
-    m_standard_stream << "bounds                                       " << p_options.m_bounds << std::endl;
-    m_standard_stream << "max_iterations_between_datastructure_rebuild "
-                      << p_options.m_max_iterations_between_datastructure_rebuild << std::endl;
-    m_standard_stream << "write_modes    : [ID";
+    int               index;
+    std::stringstream ss;
+    ss << "write_modes    : [ID";
     for (index = 2; index < (signed) g_csv_column_names.size (); index++) {
         if (p_options.m_write_modes[static_cast<e_csv_column_type> (index)]) {
-            g_log_file << ", " << g_csv_column_names[index];
+            ss << ", " << g_csv_column_names[index];
         }
     }
-    g_log_file << "]" << std::endl;
+    ss << "]" << std::endl;
+    m_standard_stream
+        << "algorithm_type                               " << p_options.m_algorithm_type << std::endl
+        << "autotuneing                                  " << p_options.m_autotuneing << std::endl
+        << "output_type                                  " << p_options.m_output_type << std::endl
+        << "in_file_name                                 " << p_options.m_in_file_name << std::endl
+        << "out_file_name                                " << p_options.m_out_file_name << std::endl
+        << "timestep                                     " << p_options.m_timestep << std::endl
+        << "verbose                                      " << p_options.m_verbose << std::endl
+        << "write_fequency                               " << p_options.m_write_fequency << std::endl
+        << "cut_off_radius                               " << p_options.m_cut_off_radius << std::endl
+        << "data_structure                               " << p_options.m_data_structure << std::endl
+        << "input_type                                   " << p_options.m_input_type << std::endl
+        << "seed                                         " << p_options.m_seed << std::endl
+        << "count                                        " << p_options.m_particle_count << std::endl
+        << "max_iterations                               " << p_options.m_max_iterations << std::endl
+        << "bounds                                       " << p_options.m_bounds << std::endl
+        << "max_iterations_between_datastructure_rebuild "
+        << p_options.m_max_iterations_between_datastructure_rebuild << std::endl
+        << ss.str () << std::endl;
     Benchmark::end ();
 }
 
