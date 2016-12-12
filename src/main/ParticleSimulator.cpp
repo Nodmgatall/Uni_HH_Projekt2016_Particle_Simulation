@@ -11,6 +11,11 @@ ParticleSimulator::ParticleSimulator (s_options& p_options)
     m_input->initialize_datastructure ();
 }
 ParticleSimulator::~ParticleSimulator () {
+    delete (m_algorithm);
+    delete (m_border);
+    delete (m_writer);
+    delete (m_datastructure);
+    delete (m_input);
 }
 void ParticleSimulator::simulate () {
     Benchmark::begin ("Simulation");
