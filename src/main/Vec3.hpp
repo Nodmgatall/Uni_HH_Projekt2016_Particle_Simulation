@@ -9,10 +9,12 @@
 #define SRC_VEC3_HPP_
 
 #include "DataType.hpp"
+#if defined(BOOST_AVAILABLE)
 #include <boost/archive/xml_iarchive.hpp>
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/serialization/export.hpp>
 #include <boost/serialization/nvp.hpp>
+#endif
 #include <istream>
 #include <math.h>
 #include <ostream>
@@ -100,7 +102,7 @@ struct Vec3 {
         }
         return stream;
     }
-
+#if defined(BOOST_AVAILABLE)
     friend class boost::serialization::access;
     template <class Archive>
     void serialize (Archive& archive, const unsigned int version) {
@@ -109,6 +111,7 @@ struct Vec3 {
         archive& boost::serialization::make_nvp ("y", y);
         archive& boost::serialization::make_nvp ("z", z);
     }
+#endif
 };
 typedef Vec3<data_type> Vec3f;
 typedef Vec3<long>      Vec3l;

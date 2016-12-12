@@ -1,11 +1,13 @@
 #ifndef OPTIONS_SIMULATION_HPP
 #define OPTIONS_SIMULATION_HPP
 #include "Definitions.hpp"
+#if defined(BOOST_AVAILABLE)
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/serialization/export.hpp>
 #include <boost/serialization/map.hpp>
 #include <boost/serialization/nvp.hpp>
+#endif
 #include <map>
 #include <vector>
 struct s_options {
@@ -30,6 +32,7 @@ struct s_options {
     unsigned long m_max_iterations = 0;
     Vec3f         m_bounds         = Vec3f (5.0f, 5.0f, 5.0f);
     int           m_max_iterations_between_datastructure_rebuild = 20;
+#if defined(BOOST_AVAILABLE)
     friend class boost::serialization::access;
     template <class Archive>
     void serialize (Archive& archive, const unsigned int version) {
@@ -52,5 +55,6 @@ struct s_options {
         archive& boost::serialization::make_nvp ("max_iterations_between_datastructure_rebuild",
                                                  m_max_iterations_between_datastructure_rebuild);
     }
+#endif
 };
 #endif
