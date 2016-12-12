@@ -93,7 +93,9 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                              write_modes_index * 1000 + index });
     }
     opterr = 0;
-    while ((argv_index = getopt_long (p_argc, p_argv, "ab::c::f::hi::l::m::o::r::s::t::v", &options[0], &long_options)) !=
+    optind = 1;
+
+    while ((argv_index = getopt_long (p_argc, p_argv, "ab::c::f::hi::l::m::o::r::s::t::v", options.data (), &long_options)) !=
            -1) {
         std::stringstream line;
         if (optarg) {
@@ -305,20 +307,12 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
         print_choosen_options (p_options);
     }
     g_verbose = p_options.m_verbose;
-
     return 0;
 }
 void OptionHandler::print_choosen_options (s_options& p_options) {
     Benchmark::begin ("Print-Options");
-    int               index;
-    std::stringstream ss;
-    ss << "[ID";
-    for (index = 2; index < (signed) g_csv_column_names.size (); index++) {
-        if (p_options.m_write_modes[static_cast<e_csv_column_type> (index)]) {
-            ss << ", " << g_csv_column_names[index];
-        }
-    }
-    ss << "]" << std::endl;
+    int index;
+
     m_standard_stream
         << "algorithm_type                               " << p_options.m_algorithm_type << std::endl
         << "autotuneing                                  " << p_options.m_autotuneing << std::endl
@@ -336,8 +330,16 @@ void OptionHandler::print_choosen_options (s_options& p_options) {
         << "max_iterations                               " << p_options.m_max_iterations << std::endl
         << "bounds                                       " << p_options.m_bounds << std::endl
         << "max_iterations_between_datastructure_rebuild "
-        << p_options.m_max_iterations_between_datastructure_rebuild << std::endl
-        << "write_modes                                  " << ss.str () << std::endl;
+        << p_options.m_max_iterations_between_datastructure_rebuild << std::endl;
+    std::stringstream ss;
+    ss << "[ID";
+    for (index = 2; index < (signed) g_csv_column_names.size (); index++) {
+        if (p_options.m_write_modes[static_cast<e_csv_column_type> (index)]) {
+            ss << ", " << g_csv_column_names[index];
+        }
+    }
+    ss << "]" << std::endl;
+    m_standard_stream << "write_modes                                  " << ss.str () << std::endl;
     Benchmark::end ();
 }
 void OptionHandler::print_header () {

@@ -35,7 +35,6 @@ class OptionHandler {
     void print_usage_load_confing ();
     void print_usage_save_config ();
     //
-    void print_choosen_options (s_options& p_options);
     void print_usage_particle_sim ();
     void print_header ();
 
@@ -45,6 +44,7 @@ class OptionHandler {
 
   public:
     int handle_options (int p_argc, char** p_argv, s_options& p_options);
+    void print_choosen_options (s_options& p_options);
 };
 
 #endif
