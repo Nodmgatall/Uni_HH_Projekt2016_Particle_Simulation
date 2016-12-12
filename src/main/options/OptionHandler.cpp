@@ -283,77 +283,84 @@ void OptionHandler::print_usage_output () {
     for (index = 2; index < (signed) g_output_names.size (); index++) {
         std::cout << " | " << g_output_names[index];
     }
-    std::cout << " >" << std::endl;
     std::cout
+        << " >" << std::endl
         << "                           This option specifies how the particles are saved    " << std::endl
         << "                           from the simulation. Particles are saved before the  " << std::endl
         << "                           first iteration, and then every 'write_fequency'     " << std::endl
-        << "                           iterations. The particles are stored in files        " << std::endl
-        << "                           starting with the path and name provided by          " << std::endl
-        << "                           'out_file_name'. After the file base is an increasing" << std::endl
-        << "                           number which specifies the file order. The           " << std::endl
-        << "                           file-ending is chosen automatically.                 " << std::endl;
+        << "                           iterations.                                          " << std::endl;
 }
 void OptionHandler::print_usage_write_modes () {
     int index;
     for (index = 1; index < (signed) g_csv_column_names.size (); index++) {
         std::cout << "  --WRITE_" << g_csv_column_names[index];
     }
-    std::cout << std::endl;
     std::cout
-        << "                           If 'output' is set to 'FILE_CSV' then this option    " << std::endl
+        << std::endl
+        << "                           If 'output' is set to 'FILE_CSV' then this options   " << std::endl
         << "                           defines which data from the individual particles     " << std::endl
         << "                           should be stored on disk. If 'output' is set to      " << std::endl
         << "                           something else, than this option must not be used.   " << std::endl;
 }
 void OptionHandler::print_usage_autotuneing () {
-    std::cout << "  --autotuneing                | -a" << std::endl;
     std::cout
+        << "  --autotuneing                | -a" << std::endl
         << "                           If 'autotuneing' is enabled, then the program will   " << std::endl
         << "                           choose the best datastructure based on the given     " << std::endl
         << "                           particles. This option must not be used together with" << std::endl
         << "                           the 'datastructure' option.                          " << std::endl;
 }
 void OptionHandler::print_usage_bounds () {
-    std::cout << "  --bounds=(float/float/float) | -b" << std::endl;
     std::cout
+        << "  --bounds=(float/float/float) | -b" << std::endl
         << "                           This option specifies in which space the particles   " << std::endl
         << "                           can move. If particles move outside of the given     " << std::endl
         << "                           bounds, than the datastructure may move them back    " << std::endl
         << "                           into the bounds.                                     " << std::endl;
 }
 void OptionHandler::print_usage_write_fequency () {
-    std::cout << "  --write_fequency=(integer)   | -f" << std::endl;
     std::cout
+        << "  --write_fequency=(integer)   | -f" << std::endl
         << "                           This option specifies the count of iterations until  " << std::endl
         << "                           the particles are saved to the next file. Larger     " << std::endl
         << "                           numbers result in a better performance, but the data " << std::endl
         << "                           between the saves is lost.                           " << std::endl;
 }
 void OptionHandler::print_usage_help () {
-    std::cout << "  --help                       | -h" << std::endl;
-    std::cout << "                           prints help for all possible options.                "
+    std::cout << "  --help                       | -h" << std::endl
+              << "                           prints help for all possible options.                "
               << std::endl;
 }
 void OptionHandler::print_usage_in_file_name () {
-    std::cout << "  --in_file_name(string)       | -i" << std::endl;
     std::cout
+        << "  --in_file_name(string)       | -i" << std::endl
         << "                           This option specifies the file name in which the     " << std::endl
         << "                           initial particles are stored. Must be used together  " << std::endl
         << "                           an 'input' which is based on file.                   " << std::endl;
 }
 void OptionHandler::print_usage_run_time_limit () {
-    std::cout << "  --run_time_limit=(float)     | -l" << std::endl;
     std::cout
+        << "  --run_time_limit=(float)     | -l" << std::endl
         << "                           Defines the time at which the simulation should end. " << std::endl
         << "                           each simulation starts at time 0. Time increases     " << std::endl
-        << "                           every iteration based on 'timestep'.                 " << std::endl;
+        << "                           every iteration based on 'timestep'. Must not be used" << std::endl
+        << "                           together with 'max_iterations'.                      " << std::endl;
 }
 void OptionHandler::print_usage_max_iterations () {
-    std::cout << "  --max_iterations             | -m" << std::endl;
+    std::cout
+        << "  --max_iterations=(integer)   | -m" << std::endl
+        << "                           Defines the number of iterations which should be     " << std::endl
+        << "                           simulated. Must not be used together with the        " << std::endl
+        << "                           'run_time_limit' option.                             " << std::endl;
 }
 void OptionHandler::print_usage_out_file_name () {
-    std::cout << "  --out_file_name              | -o" << std::endl;
+    std::cout
+        << "  --out_file_name(string)      | -i" << std::endl
+        << "                           The particles are stored in files starting with the  " << std::endl
+        << "                           path and name provided by 'out_file_name'. After the " << std::endl
+        << "                           file base is an increasing number which specifies    " << std::endl
+        << "                           the file order. The file-ending is chosen            " << std::endl
+        << "                           automatically based on the 'output' option.          " << std::endl;
 }
 void OptionHandler::print_usage_particle_count () {
     std::cout << "  --particle_count             | -p" << std::endl;
