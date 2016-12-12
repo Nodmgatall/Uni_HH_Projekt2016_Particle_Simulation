@@ -1,6 +1,7 @@
 #ifndef OPTIONS_SIMULATION_HPP
 #define OPTIONS_SIMULATION_HPP
 #include "Definitions.hpp"
+#include "Vec3.hpp"
 #if defined(BOOST_AVAILABLE)
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/archive/xml_oarchive.hpp>

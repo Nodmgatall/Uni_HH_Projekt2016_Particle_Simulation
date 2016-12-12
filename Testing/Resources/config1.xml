@@ -1,8 +1,8 @@
 <options>
 	<autotuneing>0</autotuneing>
 	<output_type>1</output_type>
-	<in_file_name></in_file_name>
-	<out_file_name></out_file_name>
+	<in_file_name>inabcde.xml</in_file_name>
+	<out_file_name>outabcde.xml</out_file_name>
 	<timestep>1.000000000e+00</timestep>
 	<verbose>0</verbose>
 	<write_fequency>1</write_fequency>
@@ -34,8 +34,8 @@
 	</write_modes>
 	<input_type>4</input_type>
 	<seed>123456789</seed>
-	<particle_count>0</particle_count>
-	<max_iterations>0</max_iterations>
+	<particle_count>2</particle_count>
+	<max_iterations>6</max_iterations>
 	<bounds>
 		<x>5.000000000e+00</x>
 		<y>5.000000000e+00</y>

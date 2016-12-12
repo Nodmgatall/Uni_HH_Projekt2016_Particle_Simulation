@@ -9,7 +9,7 @@ int OptionHandler::indexInArray (std::vector<const char*> elements, char* elemen
     return -1;
 }
 #if defined(BOOST_AVAILABLE)
-typedef std::map<e_csv_column_type, bool>  t_map__e_csv_column_type__boolean;
+typedef std::map<e_csv_column_type, bool> t_map__e_csv_column_type__boolean;
 BOOST_CLASS_EXPORT_GUID (s_options, "s_options")
 BOOST_CLASS_IMPLEMENTATION (s_options, boost::serialization::object_serializable)
 BOOST_CLASS_TRACKING (s_options, boost::serialization::track_never)

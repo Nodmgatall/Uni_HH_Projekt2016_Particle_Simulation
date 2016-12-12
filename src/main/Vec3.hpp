@@ -66,11 +66,11 @@ struct Vec3 {
     inline Vec3<T> operator/ (const Vec3<T>& other) {
         return Vec3<T> (x / other.x, y / other.y, z / other.z);
     }
-    inline bool operator== (const Vec3<T>& other) {
-        return (x == other.x) && (y == other.y) && (z == other.z);
+    inline friend bool operator== (const Vec3<T>& left, const Vec3<T>& right) {
+        return (left.x == right.x) && (left.y == right.y) && (left.z == right.z);
     }
-    inline bool operator!= (const Vec3<T>& other) {
-        return (x != other.x) || (y != other.y) || (z != other.z);
+    inline friend bool operator!= (const Vec3<T>& left, const Vec3<T>& right) {
+        return (left.x != right.x) || (left.y != right.y) || (left.z != right.z);
     }
     inline static Vec3<T> max (const Vec3<T>& a, const Vec3<T>& b) {
         return Vec3<T> (a.x > b.x ? a.x : b.x, a.y > b.y ? a.y : b.y, a.z > b.z ? a.z : b.z);
