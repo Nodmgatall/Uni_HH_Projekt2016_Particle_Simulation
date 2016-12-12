@@ -244,7 +244,7 @@ void OptionHandler::print_usage_algorithm () {
     std::cout
         << "                           This option specifies the method to calculate the    " << std::endl
         << "                           forces between the particles. Based on the forces the" << std::endl
-        << "                           movement is calculated                               " << std::endl;
+        << "                           movement is calculated.                              " << std::endl;
 }
 void OptionHandler::print_usage_data_structure () {
     int index;
@@ -258,7 +258,7 @@ void OptionHandler::print_usage_data_structure () {
         << "                           the particles. The different datastructures have     " << std::endl
         << "                           different advantages based on the particle-placement." << std::endl
         << "                           this option must not be used together with           " << std::endl
-        << "                           'autotuneing'                                        " << std::endl;
+        << "                           'autotuneing'.                                       " << std::endl;
 }
 void OptionHandler::print_usage_input () {
     int index;
@@ -275,7 +275,7 @@ void OptionHandler::print_usage_input () {
         << "                           and 'seed'.                                          " << std::endl
         << "                           If the name contains 'FILE' then the particles are   " << std::endl
         << "                           loaded from a file with the specified type from the  " << std::endl
-        << "                           file specified by 'in_file_name'                     " << std::endl;
+        << "                           file specified by 'in_file_name'.                    " << std::endl;
 }
 void OptionHandler::print_usage_output () {
     int index;
@@ -304,7 +304,7 @@ void OptionHandler::print_usage_write_modes () {
         << "                           If 'output' is set to 'FILE_CSV' then this option    " << std::endl
         << "                           defines which data from the individual particles     " << std::endl
         << "                           should be stored on disk. If 'output' is set to      " << std::endl
-        << "                           something else, than this option must not be used    " << std::endl;
+        << "                           something else, than this option must not be used.   " << std::endl;
 }
 void OptionHandler::print_usage_autotuneing () {
     std::cout << "  --autotuneing                | -a" << std::endl;
@@ -336,14 +336,18 @@ void OptionHandler::print_usage_help () {
               << std::endl;
 }
 void OptionHandler::print_usage_in_file_name () {
-    std::cout << "  --in_file_name               | -i" << std::endl;
+    std::cout << "  --in_file_name(string)       | -i" << std::endl;
     std::cout
         << "                           This option specifies the file name in which the     " << std::endl
         << "                           initial particles are stored. Must be used together  " << std::endl
         << "                           an 'input' which is based on file.                   " << std::endl;
 }
 void OptionHandler::print_usage_run_time_limit () {
-    std::cout << "  --run_time_limit             | -l" << std::endl;
+    std::cout << "  --run_time_limit=(float)     | -l" << std::endl;
+    std::cout
+        << "                           Defines the time at which the simulation should end. " << std::endl
+        << "                           each simulation starts at time 0. Time increases     " << std::endl
+        << "                           every iteration based on 'timestep'.                 " << std::endl;
 }
 void OptionHandler::print_usage_max_iterations () {
     std::cout << "  --max_iterations             | -m" << std::endl;
