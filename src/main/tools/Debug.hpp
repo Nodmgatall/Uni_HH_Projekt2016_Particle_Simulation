@@ -12,12 +12,12 @@
 #include <fstream>
 #include <iostream>
 
-struct s_debug_stream : std::ofstream {
+struct s_file_and_console_stream : std::ofstream {
     int  m_indent_count;
     bool m_last_char_was_std_endl;
-    s_debug_stream () : m_indent_count (0), m_last_char_was_std_endl (true) {
+    s_file_and_console_stream () : m_indent_count (0), m_last_char_was_std_endl (true) {
     }
-    s_debug_stream& operator<< (std::ostream& (*manipulator) (std::ostream&) ) {
+    s_file_and_console_stream& operator<< (std::ostream& (*manipulator) (std::ostream&) ) {
         manipulator (std::cout);
         manipulator (static_cast<std::ofstream&> (*this));
         m_last_char_was_std_endl = true;
@@ -37,7 +37,7 @@ struct s_debug_stream : std::ofstream {
     //////////////////////////////////////////////////////////////////////
     // veränderter output --->>>>
     //////////////////////////////////////////////////////////////////////
-    s_debug_stream& operator<< (const bool& var) {
+    s_file_and_console_stream& operator<< (const bool& var) {
         print (var ? "ON" : "OFF");
         return *this;
     }
@@ -46,12 +46,12 @@ struct s_debug_stream : std::ofstream {
     //<<<<--- veränderter output
     //////////////////////////////////////////////////////////////////////
     template <typename T>
-    s_debug_stream& operator<< (const T& var) {
+    s_file_and_console_stream& operator<< (const T& var) {
         print (var);
         return *this;
     }
     template <typename T>
-    s_debug_stream& operator>> (const T& var) {
+    s_file_and_console_stream& operator>> (const T& var) {
         static_cast<std::ofstream&> (*this) << var;
         return *this;
     }
@@ -64,8 +64,8 @@ struct s_debug_stream : std::ofstream {
             m_indent_count--;
     }
 };
-extern char           log_folder[29];
-extern s_debug_stream g_debug_stream;
+extern char                      log_folder[29];
+extern s_file_and_console_stream g_debug_stream;
 
 #ifndef RELEASE
 #define macro_debug_1(x) g_debug_stream >> __FILE__ >> ":" >> __LINE__ >> " : " << x << std::endl;
@@ -85,6 +85,4 @@ extern s_debug_stream g_debug_stream;
 #endif
 
 #define DEBUG_VAR(var) #var << " = " << var
-#define DEBUG_END std::endl
-#define DEBUG_ENDL std::endl << std::endl
 #endif /* DEBUG_HPP_ */

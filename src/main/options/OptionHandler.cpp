@@ -210,30 +210,30 @@ void OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_opti
 void OptionHandler::print_choosen_options (s_options& p_options) {
     Benchmark::begin ("Print-Options");
     int index;
-    DEBUG_BEGIN << "algorithm_type                               " << p_options.m_algorithm_type << DEBUG_END;
-    DEBUG_BEGIN << "autotuneing                                  " << p_options.m_autotuneing << DEBUG_END;
-    DEBUG_BEGIN << "output_type                                  " << p_options.m_output_type << DEBUG_END;
-    DEBUG_BEGIN << "in_file_name                                 " << p_options.m_in_file_name << DEBUG_END;
-    DEBUG_BEGIN << "out_file_name                                " << p_options.m_out_file_name << DEBUG_END;
-    DEBUG_BEGIN << "timestep                                     " << p_options.m_timestep << DEBUG_END;
-    DEBUG_BEGIN << "verbose                                      " << p_options.m_verbose << DEBUG_END;
-    DEBUG_BEGIN << "write_fequency                               " << p_options.m_write_fequency << DEBUG_END;
-    DEBUG_BEGIN << "cut_off_radius                               " << p_options.m_cut_off_radius << DEBUG_END;
-    DEBUG_BEGIN << "data_structure                               " << p_options.m_data_structure << DEBUG_END;
-    DEBUG_BEGIN << "input_type                                   " << p_options.m_input_type << DEBUG_END;
-    DEBUG_BEGIN << "seed                                         " << p_options.m_seed << DEBUG_END;
-    DEBUG_BEGIN << "count                                        " << p_options.m_particle_count << DEBUG_END;
-    DEBUG_BEGIN << "max_iterations                               " << p_options.m_max_iterations << DEBUG_END;
-    DEBUG_BEGIN << "bounds                                       " << p_options.m_bounds << DEBUG_END;
+    DEBUG_BEGIN << "algorithm_type                               " << p_options.m_algorithm_type << std::endl;
+    DEBUG_BEGIN << "autotuneing                                  " << p_options.m_autotuneing << std::endl;
+    DEBUG_BEGIN << "output_type                                  " << p_options.m_output_type << std::endl;
+    DEBUG_BEGIN << "in_file_name                                 " << p_options.m_in_file_name << std::endl;
+    DEBUG_BEGIN << "out_file_name                                " << p_options.m_out_file_name << std::endl;
+    DEBUG_BEGIN << "timestep                                     " << p_options.m_timestep << std::endl;
+    DEBUG_BEGIN << "verbose                                      " << p_options.m_verbose << std::endl;
+    DEBUG_BEGIN << "write_fequency                               " << p_options.m_write_fequency << std::endl;
+    DEBUG_BEGIN << "cut_off_radius                               " << p_options.m_cut_off_radius << std::endl;
+    DEBUG_BEGIN << "data_structure                               " << p_options.m_data_structure << std::endl;
+    DEBUG_BEGIN << "input_type                                   " << p_options.m_input_type << std::endl;
+    DEBUG_BEGIN << "seed                                         " << p_options.m_seed << std::endl;
+    DEBUG_BEGIN << "count                                        " << p_options.m_particle_count << std::endl;
+    DEBUG_BEGIN << "max_iterations                               " << p_options.m_max_iterations << std::endl;
+    DEBUG_BEGIN << "bounds                                       " << p_options.m_bounds << std::endl;
     DEBUG_BEGIN << "max_iterations_between_datastructure_rebuild "
-                << p_options.m_max_iterations_between_datastructure_rebuild << DEBUG_END;
+                << p_options.m_max_iterations_between_datastructure_rebuild << std::endl;
     DEBUG_BEGIN << "write_modes    : [ID";
     for (index = 2; index < (signed) g_csv_column_names.size (); index++) {
         if (p_options.m_write_modes[static_cast<e_csv_column_type> (index)]) {
             g_debug_stream << ", " << g_csv_column_names[index];
         }
     }
-    g_debug_stream << "]" << DEBUG_END;
+    g_debug_stream << "]" << std::endl;
     Benchmark::end ();
 }
 
@@ -405,7 +405,6 @@ void OptionHandler::print_max_iterations_between_datastructure_rebuild () {
         << "  --max_iterations_between_datastructure_rebuild                                " << std::endl
         << "                           Specifies the iteration count after which the        " << std::endl
         << "                           datastructure should reorder its internal structure. " << std::endl;
-
 }
 void OptionHandler::print_usage_load_confing () {
     std::cout //
@@ -445,7 +444,7 @@ void OptionHandler::print_usage_particle_sim () {
     print_usage_seed ();
     print_usage_timestep ();
     print_usage_verbose ();
-    print_max_iterations_between_datastructure_rebuild();
+    print_max_iterations_between_datastructure_rebuild ();
     //
     print_usage_load_confing ();
     print_usage_print_config ();

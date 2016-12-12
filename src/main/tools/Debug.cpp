@@ -6,5 +6,5 @@
  */
 #include "Debug.hpp"
 
-char           log_folder[29];
-s_debug_stream g_debug_stream;
+char                      log_folder[29];
+s_file_and_console_stream g_debug_stream;
