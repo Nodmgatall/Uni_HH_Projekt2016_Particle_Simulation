@@ -11,6 +11,7 @@
 #include "DataType.hpp"
 #include <boost/archive/xml_iarchive.hpp>
 #include <boost/archive/xml_oarchive.hpp>
+#include <boost/serialization/export.hpp>
 #include <boost/serialization/nvp.hpp>
 #include <istream>
 #include <math.h>
@@ -109,10 +110,10 @@ struct Vec3 {
         archive& boost::serialization::make_nvp ("z", z);
     }
 };
-
 typedef Vec3<data_type> Vec3f;
 typedef Vec3<long>      Vec3l;
 
 extern const Vec3f g_vec3f_0;
 extern const Vec3l g_vec3l_0;
+
 #endif /* SRC_Vec3_HPP_ */

@@ -11,15 +11,24 @@ int OptionHandler::indexInArray (std::vector<const char*> elements, char* elemen
         }
     return -1;
 }
+BOOST_CLASS_EXPORT_GUID (s_options, "s_options")
+BOOST_CLASS_IMPLEMENTATION( s_options, boost::serialization::object_serializable )
+BOOST_CLASS_TRACKING( s_options, boost::serialization::track_never )
+BOOST_CLASS_EXPORT_GUID (Vec3f, "Vec3f")
+BOOST_CLASS_IMPLEMENTATION( Vec3f, boost::serialization::object_serializable )
+BOOST_CLASS_TRACKING( Vec3f, boost::serialization::track_never )
+BOOST_CLASS_EXPORT_GUID (Vec3l, "Vec3l")
+BOOST_CLASS_IMPLEMENTATION( Vec3l, boost::serialization::object_serializable )
+BOOST_CLASS_TRACKING(Vec3l, boost::serialization::track_never )
 void OptionHandler::save_config (const s_options& p_options, const std::string p_filename) {
     std::ofstream                stream (p_filename, std::ofstream::trunc | std::ofstream::out);
-    boost::archive::xml_oarchive xml (stream);
+    boost::archive::xml_oarchive xml (stream,boost::archive::no_header);
     xml << boost::serialization::make_nvp ("options", p_options);
     stream.close ();
 }
 void OptionHandler::load_config (s_options& p_options, const std::string p_filename) {
     std::ifstream                stream (p_filename, std::ifstream::binary | std::ifstream::in);
-    boost::archive::xml_iarchive xml (stream);
+    boost::archive::xml_iarchive xml (stream,boost::archive::no_header);
     xml >> boost::serialization::make_nvp ("options", p_options);
     stream.close ();
 }

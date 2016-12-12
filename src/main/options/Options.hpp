@@ -3,6 +3,7 @@
 #include "Definitions.hpp"
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/archive/xml_oarchive.hpp>
+#include <boost/serialization/export.hpp>
 #include <boost/serialization/map.hpp>
 #include <boost/serialization/nvp.hpp>
 #include <map>
@@ -47,9 +48,7 @@ struct s_options {
         archive& boost::serialization::make_nvp ("seed", m_seed);
         archive& boost::serialization::make_nvp ("particle_count", m_particle_count);
         archive& boost::serialization::make_nvp ("max_iterations", m_max_iterations);
-        archive& boost::serialization::make_nvp ("bounds.x", m_bounds.x);
-        archive& boost::serialization::make_nvp ("bounds.y", m_bounds.y);
-        archive& boost::serialization::make_nvp ("bounds.z", m_bounds.z);
+        archive& boost::serialization::make_nvp ("bounds", m_bounds);
         archive& boost::serialization::make_nvp ("max_iterations_between_datastructure_rebuild",
                                                  m_max_iterations_between_datastructure_rebuild);
     }
