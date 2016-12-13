@@ -461,3 +461,16 @@ BOOST_AUTO_TEST_CASE (test_invalid_value) {
     BOOST_CHECK_EQUAL (memcmp (&options_test, &options_compare, sizeof (s_options)), 0);
     BOOST_CHECK_EQUAL (res, 0);
 }
+BOOST_AUTO_TEST_CASE (test_invalid_option) {
+    OptionHandler handler;
+    s_options     options_test;
+    memset (&options_test, 0, sizeof (s_options));
+    std::vector<const char*> args = { "./particle_simulation.x",
+                                      "--algorithm=LENNARD_JONES",
+                                      "--data_structure=GRID",
+                                      "--output=FILE_CSV",
+                                      "--input=GENERATOR_SINGLE_OBJECT_MIDDLE",
+                                      "--this_option_does_not_exist" };
+    int res = handler.handle_options ((int) args.size (), const_cast<char**> (args.data ()), options_test);
+    BOOST_CHECK_EQUAL (res, 1);
+}

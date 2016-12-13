@@ -52,7 +52,6 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
         strcpy (nameptr, name.c_str ());
         options.push_back ({ nameptr, no_argument, 0, write_modes_index * 1000 + index });
     }
-    opterr = 0;
     optind = 1;
     while ((argv_index = getopt_long (p_argc, p_argv, "ab::c::f::h::i::l::m::o::r::s::t::v", options.data (), &long_options)) !=
            -1) {
@@ -183,8 +182,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                         break;
                     }
                     case '?': {
-                        m_standard_stream << "Error: unknown option" << std::endl;
-                        break;
+                        return 1;
                     }
                 }
             }
