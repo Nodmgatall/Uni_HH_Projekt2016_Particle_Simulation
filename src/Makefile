@@ -28,7 +28,7 @@ endif
 build_release: format
 	cd .. && $(MAKE) particle_simulation.x -j 8 --no-print-directory
 
-build: 
+build: format
 	cd .. && $(MAKE) -j 8 --no-print-directory
 
 rmlog: format
@@ -42,7 +42,7 @@ test:
 	rm -rf ../Testing/Binary/*
 	rm -rf ../Testing/Temporary/*
 	mkdir ../Testing/Coverage
-	$(MAKE) cmake build
+	$(MAKE) cmake build 
 	lcov --directory ../CMakeFiles/ --capture --initial --output-file ../Testing/Coverage/coverage_init.info
 	cd .. && $(MAKE) check
 	lcov --directory ../CMakeFiles/ --capture --output-file ../Testing/Coverage/coverage_test.info
