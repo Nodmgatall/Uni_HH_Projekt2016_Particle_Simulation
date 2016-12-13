@@ -15,6 +15,7 @@ void createOutputDirectory () {
         // don't care ... but return value is used
     }
     g_log_file.open (std::string (log_folder) + "/log.txt", std::fstream::out);
+    g_log_file << std::fixed << std::setprecision (6) << std::setfill ('0');
     if (unlink ("logdata/latest")) {
         // don't care ... but return value is used
     }
