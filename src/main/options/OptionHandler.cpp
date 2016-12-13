@@ -8,23 +8,11 @@ int OptionHandler::indexInArray (std::vector<const char*> elements, char* elemen
         }
     return -1;
 }
-void OptionHandler::save_config (const s_options& p_options, const std::string p_filename) {
-    std::ofstream stream (p_filename, std::ofstream::trunc | std::ofstream::out);
-    stream << p_options;
-    stream.close ();
-}
-void OptionHandler::load_config (s_options& p_options, const std::string p_filename) {
-    std::ifstream stream (p_filename, std::ifstream::binary | std::ifstream::in);
-    stream >> p_options;
-    stream.close ();
-}
 int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_options) {
     print_header ();
     bool                help_printed = false;
     int                 argv_index;
-    bool                should_save_config                                 = false;
     bool                should_print_config                                = false;
-    bool                should_load_config                                 = false;
     std::string         config_name                                        = "";
     float               run_time_limit                                     = -1;
     int                 long_options                                       = 0;
@@ -35,8 +23,6 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
     const int           output_type_index                                  = 4;
     const int           write_modes_index                                  = 5;
     const int           max_iterations_between_datastructure_rebuild_index = 6;
-    const int           load_config_index                                  = 7;
-    const int           save_config_index                                  = 8;
     const int           print_config_index                                 = 9;
     std::vector<option> options = { { "algorithm", required_argument, 0, algorithm_type_index * 1000 },
                                     { "data_structure", required_argument, 0, datastructure_type_index * 1000 },
@@ -59,9 +45,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                                       required_argument,
                                       0,
                                       max_iterations_between_datastructure_rebuild_index * 1000 },
-                                    { "load_config", required_argument, 0, load_config_index * 1000 },
-                                    { "save_config", required_argument, 0, save_config_index * 1000 },
-                                    { "print_config", required_argument, 0, print_config_index * 1000 } };
+                                     { "print_config", required_argument, 0, print_config_index * 1000 } };
     for (index = 1; index < (signed) g_csv_column_names.size (); index++) {
         options.push_back ({ (std::string ("WRITE_") + g_csv_column_names[index]).c_str (),
                              required_argument,
@@ -100,14 +84,6 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                 line >> p_options.m_max_iterations_between_datastructure_rebuild;
                 break;
             }
-            case load_config_index:
-                should_load_config = true;
-                config_name        = line.str ();
-                break;
-            case save_config_index:
-                should_save_config = true;
-                config_name        = line.str ();
-                break;
             case print_config_index:
                 should_print_config = true;
                 break;
@@ -167,10 +143,6 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                             } else if (!strcmp (optarg,
                                                 "max_iterations_between_datastructure_rebuild")) {
                                 print_usage_max_iterations_between_datastructure_rebuild ();
-                            } else if (!strcmp (optarg, "load_config")) {
-                                print_usage_load_config ();
-                            } else if (!strcmp (optarg, "save_config")) {
-                                print_usage_save_config ();
                             } else if (!strcmp (optarg, "print_config")) {
                                 print_usage_print_config ();
                             } else {
@@ -222,12 +194,6 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
     }
     if (run_time_limit > -1) {
         p_options.m_max_iterations = run_time_limit / p_options.m_timestep;
-    }
-    if (should_load_config == true) {
-        load_config (p_options, config_name);
-    }
-    if (should_save_config == true) {
-        save_config (p_options, config_name);
     }
     if (should_print_config) {
         print_choosen_options (p_options);
@@ -457,16 +423,6 @@ void OptionHandler::print_usage_max_iterations_between_datastructure_rebuild () 
         << "|                          datastructure should reorder its internal           |" << std::endl
         << "|                          structure.                                          |" << std::endl;
 }
-void OptionHandler::print_usage_load_config () {
-    m_standard_stream //
-        << "| --load_confing=(string)                                                      |" << std::endl
-        << "|                          Loads the options from the given xml file.          |" << std::endl;
-}
-void OptionHandler::print_usage_save_config () {
-    m_standard_stream //
-        << "| --save_config=(string)                                                       |" << std::endl
-        << "|                          Saves the options from the given xml file.          |" << std::endl;
-}
 void OptionHandler::print_usage_print_config () {
     m_standard_stream //
         << "| --print_config                                                               |" << std::endl
@@ -541,8 +497,6 @@ void OptionHandler::print_usage_particle_sim () {
         << "|                                config options                                |" << std::endl
         << "|                                                                              |" << std::endl;
     //
-    print_usage_load_config ();
-    print_usage_save_config ();
     print_usage_print_config ();
     m_standard_stream //
         << "|                                                                              |" << std::endl

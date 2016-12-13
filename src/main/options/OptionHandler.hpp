@@ -27,14 +27,10 @@ class OptionHandler {
     void print_usage_timestep ();
     void print_usage_verbose ();
     void print_usage_max_iterations_between_datastructure_rebuild ();
-    void print_usage_load_config ();
-    void print_usage_save_config ();
     //
     void print_usage_particle_sim ();
     void print_header ();
 
-    void save_config (const s_options& p_options, const std::string p_filename);
-    void load_config (s_options& p_options, const std::string p_filename);
     void print_usage_print_config ();
 
   public:
