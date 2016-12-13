@@ -30,30 +30,60 @@ BOOST_AUTO_TEST_CASE (testException5) {
     CSVColumnTypeInvalidException exception (e_csv_column_type::PARTICLE_TYPE);
     BOOST_CHECK_EQUAL (exception.what (), "csv_column type ( PARTICLE_TYPE ) is invalid");
 }
-BOOST_AUTO_TEST_CASE (testString1) {
+BOOST_AUTO_TEST_CASE (testString1Out) {
     std::stringstream s;
     s << e_csv_column_type::ID;
     BOOST_CHECK_EQUAL (s.str (), "ID");
 }
-BOOST_AUTO_TEST_CASE (testString2) {
+BOOST_AUTO_TEST_CASE (testString2Out) {
     std::stringstream s;
     s << e_csv_column_type::VELOCITY;
     BOOST_CHECK_EQUAL (s.str (), "VELOCITY");
 }
-BOOST_AUTO_TEST_CASE (testString3) {
+BOOST_AUTO_TEST_CASE (testString3Out) {
     std::stringstream s;
     s << e_csv_column_type::POSITION;
     BOOST_CHECK_EQUAL (s.str (), "POSITION");
 }
-BOOST_AUTO_TEST_CASE (testString4) {
+BOOST_AUTO_TEST_CASE (testString4Out) {
     std::stringstream s;
     s << e_csv_column_type::ACCELERATION;
     BOOST_CHECK_EQUAL (s.str (), "ACCELERATION");
 }
-BOOST_AUTO_TEST_CASE (testString5) {
+BOOST_AUTO_TEST_CASE (testString5Out) {
     std::stringstream s;
     s << e_csv_column_type::PARTICLE_TYPE;
     BOOST_CHECK_EQUAL (s.str (), "PARTICLE_TYPE");
+}
+BOOST_AUTO_TEST_CASE (testStringIn1) {
+    std::stringstream s ("ID");
+    e_csv_column_type tmp;
+    s >> tmp;
+    BOOST_CHECK_EQUAL (tmp, e_csv_column_type::ID);
+}
+BOOST_AUTO_TEST_CASE (testStringIn2) {
+    std::stringstream s ("VELOCITY");
+    e_csv_column_type tmp;
+    s >> tmp;
+    BOOST_CHECK_EQUAL (tmp, e_csv_column_type::VELOCITY);
+}
+BOOST_AUTO_TEST_CASE (testStringIn3) {
+    std::stringstream s ("POSITION");
+    e_csv_column_type tmp;
+    s >> tmp;
+    BOOST_CHECK_EQUAL (tmp, e_csv_column_type::POSITION);
+}
+BOOST_AUTO_TEST_CASE (testStringIn4) {
+    std::stringstream s ("ACCELERATION");
+    e_csv_column_type tmp;
+    s >> tmp;
+    BOOST_CHECK_EQUAL (tmp, e_csv_column_type::ACCELERATION);
+}
+BOOST_AUTO_TEST_CASE (testStringIn5) {
+    std::stringstream s ("PARTICLE_TYPE");
+    e_csv_column_type tmp;
+    s >> tmp;
+    BOOST_CHECK_EQUAL (tmp, e_csv_column_type::PARTICLE_TYPE);
 }
 BOOST_AUTO_TEST_CASE (testStringException) {
     std::stringstream s;

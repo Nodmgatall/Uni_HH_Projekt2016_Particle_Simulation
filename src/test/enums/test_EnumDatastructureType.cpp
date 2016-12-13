@@ -22,20 +22,38 @@ BOOST_AUTO_TEST_CASE (testException3) {
     DatastructureTypeInvalidException exception (e_datastructure_type::LISTEDGIRD);
     BOOST_CHECK_EQUAL (exception.what (), "datastructure type ( LISTEDGIRD ) is invalid");
 }
-BOOST_AUTO_TEST_CASE (testString1) {
+BOOST_AUTO_TEST_CASE (testString1Out) {
     std::stringstream s;
     s << e_datastructure_type::GRID;
     BOOST_CHECK_EQUAL (s.str (), "GRID");
 }
-BOOST_AUTO_TEST_CASE (testString2) {
+BOOST_AUTO_TEST_CASE (testString2Out) {
     std::stringstream s;
     s << e_datastructure_type::LIST;
     BOOST_CHECK_EQUAL (s.str (), "LIST");
 }
-BOOST_AUTO_TEST_CASE (testString3) {
+BOOST_AUTO_TEST_CASE (testString3Out) {
     std::stringstream s;
     s << e_datastructure_type::LISTEDGIRD;
     BOOST_CHECK_EQUAL (s.str (), "LISTEDGIRD");
+}
+BOOST_AUTO_TEST_CASE (testStringIn1) {
+    std::stringstream    s ("GRID");
+    e_datastructure_type tmp;
+    s >> tmp;
+    BOOST_CHECK_EQUAL (tmp, e_datastructure_type::GRID);
+}
+BOOST_AUTO_TEST_CASE (testStringIn2) {
+    std::stringstream    s ("LIST");
+    e_datastructure_type tmp;
+    s >> tmp;
+    BOOST_CHECK_EQUAL (tmp, e_datastructure_type::LIST);
+}
+BOOST_AUTO_TEST_CASE (testStringIn3) {
+    std::stringstream    s ("LISTEDGIRD");
+    e_datastructure_type tmp;
+    s >> tmp;
+    BOOST_CHECK_EQUAL (tmp, e_datastructure_type::LISTEDGIRD);
 }
 BOOST_AUTO_TEST_CASE (testStringException) {
     std::stringstream s;
