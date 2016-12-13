@@ -3,7 +3,7 @@
 
 ParticleSimulator::ParticleSimulator (s_options& p_options)
 : m_options (p_options),                                                                         //
-  m_writer (new FileWriterCSV (p_options, std::string (log_folder) + "/data")),    //
+  m_writer (new FileWriterCSV (p_options, std::string (log_folder) + "/data")),                  //
   m_border (new BorderWrapparound (m_options.m_bounds)),                                         //
   m_algorithm (AlgorithmFactory::build (m_options)),                                             //
   m_datastructure (DatastructureFactory::build (m_options, *m_border, *m_algorithm, *m_writer)), //

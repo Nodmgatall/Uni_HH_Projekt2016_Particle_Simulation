@@ -77,7 +77,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                 p_options.m_output_type = static_cast<e_output_type> (indexInArray (g_output_names, optarg));
                 break;
             case write_modes_index:
-                p_options.m_write_modes.insert(static_cast<e_csv_column_type>(argv_index % 1000));
+                p_options.m_write_modes.insert (static_cast<e_csv_column_type> (argv_index % 1000));
                 break;
             case max_iterations_between_datastructure_rebuild_index: {
                 line >> p_options.m_max_iterations_between_datastructure_rebuild;
@@ -218,19 +218,14 @@ void OptionHandler::print_choosen_options (s_options& p_options) {
         << "max_iterations                               " << p_options.m_max_iterations << std::endl
         << "bounds                                       " << p_options.m_bounds << std::endl
         << "max_iterations_between_datastructure_rebuild "
-        << p_options.m_max_iterations_between_datastructure_rebuild << std::endl;
-    m_standard_stream << "aaa" << std::endl;
-    std::stringstream ss;
-    m_standard_stream << "bbb" << std::endl;
-    ss << "[ID";
-    m_standard_stream << "ccc" << std::endl;
-for(e_csv_column_type csv_column:p_options.m_write_modes){
-        m_standard_stream << DEBUG_VAR (csv_column) << std::endl;
-        if (csv_column!=e_csv_column_type::ID) {
-            ss << ", " << csv_column;
-    }}
-    ss << "]" << std::endl;
-    m_standard_stream << "write_modes                                  " << ss.str () << std::endl;
+        << p_options.m_max_iterations_between_datastructure_rebuild << std::endl
+        << "write_modes                                  [";
+    for (std::set<e_csv_column_type>::iterator csv_column = p_options.m_write_modes.begin ();
+         csv_column != p_options.m_write_modes.end ();
+         ++csv_column) {
+        g_log_file << ", " <<*csv_column;
+    }
+    g_log_file << "]" << std::endl;
 }
 void OptionHandler::print_header () {
     m_standard_stream //

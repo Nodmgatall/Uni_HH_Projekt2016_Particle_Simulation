@@ -13,15 +13,9 @@
 #include <ostream>
 #include <vector>
 
-enum class e_csv_column_type {
-    ID            = 1,
-    VELOCITY      = 2,
-    POSITION      = 3,
-    ACCELERATION  = 4,
-    PARTICLE_TYPE = 5
-};
+enum class e_csv_column_type { ID = 1, VELOCITY = 2, POSITION = 3, ACCELERATION = 4, PARTICLE_TYPE = 5 };
 
-std::ostream& operator<< (std::ostream& stream, const e_csv_column_type& p_csv_column_type);
+std::ostream& operator<< (std::ostream& stream, const e_csv_column_type p_csv_column_type);
 std::istream& operator>> (std::istream& stream, e_csv_column_type& p_csv_column_type);
 
 extern std::vector<const char*> g_csv_column_names;

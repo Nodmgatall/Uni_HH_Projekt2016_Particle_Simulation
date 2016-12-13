@@ -36,7 +36,7 @@ std::pair<e_csv_column_type, int>* get_enum_for_printed_csv_column_name (const c
     return 0;
 }
 
-std::ostream& operator<< (std::ostream& stream, const e_csv_column_type& p_csv_column_type) {
+std::ostream& operator<< (std::ostream& stream, const e_csv_column_type p_csv_column_type) {
     int index = static_cast<int> (p_csv_column_type);
     if ((index < (signed) g_csv_column_names.size ()) && (index > 0))
         return stream << g_csv_column_names[index];

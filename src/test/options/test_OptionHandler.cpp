@@ -405,10 +405,6 @@ BOOST_AUTO_TEST_CASE (test_help1) {
 BOOST_AUTO_TEST_CASE (test_help2) {
     OptionHandler handler;
     s_options     options_test;
-    memset (&options_test, 0, sizeof (s_options));
-    options_test.m_write_modes = { e_csv_column_type::ID,
-            e_csv_column_type::POSITION,
-            e_csv_column_type::VELOCITY };
     std::vector<const char*> args = { "./particle_simulation.x",
                                       "--help=algorithm",
                                       "--help=data_structure",
@@ -438,7 +434,6 @@ BOOST_AUTO_TEST_CASE (test_help2) {
 BOOST_AUTO_TEST_CASE (test_print_config) {
     OptionHandler handler;
     s_options     options_test;
-    memset (&options_test, 0, sizeof (s_options));
     std::vector<const char*> args = { "./particle_simulation.x",
                                       "--algorithm=LENNARD_JONES",
                                       "--data_structure=GRID",
