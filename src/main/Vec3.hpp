@@ -9,9 +9,12 @@
 #define SRC_VEC3_HPP_
 
 #include "DataType.hpp"
+#include "tools/Debug.hpp"
+#include <iostream>
 #include <istream>
 #include <math.h>
 #include <ostream>
+#include <sstream>
 
 template <typename T>
 struct Vec3 {
@@ -92,11 +95,13 @@ struct Vec3 {
             stream.ignore ();
         }
         stream >> vec.x;
-        while ((stream.peek () == ' ') || (stream.peek () == '/') || (stream.peek () == '|')) {
+        while ((stream.peek () == ' ') || (stream.peek () == '/') || (stream.peek () == '|') ||
+               ((char) stream.peek () == ',')) {
             stream.ignore ();
         }
         stream >> vec.y;
-        while ((stream.peek () == ' ') || (stream.peek () == '/') || (stream.peek () == '|')) {
+        while ((stream.peek () == ' ') || (stream.peek () == '/') || (stream.peek () == '|') ||
+               ((char) stream.peek () == ',')) {
             stream.ignore ();
         }
         stream >> vec.z;
