@@ -48,7 +48,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                                     { "print_config", no_argument, 0, print_config_index * 1000 } };
     for (index = 1; index < (signed) g_csv_column_names.size (); index++) {
         std::string name    = std::string ("WRITE_") + std::string (g_csv_column_names[index]);
-        char*       nameptr = new char[name.length() + 1];//memory-leak here
+        char*       nameptr = new char[name.length () + 1]; // memory-leak here
         strcpy (nameptr, name.c_str ());
         options.push_back ({ nameptr, no_argument, 0, write_modes_index * 1000 + index });
     }
