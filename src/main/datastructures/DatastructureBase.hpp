@@ -24,7 +24,8 @@ class DatastructureBase {
     : m_options (p_options), m_border (p_border), m_algorithm (p_algorithm), m_writer (p_writer) {
     }
     /**
-     * @return returns a string form of the name of this datastructure. Can be used to verify the class.
+     * @return returns a string form of the name of this datastructure. Can be used to verify the
+     * class.
      */
     std::string get_structure_name () {
         return m_stucture_name;

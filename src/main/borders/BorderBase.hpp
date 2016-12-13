@@ -51,7 +51,7 @@ class BorderBase {
          * @param m_z
          * @return
          */
-        virtual bool updatePosition (data_type& m_x,
+    virtual bool updatePosition (data_type& m_x,
                                  data_type& m_y,
                                  data_type& m_z,
                                  data_type& m_other_x,

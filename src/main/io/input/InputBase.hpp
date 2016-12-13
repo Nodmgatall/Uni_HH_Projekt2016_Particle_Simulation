@@ -26,7 +26,8 @@ class InputBase {
     }
     /**
      *
-     * @return the string representation of the class name. uses to verify, that the correct class is used
+     * @return the string representation of the class name. uses to verify, that the correct class
+     * is used
      */
     std::string get_structure_name () {
         return m_stucture_name;

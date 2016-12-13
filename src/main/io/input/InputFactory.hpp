@@ -21,12 +21,12 @@
 
 class InputFactory {
   public:
-		/**
-		 * creates an input subclass based on the options.
-		 * @param p_options the options which specify which input to return
-		 * @param p_datastructure passed as parameter to the constructor for the input-base class
-		 * @return
-		 */
+    /**
+     * creates an input subclass based on the options.
+     * @param p_options the options which specify which input to return
+     * @param p_datastructure passed as parameter to the constructor for the input-base class
+     * @return
+     */
     static InputBase* build (s_options& p_options, DatastructureBase& p_datastructure);
 };
 

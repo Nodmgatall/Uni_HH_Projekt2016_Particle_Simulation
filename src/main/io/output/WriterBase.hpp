@@ -22,7 +22,8 @@ class WriterBase {
     }
     /**
      *
-     * @return the string representation of the class name used for verification, that the class-type is correct
+     * @return the string representation of the class name used for verification, that the
+     * class-type is correct
      */
     std::string get_structure_name () {
         return m_stucture_name;
@@ -41,11 +42,11 @@ class WriterBase {
     /**
      * begin writing
      */
-    virtual void start ()                                     = 0;
+    virtual void start () = 0;
     /**
      * stop writing
      */
-    virtual void end ()                                       = 0;
+    virtual void end () = 0;
 };
 
 #endif /* SRC_MAIN_IO_PARTICLEWRITERBASE_HPP_ */
