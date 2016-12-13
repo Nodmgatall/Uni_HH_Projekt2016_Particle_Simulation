@@ -21,10 +21,18 @@ BOOST_AUTO_TEST_CASE (calculate_distance_vectors) {
     std::vector<data_type> expected_z_distances = { 0, 0, 0, 0, 0, 0 };
     Vec3f                  bounds (3, 3, 3);
 
-    s_options options = {
-        e_algorithm_type::LENNARD_JONES, false, e_output_type::FILE_CSV, "", "", 1000, 1, false, 1,
-        e_datastructure_type::GRID,      {}
-    };
+    s_options options;
+    options.m_algorithm_type      = e_algorithm_type::LENNARD_JONES;
+    options.m_autotuneing         = false;
+    options.m_output_type         = e_output_type::FILE_CSV;
+    options.m_in_file_name        = "";
+    options.m_out_file_name       = "";
+    options.m_timestep            = 1000;
+    options.m_verbose             = 1;
+    options.m_write_fequency      = false;
+    options.m_cut_off_radius      = 1;
+    options.m_data_structure_type = e_datastructure_type::GRID;
+    options.m_write_modes         = {};
     BorderWrapparound     border (bounds);
     AlgorithmLennardJones algorithm (options);
     FileWriterCSV         writer (options, "");
@@ -60,10 +68,18 @@ BOOST_AUTO_TEST_CASE (calculate_distances_squared) {
     std::vector<data_type> z_distances = { 0, 0, 0, 0, 0, 0 };
     Vec3f                  bounds (3, 3, 3);
 
-    s_options options = {
-        e_algorithm_type::LENNARD_JONES, false, e_output_type::FILE_CSV, "", "", 1000, 1, false, 1,
-        e_datastructure_type::GRID,      {}
-    };
+    s_options options;
+    options.m_algorithm_type      = e_algorithm_type::LENNARD_JONES;
+    options.m_autotuneing         = false;
+    options.m_output_type         = e_output_type::FILE_CSV;
+    options.m_in_file_name        = "";
+    options.m_out_file_name       = "";
+    options.m_timestep            = 1000;
+    options.m_verbose             = 1;
+    options.m_write_fequency      = false;
+    options.m_cut_off_radius      = 1;
+    options.m_data_structure_type = e_datastructure_type::GRID;
+    options.m_write_modes         = {};
     BorderWrapparound     border (bounds);
     AlgorithmLennardJones algorithm (options);
     FileWriterCSV         writer (options, "");
@@ -86,10 +102,18 @@ BOOST_AUTO_TEST_CASE (build_lists) {
     std::vector<data_type> z_distances = { 0, 0, 0, 0, 0, 0 };
     Vec3f                  bounds (3, 3, 3);
 
-    s_options options = {
-        e_algorithm_type::LENNARD_JONES, false, e_output_type::FILE_CSV, "", "", 1000, 1, false, 1,
-        e_datastructure_type::GRID,      {}
-    };
+    s_options options;
+    options.m_algorithm_type      = e_algorithm_type::LENNARD_JONES;
+    options.m_autotuneing         = false;
+    options.m_output_type         = e_output_type::FILE_CSV;
+    options.m_in_file_name        = "";
+    options.m_out_file_name       = "";
+    options.m_timestep            = 1000;
+    options.m_verbose             = 1;
+    options.m_write_fequency      = false;
+    options.m_cut_off_radius      = 1;
+    options.m_data_structure_type = e_datastructure_type::GRID;
+    options.m_write_modes         = {};
     BorderWrapparound     border (bounds);
     AlgorithmLennardJones algorithm (options);
     FileWriterCSV         writer (options, "");
