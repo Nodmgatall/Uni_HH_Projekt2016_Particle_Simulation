@@ -30,6 +30,9 @@ class ParticleSimulator {
   public:
     ParticleSimulator (s_options& p_options);
     ~ParticleSimulator ();
+    /**
+     * runs the complete simulation with all iteration steps
+     */
     void simulate ();
 };
 
