@@ -439,6 +439,11 @@ BOOST_AUTO_TEST_CASE (test_print_config) {
                                       "--data_structure=GRID",
                                       "--output=FILE_CSV",
                                       "--input=GENERATOR_SINGLE_OBJECT_MIDDLE",
+                                      "--WRITE_ID",
+                                      "--WRITE_VELOCITY",
+                                      "--WRITE_POSITION",
+                                      "--WRITE_ACCELERATION",
+                                      "--WRITE_PARTICLE_TYPE",
                                       "--print_config" };
     int res = handler.handle_options ((int) args.size (), const_cast<char**> (args.data ()), options_test);
     BOOST_CHECK_EQUAL (res, 0);
