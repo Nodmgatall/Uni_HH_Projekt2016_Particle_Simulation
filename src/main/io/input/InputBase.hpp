@@ -24,9 +24,16 @@ class InputBase {
     }
     virtual ~InputBase () {
     }
+    /**
+     *
+     * @return the string representation of the class name. uses to verify, that the correct class is used
+     */
     std::string get_structure_name () {
         return m_stucture_name;
     }
+    /**
+     * creates particles and put them directly into the datastructure given to the constructor
+     */
     virtual void initialize_datastructure () = 0;
 };
 

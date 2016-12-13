@@ -41,7 +41,17 @@ class BorderBase {
                                  data_type&   m_other_z,
                                  const Vec3f& m_corner000,
                                  const Vec3f& m_corner111) = 0;
-    virtual bool updatePosition (data_type& m_x,
+    /**
+         * check if the positions are within the cube between 000 m_bounds.
+         * updates the position based on m_bounds
+         * if position changed m_otherx/y/z will move by the same offset
+         * returns if a the position values have changed
+         * @param m_x
+         * @param m_y
+         * @param m_z
+         * @return
+         */
+        virtual bool updatePosition (data_type& m_x,
                                  data_type& m_y,
                                  data_type& m_z,
                                  data_type& m_other_x,

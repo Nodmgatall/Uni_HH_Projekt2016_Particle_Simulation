@@ -14,6 +14,11 @@
 
 class AlgorithmFactory {
   public:
+		/**
+		 * creates an Algorithm based on the options given as parameter
+		 * @param p_options the options which define toe resulting algorithm
+		 * @return an instance of the algorithm
+		 */
     static AlgorithmBase* build (s_options& p_options);
 };
 

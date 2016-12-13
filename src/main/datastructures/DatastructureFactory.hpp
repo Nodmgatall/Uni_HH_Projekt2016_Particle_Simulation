@@ -19,6 +19,14 @@
 
 class DatastructureFactory {
   public:
+		/**
+		 * builds the datastructure based on the given options.
+		 * @param p_options the options which define which datastructure to return
+		 * @param p_border each datastructure needs this in the constructor
+		 * @param p_algorithm each datastructure needs this in the constructor
+		 * @param p_writer each datastructure needs this in the constructor
+		 * @return
+		 */
     static DatastructureBase*
         build (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_writer);
 };

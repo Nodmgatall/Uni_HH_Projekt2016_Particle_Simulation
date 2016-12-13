@@ -28,14 +28,23 @@ class OptionHandler {
     void print_usage_timestep ();
     void print_usage_verbose ();
     void print_usage_max_iterations_between_datastructure_rebuild ();
-    //
     void print_usage_particle_sim ();
     void print_header ();
-
     void print_usage_print_config ();
 
   public:
+    /**
+     * takes the arguments passed to application and parses them into the option struct
+     * @param p_argc given at program startup
+     * @param p_argv given at program startup
+     * @param p_options the struct into which the parameters are written
+     * @return if != 0 the program should terminate right after the function returns
+     */
     int handle_options (int p_argc, char** p_argv, s_options& p_options);
+    /**
+     * pints the options specified by the struct to logfile
+     * @param p_options
+     */
     void print_choosen_options (s_options& p_options);
 };
 
