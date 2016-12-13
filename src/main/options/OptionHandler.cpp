@@ -201,6 +201,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
     return help_printed;
 }
 void OptionHandler::print_choosen_options (s_options& p_options) {
+    bool first = true;
     m_standard_stream
         << "algorithm_type                               " << p_options.m_algorithm_type << std::endl
         << "autotuneing                                  " << p_options.m_autotuneing << std::endl
@@ -223,7 +224,8 @@ void OptionHandler::print_choosen_options (s_options& p_options) {
     for (std::set<e_csv_column_type>::iterator csv_column = p_options.m_write_modes.begin ();
          csv_column != p_options.m_write_modes.end ();
          ++csv_column) {
-        g_log_file << ", " <<*csv_column;
+        g_log_file << (first ? "" : ", ") << *csv_column;
+        first = false;
     }
     g_log_file << "]" << std::endl;
 }
