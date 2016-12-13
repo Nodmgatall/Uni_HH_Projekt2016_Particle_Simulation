@@ -14,7 +14,6 @@
 
 BOOST_AUTO_TEST_CASE (test1) {
     s_options options_test;
-    memset (&options_test, 0, sizeof (s_options));
     options_test.m_write_modes = { e_csv_column_type::ID, e_csv_column_type::POSITION, e_csv_column_type::VELOCITY };
     FileWriterCSV writer (options_test, "../Temporary/test_FileWriterCSV.test1.tmp.");
     writer.start ();
@@ -28,7 +27,6 @@ BOOST_AUTO_TEST_CASE (test1) {
 }
 BOOST_AUTO_TEST_CASE (test2) {
     s_options options_test;
-    memset (&options_test, 0, sizeof (s_options));
     options_test.m_write_modes = { e_csv_column_type::ID, e_csv_column_type::POSITION, e_csv_column_type::VELOCITY };
     FileWriterCSV writer (options_test, "../Temporary/test_FileWriterCSV.test2.tmp.");
     writer.start ();

@@ -10,6 +10,7 @@
 
 #include <cstring>
 #include <exception>
+#include <istream>
 #include <ostream>
 #include <vector>
 
