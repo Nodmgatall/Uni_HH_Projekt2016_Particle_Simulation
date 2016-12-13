@@ -9,6 +9,7 @@
 #define SRC_MAIN_IO_PARTICLEWRITERBASE_HPP_
 
 #include "Definitions.hpp"
+#include "options/Options.hpp"
 
 class WriterBase {
   protected:

@@ -45,7 +45,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                                       required_argument,
                                       0,
                                       max_iterations_between_datastructure_rebuild_index * 1000 },
-                                     { "print_config", required_argument, 0, print_config_index * 1000 } };
+                                    { "print_config", no_argument, 0, print_config_index * 1000 } };
     for (index = 1; index < (signed) g_csv_column_names.size (); index++) {
         options.push_back ({ (std::string ("WRITE_") + g_csv_column_names[index]).c_str (),
                              required_argument,
@@ -77,8 +77,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                 p_options.m_output_type = static_cast<e_output_type> (indexInArray (g_output_names, optarg));
                 break;
             case write_modes_index:
-                p_options.m_write_modes[static_cast<e_csv_column_type> (argv_index % 1000)] =
-                    !(isdigit (optarg[0]) && std::stoi (optarg) == 0);
+                p_options.m_write_modes.insert(static_cast<e_csv_column_type>(argv_index % 1000));
                 break;
             case max_iterations_between_datastructure_rebuild_index: {
                 line >> p_options.m_max_iterations_between_datastructure_rebuild;
@@ -202,7 +201,6 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
     return help_printed;
 }
 void OptionHandler::print_choosen_options (s_options& p_options) {
-    int index;
     m_standard_stream
         << "algorithm_type                               " << p_options.m_algorithm_type << std::endl
         << "autotuneing                                  " << p_options.m_autotuneing << std::endl
@@ -221,13 +219,16 @@ void OptionHandler::print_choosen_options (s_options& p_options) {
         << "bounds                                       " << p_options.m_bounds << std::endl
         << "max_iterations_between_datastructure_rebuild "
         << p_options.m_max_iterations_between_datastructure_rebuild << std::endl;
+    m_standard_stream << "aaa" << std::endl;
     std::stringstream ss;
+    m_standard_stream << "bbb" << std::endl;
     ss << "[ID";
-    for (index = 2; index < (signed) g_csv_column_names.size (); index++) {
-        if (p_options.m_write_modes[static_cast<e_csv_column_type> (index)]) {
-            ss << ", " << g_csv_column_names[index];
-        }
-    }
+    m_standard_stream << "ccc" << std::endl;
+for(e_csv_column_type csv_column:p_options.m_write_modes){
+        m_standard_stream << DEBUG_VAR (csv_column) << std::endl;
+        if (csv_column!=e_csv_column_type::ID) {
+            ss << ", " << csv_column;
+    }}
     ss << "]" << std::endl;
     m_standard_stream << "write_modes                                  " << ss.str () << std::endl;
 }

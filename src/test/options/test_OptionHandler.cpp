@@ -406,6 +406,9 @@ BOOST_AUTO_TEST_CASE (test_help2) {
     OptionHandler handler;
     s_options     options_test;
     memset (&options_test, 0, sizeof (s_options));
+    options_test.m_write_modes = { e_csv_column_type::ID,
+            e_csv_column_type::POSITION,
+            e_csv_column_type::VELOCITY };
     std::vector<const char*> args = { "./particle_simulation.x",
                                       "--help=algorithm",
                                       "--help=data_structure",
@@ -428,7 +431,20 @@ BOOST_AUTO_TEST_CASE (test_help2) {
                                       "--help=save_config",
                                       "--help=print_config"
                                       "--help=this_option_does_not_exist",
-                                      "--print_config" };
+                                      "--help=print_config" };
     int res = handler.handle_options ((int) args.size (), const_cast<char**> (args.data ()), options_test);
     BOOST_CHECK_EQUAL (res, 1);
+}
+BOOST_AUTO_TEST_CASE (test_print_config) {
+    OptionHandler handler;
+    s_options     options_test;
+    memset (&options_test, 0, sizeof (s_options));
+    std::vector<const char*> args = { "./particle_simulation.x",
+                                      "--algorithm=LENNARD_JONES",
+                                      "--data_structure=GRID",
+                                      "--output=FILE_CSV",
+                                      "--input=GENERATOR_SINGLE_OBJECT_MIDDLE",
+                                      "--print_config" };
+    int res = handler.handle_options ((int) args.size (), const_cast<char**> (args.data ()), options_test);
+    BOOST_CHECK_EQUAL (res, 0);
 }

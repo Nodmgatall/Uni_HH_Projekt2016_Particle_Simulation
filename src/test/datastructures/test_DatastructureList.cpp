@@ -31,14 +31,10 @@ BOOST_AUTO_TEST_CASE (calculate_distance_vectors) {
                           false,
                           1,
                           e_datastructure_type::GRID,
-                          { { e_csv_column_type::ID, false },
-                            { e_csv_column_type::POSITION, false },
-                            { e_csv_column_type::VELOCITY, false },
-                            { e_csv_column_type::ACCELERATION, false },
-                            { e_csv_column_type::PARTICLE_TYPE, false } } };
+                          {} };
     BorderWrapparound     border (bounds);
     AlgorithmLennardJones algorithm (options);
-    FileWriterCSV         writer (options.m_write_modes, "");
+    FileWriterCSV         writer (options, "");
     DatastructureList     particle_list (options, border, algorithm, writer);
 
     unsigned long start_pos      = 0;
@@ -81,14 +77,10 @@ BOOST_AUTO_TEST_CASE (calculate_distances_squared) {
                           false,
                           1,
                           e_datastructure_type::GRID,
-                          { { e_csv_column_type::ID, false },
-                            { e_csv_column_type::POSITION, false },
-                            { e_csv_column_type::VELOCITY, false },
-                            { e_csv_column_type::ACCELERATION, false },
-                            { e_csv_column_type::PARTICLE_TYPE, false } } };
+                          {} };
     BorderWrapparound     border (bounds);
     AlgorithmLennardJones algorithm (options);
-    FileWriterCSV         writer (options.m_write_modes, "");
+    FileWriterCSV         writer (options, "");
     DatastructureList     particle_list (options, border, algorithm, writer);
 
     unsigned long          distances_count = 6;
@@ -118,14 +110,10 @@ BOOST_AUTO_TEST_CASE (build_lists) {
                           false,
                           1,
                           e_datastructure_type::GRID,
-                          { { e_csv_column_type::ID, false },
-                            { e_csv_column_type::POSITION, false },
-                            { e_csv_column_type::VELOCITY, false },
-                            { e_csv_column_type::ACCELERATION, false },
-                            { e_csv_column_type::PARTICLE_TYPE, false } } };
+                          {} };
     BorderWrapparound     border (bounds);
     AlgorithmLennardJones algorithm (options);
-    FileWriterCSV         writer (options.m_write_modes, "");
+    FileWriterCSV         writer (options, "");
     DatastructureList     particle_list (options, border, algorithm, writer);
 
     particle_list.m_positions_x            = { 1.5, 1.5, 1.5, 0.75 };
