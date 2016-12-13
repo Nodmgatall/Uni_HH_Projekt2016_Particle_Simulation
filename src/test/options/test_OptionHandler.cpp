@@ -403,8 +403,8 @@ BOOST_AUTO_TEST_CASE (test_help1) {
     BOOST_CHECK_EQUAL (res, 1);
 }
 BOOST_AUTO_TEST_CASE (test_help2) {
-    OptionHandler handler;
-    s_options     options_test;
+    OptionHandler            handler;
+    s_options                options_test;
     std::vector<const char*> args = { "./particle_simulation.x",
                                       "--help=algorithm",
                                       "--help=data_structure",
@@ -432,8 +432,8 @@ BOOST_AUTO_TEST_CASE (test_help2) {
     BOOST_CHECK_EQUAL (res, 1);
 }
 BOOST_AUTO_TEST_CASE (test_print_config) {
-    OptionHandler handler;
-    s_options     options_test;
+    OptionHandler            handler;
+    s_options                options_test;
     std::vector<const char*> args = { "./particle_simulation.x",
                                       "--algorithm=LENNARD_JONES",
                                       "--data_structure=GRID",
