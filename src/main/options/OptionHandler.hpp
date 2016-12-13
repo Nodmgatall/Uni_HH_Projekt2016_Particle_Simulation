@@ -3,6 +3,7 @@
 
 #include "Definitions.hpp"
 #include "Options.hpp"
+#include <cstring>
 #include <getopt.h>
 
 class OptionHandler {

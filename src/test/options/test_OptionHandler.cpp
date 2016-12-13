@@ -454,8 +454,9 @@ BOOST_AUTO_TEST_CASE (test_invalid_value) {
     memset (&options_test, 0, sizeof (s_options));
     s_options options_compare;
     memset (&options_compare, 0, sizeof (s_options));
-    options_compare.m_algorithm_type=static_cast<e_algorithm_type>(-1);
-    std::vector<const char*> args    = { "./particle_simulation.x", "--algorithm=this_value_does_not_exist" };
+    options_compare.m_algorithm_type = static_cast<e_algorithm_type> (-1);
+    std::vector<const char*> args    = { "./particle_simulation.x",
+                                      "--algorithm=this_value_does_not_exist" };
     int res = handler.handle_options ((int) args.size (), const_cast<char**> (args.data ()), options_test);
     BOOST_CHECK_EQUAL (memcmp (&options_test, &options_compare, sizeof (s_options)), 0);
     BOOST_CHECK_EQUAL (res, 0);

@@ -47,14 +47,13 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                                       max_iterations_between_datastructure_rebuild_index * 1000 },
                                     { "print_config", no_argument, 0, print_config_index * 1000 } };
     for (index = 1; index < (signed) g_csv_column_names.size (); index++) {
-        options.push_back ({ (std::string ("WRITE_") + g_csv_column_names[index]).c_str (),
-                             required_argument,
-                             0,
-                             write_modes_index * 1000 + index });
+        std::string name    = std::string ("WRITE_") + std::string (g_csv_column_names[index]);
+        char*       nameptr = new char[name.length() + 1];//memory-leak here
+        strcpy (nameptr, name.c_str ());
+        options.push_back ({ nameptr, no_argument, 0, write_modes_index * 1000 + index });
     }
     opterr = 0;
     optind = 1;
-
     while ((argv_index = getopt_long (p_argc, p_argv, "ab::c::f::h::i::l::m::o::r::s::t::v", options.data (), &long_options)) !=
            -1) {
         std::stringstream line;
