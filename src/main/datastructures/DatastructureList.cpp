@@ -336,17 +336,9 @@ void DatastructureList::calculate_distance_vectors (unsigned long p_particle_idx
     data_type     y = p_positions_y[p_particle_idx];
     data_type     z = p_positions_z[p_particle_idx];
 
-    int test = 0;
     for (cur_dist_idx = 0; cur_dist_idx < end_idx; cur_dist_idx++) {
         p_distances_x[start_idx + cur_dist_idx] = x - p_positions_x[p_particle_idx + cur_dist_idx + 1];
-        test++;
-    }
-
-    for (cur_dist_idx = 0; cur_dist_idx < end_idx; cur_dist_idx++) {
         p_distances_y[start_idx + cur_dist_idx] = y - p_positions_y[p_particle_idx + cur_dist_idx + 1];
-    }
-
-    for (cur_dist_idx = 0; cur_dist_idx < end_idx; cur_dist_idx++) {
         p_distances_z[start_idx + cur_dist_idx] = z - p_positions_z[p_particle_idx + cur_dist_idx + 1];
     }
     Benchmark::end ();
@@ -359,32 +351,18 @@ void DatastructureList::calculate_distances_squared (data_type*    p_distances_s
     Benchmark::begin ("Calculating Distances", false);
 
     unsigned long cur_part_idx;
-    data_type     cur_pos_part;
 
     // square every entry in vector:
     // x
     for (cur_part_idx = 0; cur_part_idx < size; cur_part_idx++) {
-        cur_pos_part                = p_distances_x[cur_part_idx];
-        p_distances_x[cur_part_idx] = cur_pos_part * cur_pos_part;
-    }
-    // y
-    for (cur_part_idx = 0; cur_part_idx < size; cur_part_idx++) {
-        cur_pos_part                = p_distances_y[cur_part_idx];
-        p_distances_y[cur_part_idx] = cur_pos_part * cur_pos_part;
-    }
-
-    // z
-    for (cur_part_idx = 0; cur_part_idx < size; cur_part_idx++) {
-        cur_pos_part                = p_distances_z[cur_part_idx];
-        p_distances_z[cur_part_idx] = cur_pos_part * cur_pos_part;
+        p_distances_x[cur_part_idx] = p_distances_x[cur_part_idx] * p_distances_x[cur_part_idx];
+        p_distances_y[cur_part_idx] = p_distances_y[cur_part_idx] * p_distances_y[cur_part_idx];
+        p_distances_z[cur_part_idx] = p_distances_z[cur_part_idx] * p_distances_z[cur_part_idx];
     }
     // summing up the squared distances
     // frist x + y
     for (cur_part_idx = 0; cur_part_idx < size; cur_part_idx++) {
         p_distances_squared[cur_part_idx] = p_distances_x[cur_part_idx] + p_distances_y[cur_part_idx];
-    }
-    // then the result + z
-    for (cur_part_idx = 0; cur_part_idx < size; cur_part_idx++) {
         p_distances_squared[cur_part_idx] += p_distances_z[cur_part_idx];
     }
     Benchmark::end ();
