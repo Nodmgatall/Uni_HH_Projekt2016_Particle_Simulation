@@ -27,18 +27,22 @@ extern std::vector<const char*> g_algorithm_names;
 
 class AlgorithmTypeInvalidException : public std::exception {
   private:
-    e_algorithm_type m_algorithm_type;
+    char* m_what;
 
   public:
-    AlgorithmTypeInvalidException () : m_algorithm_type ((e_algorithm_type) 0) {
+    AlgorithmTypeInvalidException () {
+        m_what = (char*) malloc (100);
+        sprintf (m_what, "algorithm type ( %s ) is invalid", g_algorithm_names[0]);
     }
-    AlgorithmTypeInvalidException (e_algorithm_type p_algorithm_type)
-    : m_algorithm_type (p_algorithm_type) {
+    AlgorithmTypeInvalidException (e_algorithm_type m_type) {
+        m_what = (char*) malloc (100);
+        sprintf (m_what, "algorithm type ( %s ) is invalid", g_algorithm_names[static_cast<int> (m_type)]);
+    }
+    ~AlgorithmTypeInvalidException () {
+        free (m_what);
     }
     const char* what () const throw () {
-        char* text = (char*) malloc (100);//TODO ändern
-        sprintf (text, "algorithm type ( %s ) is invalid", g_algorithm_names[static_cast<int> (m_algorithm_type)]);
-        return text;
+        return m_what;
     }
 };
 

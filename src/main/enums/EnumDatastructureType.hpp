@@ -23,20 +23,22 @@ extern std::vector<const char*> g_datastructure_names;
 
 class DatastructureTypeInvalidException : public std::exception {
   private:
-    e_datastructure_type m_datastructure_type;
+    char* m_what;
 
   public:
-    DatastructureTypeInvalidException () : m_datastructure_type ((e_datastructure_type) 0) {
+    DatastructureTypeInvalidException () {
+        m_what = (char*) malloc (100);
+        sprintf (m_what, "datastructure type ( %s ) is invalid", g_datastructure_names[0]);
     }
-    DatastructureTypeInvalidException (e_datastructure_type p_datastructure_type)
-    : m_datastructure_type (p_datastructure_type) {
+    DatastructureTypeInvalidException (e_datastructure_type m_type) {
+        m_what = (char*) malloc (100);
+        sprintf (m_what, "datastructure type ( %s ) is invalid", g_datastructure_names[static_cast<int> (m_type)]);
+    }
+    ~DatastructureTypeInvalidException () {
+        free (m_what);
     }
     const char* what () const throw () {
-        char* text = (char*) malloc (100);
-        sprintf (text,
-                 "datastructure type ( %s ) is invalid",
-                 g_datastructure_names[static_cast<int> (m_datastructure_type)]);
-        return text;
+        return m_what;
     }
 };
 

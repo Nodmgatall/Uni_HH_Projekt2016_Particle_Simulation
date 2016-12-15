@@ -30,17 +30,22 @@ extern std::vector<const char*> g_input_names;
 
 class InputTypeInvalidException : public std::exception {
   private:
-    e_input_type m_input_type;
+    char* m_what;
 
   public:
-    InputTypeInvalidException () : m_input_type ((e_input_type) 0) {
+    InputTypeInvalidException () {
+        m_what = (char*) malloc (100);
+        sprintf (m_what, "input type ( %s ) is invalid", g_input_names[0]);
     }
-    InputTypeInvalidException (e_input_type p_input_type) : m_input_type (p_input_type) {
+    InputTypeInvalidException (e_input_type m_type) {
+        m_what = (char*) malloc (100);
+        sprintf (m_what, "input type ( %s ) is invalid", g_input_names[static_cast<int> (m_type)]);
+    }
+    ~InputTypeInvalidException () {
+        free (m_what);
     }
     const char* what () const throw () {
-        char* text = (char*) malloc (100);
-        sprintf (text, "input type ( %s ) is invalid", g_input_names[static_cast<int> (m_input_type)]);
-        return text;
+        return m_what;
     }
 };
 
