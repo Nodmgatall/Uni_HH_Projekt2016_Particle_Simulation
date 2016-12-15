@@ -36,7 +36,7 @@ class AlgorithmTypeInvalidException : public std::exception {
     : m_algorithm_type (p_algorithm_type) {
     }
     const char* what () const throw () {
-        char* text = (char*) malloc (100);
+        char* text = (char*) malloc (100);//TODO ändern
         sprintf (text, "algorithm type ( %s ) is invalid", g_algorithm_names[static_cast<int> (m_algorithm_type)]);
         return text;
     }
