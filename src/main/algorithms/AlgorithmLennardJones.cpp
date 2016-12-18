@@ -43,9 +43,11 @@ void AlgorithmLennardJones::step_2 (const data_type&       p_position_aix,
                                     const unsigned long    p_index_j_end) {
     unsigned long j;
     for (j = p_index_j_begin; j < p_index_j_end; j++) {
-        const data_type d_x     = p_position_ajx[j] - p_position_aix;
-        const data_type d_y     = p_position_ajy[j] - p_position_aiy;
-        const data_type d_z     = p_position_ajz[j] - p_position_aiz;
+        // Distance vector calculation
+        const data_type d_x = p_position_ajx[j] - p_position_aix;
+        const data_type d_y = p_position_ajy[j] - p_position_aiy;
+        const data_type d_z = p_position_ajz[j] - p_position_aiz;
+        // distance scalar squared calc
         const data_type r_ij_2  = d_x * d_x + d_y * d_y + d_z * d_z;
         const data_type r_ij_4  = r_ij_2 * r_ij_2;
         const data_type r_ij_6  = r_ij_2 * r_ij_4;
@@ -62,3 +64,29 @@ void AlgorithmLennardJones::step_2 (const data_type&       p_position_aix,
         p_position_bjz[j] -= s_ij_z / m_j;
     }
 }
+// PROOF OF CONCEPT! do not use!
+// NOT USABLE FOR GRID since it is not yet implemented to ignore the particle that
+// these calculations are done for!
+// also not implementd is the condition if they are in only in rc and not in rc + shell_rc!
+/*
+void AlgorithmLennardJones::velocityVerletScheme (data_type* distances,
+                                                  data_type& delta_t,
+                                                  data_type  acceleration,
+                                                  data_type,
+                                                  data_type     velocity,
+                                                  data_type     mass,
+                                                  unsigned long number_of_interactions) {
+    for (unsigned long particle_idx = 0; particle_idx < number_of_interactions) {
+        data_type distance_ts1 = distance + veloctity * delta_t + (0.5) * (acceleration *
+acceleration);
+        data_type velocity_half_dt velocity + 0.5 * acceleration;
+        data_type acceleration_ts1 (-1 / mass) * LennardJonesPotential (distance_ts1);
+        data_type velocity_ts1;
+        velocity_half_dt + 0.5 * acceleration_ts1* delta_t;
+    }
+}
+
+void AlgorithmLennardJones::LennardJonesPotential (data_type distance_14, data_type distance_8) {
+    return (1 / distance_13 - 0.5 * (1 / distance_8)) * distance_scalar * direction;
+}
+*/
