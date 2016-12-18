@@ -17,7 +17,7 @@
  * step 2 calculate forces between particles
  * step 3 swap arrays for old and new positions
  * */
-class AlgorithmLennardJones : public AlgorithmBase {
+class AlgorithmLennardJones : public AlgorithmBase { // störmer verlet in den namen
   private:
     data_type A_ij;
     data_type B_ij;

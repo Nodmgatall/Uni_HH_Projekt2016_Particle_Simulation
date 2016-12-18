@@ -47,14 +47,17 @@ class DatastructureBase {
      * @param p_position the position of the new particle
      * @param p_velocity the initial velocity
      */
-    virtual void add_particle (Vec3f p_position, Vec3f p_velocity, int p_id = -1) = 0;
-    /**
-     * @return the total number of particles in all cells
-     */
+    virtual void add_particle (Vec3f p_position,
+                               Vec3f p_velocity,
+                               int   p_id = -1) = 0; // TODO delete particle hinzufügen
+                                                     /**
+                                                      * @return the total number of particles in all cells
+                                                      */
     virtual unsigned long get_particle_count () = 0;
     /**
      * saves all particles to an file
      */
     virtual void serialize () = 0;
 };
+// TODO phillip erinnern geschwindigkeitsinitialisierung
 #endif

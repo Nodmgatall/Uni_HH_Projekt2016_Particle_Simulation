@@ -299,7 +299,9 @@ BOOST_AUTO_TEST_CASE (test_out_file_name) {
     s_options options_compare;
     memset (&options_compare, 0, sizeof (s_options));
     options_compare.m_out_file_name = std::string ("abc.csv");
-    std::vector<const char*> args   = { "./particle_simulation.x", "--out_file_name=abc.csv" };
+    std::vector<const char*> args   = { "./particle_simulation.x",
+                                      "--out_file_name=abc.csv" }; // TODO muss verwendet werden
+                                                                   // muss ausschaltbar sein
     int res = handler.handle_options ((int) args.size (), const_cast<char**> (args.data ()), options_test);
     BOOST_CHECK_EQUAL (options_compare.m_out_file_name, options_test.m_out_file_name);
     BOOST_CHECK_EQUAL (res, 0);

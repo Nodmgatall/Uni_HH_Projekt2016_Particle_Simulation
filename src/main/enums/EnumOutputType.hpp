@@ -30,17 +30,22 @@ extern std::vector<const char*> g_output_names;
 
 class OutputTypeInvalidException : public std::exception {
   private:
-    e_output_type m_output_type;
+    char* m_what;
 
   public:
-    OutputTypeInvalidException () : m_output_type ((e_output_type) 0) {
+    OutputTypeInvalidException () {
+        m_what = (char*) malloc (100);
+        sprintf (m_what, "output type ( %s ) is invalid", g_output_names[0]);
     }
-    OutputTypeInvalidException (e_output_type p_output_type) : m_output_type (p_output_type) {
+    OutputTypeInvalidException (e_output_type m_type) {
+        m_what = (char*) malloc (100);
+        sprintf (m_what, "output type ( %s ) is invalid", g_output_names[static_cast<int> (m_type)]);
+    }
+    ~OutputTypeInvalidException () {
+        free (m_what);
     }
     const char* what () const throw () {
-        char* text = (char*) malloc (100);
-        sprintf (text, "output type ( %s ) is invalid", g_output_names[static_cast<int> (m_output_type)]);
-        return text;
+        return m_what;
     }
 };
 

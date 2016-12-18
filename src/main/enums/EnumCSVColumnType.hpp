@@ -33,18 +33,22 @@ std::pair<e_csv_column_type, int>* get_enum_for_printed_csv_column_name (const c
 
 class CSVColumnTypeInvalidException : public std::exception {
   private:
-    e_csv_column_type m_csv_column_type;
+    char* m_what;
 
   public:
-    CSVColumnTypeInvalidException () : m_csv_column_type ((e_csv_column_type) 0) {
+    CSVColumnTypeInvalidException () {
+        m_what = (char*) malloc (100);
+        sprintf (m_what, "csv_column type ( %s ) is invalid", g_csv_column_names[0]);
     }
-    CSVColumnTypeInvalidException (e_csv_column_type p_csv_column_type)
-    : m_csv_column_type (p_csv_column_type) {
+    CSVColumnTypeInvalidException (e_csv_column_type m_type) {
+        m_what = (char*) malloc (100);
+        sprintf (m_what, "csv_column type ( %s ) is invalid", g_csv_column_names[static_cast<int> (m_type)]);
+    }
+    ~CSVColumnTypeInvalidException () {
+        free (m_what);
     }
     const char* what () const throw () {
-        char* text = (char*) malloc (100);
-        sprintf (text, "csv_column type ( %s ) is invalid", g_csv_column_names[static_cast<int> (m_csv_column_type)]);
-        return text;
+        return m_what;
     }
 };
 
