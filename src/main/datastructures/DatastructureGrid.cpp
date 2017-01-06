@@ -41,21 +41,31 @@ void DatastructureGrid::add_particle (Vec3f p_current_position) {
     add_particle (p_current_position, Vec3f (0));
 }
 void DatastructureGrid::add_particle (Vec3f p_current_position, Vec3f p_current_velocity, int p_id) {
+    std::cout << __FILE__ << __LINE__ << "a" << std::endl;
     long id = 0;
     if (p_id >= 0) {
+        std::cout << __FILE__ << __LINE__ << "a" << std::endl;
         id       = p_id;
         m_max_id = MAX (m_max_id, p_id + 1);
     } else {
+        std::cout << __FILE__ << __LINE__ << "a" << std::endl;
         id = m_max_id++;
     }
+    std::cout << __FILE__ << __LINE__ << "a" << std::endl;
     Vec3f old_position = p_current_position - p_current_velocity * m_options.m_timestep;
+
+    std::cout << __FILE__ << __LINE__ << "a" << std::endl;
     m_border.updatePosition (p_current_position.x,
                              p_current_position.y,
                              p_current_position.z,
                              old_position.x,
                              old_position.y,
                              old_position.z);
-    get_cell_for_particle (p_current_position).add_particle (p_current_position, old_position, m_idx_a, id);
+    std::cout << __FILE__ << __LINE__ << "a" << std::endl;
+    ParticleCell& cell = get_cell_for_particle (p_current_position);
+    std::cout << __FILE__ << __LINE__ << "a" << std::endl;
+    cell.add_particle (p_current_position, old_position, m_idx_a, id);
+    std::cout << __FILE__ << __LINE__ << "a" << std::endl;
 }
 void DatastructureGrid::serialize () {
     Benchmark::begin ("saving the data", false);
@@ -127,22 +137,7 @@ void DatastructureGrid::step_2b_calculate_between_cells (ParticleCell& p_cell_i,
                             max2);
     }
 }
-void DatastructureGrid::step_2b_calculate_between_neigbours (unsigned int& p_x, unsigned int& p_y, unsigned int& p_z) {
-    for (int a = -1; a <= 1; a++) {
-        for (int b = -1; b <= 1; b++) {
-            for (int c = -1; c <= 1; c++) {
-                if ((a == 0) && (b == 0) && (c == 0)) {
-                    return;
-                }
-                ParticleCell& cell1 =
-                    get_cell_at (p_x + (a < 0 ? 1 : 0), p_y + (b < 0 ? 1 : 0), p_z + (c < 0 ? 1 : 0));
-                ParticleCell& cell2 =
-                    get_cell_at (p_x + (a < 0 ? 0 : a), p_y + (b < 0 ? 0 : b), p_z + (c < 0 ? 0 : c));
-                step_2b_calculate_between_cells (cell1, cell2);
-            }
-        }
-    }
-}
+
 void DatastructureGrid::step_3_remove_wrong_particles_from_cell (ParticleCell& p_cell) {
     int i;
     for (i = p_cell.m_ids.size () - 1; i >= 0; i--) {
@@ -178,13 +173,108 @@ void DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
     }
     Benchmark::end ();
     Benchmark::begin ("step 2b", false);
-    // TODO wraparount cell combinations never evaluated -> upper_loop_limit!!
-    for (parallel_offset = 0; parallel_offset < 2; parallel_offset++) {
-        for (idx_x = parallel_offset; idx_x < m_size.x - 1; idx_x += 2) {
+    {
+        for (parallel_offset = 0; parallel_offset < 2; parallel_offset++) {
+            for (idx_x = parallel_offset; idx_x < m_size.x - 1; idx_x += 2) {
+                for (idx_y = 0; idx_y < m_size.y - 1; idx_y++) {
+                    for (idx_z = 0; idx_z < m_size.z - 1; idx_z++) {
+                        step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y + 1, idx_z + 1),
+                                                         get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
+                        step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y + 1, idx_z + 0),
+                                                         get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
+                        step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y + 1, idx_z + 0),
+                                                         get_cell_at (idx_x + 0, idx_y + 0, idx_z + 1));
+                        step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y + 0, idx_z + 1),
+                                                         get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
+                        step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y + 0, idx_z + 0),
+                                                         get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
+                        step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y + 0, idx_z + 0),
+                                                         get_cell_at (idx_x + 0, idx_y + 0, idx_z + 1));
+                        step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y + 0, idx_z + 1),
+                                                         get_cell_at (idx_x + 0, idx_y + 1, idx_z + 0));
+                        step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y + 0, idx_z + 0),
+                                                         get_cell_at (idx_x + 0, idx_y + 1, idx_z + 0));
+                        step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y + 0, idx_z + 0),
+                                                         get_cell_at (idx_x + 0, idx_y + 1, idx_z + 1));
+                        step_2b_calculate_between_cells (get_cell_at (idx_x + 0, idx_y + 1, idx_z + 1),
+                                                         get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
+                        step_2b_calculate_between_cells (get_cell_at (idx_x + 0, idx_y + 1, idx_z + 0),
+                                                         get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
+                        step_2b_calculate_between_cells (get_cell_at (idx_x + 0, idx_y + 1, idx_z + 0),
+                                                         get_cell_at (idx_x + 0, idx_y + 0, idx_z + 1));
+                        step_2b_calculate_between_cells (get_cell_at (idx_x + 0, idx_y + 0, idx_z + 1),
+                                                         get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
+                    }
+                }
+            }
+        }
+        {
+            idx_x = m_size.x - 1;
             for (idx_y = 0; idx_y < m_size.y - 1; idx_y++) {
                 for (idx_z = 0; idx_z < m_size.z - 1; idx_z++) {
-                    step_2b_calculate_between_neigbours (idx_x, idx_y, idx_z);
+                    step_2b_calculate_between_cells (get_cell_at (idx_x + 0, idx_y + 1, idx_z + 1),
+                                                     get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
+                    step_2b_calculate_between_cells (get_cell_at (idx_x + 0, idx_y + 1, idx_z + 0),
+                                                     get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
+                    step_2b_calculate_between_cells (get_cell_at (idx_x + 0, idx_y + 1, idx_z + 0),
+                                                     get_cell_at (idx_x + 0, idx_y + 0, idx_z + 1));
+                    step_2b_calculate_between_cells (get_cell_at (idx_x + 0, idx_y + 0, idx_z + 1),
+                                                     get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
                 }
+            }
+        }
+        {
+            idx_y = m_size.y - 1;
+            for (idx_x = 0; idx_x < m_size.x - 1; idx_x++) {
+                for (idx_z = 0; idx_z < m_size.z - 1; idx_z++) {
+                    step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y + 0, idx_z + 1),
+                                                     get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
+                    step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y + 0, idx_z + 0),
+                                                     get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
+                    step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y + 0, idx_z + 0),
+                                                     get_cell_at (idx_x + 0, idx_y + 0, idx_z + 1));
+                    step_2b_calculate_between_cells (get_cell_at (idx_x + 0, idx_y + 0, idx_z + 1),
+                                                     get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
+                }
+            }
+        }
+        {
+            idx_z = m_size.z - 1;
+            for (idx_x = 0; idx_x < m_size.x - 1; idx_x++) {
+                for (idx_y = 0; idx_y < m_size.y - 1; idx_y++) {
+                    step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y + 1, idx_z + 0),
+                                                     get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
+                    step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y + 0, idx_z + 0),
+                                                     get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
+                    step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y + 0, idx_z + 0),
+                                                     get_cell_at (idx_x + 0, idx_y + 1, idx_z + 0));
+                    step_2b_calculate_between_cells (get_cell_at (idx_x + 0, idx_y + 1, idx_z + 0),
+                                                     get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
+                }
+            }
+        }
+        {
+            idx_y = m_size.y - 1;
+            idx_z = m_size.z - 1;
+            for (idx_x = 0; idx_x < m_size.x - 1; idx_x++) {
+                step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y, idx_z),
+                                                 get_cell_at (idx_x + 0, idx_y, idx_z));
+            }
+        }
+        {
+            idx_x = m_size.x - 1;
+            idx_z = m_size.z - 1;
+            for (idx_y = 0; idx_y < m_size.y - 1; idx_y++) {
+                step_2b_calculate_between_cells (get_cell_at (idx_x, idx_y + 1, idx_z),
+                                                 get_cell_at (idx_x, idx_y + 0, idx_z));
+            }
+        }
+        {
+            idx_x = m_size.x - 1;
+            idx_y = m_size.y - 1;
+            for (idx_z = 0; idx_z < m_size.z - 1; idx_z++) {
+                step_2b_calculate_between_cells (get_cell_at (idx_x, idx_y, idx_z + 1),
+                                                 get_cell_at (idx_x, idx_y, idx_z + 0));
             }
         }
     }

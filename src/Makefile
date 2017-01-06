@@ -35,7 +35,7 @@ rmlog: format
 	rm -rf ../logdata
 
 run: build_release
-	cd .. && ./particle_simulation.x -p 100 -l 0.1 -f 1 -r 2.5 -t 0.005
+	cd .. && ./particle_simulation.x --algorithm=LENNARD_JONES --data_structure=GRID --input=GENERATOR_GRID_DISTRIBUTION --count=64  --output=FILE_CSV --max_iterations=10000  --write_fequency=10  --cut_off_radius=2.5 --timestep=0.005 --bounds=5/5/5 --verbose
 
 test: 
 	rm -rf ../Testing/Coverage

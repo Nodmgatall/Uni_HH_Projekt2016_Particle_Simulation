@@ -14,12 +14,18 @@ std::stack<bool>           Benchmark::m_section_print      = std::stack<bool> ()
 void Benchmark::begin (std::string p_section_name, bool p_print) {
     if (p_print) {
         m_verbose_stream << ">>>" << p_section_name << " :: starting" << std::endl;
+
         g_log_file.indent ();
     }
+
     struct timeval time_now;
+
     gettimeofday (&time_now, NULL);
+
     m_section_names.push (p_section_name);
+
     m_section_starttimes.push (time_now);
+
     m_section_print.push (p_print);
 }
 

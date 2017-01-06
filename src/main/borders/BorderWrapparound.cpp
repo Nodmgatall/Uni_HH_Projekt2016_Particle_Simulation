@@ -36,7 +36,7 @@ bool BorderWrapparound::updatePosition (data_type&   m_x,
             m_x += m_bounds.x;
             m_other_x += m_bounds.x;
         }
-    } else if (m_x > m_corner111.x) {
+    } else if (m_x >= m_corner111.x) {
         delta.x = +1;
         while (m_x > m_bounds.x) {
             m_x -= m_bounds.x;
@@ -49,7 +49,7 @@ bool BorderWrapparound::updatePosition (data_type&   m_x,
             m_y += m_bounds.y;
             m_other_y += m_bounds.y;
         }
-    } else if (m_y > m_corner111.y) {
+    } else if (m_y >= m_corner111.y) {
         delta.y = +1;
         while (m_y > m_bounds.y) {
             m_y -= m_bounds.y;
@@ -62,7 +62,7 @@ bool BorderWrapparound::updatePosition (data_type&   m_x,
             m_z += m_bounds.z;
             m_other_z += m_bounds.z;
         }
-    } else if (m_z > m_corner111.z) {
+    } else if (m_z >= m_corner111.z) {
         delta.z = +1;
         while (m_z > m_bounds.z) {
             m_z -= m_bounds.z;

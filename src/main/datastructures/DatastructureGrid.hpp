@@ -120,15 +120,6 @@ class DatastructureGrid : public DatastructureBase {
      */
     void step_2b_calculate_between_cells (ParticleCell& p_cell_i, ParticleCell& p_cell_j);
     /**
-     * calculates the movement based on forces between particles which are in
-     * different cells. the cells to calculate are extracted from the "base" coordinate given as
-     * parameter. the compiler should unroll the loops completely.
-     * @param p_x
-     * @param p_y
-     * @param p_z
-     */
-    void step_2b_calculate_between_neigbours (unsigned int& p_x, unsigned int& p_y, unsigned int& p_z);
-    /**
      * verify that all particles in cell are in the correct cell. if there are
      * particles which should be
      * in an other cell, these particles get moved

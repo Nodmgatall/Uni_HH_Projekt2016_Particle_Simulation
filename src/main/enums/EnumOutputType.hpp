@@ -22,6 +22,21 @@ enum class e_output_type {
     FILE_VMD      = 5,
     FILE_VTK      = 6
 };
+// CSV::ParaView	how to  -> http://www.paraview.org/Wiki/ParaView/Data_formats
+
+/* visualisierungs software
+ *
+    http://lammps.sandia.gov/viz.html
+
+    VMD
+    AtomEye
+    OVITO
+    ParaView
+    PyMol
+    Raster3d
+    RasMol
+ *
+ * */
 
 std::ostream& operator<< (std::ostream& stream, const e_output_type& p_output_type);
 std::istream& operator>> (std::istream& stream, e_output_type& p_output_type);
