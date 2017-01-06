@@ -9,6 +9,7 @@ int OptionHandler::indexInArray (std::vector<const char*> elements, char* elemen
     return -1;
 }
 int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_options) {
+    Benchmark::begin ("OptionHandler::handle_options");
     print_header ();
     bool                help_printed = false;
     int                 argv_index;
@@ -195,6 +196,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
         print_choosen_options (p_options);
     }
     g_verbose = p_options.m_verbose;
+    Benchmark::end ();
     return help_printed;
 }
 void OptionHandler::print_choosen_options (s_options& p_options) {

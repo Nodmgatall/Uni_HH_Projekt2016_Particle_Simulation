@@ -56,12 +56,12 @@ void AlgorithmLennardJones::step_2 (const data_type&       p_position_aix,
         const data_type s_ij_x  = s_ij * d_x;
         const data_type s_ij_y  = s_ij * d_y;
         const data_type s_ij_z  = s_ij * d_z;
-        p_position_bix += s_ij_x / m_i;
-        p_position_biy += s_ij_y / m_i;
-        p_position_biz += s_ij_z / m_i;
-        p_position_bjx[j] -= s_ij_x / m_j;
-        p_position_bjy[j] -= s_ij_y / m_j;
-        p_position_bjz[j] -= s_ij_z / m_j;
+        p_position_bix -= s_ij_x / m_i;
+        p_position_biy -= s_ij_y / m_i;
+        p_position_biz -= s_ij_z / m_i;
+        p_position_bjx[j] += s_ij_x / m_j;
+        p_position_bjy[j] += s_ij_y / m_j;
+        p_position_bjz[j] += s_ij_z / m_j;
     }
 }
 // PROOF OF CONCEPT! do not use!

@@ -86,12 +86,12 @@ extern bool                      g_verbose;
 #define DEBUG_ELIMINATOR if (1)
 #endif
 
-#define VERBOSE_ELIMONATOR if (g_verbose)
+#define VERBOSE_ELIMINATOR if (g_verbose)
 
 #define m_standard_stream g_log_file.set_file_and_line (__FILE__, __LINE__)
 #define m_error_stream g_log_file.set_file_and_line (__FILE__, __LINE__)
 #define m_debug_stream DEBUG_ELIMINATOR     g_log_file.set_file_and_line (__FILE__, __LINE__)
-#define m_verbose_stream VERBOSE_ELIMONATOR g_log_file.set_file_and_line (__FILE__, __LINE__)
+#define m_verbose_stream VERBOSE_ELIMINATOR g_log_file.set_file_and_line (__FILE__, __LINE__)
 
 #define macro_debug_1(x) m_debug_stream << x << std::endl;
 #define macro_debug(x, y) m_debug_stream << x << " = " << y << std::endl;
