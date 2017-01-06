@@ -33,6 +33,28 @@ class AlgorithmLennardJones : public AlgorithmBase { // störmer verlet in den n
                  data_type&       p_position_bx,
                  data_type&       p_position_by,
                  data_type&       p_position_bz);
+
+    /***
+     * First part of the verlet algorithm. Calculates (2 * current_position - old position) for each
+     * old/current partcile pair
+     *
+     * @param p_position_ax array pointer to lasts iteration x positions
+     * @param p_position_ax array pointer to lasts iteration y positions
+     * @param p_position_ax array pointer to lasts iteration z positions
+     * @param p_position_ax array pointer to current iteration x positions
+     * @param p_position_ax array pointer to current iteration y positions
+     * @param p_position_ax array pointer to current iteration z positions
+     * @param p_particle_count position array length
+     */
+    /*
+    void step_1_over_array (const data_type* p_position_ax,
+                            const data_type* p_position_ay,
+                            const data_type* p_position_az,
+                            data_type*       p_position_bx,
+                            data_type*       p_position_by,
+                            data_type*       p_position_bz,
+                            unsigned long    p_particle_count);
+*/
     void step_2 (const data_type&       p_position_aix,
                  const data_type&       p_position_aiy,
                  const data_type&       p_position_aiz,
@@ -47,6 +69,20 @@ class AlgorithmLennardJones : public AlgorithmBase { // störmer verlet in den n
                  data_type* const       p_position_bjz,
                  const unsigned long    p_index_j_begin,
                  const unsigned long    p_index_j_end);
-};
+/*
+    void step_2_single (const data_type& p_position_aix,
+                        const data_type& p_position_aiy,
+                        const data_type& p_position_aiz,
+                        data_type&       p_position_bix,
+                        data_type&       p_position_biy,
+                        data_type&       p_position_biz,
+                        const data_type& p_position_ajx,
+                        const data_type& p_position_ajy,
+                        const data_type& p_position_ajz,
+                        data_type&       p_position_bjx,
+                        data_type&       p_position_bjy,
+                        data_type&       p_position_bjz);
 
+*/
+};
 #endif /* SRC_ALGORITHMS_LENNARDJONESALGORITHM_HPP_ */

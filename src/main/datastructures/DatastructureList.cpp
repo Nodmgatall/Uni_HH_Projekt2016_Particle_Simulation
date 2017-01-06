@@ -27,17 +27,21 @@ void DatastructureList::add_particle (Vec3f p_position) {
     } else {
         m_particle_ids.push_back (m_last_id++);
         /*
-                m_velocities_x_now.push_back (0);
-                m_velocities_y_now.push_back (0);
-                m_velocities_z_now.push_back (0);
+            m_velocities_x_now.push_back (0);
+            m_velocities_y_now.push_back (0);
+            m_velocities_z_now.push_back (0);
         */
         m_positions_x_now.push_back (p_position.x);
         m_positions_y_now.push_back (p_position.y);
         m_positions_z_now.push_back (p_position.z);
+
+        m_positions_x_old.push_back (p_position.x);
+        m_positions_y_old.push_back (p_position.y);
+        m_positions_z_old.push_back (p_position.z);
         /*
-                m_accelerations_x_now.push_back (0);
-                m_accelerations_y_now.push_back (0);
-                m_accelerations_z_now.push_back (0);
+            m_accelerations_x_now.push_back (0);
+            m_accelerations_y_now.push_back (0);
+            m_accelerations_z_now.push_back (0);
         */
     }
 }
@@ -51,18 +55,37 @@ void DatastructureList::add_particle (Vec3f p_position, Vec3f p_velocity, int p_
 
 void DatastructureList::run_simulation_iteration (unsigned long p_iteration_number) {
     (void) p_iteration_number;
-    // unsigned long particle_count = m_positions_x_now.size ();
-    /*
-    for (unsigned long particle_idx = 0; particle_idx < particle_count; particle_idx++) {
+    unsigned long particle_count = m_positions_x_now.size ();
+    for (unsigned long particle_idx = 0; particle_idx < particle_count - 1; particle_idx++) {
         if (p_iteration_number % 20 == 0) {
             build_lists ();
         }
-        unsigned long list_size =
-            m_neighbour_section_idxs[particle_idx + 1] - m_neighbour_section_idxs[particle_idx];
-        for (unsigned long list_idx; list_idx < list_size; list_idx++) {
+        m_algorithm.step_1 (m_positions_x_old[particle_idx],
+                            m_positions_y_old[particle_idx],
+                            m_positions_z_old[particle_idx],
+                            m_positions_x_now[particle_idx],
+                            m_positions_y_now[particle_idx],
+                            m_positions_z_now[particle_idx]);
+
+        for (unsigned long list_idx = m_neighbour_idxs_list[particle_idx];
+             list_idx < m_neighbour_idxs_list[particle_idx + 1];
+             list_idx++) {
+            m_algorithm.step_2 (m_positions_x_old[particle_idx],
+                    m_positions_y_old[particle_idx],
+                    m_positions_z_old[particle_idx],
+                    m_positions_x_now[particle_idx],
+                    m_positions_y_now[particle_idx],
+                    m_positions_z_now[particle_idx],
+                    &m_positions_x_old[list_idx],
+                    &m_positions_y_old[list_idx],
+                    &m_positions_z_old[list_idx],
+                    &m_positions_x_now[list_idx],
+                    &m_positions_y_now[list_idx],
+                    &m_positions_z_now[list_idx],
+                    0,
+                    1);
         }
     }
-    */
 }
 
 void DatastructureList::build_lists () {
@@ -90,17 +113,6 @@ void DatastructureList::build_lists () {
         }
         m_neighbour_section_idxs.push_back (neighbour_count);
     }
-    for (auto i : m_neighbour_idxs_list) {
-        std::cout << i << " ";
-    }
-    std::cout << std::endl;
-    for (auto i : m_neighbour_section_idxs) {
-        std::cout << i << " ";
-    }
-    std::cout << std::endl;
-    std::cout << m_neighbour_idxs_list.size () << std::endl;
-    std::cout << m_neighbour_section_idxs.size () << std::endl;
-    std::cout << "+++++++++" << std::endl;
 }
 
 /**
