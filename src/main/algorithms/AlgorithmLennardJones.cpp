@@ -43,22 +43,26 @@ void AlgorithmLennardJones::step_2 (const data_type&       p_position_aix,
                                     const unsigned long    p_index_j_end) {
     unsigned long j;
     for (j = p_index_j_begin; j < p_index_j_end; j++) {
-        const data_type d_x     = p_position_ajx[j] - p_position_aix;
-        const data_type d_y     = p_position_ajy[j] - p_position_aiy;
-        const data_type d_z     = p_position_ajz[j] - p_position_aiz;
-        const data_type r_ij_2  = d_x * d_x + d_y * d_y + d_z * d_z;
+        const data_type d_x = p_position_ajx[j] - p_position_aix;
+        const data_type d_y = p_position_ajy[j] - p_position_aiy;
+        const data_type d_z = p_position_ajz[j] - p_position_aiz;
+        std::cout << DEBUG_VAR (d_z) << std::endl;
+        const data_type r_ij_2 = d_x * d_x + d_y * d_y + d_z * d_z;
+        std::cout << DEBUG_VAR (r_ij_2) << std::endl;
         const data_type r_ij_4  = r_ij_2 * r_ij_2;
         const data_type r_ij_6  = r_ij_2 * r_ij_4;
         const data_type r_ij_14 = r_ij_6 * r_ij_6 * r_ij_2;
         const data_type s_ij    = (A_ij - B_ij * r_ij_6) / (r_ij_14);
-        const data_type s_ij_x  = s_ij * d_x;
-        const data_type s_ij_y  = s_ij * d_y;
-        const data_type s_ij_z  = s_ij * d_z;
-        p_position_bix += s_ij_x / m_i;
-        p_position_biy += s_ij_y / m_i;
-        p_position_biz += s_ij_z / m_i;
-        p_position_bjx[j] -= s_ij_x / m_j;
-        p_position_bjy[j] -= s_ij_y / m_j;
-        p_position_bjz[j] -= s_ij_z / m_j;
+        std::cout << DEBUG_VAR (s_ij) << std::endl;
+        const data_type s_ij_x = s_ij * d_x;
+        const data_type s_ij_y = s_ij * d_y;
+        const data_type s_ij_z = s_ij * d_z;
+        std::cout << DEBUG_VAR (s_ij_z) << std::endl;
+        p_position_bix -= s_ij_x / m_i;
+        p_position_biy -= s_ij_y / m_i;
+        p_position_biz -= s_ij_z / m_i;
+        p_position_bjx[j] += s_ij_x / m_j;
+        p_position_bjy[j] += s_ij_y / m_j;
+        p_position_bjz[j] += s_ij_z / m_j;
     }
 }

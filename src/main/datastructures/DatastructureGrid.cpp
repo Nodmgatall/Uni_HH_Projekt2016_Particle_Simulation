@@ -11,8 +11,8 @@ DatastructureGrid::DatastructureGrid (s_options& p_options, BorderBase& p_border
     // cut_off_radius*1.2 to allow particles to move before reconstruction of
     // cells is needed
     m_size = Vec3l::min (Vec3l (m_options.m_bounds / (m_options.m_cut_off_radius * 1.2f)), max_usefull_size);
-    m_size          = m_size + 1L; // round up to next natural number for cell-count
-    m_size          = Vec3l::max (m_size, Vec3l (4L));
+    // m_size          = m_size + 1L; // round up to next natural number for cell-count
+    m_size          = Vec3l::max (m_size, Vec3l (2L));
     m_size_per_cell = m_options.m_bounds / Vec3f (m_size);
     m_cells.reserve (m_size.x * m_size.y * m_size.z);
     for (idx_x = 0; idx_x < m_size.x; idx_x++) {
@@ -41,31 +41,23 @@ void DatastructureGrid::add_particle (Vec3f p_current_position) {
     add_particle (p_current_position, Vec3f (0));
 }
 void DatastructureGrid::add_particle (Vec3f p_current_position, Vec3f p_current_velocity, int p_id) {
-    std::cout << __FILE__ << __LINE__ << "a" << std::endl;
     long id = 0;
     if (p_id >= 0) {
-        std::cout << __FILE__ << __LINE__ << "a" << std::endl;
         id       = p_id;
         m_max_id = MAX (m_max_id, p_id + 1);
     } else {
-        std::cout << __FILE__ << __LINE__ << "a" << std::endl;
         id = m_max_id++;
     }
-    std::cout << __FILE__ << __LINE__ << "a" << std::endl;
     Vec3f old_position = p_current_position - p_current_velocity * m_options.m_timestep;
 
-    std::cout << __FILE__ << __LINE__ << "a" << std::endl;
     m_border.updatePosition (p_current_position.x,
                              p_current_position.y,
                              p_current_position.z,
                              old_position.x,
                              old_position.y,
                              old_position.z);
-    std::cout << __FILE__ << __LINE__ << "a" << std::endl;
     ParticleCell& cell = get_cell_for_particle (p_current_position);
-    std::cout << __FILE__ << __LINE__ << "a" << std::endl;
     cell.add_particle (p_current_position, old_position, m_idx_a, id);
-    std::cout << __FILE__ << __LINE__ << "a" << std::endl;
 }
 void DatastructureGrid::serialize () {
     Benchmark::begin ("saving the data", false);

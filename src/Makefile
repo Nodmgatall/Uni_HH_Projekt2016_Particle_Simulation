@@ -37,6 +37,9 @@ rmlog: format
 run: build_release
 	cd .. && ./particle_simulation.x --algorithm=LENNARD_JONES --data_structure=GRID --input=GENERATOR_GRID_DISTRIBUTION --count=64  --output=FILE_CSV --max_iterations=10000  --write_fequency=10  --cut_off_radius=2.5 --timestep=0.005 --bounds=5/5/5 --verbose
 
+run2: build_release
+	cd .. && ./particle_simulation.x --algorithm=LENNARD_JONES --data_structure=GRID --input=FILE_CSV --in_file_name="Testing/Resources/2particle.csv" --output=FILE_CSV --max_iterations=1000  --write_fequency=1  --cut_off_radius=2.5 --timestep=0.005 --bounds=4/4/4 --verbose
+
 test: 
 	rm -rf ../Testing/Coverage
 	rm -rf ../Testing/Binary/*
