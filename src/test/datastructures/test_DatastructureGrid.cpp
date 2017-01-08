@@ -511,7 +511,9 @@ BOOST_AUTO_TEST_CASE (test_step_2b) {
 BOOST_AUTO_TEST_CASE (test_step_3) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
-    options.m_bounds = Vec3f (5, 5, 5);
+    options.m_bounds         = Vec3f (5, 5, 5);
+    options.m_particle_count = 999999999;
+    options.m_cut_off_radius = 0.5;
     BoundsCorrection           border (options.m_bounds);
     Algorithm                  algorithm (options);
     ParticleWriter             writer = ParticleWriter ();

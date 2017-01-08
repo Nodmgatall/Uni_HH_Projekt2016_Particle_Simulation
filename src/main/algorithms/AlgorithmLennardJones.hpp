@@ -69,20 +69,20 @@ class AlgorithmLennardJones : public AlgorithmBase { // störmer verlet in den n
                  data_type* const       p_position_bjz,
                  const unsigned long    p_index_j_begin,
                  const unsigned long    p_index_j_end);
-/*
-    void step_2_single (const data_type& p_position_aix,
-                        const data_type& p_position_aiy,
-                        const data_type& p_position_aiz,
-                        data_type&       p_position_bix,
-                        data_type&       p_position_biy,
-                        data_type&       p_position_biz,
-                        const data_type& p_position_ajx,
-                        const data_type& p_position_ajy,
-                        const data_type& p_position_ajz,
-                        data_type&       p_position_bjx,
-                        data_type&       p_position_bjy,
-                        data_type&       p_position_bjz);
+    /*
+        void step_2_single (const data_type& p_position_aix,
+                            const data_type& p_position_aiy,
+                            const data_type& p_position_aiz,
+                            data_type&       p_position_bix,
+                            data_type&       p_position_biy,
+                            data_type&       p_position_biz,
+                            const data_type& p_position_ajx,
+                            const data_type& p_position_ajy,
+                            const data_type& p_position_ajz,
+                            data_type&       p_position_bjx,
+                            data_type&       p_position_bjy,
+                            data_type&       p_position_bjz);
 
-*/
+    */
 };
 #endif /* SRC_ALGORITHMS_LENNARDJONESALGORITHM_HPP_ */

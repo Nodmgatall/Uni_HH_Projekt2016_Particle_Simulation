@@ -70,8 +70,6 @@ class AlgorithmBase {
                          data_type* const       p_position_bjz,
                          const unsigned long    p_index_j_begin,
                          const unsigned long    p_index_j_end) = 0;
-
 };
-
 
 #endif /* SRC_MAIN_ALGORITHMS_ALGORITHMBASE_HPP_ */

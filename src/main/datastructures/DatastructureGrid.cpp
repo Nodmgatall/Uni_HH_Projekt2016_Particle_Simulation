@@ -22,6 +22,7 @@ DatastructureGrid::DatastructureGrid (s_options& p_options, BorderBase& p_border
             }
         }
     }
+    std::cout << DEBUG_VAR (m_size) << std::endl;
 }
 DatastructureGrid::~DatastructureGrid () {
 }

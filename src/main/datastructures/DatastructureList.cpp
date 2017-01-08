@@ -71,19 +71,19 @@ void DatastructureList::run_simulation_iteration (unsigned long p_iteration_numb
              list_idx < m_neighbour_idxs_list[particle_idx + 1];
              list_idx++) {
             m_algorithm.step_2 (m_positions_x_old[particle_idx],
-                    m_positions_y_old[particle_idx],
-                    m_positions_z_old[particle_idx],
-                    m_positions_x_now[particle_idx],
-                    m_positions_y_now[particle_idx],
-                    m_positions_z_now[particle_idx],
-                    &m_positions_x_old[list_idx],
-                    &m_positions_y_old[list_idx],
-                    &m_positions_z_old[list_idx],
-                    &m_positions_x_now[list_idx],
-                    &m_positions_y_now[list_idx],
-                    &m_positions_z_now[list_idx],
-                    0,
-                    1);
+                                m_positions_y_old[particle_idx],
+                                m_positions_z_old[particle_idx],
+                                m_positions_x_now[particle_idx],
+                                m_positions_y_now[particle_idx],
+                                m_positions_z_now[particle_idx],
+                                &m_positions_x_old[list_idx],
+                                &m_positions_y_old[list_idx],
+                                &m_positions_z_old[list_idx],
+                                &m_positions_x_now[list_idx],
+                                &m_positions_y_now[list_idx],
+                                &m_positions_z_now[list_idx],
+                                0,
+                                1);
         }
     }
 }
