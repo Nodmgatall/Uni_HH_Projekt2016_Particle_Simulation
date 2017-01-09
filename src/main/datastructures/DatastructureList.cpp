@@ -56,10 +56,13 @@ void DatastructureList::add_particle (Vec3f p_position, Vec3f p_velocity, int p_
 void DatastructureList::run_simulation_iteration (unsigned long p_iteration_number) {
     (void) p_iteration_number;
     unsigned long particle_count = m_positions_x_now.size ();
+    if (p_iteration_number % 20 == 0) {
+        //std::cout << "Building list" << std::endl;
+        build_lists ();
+    }
+
     for (unsigned long particle_idx = 0; particle_idx < particle_count - 1; particle_idx++) {
-        if (p_iteration_number % 20 == 0) {
-            build_lists ();
-        }
+        //std::cout << particle_idx << std::endl;
         m_algorithm.step_1 (m_positions_x_old[particle_idx],
                             m_positions_y_old[particle_idx],
                             m_positions_z_old[particle_idx],
@@ -67,21 +70,23 @@ void DatastructureList::run_simulation_iteration (unsigned long p_iteration_numb
                             m_positions_y_now[particle_idx],
                             m_positions_z_now[particle_idx]);
 
-        for (unsigned long list_idx = m_neighbour_idxs_list[particle_idx];
-             list_idx < m_neighbour_idxs_list[particle_idx + 1];
+           // std::cout << "db: "<< m_neighbour_section_idxs[particle_idx] << " " << m_neighbour_section_idxs[particle_idx + 1] << std::endl;
+        for (unsigned long list_idx = m_neighbour_section_idxs[particle_idx];
+             list_idx < m_neighbour_section_idxs[particle_idx + 1];
              list_idx++) {
+           // std::cout << m_neighbour_idxs_list[list_idx] << std::endl;
             m_algorithm.step_2 (m_positions_x_old[particle_idx],
                                 m_positions_y_old[particle_idx],
                                 m_positions_z_old[particle_idx],
                                 m_positions_x_now[particle_idx],
                                 m_positions_y_now[particle_idx],
                                 m_positions_z_now[particle_idx],
-                                &m_positions_x_old[list_idx],
-                                &m_positions_y_old[list_idx],
-                                &m_positions_z_old[list_idx],
-                                &m_positions_x_now[list_idx],
-                                &m_positions_y_now[list_idx],
-                                &m_positions_z_now[list_idx],
+                                &m_positions_x_old[m_neighbour_idxs_list[list_idx]],
+                                &m_positions_y_old[m_neighbour_idxs_list[list_idx]],
+                                &m_positions_z_old[m_neighbour_idxs_list[list_idx]],
+                                &m_positions_x_now[m_neighbour_idxs_list[list_idx]],
+                                &m_positions_y_now[m_neighbour_idxs_list[list_idx]],
+                                &m_positions_z_now[m_neighbour_idxs_list[list_idx]],
                                 0,
                                 1);
         }
@@ -89,6 +94,7 @@ void DatastructureList::run_simulation_iteration (unsigned long p_iteration_numb
 }
 
 void DatastructureList::build_lists () {
+    std::cout << m_options.m_cut_off_radius << std::endl;
     unsigned long particle_count          = m_positions_x_now.size ();
     unsigned long neighbour_count         = 0;
     unsigned long neighbour_idx_list_size = particle_count * (particle_count * 0.16);
@@ -101,7 +107,7 @@ void DatastructureList::build_lists () {
     m_neighbour_section_idxs.push_back (0);
     // for each particle
     for (unsigned long particle_idx = 0; particle_idx < particle_count - 1; particle_idx++) {
-        unsigned long range = particle_count - particle_idx;
+        unsigned long range = particle_count - particle_idx - 1;
         distances.resize (range);
         calculate_distances_squared (particle_idx, &distances[0]);
 
@@ -131,7 +137,7 @@ void DatastructureList::calculate_distances_squared (unsigned long particle_idx,
     data_type     x              = m_positions_x_now[particle_idx];
     data_type     y              = m_positions_y_now[particle_idx];
     data_type     z              = m_positions_z_now[particle_idx];
-    unsigned long particle_count = m_positions_x_now.size ();
+    unsigned long particle_count = m_positions_x_now.size () - particle_idx - 1;
     unsigned long start          = particle_idx + 1;
     for (cur_part_idx = 0; cur_part_idx < particle_count; cur_part_idx++) {
         p_distances_squared[cur_part_idx] = std::pow (x - m_positions_x_now[cur_part_idx + start], 2) +
