@@ -434,7 +434,9 @@ BOOST_AUTO_TEST_CASE (test_get_cell_for_particle_2) {
 BOOST_AUTO_TEST_CASE (test_step_1) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
-    options.m_bounds = Vec3f (5, 5, 5);
+    options.m_bounds         = Vec3f (5, 5, 5);
+    options.m_particle_count = 999999999;
+    options.m_cut_off_radius = 0.5;
     BoundsCorrection           border (options.m_bounds);
     Algorithm                  algorithm (options);
     ParticleWriter             writer = ParticleWriter ();
@@ -459,7 +461,9 @@ BOOST_AUTO_TEST_CASE (test_step_1) {
 BOOST_AUTO_TEST_CASE (test_step_2a) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
-    options.m_bounds = Vec3f (5, 5, 5);
+    options.m_bounds         = Vec3f (5, 5, 5);
+    options.m_particle_count = 999999999;
+    options.m_cut_off_radius = 0.5;
     BoundsCorrection           border (options.m_bounds);
     Algorithm                  algorithm (options);
     ParticleWriter             writer = ParticleWriter ();
@@ -479,11 +483,12 @@ BOOST_AUTO_TEST_CASE (test_step_2a) {
 BOOST_AUTO_TEST_CASE (test_step_2b) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
-    options.m_bounds = Vec3f (5, 5, 5);
-    BoundsCorrection border (options.m_bounds);
-    Algorithm        algorithm (options);
-    ParticleWriter   writer = ParticleWriter ();
-    ;
+    options.m_bounds         = Vec3f (5, 5, 5);
+    options.m_particle_count = 999999999;
+    options.m_cut_off_radius = 0.5;
+    BoundsCorrection           border (options.m_bounds);
+    Algorithm                  algorithm (options);
+    ParticleWriter             writer = ParticleWriter ();
     DatastructureGridTestClass particlesGrid (options, border, algorithm, writer);
     ParticleCell               cell_i = ParticleCell (Vec3l (), Vec3l (), options.m_bounds);
     ParticleCell               cell_j = ParticleCell (Vec3l (), Vec3l (), options.m_bounds);

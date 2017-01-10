@@ -170,6 +170,7 @@ class BoundsCorrection : public BorderBase {
 BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_1) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
+    options.m_particle_count = 999999999;
     options.m_bounds         = Vec3f (3, 3, 3);
     options.m_cut_off_radius = 1;
     options.m_timestep       = 1;
@@ -234,9 +235,10 @@ BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_1) {
 BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_2) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
-    int size                 = 4;
+    int size                 = 2;
+    options.m_particle_count = 999999999;
     options.m_bounds         = Vec3f (size, size, size);
-    options.m_cut_off_radius = 1;
+    options.m_cut_off_radius = 0.5;
     options.m_timestep       = 1;
     BoundsCorrection       border (options.m_bounds);
     Algorithm              algorithm (options);
@@ -247,7 +249,7 @@ BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_2) {
     for (int x = 0; x < 5; x++) {
         for (int y = 0; y < 5; y++) {
             for (int z = 0; z < 5; z++) {
-                Vec3f vec = Vec3f (x, y, z) * 0.5;
+                Vec3f vec = (Vec3f (x, y, z) / 4.0 * (size - 0.05)) + 0.0025;
                 allParticles.push_back (vec);
                 particlesGrid.add_particle (vec, Vec3f (count--, 0, 0) + vec);
             }
