@@ -55,7 +55,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
     }
     optind = 1;
     /*
-     * @see http://www.informit.com/articles/article.aspx?p=175771&seqNum=3
+     * <a href="http://www.informit.com/articles/article.aspx?p=175771&seqNum=3">getoptlong explanation</a>
      * */
     while ((argv_index = getopt_long (p_argc, p_argv, "a:b:c:f:h::i:l:m:o:r:s:t:v", options.data (), &long_options)) !=
            -1) {
