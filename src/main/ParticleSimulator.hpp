@@ -13,7 +13,6 @@
 #include "io/input/InputFactory.hpp"
 
 #include <functional>
-#include <getopt.h>
 #include <iostream>
 #include <map>
 #include <memory>
