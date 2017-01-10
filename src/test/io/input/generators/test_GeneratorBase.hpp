@@ -35,6 +35,8 @@ class ParticleWriter : public WriterBase {
     }
     void end () {
     }
+    void finalize () {
+    }
 };
 
 class Datastructure : public DatastructureBase {

@@ -31,6 +31,8 @@ class ParticleWriter : public WriterBase {
     }
     void end () {
     }
+    void finalize () {
+    }
 };
 
 class Algorithm : public AlgorithmBase {

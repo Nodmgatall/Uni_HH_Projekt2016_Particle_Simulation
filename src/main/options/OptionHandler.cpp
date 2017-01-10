@@ -250,17 +250,17 @@ std::string get_not_implemented (bool implemented) {
     return " NOT IMPLEMENTED";
 }
 enum ColorCode {
-        FG_RED      = 31,
-        FG_GREEN    = 32,
-        FG_BLUE     = 34,
-        FG_DEFAULT  = 39,
-        BG_RED      = 41,
-        BG_GREEN    = 42,
-        BG_BLUE     = 44,
-        BG_DEFAULT  = 49
-    };
-void  print_colored (std::string str,ColorCode color_code) {
-	m_standard_stream<<"\033[" << color_code << "m"<<str<<"\033["<<FG_DEFAULT<<"m";
+    FG_RED     = 31,
+    FG_GREEN   = 32,
+    FG_BLUE    = 34,
+    FG_DEFAULT = 39,
+    BG_RED     = 41,
+    BG_GREEN   = 42,
+    BG_BLUE    = 44,
+    BG_DEFAULT = 49
+};
+void print_colored (std::string str, ColorCode color_code) {
+    m_standard_stream << "\033[" << color_code << "m" << str << "\033[" << FG_DEFAULT << "m";
 }
 
 void OptionHandler::print_usage_algorithm () {

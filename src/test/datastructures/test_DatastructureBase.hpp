@@ -52,6 +52,8 @@ class ParticleWriter : public WriterBase {
         m_end_called   = true;
         m_start_called = false;
     }
+    void finalize () {
+    }
 };
 class Algorithm : public AlgorithmBase {
   public:
