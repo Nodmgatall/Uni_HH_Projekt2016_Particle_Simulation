@@ -33,5 +33,6 @@ void ParticleSimulator::simulate () {
         iteration_number++;
         Benchmark::end ();
     }
+    m_writer->finalize ();
     Benchmark::end ();
 }

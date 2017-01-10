@@ -25,6 +25,7 @@ class FileWriterCSV : public WriterBase {
     FileWriterCSV (s_options& p_options, const std::string& p_file_name_base);
     void start ();
     void end ();
+    void finalize ();
 };
 
 #endif /* SRC_PARTICLEFILEWRITER_HPP_ */

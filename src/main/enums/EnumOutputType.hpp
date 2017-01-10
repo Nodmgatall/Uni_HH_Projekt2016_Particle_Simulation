@@ -20,7 +20,8 @@ enum class e_output_type {
     FILE_ESPRESSO = 3,
     FILE_GROMACS  = 4,
     FILE_VMD      = 5,
-    FILE_VTK      = 6
+    FILE_VTK      = 6,
+    FILE_CSV_AVI  = 7
 };
 // CSV::ParaView	how to  -> http://www.paraview.org/Wiki/ParaView/Data_formats
 
