@@ -54,7 +54,10 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
         options.push_back ({ nameptr, no_argument, 0, write_modes_index * 1000 + index });
     }
     optind = 1;
-    while ((argv_index = getopt_long (p_argc, p_argv, "ab::c::f::h::i::l::m::o::r::s::t::v", options.data (), &long_options)) !=
+    /*
+     * @see http://www.informit.com/articles/article.aspx?p=175771&seqNum=3
+     * */
+    while ((argv_index = getopt_long (p_argc, p_argv, "a:b:c:f:h::i:l:m:o:r:s:t:v", options.data (), &long_options)) !=
            -1) {
         std::stringstream line;
         if (optarg) {
@@ -331,7 +334,7 @@ void OptionHandler::print_usage_autotuneing () {
 void OptionHandler::print_usage_bounds () {
     m_standard_stream //
         << "| --bounds=(float/float/float)                                                 |" << std::endl
-        << "|  -b                      This option specifies in which space the particles  |" << std::endl
+        << "|  -b (float/float/float)  This option specifies in which space the particles  |" << std::endl
         << "|                          can move. If particles move outside of the given    |" << std::endl
         << "|                          bounds, than the datastructure may move them back   |" << std::endl
         << "|                          into the bounds.                                    |" << std::endl;
@@ -339,27 +342,28 @@ void OptionHandler::print_usage_bounds () {
 void OptionHandler::print_usage_write_fequency () {
     m_standard_stream //
         << "| --write_fequency=(integer)                                                   |" << std::endl
-        << "|  -f                      This option specifies the count of iterations until |" << std::endl
+        << "|  -f (integer)            This option specifies the count of iterations until |" << std::endl
         << "|                          the particles are saved to the next file. Larger    |" << std::endl
         << "|                          numbers result in a better performance, but the     |" << std::endl
         << "|                          data between the saves is lost.                     |" << std::endl;
 }
 void OptionHandler::print_usage_help () {
     m_standard_stream //
-        << "| --help                                                                       |" << std::endl
-        << "|  -h                      prints help for all possible options.               |" << std::endl;
+        << "| --help[=string]                                                              |" << std::endl
+        << "|  -h[string]              prints help for all options, or if 'string' is      |" << std::endl
+        << "|                          specified only for the given option.                |" << std::endl;
 }
 void OptionHandler::print_usage_in_file_name () {
     m_standard_stream //
         << "| --in_file_name=(string)                                                      |" << std::endl
-        << "|  -i                      This option specifies the file name in which the    |" << std::endl
+        << "|  -i (string)             This option specifies the file name in which the    |" << std::endl
         << "|                          initial particles are stored. Must be used together |" << std::endl
         << "|                          an 'input' which is based on file.                  |" << std::endl;
 }
 void OptionHandler::print_usage_run_time_limit () {
     m_standard_stream //
         << "| --run_time_limit=(float)                                                     |" << std::endl
-        << "|  -l                      Defines the time at which the simulation should     |" << std::endl
+        << "|  -l (float)              Defines the time at which the simulation should     |" << std::endl
         << "|                          end. each simulation starts at time 0. Time         |" << std::endl
         << "|                          increases every iteration based on 'timestep'. Must |" << std::endl
         << "|                          not be used together with 'max_iterations'.         |" << std::endl;
@@ -367,14 +371,14 @@ void OptionHandler::print_usage_run_time_limit () {
 void OptionHandler::print_usage_max_iterations () {
     m_standard_stream //
         << "| --max_iterations=(integer)                                                   |" << std::endl
-        << "|  -m                      Defines the number of iterations which should be    |" << std::endl
+        << "|  -m (integer)            Defines the number of iterations which should be    |" << std::endl
         << "|                          simulated. Must not be used together with the       |" << std::endl
         << "|                          'run_time_limit' option.                            |" << std::endl;
 }
 void OptionHandler::print_usage_out_file_name () {
     m_standard_stream //
         << "| --out_file_name=(string)                                                     |" << std::endl
-        << "|  -o                      The particles are stored in files starting with the |" << std::endl
+        << "|  -o (string)             The particles are stored in files starting with the |" << std::endl
         << "|                          path and name provided by 'out_file_name'. After    |" << std::endl
         << "|                          the file base is an increasing number which         |" << std::endl
         << "|                          specifies the file order. The file-ending is chosen |" << std::endl
@@ -383,14 +387,14 @@ void OptionHandler::print_usage_out_file_name () {
 void OptionHandler::print_usage_particle_count () {
     m_standard_stream //
         << "| --count=(integer)                                                            |" << std::endl
-        << "|  -p                      Specifies the particle count for the simulation.    |" << std::endl
+        << "|  -p (integer)            Specifies the particle count for the simulation.    |" << std::endl
         << "|                          Must be used if the specified input is based on     |" << std::endl
         << "|                          'GENERATOR'.                                        |" << std::endl;
 }
 void OptionHandler::print_usage_cut_off_radius () {
     m_standard_stream //
         << "| --cut_off_radius=(float)                                                     |" << std::endl
-        << "|  -r                      Defines the max radius at which particles should    |" << std::endl
+        << "|  -r (float)              Defines the max radius at which particles should    |" << std::endl
         << "|                          interact with each other. If particles are more     |" << std::endl
         << "|                          than this defined distance from each other, then no |" << std::endl
         << "|                          interaction will be calculated.                     |" << std::endl;
@@ -398,13 +402,13 @@ void OptionHandler::print_usage_cut_off_radius () {
 void OptionHandler::print_usage_seed () {
     m_standard_stream //
         << "| --seed=(integer)                                                             |" << std::endl
-        << "|  -s                      Specifies the seed used for generation. Must be     |" << std::endl
+        << "|  -s (integer)            Specifies the seed used for generation. Must be     |" << std::endl
         << "|                          used if the specified input is based on 'GENERATOR'.|" << std::endl;
 }
 void OptionHandler::print_usage_timestep () {
     m_standard_stream //
         << "| --timestep=(float)                                                           |" << std::endl
-        << "|  -t                      Specifies the time-delta calculated in each         |" << std::endl
+        << "|  -t (float)              Specifies the time-delta calculated in each         |" << std::endl
         << "|                          iteration.                                          |" << std::endl;
 }
 void OptionHandler::print_usage_verbose () {

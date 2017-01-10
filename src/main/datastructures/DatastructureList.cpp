@@ -57,12 +57,12 @@ void DatastructureList::run_simulation_iteration (unsigned long p_iteration_numb
     (void) p_iteration_number;
     unsigned long particle_count = m_positions_x_now.size ();
     if (p_iteration_number % 20 == 0) {
-        //std::cout << "Building list" << std::endl;
+        // std::cout << "Building list" << std::endl;
         build_lists ();
     }
 
     for (unsigned long particle_idx = 0; particle_idx < particle_count - 1; particle_idx++) {
-        //std::cout << particle_idx << std::endl;
+        // std::cout << particle_idx << std::endl;
         m_algorithm.step_1 (m_positions_x_old[particle_idx],
                             m_positions_y_old[particle_idx],
                             m_positions_z_old[particle_idx],
@@ -70,11 +70,12 @@ void DatastructureList::run_simulation_iteration (unsigned long p_iteration_numb
                             m_positions_y_now[particle_idx],
                             m_positions_z_now[particle_idx]);
 
-           // std::cout << "db: "<< m_neighbour_section_idxs[particle_idx] << " " << m_neighbour_section_idxs[particle_idx + 1] << std::endl;
+        // std::cout << "db: "<< m_neighbour_section_idxs[particle_idx] << " " <<
+        // m_neighbour_section_idxs[particle_idx + 1] << std::endl;
         for (unsigned long list_idx = m_neighbour_section_idxs[particle_idx];
              list_idx < m_neighbour_section_idxs[particle_idx + 1];
              list_idx++) {
-           // std::cout << m_neighbour_idxs_list[list_idx] << std::endl;
+            // std::cout << m_neighbour_idxs_list[list_idx] << std::endl;
             m_algorithm.step_2 (m_positions_x_old[particle_idx],
                                 m_positions_y_old[particle_idx],
                                 m_positions_z_old[particle_idx],
