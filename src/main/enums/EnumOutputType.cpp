@@ -10,6 +10,7 @@
 std::vector<const char*> g_output_names = { "UNDEFINED",     "FILE_CSV",     "FILE_LAMMPS",
                                             "FILE_ESPRESSO", "FILE_GROMACS", "FILE_VMD",
                                             "FILE_VTK",      "FILE_CSV+AVI" };
+std::vector<bool> g_output_implemented = { false, true, false, false, false, false, false, true };
 
 std::ostream& operator<< (std::ostream& stream, const e_output_type& p_output_type) {
     int index = static_cast<int> (p_output_type);

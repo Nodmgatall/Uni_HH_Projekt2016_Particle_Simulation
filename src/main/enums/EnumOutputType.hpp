@@ -43,6 +43,7 @@ std::ostream& operator<< (std::ostream& stream, const e_output_type& p_output_ty
 std::istream& operator>> (std::istream& stream, e_output_type& p_output_type);
 
 extern std::vector<const char*> g_output_names;
+extern std::vector<bool>        g_output_implemented;
 
 class OutputTypeInvalidException : public std::exception {
   private:

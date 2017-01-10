@@ -7,15 +7,10 @@
 
 #include "EnumCSVColumnType.hpp"
 
-std::vector<const char*> g_csv_column_names = { "UNDEFINED",
-                                                "ID",
-                                                "VELOCITY",
-                                                "POSITION",
-                                                "ACCELERATION",
-                                                "PARTICLE_"
-                                                "TYPE" };
-
-const char* g_printed_csv_column_names[]
+std::vector<const char*> g_csv_column_names = { "UNDEFINED", "ID",           "VELOCITY",
+                                                "POSITION",  "ACCELERATION", "PARTICLE_TYPE" };
+std::vector<bool> g_csv_column_implemented = { false, true, false, true, false, false };
+const char*       g_printed_csv_column_names[]
                                       [3] = { { 0, 0, 0 },
                                               { "ID", 0, 0 },
                                               { "VelocityX", "VelocityY", "VelocityZ" },

@@ -20,6 +20,7 @@ std::ostream& operator<< (std::ostream& stream, const e_datastructure_type& p_da
 std::istream& operator>> (std::istream& stream, e_datastructure_type& p_datastructure_type);
 
 extern std::vector<const char*> g_datastructure_names;
+extern std::vector<bool>        g_datastructure_implemented;
 
 class DatastructureTypeInvalidException : public std::exception {
   private:

@@ -243,15 +243,43 @@ void OptionHandler::print_header () {
         << "|                               Philipp Neumann                                |" << std::endl
         << "+==============================================================================+" << std::endl;
 }
+
+std::string get_not_implemented (bool implemented) {
+    if (implemented)
+        return "";
+    return " NOT IMPLEMENTED";
+}
+enum ColorCode {
+        FG_RED      = 31,
+        FG_GREEN    = 32,
+        FG_BLUE     = 34,
+        FG_DEFAULT  = 39,
+        BG_RED      = 41,
+        BG_GREEN    = 42,
+        BG_BLUE     = 44,
+        BG_DEFAULT  = 49
+    };
+void  print_colored (std::string str,ColorCode color_code) {
+	m_standard_stream<<"\033[" << color_code << "m"<<str<<"\033["<<FG_DEFAULT<<"m";
+}
+
 void OptionHandler::print_usage_algorithm () {
     int index;
     m_standard_stream //
         << "| --algorithm=         " << g_algorithm_names[1]
-        << std::string (56 - strlen (g_algorithm_names[1]), ' ') << "|" << std::endl;
+        << get_not_implemented (g_algorithm_implemented[1])
+        << std::string (56 - strlen (g_algorithm_names[1]) -
+                            get_not_implemented (g_algorithm_implemented[1]).length (),
+                        ' ')
+        << "|" << std::endl;
     for (index = 2; index < (signed) g_algorithm_names.size (); index++) {
         m_standard_stream //
             << "|                      " << g_algorithm_names[index]
-            << std::string (56 - strlen (g_algorithm_names[index]), ' ') << "|" << std::endl;
+            << get_not_implemented (g_algorithm_implemented[index])
+            << std::string (56 - strlen (g_algorithm_names[index]) -
+                                get_not_implemented (g_algorithm_implemented[index]).length (),
+                            ' ')
+            << "|" << std::endl;
     }
     m_standard_stream //
         << "|                          This option specifies the method to calculate the   |" << std::endl
@@ -262,11 +290,19 @@ void OptionHandler::print_usage_data_structure () {
     int index;
     m_standard_stream //
         << "| --data_structure=    " << g_datastructure_names[1]
-        << std::string (56 - strlen (g_datastructure_names[1]), ' ') << "|" << std::endl;
+        << get_not_implemented (g_datastructure_implemented[1])
+        << std::string (56 - strlen (g_datastructure_names[1]) -
+                            get_not_implemented (g_datastructure_implemented[1]).length (),
+                        ' ')
+        << "|" << std::endl;
     for (index = 2; index < (signed) g_datastructure_names.size (); index++) {
         m_standard_stream //
             << "|                      " << g_datastructure_names[index]
-            << std::string (56 - strlen (g_datastructure_names[index]), ' ') << "|" << std::endl;
+            << get_not_implemented (g_datastructure_implemented[index])
+            << std::string (56 - strlen (g_datastructure_names[index]) -
+                                get_not_implemented (g_datastructure_implemented[index]).length (),
+                            ' ')
+            << "|" << std::endl;
     }
     m_standard_stream //
         << "|                          This option specifies the datastructure which       |" << std::endl
@@ -278,12 +314,19 @@ void OptionHandler::print_usage_data_structure () {
 void OptionHandler::print_usage_input () {
     int index;
     m_standard_stream //
-        << "| --input=             " << g_input_names[1]
-        << std::string (56 - strlen (g_input_names[1]), ' ') << "|" << std::endl;
+        << "| --input=             " << g_input_names[1] << get_not_implemented (g_input_implemented[1])
+        << std::string (56 - strlen (g_input_names[1]) -
+                            get_not_implemented (g_input_implemented[1]).length (),
+                        ' ')
+        << "|" << std::endl;
     for (index = 2; index < (signed) g_input_names.size (); index++) {
         m_standard_stream //
             << "|                      " << g_input_names[index]
-            << std::string (56 - strlen (g_input_names[index]), ' ') << "|" << std::endl;
+            << get_not_implemented (g_input_implemented[index])
+            << std::string (56 - strlen (g_input_names[index]) -
+                                get_not_implemented (g_input_implemented[index]).length (),
+                            ' ')
+            << "|" << std::endl;
     }
     m_standard_stream //
         << "|                          This option specifies how the particles are loaded  |" << std::endl
@@ -298,12 +341,19 @@ void OptionHandler::print_usage_input () {
 void OptionHandler::print_usage_output () {
     int index;
     m_standard_stream //
-        << "| --output=            " << g_output_names[1]
-        << std::string (56 - strlen (g_output_names[1]), ' ') << "|" << std::endl;
+        << "| --output=            " << g_output_names[1] << get_not_implemented (g_output_implemented[1])
+        << std::string (56 - strlen (g_output_names[1]) -
+                            get_not_implemented (g_output_implemented[1]).length (),
+                        ' ')
+        << "|" << std::endl;
     for (index = 2; index < (signed) g_output_names.size (); index++) {
         m_standard_stream //
             << "|                      " << g_output_names[index]
-            << std::string (56 - strlen (g_output_names[index]), ' ') << "|" << std::endl;
+            << get_not_implemented (g_output_implemented[index])
+            << std::string (56 - strlen (g_output_names[index]) -
+                                get_not_implemented (g_output_implemented[index]).length (),
+                            ' ')
+            << "|" << std::endl;
     }
     m_standard_stream //
         << "|                          This option specifies how the particles are saved   |" << std::endl
@@ -316,7 +366,11 @@ void OptionHandler::print_usage_write_modes () {
     for (index = 1; index < (signed) g_csv_column_names.size (); index++) {
         m_standard_stream //
             << "| --WRITE_" << g_csv_column_names[index]
-            << std::string (69 - strlen (g_csv_column_names[index]), ' ') << "|" << std::endl;
+            << get_not_implemented (g_csv_column_implemented[index])
+            << std::string (69 - strlen (g_csv_column_names[index]) -
+                                get_not_implemented (g_csv_column_implemented[index]).length (),
+                            ' ')
+            << "|" << std::endl;
     }
     m_standard_stream //
         << "|                          If 'output' is set to 'FILE_CSV' then this options  |" << std::endl

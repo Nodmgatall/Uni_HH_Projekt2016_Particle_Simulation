@@ -26,6 +26,7 @@ std::ostream& operator<< (std::ostream& stream, const e_csv_column_type p_csv_co
 std::istream& operator>> (std::istream& stream, e_csv_column_type& p_csv_column_type);
 
 extern std::vector<const char*> g_csv_column_names;
+extern std::vector<bool>        g_csv_column_implemented;
 
 extern const char* g_printed_csv_column_names[][3];
 

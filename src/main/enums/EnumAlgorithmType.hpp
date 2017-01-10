@@ -24,6 +24,7 @@ std::ostream& operator<< (std::ostream& stream, const e_algorithm_type& p_algori
 std::istream& operator>> (std::istream& stream, e_algorithm_type& p_algorithm_type);
 
 extern std::vector<const char*> g_algorithm_names;
+extern std::vector<bool>        g_algorithm_implemented;
 
 class AlgorithmTypeInvalidException : public std::exception {
   private:

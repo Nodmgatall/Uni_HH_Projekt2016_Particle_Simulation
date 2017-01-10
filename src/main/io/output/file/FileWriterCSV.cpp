@@ -84,7 +84,7 @@ void FileWriterCSV::finalize () {
             << std::endl;
         paraview_script_file.close ();
         if (system ((std::string ("pvpython ") + m_file_name_base + ".paraview_script.py").c_str ())) {
-        	//execute shell command -> output is printed to std::cout
+            // execute shell command -> output is printed to std::cout
         }
     }
 }

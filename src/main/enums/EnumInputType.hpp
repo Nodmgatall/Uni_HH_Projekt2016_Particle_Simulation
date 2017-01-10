@@ -27,6 +27,7 @@ std::ostream& operator<< (std::ostream& stream, const e_input_type& p_input_type
 std::istream& operator>> (std::istream& stream, e_input_type& p_input_type);
 
 extern std::vector<const char*> g_input_names;
+extern std::vector<bool>        g_input_implemented;
 
 class InputTypeInvalidException : public std::exception {
   private:
