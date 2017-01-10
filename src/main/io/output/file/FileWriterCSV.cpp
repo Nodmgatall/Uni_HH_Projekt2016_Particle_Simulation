@@ -83,8 +83,8 @@ void FileWriterCSV::finalize () {
             << ".avi', Magnification=1, FrameRate=15.0, Compression=True)                       "
             << std::endl;
         paraview_script_file.close ();
-
         if (system ((std::string ("pvpython ") + m_file_name_base + ".paraview_script.py").c_str ())) {
+        	//execute shell command -> output is printed to std::cout
         }
     }
 }
