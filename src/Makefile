@@ -74,6 +74,14 @@ run_6_particles: build_release
 			--timestep=0.005 \
 			--bounds=5/5/5 \
 			--verbose
+			
+run_2_particles_list: build_release
+	rm -rf ../logdata/2_particles
+	cd .. && ./particle_simulation.x --algorithm=LENNARD_JONES --data_structure=GRID --input=FILE_CSV  --in_file_name="./Testing/Resources/2_particles.csv" --output=FILE_CSV+AVI --max_iterations=7090  --write_fequency=10  --cut_off_radius=2.5 --timestep=0.005 --bounds=4/4/4 --verbose
+	
+run_6_particles_list: build_release
+	rm -rf ../logdata/6_particles
+	cd .. && ./particle_simulation.x --algorithm=LENNARD_JONES --data_structure=GRID --input=FILE_CSV  --in_file_name="./Testing/Resources/6_particles.csv" --output=FILE_CSV+AVI --max_iterations=709000  --write_fequency=10  --cut_off_radius=2.5 --timestep=0.005 --bounds=5/5/5 --verbose
 
 test: 
 	rm -rf ../Testing/Coverage
