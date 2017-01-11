@@ -60,6 +60,7 @@ class DatastructureList : public DatastructureBase {
                              std::vector<data_type>*     p_accelerations_x,
                              std::vector<data_type>*     p_accelerations_y,
                              std::vector<data_type>*     p_accelerations_z);
+    void check_boundaries ();
     // void update_original_vectors (unsigned long p_start_idx, unsigned long
     // p_segment_length);
 };
