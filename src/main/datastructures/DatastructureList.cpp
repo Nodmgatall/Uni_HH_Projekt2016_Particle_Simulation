@@ -5,7 +5,6 @@
 #include "DatastructureList.hpp"
 #include "Vec3.hpp"
 #include "tools/Debug.hpp"
-#include <math.h>
 
 DatastructureList::DatastructureList (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_particle_writer)
 : DatastructureBase (p_options, p_border, p_algorithm, p_particle_writer),
@@ -55,13 +54,12 @@ void DatastructureList::add_particle (Vec3f p_position, Vec3f p_velocity, int p_
 }
 
 void DatastructureList::run_simulation_iteration (unsigned long p_iteration_number) {
-    Benchmark::begin ("Run sim iter in list", false);
     unsigned long particle_count = m_positions_x_now.size ();
-    if (p_iteration_number % 2 == 0) {
+    if (p_iteration_number % 20 == 0) {
         // std::cout << "Building list" << std::endl;
         build_lists ();
     }
-#pragma omp parallel for
+
     for (unsigned long particle_idx = 0; particle_idx < particle_count; particle_idx++) {
         m_algorithm.step_1 (m_positions_x_now[particle_idx],
                             m_positions_y_now[particle_idx],
@@ -70,7 +68,6 @@ void DatastructureList::run_simulation_iteration (unsigned long p_iteration_numb
                             m_positions_y_old[particle_idx],
                             m_positions_z_old[particle_idx]);
     }
-#pragma omp parallel for
     for (unsigned long particle_idx = 0; particle_idx < particle_count - 1; particle_idx++) {
         // std::cout << particle_idx << std::endl;
 
@@ -98,63 +95,12 @@ void DatastructureList::run_simulation_iteration (unsigned long p_iteration_numb
         // std::cout << "diff new old = " << m_positions_x_old[particle_idx] -
         // m_positions_x_now[particle_idx] << std::endl;
     }
-    check_boundaries ();
     m_positions_x_now.swap (m_positions_x_old);
     m_positions_y_now.swap (m_positions_y_old);
     m_positions_z_now.swap (m_positions_z_old);
-    Benchmark::end ();
-}
-
-void DatastructureList::check_boundaries () {
-    unsigned long particle_count = get_particle_count ();
-    data_type     test;
-    bool          b_exit = false;
-    for (unsigned long particle_idx = 0; particle_idx < particle_count; particle_idx++) {
-        test = std::floor (m_positions_x_now[particle_idx] / m_options.m_bounds.x);
-        if (test != 0) {
-            if (!isnormal (m_positions_x_now[particle_idx])) {
-                b_exit = true;
-            }
-            // std::cout << particle_idx << " x " << m_positions_x_now[particle_idx] << " "
-            //        << m_options.m_bounds.x << " " << test;
-            m_positions_x_now[particle_idx] = m_positions_x_now[particle_idx] - m_options.m_bounds.x * test;
-            m_positions_x_old[particle_idx] = m_positions_x_old[particle_idx] - m_options.m_bounds.x * test;
-            // std::cout << "  result: " << m_positions_x_now[particle_idx];
-            // std::cout << "  result: " << m_positions_x_old[particle_idx] << std::endl;
-        }
-        test = std::floor (m_positions_y_now[particle_idx] / m_options.m_bounds.y);
-        if (test != 0) {
-            if (!isnormal (m_positions_y_now[particle_idx])) {
-                b_exit = true;
-            }
-            // std::cout << particle_idx << " y " << m_positions_y_now[particle_idx] << " "
-            //        << m_options.m_bounds.y << " " << test;
-            m_positions_y_now[particle_idx] = m_positions_y_now[particle_idx] - m_options.m_bounds.y * test;
-            m_positions_y_old[particle_idx] = m_positions_y_old[particle_idx] - m_options.m_bounds.y * test;
-            // std::cout << "  result: " << m_positions_x_now[particle_idx];
-            // std::cout << "  result: " << m_positions_x_old[particle_idx] << std::endl;
-        }
-        test = std::floor (m_positions_z_now[particle_idx] / m_options.m_bounds.z);
-        if (test != 0) {
-            if (!isnormal (m_positions_z_now[particle_idx])) {
-                b_exit = true;
-            }
-            // std::cout << particle_idx << " z " << m_positions_z_now[particle_idx] << " "
-            //        << m_options.m_bounds.z << " " << test;
-            m_positions_z_now[particle_idx] = m_positions_z_now[particle_idx] - m_options.m_bounds.z * test;
-            m_positions_z_old[particle_idx] = m_positions_z_old[particle_idx] - m_options.m_bounds.z * test;
-            // std::cout << "  result: " << m_positions_x_now[particle_idx];
-            // std::cout << "  result: " << m_positions_x_old[particle_idx] << std::endl;
-        }
-        if (b_exit == true) {
-            std::cout << "ERROR" << particle_idx << std::endl;
-            exit (EXIT_FAILURE);
-        }
-    }
 }
 
 void DatastructureList::build_lists () {
-    Benchmark::begin ("build_lists", false);
     unsigned long particle_count          = m_positions_x_now.size ();
     unsigned long neighbour_count         = 0;
     unsigned long neighbour_idx_list_size = particle_count * (particle_count * 0.16);
@@ -172,7 +118,7 @@ void DatastructureList::build_lists () {
         calculate_distances_squared (particle_idx, &distances[0]);
 
         for (unsigned long dist_idx = 0; dist_idx < range; dist_idx++) {
-            if (std::sqrt (distances[dist_idx]) < cut_off) {
+            if (distances[dist_idx] < cut_off * cut_off) {
                 m_neighbour_idxs_list.push_back (particle_idx + 1 + dist_idx);
                 neighbour_count++;
             } else {
@@ -182,7 +128,6 @@ void DatastructureList::build_lists () {
         }
         m_neighbour_section_idxs.push_back (neighbour_count);
     }
-    Benchmark::end ();
 }
 
 /**
@@ -192,6 +137,8 @@ void DatastructureList::build_lists () {
  */
 
 void DatastructureList::calculate_distances_squared (unsigned long particle_idx, data_type* p_distances_squared) {
+    Benchmark::begin ("Calculating Distances", false);
+
     unsigned long cur_part_idx;
 
     // square every entry in vector:
@@ -201,7 +148,6 @@ void DatastructureList::calculate_distances_squared (unsigned long particle_idx,
     data_type     z              = m_positions_z_now[particle_idx];
     unsigned long particle_count = m_positions_x_now.size () - particle_idx - 1;
     unsigned long start          = particle_idx + 1;
-
     for (cur_part_idx = 0; cur_part_idx < particle_count; cur_part_idx++) {
         p_distances_squared[cur_part_idx] = std::pow (x - m_positions_x_now[cur_part_idx + start], 2) +
                                             std::pow (y - m_positions_y_now[cur_part_idx + start], 2) +
