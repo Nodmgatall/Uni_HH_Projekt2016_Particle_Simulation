@@ -85,6 +85,7 @@ class DatastructureGrid : public DatastructureBase {
      * @return the cell
      */
     ParticleCell& get_cell_for_particle (data_type x, data_type y, data_type z);
+    Vec3l get_cell_index_for_particle (data_type x, data_type y, data_type z);
     /**
      * return the cell for the given position
      * @param m_position the position

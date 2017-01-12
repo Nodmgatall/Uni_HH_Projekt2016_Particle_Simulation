@@ -237,7 +237,8 @@ BOOST_AUTO_TEST_CASE (test_add_particle_1) {
     unsigned int idx_x, idx_y, idx_z, idx_s, idx_t;
     s_options    options;
     memset (&options, 0, sizeof (s_options));
-    options.m_bounds = Vec3f (5, 5, 5);
+    options.m_bounds         = Vec3f (5, 5, 5);
+    options.m_cut_off_radius = 1.0;
     BoundsCorrection           border (options.m_bounds);
     Algorithm                  algorithm (options);
     ParticleWriter             writer = ParticleWriter ();
@@ -292,7 +293,8 @@ BOOST_AUTO_TEST_CASE (test_get_cell_index) {
     unsigned int idx_x, idx_y, idx_z;
     s_options    options;
     memset (&options, 0, sizeof (s_options));
-    options.m_bounds = Vec3f (5, 5, 5);
+    options.m_bounds         = Vec3f (5, 5, 5);
+    options.m_cut_off_radius = 1.0;
     BoundsCorrection           border (options.m_bounds);
     Algorithm                  algorithm (options);
     ParticleWriter             writer = ParticleWriter ();
@@ -310,7 +312,8 @@ BOOST_AUTO_TEST_CASE (test_get_cell_at) {
     unsigned int idx_x, idx_y, idx_z;
     s_options    options;
     memset (&options, 0, sizeof (s_options));
-    options.m_bounds = Vec3f (5, 5, 5);
+    options.m_bounds         = Vec3f (5, 5, 5);
+    options.m_cut_off_radius = 1.0;
     BoundsCorrection           border (options.m_bounds);
     Algorithm                  algorithm (options);
     ParticleWriter             writer = ParticleWriter ();
@@ -328,7 +331,8 @@ BOOST_AUTO_TEST_CASE (test_get_cell_at) {
 BOOST_AUTO_TEST_CASE (test_moveParticle) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
-    options.m_bounds = Vec3f (5, 5, 5);
+    options.m_bounds         = Vec3f (5, 5, 5);
+    options.m_cut_off_radius = 1.0;
     BoundsCorrection           border (options.m_bounds);
     Algorithm                  algorithm (options);
     ParticleWriter             writer = ParticleWriter ();
@@ -392,7 +396,7 @@ BOOST_AUTO_TEST_CASE (test_step_1) {
     memset (&options, 0, sizeof (s_options));
     options.m_bounds         = Vec3f (5, 5, 5);
     options.m_particle_count = 999999999;
-    options.m_cut_off_radius = 0.5;
+    options.m_cut_off_radius = 1;
     BoundsCorrection           border (options.m_bounds);
     Algorithm                  algorithm (options);
     ParticleWriter             writer = ParticleWriter ();
@@ -419,7 +423,7 @@ BOOST_AUTO_TEST_CASE (test_step_2a) {
     memset (&options, 0, sizeof (s_options));
     options.m_bounds         = Vec3f (5, 5, 5);
     options.m_particle_count = 999999999;
-    options.m_cut_off_radius = 0.5;
+    options.m_cut_off_radius = 1;
     BoundsCorrection           border (options.m_bounds);
     Algorithm                  algorithm (options);
     ParticleWriter             writer = ParticleWriter ();
@@ -441,7 +445,7 @@ BOOST_AUTO_TEST_CASE (test_step_2b) {
     memset (&options, 0, sizeof (s_options));
     options.m_bounds         = Vec3f (5, 5, 5);
     options.m_particle_count = 999999999;
-    options.m_cut_off_radius = 0.5;
+    options.m_cut_off_radius = 1;
     BoundsCorrection           border (options.m_bounds);
     Algorithm                  algorithm (options);
     ParticleWriter             writer = ParticleWriter ();
@@ -476,7 +480,7 @@ BOOST_AUTO_TEST_CASE (test_step_3) {
     memset (&options, 0, sizeof (s_options));
     options.m_bounds         = Vec3f (5, 5, 5);
     options.m_particle_count = 999999999;
-    options.m_cut_off_radius = 0.5;
+    options.m_cut_off_radius = 1;
     BoundsCorrection           border (options.m_bounds);
     Algorithm                  algorithm (options);
     ParticleWriter             writer = ParticleWriter ();

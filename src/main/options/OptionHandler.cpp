@@ -173,6 +173,11 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                     }
                     case 'r':
                         line >> p_options.m_cut_off_radius;
+                        if (p_options.m_cut_off_radius < 1) {
+                            m_standard_stream
+                                << "cut_off_radius must be greater than or equal to 1";
+                            return true;
+                        }
                         break;
                     case 's': {
                         line >> p_options.m_seed;

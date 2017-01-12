@@ -238,7 +238,7 @@ BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_2) {
     int size                 = 2;
     options.m_particle_count = 999999999;
     options.m_bounds         = Vec3f (size, size, size);
-    options.m_cut_off_radius = 0.5;
+    options.m_cut_off_radius = 1;
     options.m_timestep       = 1;
     BoundsCorrection       border (options.m_bounds);
     Algorithm              algorithm (options);

@@ -23,6 +23,10 @@ DatastructureGrid::DatastructureGrid (s_options& p_options, BorderBase& p_border
             }
         }
     }
+    if (m_options.m_cut_off_radius < 1) {
+        std::cout << DEBUG_VAR (m_options.m_cut_off_radius) << std::endl;
+        exit (1);
+    }
     std::cout << DEBUG_VAR (m_size) << std::endl;
 }
 DatastructureGrid::~DatastructureGrid () {
@@ -34,9 +38,13 @@ ParticleCell& DatastructureGrid::get_cell_at (long x, long y, long z) {
     return m_cells[get_cell_index (x, y, z)];
 }
 ParticleCell& DatastructureGrid::get_cell_for_particle (data_type x, data_type y, data_type z) {
-    return get_cell_at ((long) (x / m_size_per_cell.x) + 1,
-                        (long) (y / m_size_per_cell.y) + 1,
-                        (long) (z / m_size_per_cell.z) + 1);
+    Vec3l idx = get_cell_index_for_particle (x, y, z);
+    return m_cells[get_cell_index (idx.x, idx.y, idx.z)];
+}
+Vec3l DatastructureGrid::get_cell_index_for_particle (data_type x, data_type y, data_type z) {
+    return Vec3l ((long) (x / m_size_per_cell.x) + 1,
+                  (long) (y / m_size_per_cell.y) + 1,
+                  (long) (z / m_size_per_cell.z) + 1);
 }
 ParticleCell& DatastructureGrid::get_cell_for_particle (Vec3f m_position) {
     return get_cell_for_particle (m_position.x, m_position.y, m_position.z);
@@ -136,26 +144,54 @@ void DatastructureGrid::step_2b_calculate_between_cells (ParticleCell& p_cell_i,
 void DatastructureGrid::step_3_remove_wrong_particles_from_cell (ParticleCell& p_cell) {
     int i;
     for (i = p_cell.m_ids.size () - 1; i >= 0; i--) {
-        Vec3l delta (0);
-        if (p_cell.m_positions_x[m_idx_a][i] < p_cell.m_corner000.x) {
-            delta.x = -1;
-        } else if (p_cell.m_positions_x[m_idx_a][i] >= p_cell.m_corner111.x) {
-            delta.x = +1;
+        Vec3l idx;
+        bool  flag = true;
+        std::cout << "aa" << std::endl;
+        while (flag) {
+            flag = false;
+            idx  = get_cell_index_for_particle (p_cell.m_positions_x[m_idx_a][i],
+                                               p_cell.m_positions_y[m_idx_a][i],
+                                               p_cell.m_positions_z[m_idx_a][i]);
+            std::cout << __LINE__ << "<<" << std::endl           //
+                      << idx << std::endl                        //
+                      << p_cell.m_idx << std::endl               //
+                      << m_size << std::endl                     //
+                      << m_size_per_cell << std::endl            //
+                      << m_options.m_bounds << std::endl         //
+                      << p_cell.m_positions_x[m_idx_a][i] << "a" //
+                      << p_cell.m_positions_y[m_idx_a][i] << "b" //
+                      << p_cell.m_positions_z[m_idx_a][i] << "c" //
+                      << (long) (p_cell.m_positions_x[m_idx_a][i] / m_size_per_cell.x) + 1
+                      << m_options.m_cut_off_radius << std::endl; //
+            if (idx.x < 0) {
+                p_cell.m_positions_x[m_idx_a][i] += m_options.m_bounds.x;
+                flag = true;
+                std::cout << __LINE__ << "<<" << idx << std::endl;
+            } else if (idx.x >= m_size.x) {
+                p_cell.m_positions_x[m_idx_a][i] -= m_options.m_bounds.x;
+                flag = true;
+                std::cout << __LINE__ << "<<" << idx << std::endl;
+            }
+            if (idx.y < 0) {
+                p_cell.m_positions_y[m_idx_a][i] += m_options.m_bounds.y;
+                flag = true;
+                std::cout << __LINE__ << "<<" << idx << std::endl;
+            } else if (idx.y >= m_size.y) {
+                p_cell.m_positions_y[m_idx_a][i] -= m_options.m_bounds.y;
+                flag = true;
+                std::cout << __LINE__ << "<<" << idx << std::endl;
+            }
+            if (idx.z < 0) {
+                p_cell.m_positions_z[m_idx_a][i] += m_options.m_bounds.z;
+                flag = true;
+                std::cout << __LINE__ << "<<" << idx << std::endl;
+            } else if (idx.z >= m_size.z) {
+                p_cell.m_positions_z[m_idx_a][i] -= m_options.m_bounds.z;
+                flag = true;
+                std::cout << __LINE__ << "<<" << idx << std::endl;
+            }
         }
-        if (p_cell.m_positions_y[m_idx_a][i] < p_cell.m_corner000.y) {
-            delta.y = -1;
-
-        } else if (p_cell.m_positions_y[m_idx_a][i] >= p_cell.m_corner111.y) {
-            delta.y = +1;
-        }
-        if (p_cell.m_positions_z[m_idx_a][i] < p_cell.m_corner000.z) {
-            delta.z = -1;
-
-        } else if (p_cell.m_positions_z[m_idx_a][i] >= p_cell.m_corner111.z) {
-            delta.z = +1;
-        }
-        if (delta.x || delta.y || delta.z) {
-            Vec3l         idx        = p_cell.m_idx + delta;
+        if (idx != p_cell.m_idx) {
             ParticleCell& other_cell = get_cell_at (idx.x, idx.y, idx.z);
             moveParticle (p_cell, other_cell, i);
         }
