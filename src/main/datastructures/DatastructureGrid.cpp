@@ -34,9 +34,9 @@ ParticleCell& DatastructureGrid::get_cell_at (long x, long y, long z) {
     return m_cells[get_cell_index (x, y, z)];
 }
 ParticleCell& DatastructureGrid::get_cell_for_particle (data_type x, data_type y, data_type z) {
-    return get_cell_at (x / m_size_per_cell.x + 1.0,
-                        y / m_size_per_cell.y + 1.0,
-                        z / m_size_per_cell.z + 1.0);
+    return get_cell_at ((long) (x / m_size_per_cell.x) + 1,
+                        (long) (y / m_size_per_cell.y) + 1,
+                        (long) (z / m_size_per_cell.z) + 1);
 }
 ParticleCell& DatastructureGrid::get_cell_for_particle (Vec3f m_position) {
     return get_cell_for_particle (m_position.x, m_position.y, m_position.z);
@@ -114,9 +114,8 @@ void DatastructureGrid::step_2a_calculate_inside_cell (ParticleCell& p_cell) {
 }
 void DatastructureGrid::step_2b_calculate_between_cells (ParticleCell& p_cell_i, ParticleCell& p_cell_j) {
     unsigned int       i;
-    const unsigned int max1 = p_cell_i.m_ids.size ();
-    const unsigned int max2 = p_cell_j.m_ids.size ();
-    for (i = 0; i < max1; i++) {
+    const unsigned int max = p_cell_i.m_ids.size ();
+    for (i = 0; i < max; i++) {
         m_algorithm.step_2 (p_cell_i.m_positions_x[m_idx_a][i],
                             p_cell_i.m_positions_y[m_idx_a][i],
                             p_cell_i.m_positions_z[m_idx_a][i],
@@ -130,7 +129,7 @@ void DatastructureGrid::step_2b_calculate_between_cells (ParticleCell& p_cell_i,
                             p_cell_j.m_positions_y[m_idx_b].data (),
                             p_cell_j.m_positions_z[m_idx_b].data (),
                             0,
-                            max2);
+                            p_cell_j.m_ids.size ());
     }
 }
 
@@ -140,7 +139,6 @@ void DatastructureGrid::step_3_remove_wrong_particles_from_cell (ParticleCell& p
         Vec3l delta (0);
         if (p_cell.m_positions_x[m_idx_a][i] < p_cell.m_corner000.x) {
             delta.x = -1;
-
         } else if (p_cell.m_positions_x[m_idx_a][i] >= p_cell.m_corner111.x) {
             delta.x = +1;
         }

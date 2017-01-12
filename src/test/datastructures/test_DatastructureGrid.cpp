@@ -487,9 +487,9 @@ BOOST_AUTO_TEST_CASE (test_step_3) {
     cell.add_particle (cell.m_corner000 - Vec3f (0.01, 0, 0), cell.m_corner000 - Vec3f (0.01, 0, 0), 0, 1);
     cell.add_particle (cell.m_corner000 - Vec3f (0, 0.01, 0), cell.m_corner000 - Vec3f (0, 0.01, 0), 0, 2);
     cell.add_particle (cell.m_corner000 - Vec3f (0, 0, 0.01), cell.m_corner000 - Vec3f (0, 0, 0.01), 0, 3);
-    cell.add_particle (cell.m_corner111 + Vec3f (0.01, 0, 0), cell.m_corner111 + Vec3f (0.01, 0, 0), 0, 4);
-    cell.add_particle (cell.m_corner111 + Vec3f (0, 0.01, 0), cell.m_corner111 + Vec3f (0, 0.01, 0), 0, 5);
-    cell.add_particle (cell.m_corner111 + Vec3f (0, 0, 0.01), cell.m_corner111 + Vec3f (0, 0, 0.01), 0, 6);
+    cell.add_particle (cell.m_corner111 - Vec3f (0, 0.01, 0.01), cell.m_corner111 - Vec3f (0, 0.01, 0.01), 0, 4);
+    cell.add_particle (cell.m_corner111 - Vec3f (0.01, 0, 0.01), cell.m_corner111 - Vec3f (0.01, 0, 0.01), 0, 5);
+    cell.add_particle (cell.m_corner111 - Vec3f (0.01, 0.01, 0), cell.m_corner111 - Vec3f (0.01, 0.01, 0), 0, 6);
     BOOST_CHECK_EQUAL (particlesGrid.get_particle_count (), 7);
     particlesGrid.public_step_3_remove_wrong_particles_from_cell (cell);
     BOOST_CHECK_EQUAL (particlesGrid.get_particle_count (), 7);
@@ -499,12 +499,12 @@ BOOST_AUTO_TEST_CASE (test_step_3) {
     BOOST_CHECK_EQUAL (particlesGrid.public_get_cell_at (x, y, z - 1).m_ids.size (), 1);
     BOOST_CHECK_EQUAL (particlesGrid.public_get_cell_at (x + 1, y, z).m_ids.size (), 1);
     BOOST_CHECK_EQUAL (particlesGrid.public_get_cell_at (x, y + 1, z).m_ids.size (), 1);
-    BOOST_CHECK_EQUAL (particlesGrid.public_get_cell_at (x, y, z + 1).m_ids.size (), 1); /*
-     BOOST_CHECK_EQUAL (particlesGrid.public_get_cell_at (x, y, z).m_ids[0], 0);
-     BOOST_CHECK_EQUAL (particlesGrid.public_get_cell_at (x - 1, y, z).m_ids[0], 1);
-     BOOST_CHECK_EQUAL (particlesGrid.public_get_cell_at (x, y - 1, z).m_ids[0], 2);
-     BOOST_CHECK_EQUAL (particlesGrid.public_get_cell_at (x, y, z - 1).m_ids[0], 3);
-     BOOST_CHECK_EQUAL (particlesGrid.public_get_cell_at (x + 1, y, z).m_ids[0], 4);
-     BOOST_CHECK_EQUAL (particlesGrid.public_get_cell_at (x, y + 1, z).m_ids[0], 5);
-     BOOST_CHECK_EQUAL (particlesGrid.public_get_cell_at (x, y, z + 1).m_ids[0], 6);*/
+    BOOST_CHECK_EQUAL (particlesGrid.public_get_cell_at (x, y, z + 1).m_ids.size (), 1);
+    BOOST_CHECK_EQUAL (particlesGrid.public_get_cell_at (x, y, z).m_ids[0], 0);
+    BOOST_CHECK_EQUAL (particlesGrid.public_get_cell_at (x - 1, y, z).m_ids[0], 1);
+    BOOST_CHECK_EQUAL (particlesGrid.public_get_cell_at (x, y - 1, z).m_ids[0], 2);
+    BOOST_CHECK_EQUAL (particlesGrid.public_get_cell_at (x, y, z - 1).m_ids[0], 3);
+    BOOST_CHECK_EQUAL (particlesGrid.public_get_cell_at (x + 1, y, z).m_ids[0], 4);
+    BOOST_CHECK_EQUAL (particlesGrid.public_get_cell_at (x, y + 1, z).m_ids[0], 5);
+    BOOST_CHECK_EQUAL (particlesGrid.public_get_cell_at (x, y, z + 1).m_ids[0], 6);
 }
