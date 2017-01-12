@@ -9,7 +9,7 @@
 /particle_simulation.x
 /logdata/
 .config_sim
-/.DS_Store
+*.DS_Store
 /html/
 /latex/
 /xml/
