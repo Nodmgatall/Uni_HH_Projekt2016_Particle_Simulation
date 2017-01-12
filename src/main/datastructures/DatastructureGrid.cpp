@@ -12,7 +12,7 @@ DatastructureGrid::DatastructureGrid (s_options& p_options, BorderBase& p_border
     // cells is needed
     m_size = Vec3l::min (Vec3l (m_options.m_bounds / (m_options.m_cut_off_radius * 1.2f)), max_usefull_size);
     // m_size          = m_size + 1L; // round up to next natural number for cell-count
-    m_size          = Vec3l::max (m_size, Vec3l (2L));
+    m_size          = Vec3l::max (m_size, Vec3l (2L))+2;//2 randzellen (links+rechts jeweils 1)
     m_size_per_cell = m_options.m_bounds / Vec3f (m_size);
     m_cells.reserve (m_size.x * m_size.y * m_size.z);
     for (idx_x = 0; idx_x < m_size.x; idx_x++) {
@@ -33,7 +33,7 @@ ParticleCell& DatastructureGrid::get_cell_at (long x, long y, long z) {
     return m_cells[get_cell_index (x, y, z)];
 }
 ParticleCell& DatastructureGrid::get_cell_for_particle (data_type x, data_type y, data_type z) {
-    return get_cell_at (x / m_size_per_cell.x, y / m_size_per_cell.y, z / m_size_per_cell.z);
+    return get_cell_at (x / m_size_per_cell.x+1.0, y / m_size_per_cell.y+1.0, z / m_size_per_cell.z+1.0);
 }
 ParticleCell& DatastructureGrid::get_cell_for_particle (Vec3f m_position) {
     return get_cell_for_particle (m_position.x, m_position.y, m_position.z);
