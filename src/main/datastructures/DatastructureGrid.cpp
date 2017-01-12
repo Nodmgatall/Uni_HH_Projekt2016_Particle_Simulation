@@ -146,49 +146,31 @@ void DatastructureGrid::step_3_remove_wrong_particles_from_cell (ParticleCell& p
     for (i = p_cell.m_ids.size () - 1; i >= 0; i--) {
         Vec3l idx;
         bool  flag = true;
-        std::cout << "aa" << std::endl;
         while (flag) {
             flag = false;
             idx  = get_cell_index_for_particle (p_cell.m_positions_x[m_idx_a][i],
                                                p_cell.m_positions_y[m_idx_a][i],
                                                p_cell.m_positions_z[m_idx_a][i]);
-            std::cout << __LINE__ << "<<" << std::endl           //
-                      << idx << std::endl                        //
-                      << p_cell.m_idx << std::endl               //
-                      << m_size << std::endl                     //
-                      << m_size_per_cell << std::endl            //
-                      << m_options.m_bounds << std::endl         //
-                      << p_cell.m_positions_x[m_idx_a][i] << "a" //
-                      << p_cell.m_positions_y[m_idx_a][i] << "b" //
-                      << p_cell.m_positions_z[m_idx_a][i] << "c" //
-                      << (long) (p_cell.m_positions_x[m_idx_a][i] / m_size_per_cell.x) + 1
-                      << m_options.m_cut_off_radius << std::endl; //
             if (idx.x < 0) {
                 p_cell.m_positions_x[m_idx_a][i] += m_options.m_bounds.x;
                 flag = true;
-                std::cout << __LINE__ << "<<" << idx << std::endl;
             } else if (idx.x >= m_size.x) {
                 p_cell.m_positions_x[m_idx_a][i] -= m_options.m_bounds.x;
                 flag = true;
-                std::cout << __LINE__ << "<<" << idx << std::endl;
             }
             if (idx.y < 0) {
                 p_cell.m_positions_y[m_idx_a][i] += m_options.m_bounds.y;
                 flag = true;
-                std::cout << __LINE__ << "<<" << idx << std::endl;
             } else if (idx.y >= m_size.y) {
                 p_cell.m_positions_y[m_idx_a][i] -= m_options.m_bounds.y;
                 flag = true;
-                std::cout << __LINE__ << "<<" << idx << std::endl;
             }
             if (idx.z < 0) {
                 p_cell.m_positions_z[m_idx_a][i] += m_options.m_bounds.z;
                 flag = true;
-                std::cout << __LINE__ << "<<" << idx << std::endl;
             } else if (idx.z >= m_size.z) {
                 p_cell.m_positions_z[m_idx_a][i] -= m_options.m_bounds.z;
                 flag = true;
-                std::cout << __LINE__ << "<<" << idx << std::endl;
             }
         }
         if (idx != p_cell.m_idx) {
