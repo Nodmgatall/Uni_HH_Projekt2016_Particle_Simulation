@@ -12,8 +12,9 @@ DatastructureGrid::DatastructureGrid (s_options& p_options, BorderBase& p_border
     // cells is needed
     m_size = Vec3l::min (Vec3l (m_options.m_bounds / (m_options.m_cut_off_radius * 1.2f)), max_usefull_size);
     // m_size          = m_size + 1L; // round up to next natural number for cell-count
-    m_size          = Vec3l::max (m_size, Vec3l (2L))+2;//2 randzellen (links+rechts jeweils 1)
+    m_size          = Vec3l::max (m_size, Vec3l (2L));
     m_size_per_cell = m_options.m_bounds / Vec3f (m_size);
+    m_size += 2; // 2 randzellen (links+rechts jeweils 1)
     m_cells.reserve (m_size.x * m_size.y * m_size.z);
     for (idx_x = 0; idx_x < m_size.x; idx_x++) {
         for (idx_y = 0; idx_y < m_size.y; idx_y++) {
@@ -33,7 +34,9 @@ ParticleCell& DatastructureGrid::get_cell_at (long x, long y, long z) {
     return m_cells[get_cell_index (x, y, z)];
 }
 ParticleCell& DatastructureGrid::get_cell_for_particle (data_type x, data_type y, data_type z) {
-    return get_cell_at (x / m_size_per_cell.x+1.0, y / m_size_per_cell.y+1.0, z / m_size_per_cell.z+1.0);
+    return get_cell_at (x / m_size_per_cell.x + 1.0,
+                        y / m_size_per_cell.y + 1.0,
+                        z / m_size_per_cell.z + 1.0);
 }
 ParticleCell& DatastructureGrid::get_cell_for_particle (Vec3f m_position) {
     return get_cell_for_particle (m_position.x, m_position.y, m_position.z);
@@ -134,17 +137,28 @@ void DatastructureGrid::step_2b_calculate_between_cells (ParticleCell& p_cell_i,
 void DatastructureGrid::step_3_remove_wrong_particles_from_cell (ParticleCell& p_cell) {
     int i;
     for (i = p_cell.m_ids.size () - 1; i >= 0; i--) {
-        if (m_border.updatePosition (p_cell.m_positions_x[m_idx_a][i],
-                                     p_cell.m_positions_y[m_idx_a][i],
-                                     p_cell.m_positions_z[m_idx_a][i],
-                                     p_cell.m_positions_x[m_idx_b][i],
-                                     p_cell.m_positions_y[m_idx_b][i],
-                                     p_cell.m_positions_z[m_idx_b][i],
-                                     p_cell.m_corner000,
-                                     p_cell.m_corner111)) {
-            ParticleCell& other_cell = get_cell_for_particle (p_cell.m_positions_x[m_idx_a][i],
-                                                              p_cell.m_positions_y[m_idx_a][i],
-                                                              p_cell.m_positions_z[m_idx_a][i]);
+        Vec3l delta (0);
+        if (p_cell.m_positions_x[m_idx_a][i] < p_cell.m_corner000.x) {
+            delta.x = -1;
+
+        } else if (p_cell.m_positions_x[m_idx_a][i] >= p_cell.m_corner111.x) {
+            delta.x = +1;
+        }
+        if (p_cell.m_positions_y[m_idx_a][i] < p_cell.m_corner000.y) {
+            delta.y = -1;
+
+        } else if (p_cell.m_positions_y[m_idx_a][i] >= p_cell.m_corner111.y) {
+            delta.y = +1;
+        }
+        if (p_cell.m_positions_z[m_idx_a][i] < p_cell.m_corner000.z) {
+            delta.z = -1;
+
+        } else if (p_cell.m_positions_z[m_idx_a][i] >= p_cell.m_corner111.z) {
+            delta.z = +1;
+        }
+        if (delta.x || delta.y || delta.z) {
+            Vec3l         idx        = p_cell.m_idx + delta;
+            ParticleCell& other_cell = get_cell_at (idx.x, idx.y, idx.z);
             moveParticle (p_cell, other_cell, i);
         }
     }
@@ -275,9 +289,9 @@ void DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
     if (m_iterations_until_rearange_particles < 1) {
         Benchmark::begin ("step 3", false);
         for (parallel_offset = 0; parallel_offset < 3; parallel_offset++) {
-            for (idx_x = parallel_offset; idx_x < m_size.x; idx_x += 3) {
-                for (idx_y = 0; idx_y < m_size.y; idx_y++) {
-                    for (idx_z = 0; idx_z < m_size.z; idx_z++) {
+            for (idx_x = 1 + parallel_offset; idx_x < m_size.x - 1; idx_x += 3) {
+                for (idx_y = 1; idx_y < m_size.y - 1; idx_y++) {
+                    for (idx_z = 1; idx_z < m_size.z - 1; idx_z++) {
                         ParticleCell& cell = get_cell_at (idx_x, idx_y, idx_z);
                         step_3_remove_wrong_particles_from_cell (cell);
                     }

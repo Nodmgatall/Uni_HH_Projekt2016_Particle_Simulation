@@ -97,10 +97,8 @@ run_6_particles_list: build_release
 
 test: 
 	rm -rf ../Testing/Coverage
-	rm -rf ../Testing/Binary/*
-	rm -rf ../Testing/Temporary/*
 	mkdir ../Testing/Coverage
-	$(MAKE) cmake build 
+	$(MAKE) build 
 	lcov --directory ../CMakeFiles/ --capture --initial --output-file ../Testing/Coverage/coverage_init.info
 	cd .. && $(MAKE) check
 	lcov --directory ../CMakeFiles/ --capture --output-file ../Testing/Coverage/coverage_test.info
@@ -108,6 +106,11 @@ test:
 	lcov --extract ../Testing/Coverage/coverage_combined.info "*/src/main/*" --output-file ../Testing/Coverage/coverage.info
 	genhtml ../Testing/Coverage/coverage.info --output-directory ../Testing/Coverage/coverage_out --demangle-cpp
 
+test_clean:
+	rm -rf ../Testing/Binary/*
+	rm -rf ../Testing/Temporary/*
+	$(MAKE) cmake test
+	
 code_coverage_only:
 	lcov --directory ../CMakeFiles/ --capture --output-file ../Testing/Coverage/coverage_test.info
 	lcov --add-tracefile ../Testing/Coverage/coverage_init.info --add-tracefile ../Testing/Coverage/coverage_test.info --output-file ../Testing/Coverage/coverage_combined.info
