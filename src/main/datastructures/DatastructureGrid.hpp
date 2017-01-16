@@ -12,13 +12,7 @@ struct ParticleCell {
     std::vector<unsigned long> m_ids;
     Vec3f                      m_corner000, m_corner111;
     Vec3l                      m_idx;
-    /**
-     * creates an cell which can hold a subset of the particles
-     * @param p_idx the index of the created cell in the array m_cells from ParticlesGrid
-     * @param p_size used to calculate the actual border of this cell
-     * @param p_bounds used to calculate the actual border of this cell
-     */
-    ParticleCell (Vec3l p_idx, Vec3l p_size, Vec3f& p_bounds);
+    ParticleCell (Vec3l p_idx, Vec3l p_size_per_cell);
     /**
      * adds an particle to this cell
      * @param p_current_position the current position of the particle to add

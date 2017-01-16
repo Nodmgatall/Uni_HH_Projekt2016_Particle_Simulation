@@ -19,15 +19,18 @@ DatastructureGrid::DatastructureGrid (s_options& p_options, BorderBase& p_border
     for (idx_x = 0; idx_x < m_size.x; idx_x++) {
         for (idx_y = 0; idx_y < m_size.y; idx_y++) {
             for (idx_z = 0; idx_z < m_size.z; idx_z++) {
-                m_cells.push_back (ParticleCell (Vec3l (idx_x, idx_y, idx_z), m_size, m_options.m_bounds));
+                m_cells.push_back (ParticleCell (Vec3l (idx_x, idx_y, idx_z), m_size_per_cell));
             }
         }
     }
     if (m_options.m_cut_off_radius < 1) {
         std::cout << DEBUG_VAR (m_options.m_cut_off_radius) << std::endl;
-        exit (1);
+        m_options.m_cut_off_radius = 1;
     }
+    std::cout << DEBUG_VAR (m_stucture_name) << std::endl;
     std::cout << DEBUG_VAR (m_size) << std::endl;
+    std::cout << DEBUG_VAR (m_size_per_cell) << std::endl;
+    std::cout << DEBUG_VAR (m_options.m_bounds) << std::endl;
 }
 DatastructureGrid::~DatastructureGrid () {
 }
@@ -339,10 +342,10 @@ unsigned long DatastructureGrid::get_particle_count () {
     }
     return particle_count;
 }
-ParticleCell::ParticleCell (Vec3l p_idx, Vec3l p_size, Vec3f& p_bounds) {
+ParticleCell::ParticleCell (Vec3l p_idx, Vec3l p_size_per_cell) {
     m_idx       = p_idx;
-    m_corner000 = Vec3f (m_idx) / Vec3f (p_size) * p_bounds;
-    m_corner111 = Vec3f (m_idx + 1L) / Vec3f (p_size) * p_bounds;
+    m_corner000 = Vec3f (m_idx - 1L) * p_size_per_cell;
+    m_corner111 = Vec3f (m_idx) * p_size_per_cell;
 }
 void ParticleCell::add_particle (Vec3f p_current_position, Vec3f p_old_position, int p_current_index, int p_id) {
     m_positions_x[p_current_index].push_back (p_current_position.x);
