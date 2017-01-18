@@ -265,11 +265,17 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
     Benchmark::end ();
     Benchmark::begin ("step 2b", false);
     {
+        const long lx = 0;
+        const long ly = 0;
+        const long lz = 0;
+        const long rx = m_size.x - 1;
+        const long ry = m_size.y - 1;
+        const long rz = m_size.z - 1;
         { // Cells in the middle of the simulated Volume
             for (parallel_offset = 0; parallel_offset < 2; parallel_offset++) {
-                for (idx_x = parallel_offset; idx_x < m_size.x - 1; idx_x += 2) {
-                    for (idx_y = 0; idx_y < m_size.y - 1; idx_y++) {
-                        for (idx_z = 0; idx_z < m_size.z - 1; idx_z++) {
+                for (idx_x = lx + parallel_offset; idx_x < rx; idx_x += 2) {
+                    for (idx_y = ly; idx_y < ry; idx_y++) {
+                        for (idx_z = lz; idx_z < rz; idx_z++) {
                             step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y + 1, idx_z + 1),
                                                              get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
                             step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y + 1, idx_z + 0),
@@ -302,9 +308,9 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
             }
         }
         { // Wraparound-interaction at the X-Border
-            idx_x = m_size.x - 1;
-            for (idx_y = 0; idx_y < m_size.y - 1; idx_y++) {
-                for (idx_z = 0; idx_z < m_size.z - 1; idx_z++) {
+            idx_x = rx;
+            for (idx_y = ly; idx_y < ry; idx_y++) {
+                for (idx_z = lz; idx_z < rz; idx_z++) {
                     step_2b_calculate_between_cells_offset (get_cell_at (0, idx_y + 1, idx_z + 1),
                                                             get_cell_at (idx_x, idx_y + 0, idx_z + 0),
                                                             m_options.m_bounds.x,
@@ -362,9 +368,9 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
             }
         }
         { // Wraparound-interaction at the Y-Border
-            idx_y = m_size.y - 1;
-            for (idx_x = 0; idx_x < m_size.x - 1; idx_x++) {
-                for (idx_z = 0; idx_z < m_size.z - 1; idx_z++) {
+            idx_y = ry;
+            for (idx_x = lx; idx_x < rx; idx_x++) {
+                for (idx_z = lz; idx_z < rz; idx_z++) {
                     step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y, idx_z + 1),
                                                      get_cell_at (idx_x + 0, idx_y, idx_z + 0));
                     step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y, idx_z + 0),
@@ -422,9 +428,9 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
             }
         }
         { // Wraparound-interaction at the Z-Border
-            idx_z = m_size.z - 1;
-            for (idx_x = 0; idx_x < m_size.x - 1; idx_x++) {
-                for (idx_y = 0; idx_y < m_size.y - 1; idx_y++) {
+            idx_z = rz;
+            for (idx_x = lx; idx_x < rx; idx_x++) {
+                for (idx_y = ly; idx_y < ry; idx_y++) {
                     step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y + 1, idx_z),
                                                      get_cell_at (idx_x + 0, idx_y + 0, idx_z));
                     step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y + 0, idx_z),
@@ -482,9 +488,9 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
             }
         }
         { // Wraparound-interaction at the YZ-Border
-            idx_y = m_size.y - 1;
-            idx_z = m_size.z - 1;
-            for (idx_x = 0; idx_x < m_size.x - 1; idx_x++) {
+            idx_y = ry;
+            idx_z = rz;
+            for (idx_x = lx; idx_x < rx; idx_x++) {
                 step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y, idx_z),
                                                  get_cell_at (idx_x + 0, idx_y, idx_z));
                 step_2b_calculate_between_cells_offset (get_cell_at (idx_x + 1, 0, 0),
@@ -550,9 +556,9 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
             }
         }
         { // Wraparound-interaction at the XZ-Border
-            idx_x = m_size.x - 1;
-            idx_z = m_size.z - 1;
-            for (idx_y = 0; idx_y < m_size.y - 1; idx_y++) {
+            idx_x = rx;
+            idx_z = rz;
+            for (idx_y = ly; idx_y < ry; idx_y++) {
                 step_2b_calculate_between_cells (get_cell_at (idx_x, idx_y + 1, idx_z),
                                                  get_cell_at (idx_x, idx_y + 0, idx_z));
                 step_2b_calculate_between_cells_offset (get_cell_at (0, idx_y + 1, 0),
@@ -618,9 +624,9 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
             }
         }
         { // Wraparound-interaction at the XY-Border
-            idx_x = m_size.x - 1;
-            idx_y = m_size.y - 1;
-            for (idx_z = 0; idx_z < m_size.z - 1; idx_z++) {
+            idx_x = rx;
+            idx_y = ry;
+            for (idx_z = lz; idx_z < rz; idx_z++) {
                 step_2b_calculate_between_cells (get_cell_at (idx_x, idx_y, idx_z + 1),
                                                  get_cell_at (idx_x, idx_y, idx_z + 0));
                 step_2b_calculate_between_cells_offset (get_cell_at (0, 0, idx_z + 1),
@@ -686,9 +692,9 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
             }
         }
         { // Wraparound-interaction at the XYZ-Corner
-            idx_x = m_size.x - 1;
-            idx_y = m_size.y - 1;
-            idx_z = m_size.z - 1;
+            idx_x = rx;
+            idx_y = ry;
+            idx_z = rz;
             step_2b_calculate_between_cells_offset (get_cell_at (0, 0, 0),
                                                     get_cell_at (idx_x, idx_y, idx_z),
                                                     m_options.m_bounds.x,
