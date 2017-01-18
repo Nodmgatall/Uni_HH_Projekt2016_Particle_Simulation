@@ -118,6 +118,55 @@ class Algorithm : public AlgorithmBase {
             m_step_2_helper[idx_j][idx_i]++;
         }
     }
+    void step_2_offset (const data_type&       p_offset_position_aix,
+                        const data_type&       p_offset_position_aiy,
+                        const data_type&       p_offset_position_aiz,
+                        const data_type&       p_position_aix,
+                        const data_type&       p_position_aiy,
+                        const data_type&       p_position_aiz,
+                        data_type&             p_position_bix,
+                        data_type&             p_position_biy,
+                        data_type&             p_position_biz,
+                        const data_type* const p_position_ajx,
+                        const data_type* const p_position_ajy,
+                        const data_type* const p_position_ajz,
+                        data_type* const       p_position_bjx,
+                        data_type* const       p_position_bjy,
+                        data_type* const       p_position_bjz,
+                        const unsigned long    p_index_j_begin,
+                        const unsigned long    p_index_j_end) {
+        (void) p_offset_position_aix;
+        (void) p_offset_position_aiy;
+        (void) p_offset_position_aiz;
+        BOOST_CHECK_EQUAL (p_position_aix, p_position_aiy - 1);
+        BOOST_CHECK_EQUAL (p_position_aiy, p_position_aiz - 1);
+        BOOST_CHECK_EQUAL (p_position_bix, p_position_biy - 1);
+        BOOST_CHECK_EQUAL (p_position_biy, p_position_biz - 1);
+        int idx_i = 0;
+        if (p_position_aix > p_position_bix) {
+            idx_i = (int) p_position_bix - 1;
+            BOOST_CHECK_EQUAL (p_position_aix, p_position_bix + 10);
+        } else {
+            idx_i = (int) p_position_aix - 1;
+            BOOST_CHECK_EQUAL (p_position_aix, p_position_bix - 10);
+        }
+        for (unsigned long j = p_index_j_begin; j < p_index_j_end; j++) {
+            BOOST_CHECK_EQUAL (p_position_ajx[j], p_position_ajy[j] - 1);
+            BOOST_CHECK_EQUAL (p_position_ajy[j], p_position_ajz[j] - 1);
+            BOOST_CHECK_EQUAL (p_position_bjx[j], p_position_bjy[j] - 1);
+            BOOST_CHECK_EQUAL (p_position_bjy[j], p_position_bjz[j] - 1);
+            int idx_j = 0;
+            if (p_position_ajx[j] > p_position_bjx[j]) {
+                idx_j = (int) p_position_bjx[j] - 1;
+                BOOST_CHECK_EQUAL (p_position_ajx[j], p_position_bjx[j] + 10);
+            } else {
+                idx_j = (int) p_position_ajx[j] - 1;
+                BOOST_CHECK_EQUAL (p_position_ajx[j], p_position_bjx[j] - 10);
+            }
+            m_step_2_helper[idx_i][idx_j]++;
+            m_step_2_helper[idx_j][idx_i]++;
+        }
+    }
 };
 class BoundsCorrection : public BorderBase {
   public:

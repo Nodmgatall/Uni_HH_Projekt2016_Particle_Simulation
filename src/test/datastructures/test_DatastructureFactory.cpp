@@ -124,6 +124,47 @@ class Algorithm : public AlgorithmBase {
             BOOST_CHECK_EQUAL (m_step_1_helper[idx_j], 1);
         }
     }
+    void step_2_offset (const data_type&       p_offset_position_aix,
+                        const data_type&       p_offset_position_aiy,
+                        const data_type&       p_offset_position_aiz,
+                        const data_type&       p_position_aix,
+                        const data_type&       p_position_aiy,
+                        const data_type&       p_position_aiz,
+                        data_type&             p_position_bix,
+                        data_type&             p_position_biy,
+                        data_type&             p_position_biz,
+                        const data_type* const p_position_ajx,
+                        const data_type* const p_position_ajy,
+                        const data_type* const p_position_ajz,
+                        data_type* const       p_position_bjx,
+                        data_type* const       p_position_bjy,
+                        data_type* const       p_position_bjz,
+                        const unsigned long    p_index_j_begin,
+                        const unsigned long    p_index_j_end) {
+        (void) p_offset_position_aix;
+        (void) p_offset_position_aiy;
+        (void) p_offset_position_aiz;
+        (void) p_position_aix;
+        (void) p_position_aiy;
+        (void) p_position_aiz;
+        (void) p_position_bix;
+        (void) p_position_biy;
+        (void) p_position_biz;
+        (void) p_position_ajx;
+        (void) p_position_ajy;
+        (void) p_position_ajz;
+        (void) p_position_bjx;
+        (void) p_position_bjy;
+        (void) p_position_bjz;
+        int idx_i = p_position_bix;
+        BOOST_CHECK_EQUAL (m_step_1_helper[idx_i], 1);
+        for (unsigned long j = p_index_j_begin; j < p_index_j_end; j++) {
+            int idx_j = p_position_bjx[j];
+            m_step_2_helper[idx_i][idx_j]++;
+            m_step_2_helper[idx_j][idx_i]++;
+            BOOST_CHECK_EQUAL (m_step_1_helper[idx_j], 1);
+        }
+    }
 };
 class BoundsCorrection : public BorderBase {
   public:

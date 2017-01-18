@@ -53,8 +53,9 @@ class Datastructure : public DatastructureBase {
     }
     void serialize () {
     }
-    void run_simulation_iteration (unsigned long p_iteration_number = 0) {
+    bool run_simulation_iteration (unsigned long p_iteration_number = 0) {
         (void) p_iteration_number;
+        return true;
     }
     void add_particle (Vec3f p_current_position) {
         m_particle_count++;

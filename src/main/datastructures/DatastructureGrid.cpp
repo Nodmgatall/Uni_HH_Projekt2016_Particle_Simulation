@@ -144,6 +144,33 @@ void DatastructureGrid::step_2b_calculate_between_cells (ParticleCell& p_cell_i,
                             p_cell_j.m_ids.size ());
     }
 }
+void DatastructureGrid::step_2b_calculate_between_cells_offset (ParticleCell& p_cell_i,
+                                                                ParticleCell& p_cell_j,
+                                                                data_type     offset_x,
+                                                                data_type     offset_y,
+                                                                data_type     offset_z) {
+    unsigned int       i;
+    const unsigned int max = p_cell_i.m_ids.size ();
+    for (i = 0; i < max; i++) {
+        m_algorithm.step_2_offset (offset_x,
+                                   offset_y,
+                                   offset_z,
+                                   p_cell_i.m_positions_x[m_idx_a][i],
+                                   p_cell_i.m_positions_y[m_idx_a][i],
+                                   p_cell_i.m_positions_z[m_idx_a][i],
+                                   p_cell_i.m_positions_x[m_idx_b][i],
+                                   p_cell_i.m_positions_y[m_idx_b][i],
+                                   p_cell_i.m_positions_z[m_idx_b][i],
+                                   p_cell_j.m_positions_x[m_idx_a].data (),
+                                   p_cell_j.m_positions_y[m_idx_a].data (),
+                                   p_cell_j.m_positions_z[m_idx_a].data (),
+                                   p_cell_j.m_positions_x[m_idx_b].data (),
+                                   p_cell_j.m_positions_y[m_idx_b].data (),
+                                   p_cell_j.m_positions_z[m_idx_b].data (),
+                                   0,
+                                   p_cell_j.m_ids.size ());
+    }
+}
 
 void DatastructureGrid::step_3_remove_wrong_particles_from_cell (ParticleCell& p_cell) {
     int i, j;
@@ -276,14 +303,59 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
             idx_x = m_size.x - 1;
             for (idx_y = 0; idx_y < m_size.y - 1; idx_y++) {
                 for (idx_z = 0; idx_z < m_size.z - 1; idx_z++) {
-                    step_2b_calculate_between_cells (get_cell_at (idx_x + 0, idx_y + 1, idx_z + 1),
-                                                     get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
-                    step_2b_calculate_between_cells (get_cell_at (idx_x + 0, idx_y + 1, idx_z + 0),
-                                                     get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
-                    step_2b_calculate_between_cells (get_cell_at (idx_x + 0, idx_y + 1, idx_z + 0),
-                                                     get_cell_at (idx_x + 0, idx_y + 0, idx_z + 1));
-                    step_2b_calculate_between_cells (get_cell_at (idx_x + 0, idx_y + 0, idx_z + 1),
-                                                     get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
+                    step_2b_calculate_between_cells_offset (get_cell_at (0, idx_y + 1, idx_z + 1),
+                                                            get_cell_at (idx_x, idx_y + 0, idx_z + 0),
+                                                            m_options.m_bounds.x,
+                                                            0,
+                                                            0);
+                    step_2b_calculate_between_cells_offset (get_cell_at (0, idx_y + 1, idx_z + 0),
+                                                            get_cell_at (idx_x, idx_y + 0, idx_z + 0),
+                                                            m_options.m_bounds.x,
+                                                            0,
+                                                            0);
+                    step_2b_calculate_between_cells_offset (get_cell_at (0, idx_y + 1, idx_z + 0),
+                                                            get_cell_at (idx_x, idx_y + 0, idx_z + 1),
+                                                            m_options.m_bounds.x,
+                                                            0,
+                                                            0);
+                    step_2b_calculate_between_cells_offset (get_cell_at (0, idx_y + 0, idx_z + 1),
+                                                            get_cell_at (idx_x, idx_y + 0, idx_z + 0),
+                                                            m_options.m_bounds.x,
+                                                            0,
+                                                            0);
+                    step_2b_calculate_between_cells_offset (get_cell_at (0, idx_y + 0, idx_z + 0),
+                                                            get_cell_at (idx_x, idx_y + 0, idx_z + 0),
+                                                            m_options.m_bounds.x,
+                                                            0,
+                                                            0);
+                    step_2b_calculate_between_cells_offset (get_cell_at (0, idx_y + 0, idx_z + 0),
+                                                            get_cell_at (idx_x, idx_y + 0, idx_z + 1),
+                                                            m_options.m_bounds.x,
+                                                            0,
+                                                            0);
+                    step_2b_calculate_between_cells_offset (get_cell_at (0, idx_y + 0, idx_z + 1),
+                                                            get_cell_at (idx_x, idx_y + 1, idx_z + 0),
+                                                            m_options.m_bounds.x,
+                                                            0,
+                                                            0);
+                    step_2b_calculate_between_cells_offset (get_cell_at (0, idx_y + 0, idx_z + 0),
+                                                            get_cell_at (idx_x, idx_y + 1, idx_z + 0),
+                                                            m_options.m_bounds.x,
+                                                            0,
+                                                            0);
+                    step_2b_calculate_between_cells_offset (get_cell_at (0, idx_y + 0, idx_z + 0),
+                                                            get_cell_at (idx_x, idx_y + 1, idx_z + 1),
+                                                            m_options.m_bounds.x,
+                                                            0,
+                                                            0);
+                    step_2b_calculate_between_cells (get_cell_at (idx_x, idx_y + 1, idx_z + 1),
+                                                     get_cell_at (idx_x, idx_y + 0, idx_z + 0));
+                    step_2b_calculate_between_cells (get_cell_at (idx_x, idx_y + 1, idx_z + 0),
+                                                     get_cell_at (idx_x, idx_y + 0, idx_z + 0));
+                    step_2b_calculate_between_cells (get_cell_at (idx_x, idx_y + 1, idx_z + 0),
+                                                     get_cell_at (idx_x, idx_y + 0, idx_z + 1));
+                    step_2b_calculate_between_cells (get_cell_at (idx_x, idx_y + 0, idx_z + 1),
+                                                     get_cell_at (idx_x, idx_y + 0, idx_z + 0));
                 }
             }
         }
@@ -291,14 +363,59 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
             idx_y = m_size.y - 1;
             for (idx_x = 0; idx_x < m_size.x - 1; idx_x++) {
                 for (idx_z = 0; idx_z < m_size.z - 1; idx_z++) {
-                    step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y + 0, idx_z + 1),
-                                                     get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
-                    step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y + 0, idx_z + 0),
-                                                     get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
-                    step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y + 0, idx_z + 0),
-                                                     get_cell_at (idx_x + 0, idx_y + 0, idx_z + 1));
-                    step_2b_calculate_between_cells (get_cell_at (idx_x + 0, idx_y + 0, idx_z + 1),
-                                                     get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
+                    step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y, idx_z + 1),
+                                                     get_cell_at (idx_x + 0, idx_y, idx_z + 0));
+                    step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y, idx_z + 0),
+                                                     get_cell_at (idx_x + 0, idx_y, idx_z + 0));
+                    step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y, idx_z + 0),
+                                                     get_cell_at (idx_x + 0, idx_y, idx_z + 1));
+                    step_2b_calculate_between_cells (get_cell_at (idx_x + 0, idx_y, idx_z + 1),
+                                                     get_cell_at (idx_x + 0, idx_y, idx_z + 0));
+                    step_2b_calculate_between_cells_offset (get_cell_at (idx_x + 1, 0, idx_z + 1),
+                                                            get_cell_at (idx_x + 0, idx_y, idx_z + 0),
+                                                            0,
+                                                            -m_options.m_bounds.y,
+                                                            0);
+                    step_2b_calculate_between_cells_offset (get_cell_at (idx_x + 1, 0, idx_z + 0),
+                                                            get_cell_at (idx_x + 0, idx_y, idx_z + 0),
+                                                            0,
+                                                            -m_options.m_bounds.y,
+                                                            0);
+                    step_2b_calculate_between_cells_offset (get_cell_at (idx_x + 1, 0, idx_z + 0),
+                                                            get_cell_at (idx_x + 0, idx_y, idx_z + 1),
+                                                            0,
+                                                            -m_options.m_bounds.y,
+                                                            0);
+                    step_2b_calculate_between_cells_offset (get_cell_at (idx_x + 1, idx_y, idx_z + 1),
+                                                            get_cell_at (idx_x + 0, 0, idx_z + 0),
+                                                            0,
+                                                            -m_options.m_bounds.y,
+                                                            0);
+                    step_2b_calculate_between_cells_offset (get_cell_at (idx_x + 1, idx_y, idx_z + 0),
+                                                            get_cell_at (idx_x + 0, 0, idx_z + 0),
+                                                            0,
+                                                            -m_options.m_bounds.y,
+                                                            0);
+                    step_2b_calculate_between_cells_offset (get_cell_at (idx_x + 1, idx_y, idx_z + 0),
+                                                            get_cell_at (idx_x + 0, 0, idx_z + 1),
+                                                            0,
+                                                            -m_options.m_bounds.y,
+                                                            0);
+                    step_2b_calculate_between_cells_offset (get_cell_at (idx_x + 0, 0, idx_z + 1),
+                                                            get_cell_at (idx_x + 0, idx_y, idx_z + 0),
+                                                            0,
+                                                            -m_options.m_bounds.y,
+                                                            0);
+                    step_2b_calculate_between_cells_offset (get_cell_at (idx_x + 0, 0, idx_z + 0),
+                                                            get_cell_at (idx_x + 0, idx_y, idx_z + 0),
+                                                            0,
+                                                            -m_options.m_bounds.y,
+                                                            0);
+                    step_2b_calculate_between_cells_offset (get_cell_at (idx_x + 0, 0, idx_z + 0),
+                                                            get_cell_at (idx_x + 0, idx_y, idx_z + 1),
+                                                            0,
+                                                            -m_options.m_bounds.y,
+                                                            0);
                 }
             }
         }
@@ -306,14 +423,59 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
             idx_z = m_size.z - 1;
             for (idx_x = 0; idx_x < m_size.x - 1; idx_x++) {
                 for (idx_y = 0; idx_y < m_size.y - 1; idx_y++) {
-                    step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y + 1, idx_z + 0),
-                                                     get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
-                    step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y + 0, idx_z + 0),
-                                                     get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
-                    step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y + 0, idx_z + 0),
-                                                     get_cell_at (idx_x + 0, idx_y + 1, idx_z + 0));
-                    step_2b_calculate_between_cells (get_cell_at (idx_x + 0, idx_y + 1, idx_z + 0),
-                                                     get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
+                    step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y + 1, idx_z),
+                                                     get_cell_at (idx_x + 0, idx_y + 0, idx_z));
+                    step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y + 0, idx_z),
+                                                     get_cell_at (idx_x + 0, idx_y + 0, idx_z));
+                    step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y + 0, idx_z),
+                                                     get_cell_at (idx_x + 0, idx_y + 1, idx_z));
+                    step_2b_calculate_between_cells (get_cell_at (idx_x + 0, idx_y + 1, idx_z),
+                                                     get_cell_at (idx_x + 0, idx_y + 0, idx_z));
+                    step_2b_calculate_between_cells_offset (get_cell_at (idx_x + 1, idx_y + 1, 0),
+                                                            get_cell_at (idx_x + 0, idx_y + 0, idx_z),
+                                                            0,
+                                                            0,
+                                                            m_options.m_bounds.z);
+                    step_2b_calculate_between_cells_offset (get_cell_at (idx_x + 1, idx_y + 1, idx_z),
+                                                            get_cell_at (idx_x + 0, idx_y + 0, 0),
+                                                            0,
+                                                            0,
+                                                            -m_options.m_bounds.z);
+                    step_2b_calculate_between_cells_offset (get_cell_at (idx_x + 1, idx_y + 0, 0),
+                                                            get_cell_at (idx_x + 0, idx_y + 0, idx_z),
+                                                            0,
+                                                            0,
+                                                            m_options.m_bounds.z);
+                    step_2b_calculate_between_cells_offset (get_cell_at (idx_x + 1, idx_y + 0, idx_z),
+                                                            get_cell_at (idx_x + 0, idx_y + 0, 0),
+                                                            0,
+                                                            0,
+                                                            -m_options.m_bounds.z);
+                    step_2b_calculate_between_cells_offset (get_cell_at (idx_x + 1, idx_y + 0, 0),
+                                                            get_cell_at (idx_x + 0, idx_y + 1, idx_z),
+                                                            0,
+                                                            0,
+                                                            m_options.m_bounds.z);
+                    step_2b_calculate_between_cells_offset (get_cell_at (idx_x + 1, idx_y + 0, idx_z),
+                                                            get_cell_at (idx_x + 0, idx_y + 1, 0),
+                                                            0,
+                                                            0,
+                                                            -m_options.m_bounds.z);
+                    step_2b_calculate_between_cells_offset (get_cell_at (idx_x + 0, idx_y + 1, 0),
+                                                            get_cell_at (idx_x + 0, idx_y + 0, idx_z),
+                                                            0,
+                                                            0,
+                                                            m_options.m_bounds.z);
+                    step_2b_calculate_between_cells_offset (get_cell_at (idx_x + 0, idx_y + 1, idx_z),
+                                                            get_cell_at (idx_x + 0, idx_y + 0, 0),
+                                                            0,
+                                                            0,
+                                                            -m_options.m_bounds.z);
+                    step_2b_calculate_between_cells_offset (get_cell_at (idx_x + 0, idx_y + 0, 0),
+                                                            get_cell_at (idx_x + 0, idx_y + 0, idx_z),
+                                                            0,
+                                                            0,
+                                                            m_options.m_bounds.z);
                 }
             }
         }
@@ -323,6 +485,66 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
             for (idx_x = 0; idx_x < m_size.x - 1; idx_x++) {
                 step_2b_calculate_between_cells (get_cell_at (idx_x + 1, idx_y, idx_z),
                                                  get_cell_at (idx_x + 0, idx_y, idx_z));
+                step_2b_calculate_between_cells_offset (get_cell_at (idx_x + 1, 0, 0),
+                                                        get_cell_at (idx_x + 0, idx_y, idx_z),
+                                                        0,
+                                                        m_options.m_bounds.y,
+                                                        m_options.m_bounds.z);
+                step_2b_calculate_between_cells_offset (get_cell_at (idx_x + 1, 0, idx_z),
+                                                        get_cell_at (idx_x + 0, idx_y, idx_z),
+                                                        0,
+                                                        m_options.m_bounds.y,
+                                                        0);
+                step_2b_calculate_between_cells_offset (get_cell_at (idx_x + 1, 0, idx_z),
+                                                        get_cell_at (idx_x + 0, idx_y, 0),
+                                                        0,
+                                                        m_options.m_bounds.y,
+                                                        -m_options.m_bounds.z);
+                step_2b_calculate_between_cells_offset (get_cell_at (idx_x + 1, idx_y, 0),
+                                                        get_cell_at (idx_x + 0, idx_y, idx_z),
+                                                        0,
+                                                        0,
+                                                        m_options.m_bounds.z);
+                step_2b_calculate_between_cells_offset (get_cell_at (idx_x + 1, idx_y, idx_z),
+                                                        get_cell_at (idx_x + 0, idx_y, 0),
+                                                        0,
+                                                        0,
+                                                        -m_options.m_bounds.z);
+                step_2b_calculate_between_cells_offset (get_cell_at (idx_x + 1, idx_y, 0),
+                                                        get_cell_at (idx_x + 0, 0, idx_z),
+                                                        0,
+                                                        -m_options.m_bounds.y,
+                                                        m_options.m_bounds.z);
+                step_2b_calculate_between_cells_offset (get_cell_at (idx_x + 1, idx_y, idx_z),
+                                                        get_cell_at (idx_x + 0, 0, idx_z),
+                                                        0,
+                                                        -m_options.m_bounds.y,
+                                                        0);
+                step_2b_calculate_between_cells_offset (get_cell_at (idx_x + 1, idx_y, idx_z),
+                                                        get_cell_at (idx_x + 0, 0, 0),
+                                                        0,
+                                                        -m_options.m_bounds.y,
+                                                        -m_options.m_bounds.z);
+                step_2b_calculate_between_cells_offset (get_cell_at (idx_x + 0, 0, 0),
+                                                        get_cell_at (idx_x + 0, idx_y, idx_z),
+                                                        0,
+                                                        m_options.m_bounds.y,
+                                                        m_options.m_bounds.z);
+                step_2b_calculate_between_cells_offset (get_cell_at (idx_x + 0, 0, idx_z),
+                                                        get_cell_at (idx_x + 0, idx_y, idx_z),
+                                                        0,
+                                                        m_options.m_bounds.y,
+                                                        0);
+                step_2b_calculate_between_cells_offset (get_cell_at (idx_x + 0, 0, idx_z),
+                                                        get_cell_at (idx_x + 0, idx_y, 0),
+                                                        0,
+                                                        m_options.m_bounds.y,
+                                                        -m_options.m_bounds.z);
+                step_2b_calculate_between_cells_offset (get_cell_at (idx_x + 0, idx_y, 0),
+                                                        get_cell_at (idx_x + 0, idx_y, idx_z),
+                                                        0,
+                                                        0,
+                                                        m_options.m_bounds.z);
             }
         }
         {
@@ -331,6 +553,66 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
             for (idx_y = 0; idx_y < m_size.y - 1; idx_y++) {
                 step_2b_calculate_between_cells (get_cell_at (idx_x, idx_y + 1, idx_z),
                                                  get_cell_at (idx_x, idx_y + 0, idx_z));
+                step_2b_calculate_between_cells_offset (get_cell_at (0, idx_y + 1, 0),
+                                                        get_cell_at (idx_x, idx_y + 0, idx_z),
+                                                        m_options.m_bounds.x,
+                                                        0,
+                                                        m_options.m_bounds.z);
+                step_2b_calculate_between_cells_offset (get_cell_at (0, idx_y + 1, idx_z),
+                                                        get_cell_at (idx_x, idx_y + 0, idx_z),
+                                                        m_options.m_bounds.x,
+                                                        0,
+                                                        0);
+                step_2b_calculate_between_cells_offset (get_cell_at (0, idx_y + 1, idx_z),
+                                                        get_cell_at (idx_x, idx_y + 0, 0),
+                                                        m_options.m_bounds.x,
+                                                        0,
+                                                        -m_options.m_bounds.z);
+                step_2b_calculate_between_cells_offset (get_cell_at (0, idx_y + 0, 0),
+                                                        get_cell_at (idx_x, idx_y + 0, idx_z),
+                                                        m_options.m_bounds.x,
+                                                        0,
+                                                        m_options.m_bounds.z);
+                step_2b_calculate_between_cells_offset (get_cell_at (0, idx_y + 0, idx_z),
+                                                        get_cell_at (idx_x, idx_y + 0, idx_z),
+                                                        m_options.m_bounds.x,
+                                                        0,
+                                                        0);
+                step_2b_calculate_between_cells_offset (get_cell_at (0, idx_y + 0, idx_z),
+                                                        get_cell_at (idx_x, idx_y + 0, 0),
+                                                        m_options.m_bounds.x,
+                                                        0,
+                                                        -m_options.m_bounds.z);
+                step_2b_calculate_between_cells_offset (get_cell_at (0, idx_y + 0, 0),
+                                                        get_cell_at (idx_x, idx_y + 1, idx_z),
+                                                        m_options.m_bounds.x,
+                                                        0,
+                                                        m_options.m_bounds.z);
+                step_2b_calculate_between_cells_offset (get_cell_at (0, idx_y + 0, idx_z),
+                                                        get_cell_at (idx_x, idx_y + 1, idx_z),
+                                                        m_options.m_bounds.x,
+                                                        0,
+                                                        0);
+                step_2b_calculate_between_cells_offset (get_cell_at (0, idx_y + 0, idx_z),
+                                                        get_cell_at (idx_x, idx_y + 1, 0),
+                                                        m_options.m_bounds.x,
+                                                        0,
+                                                        -m_options.m_bounds.z);
+                step_2b_calculate_between_cells_offset (get_cell_at (idx_x, idx_y + 1, 0),
+                                                        get_cell_at (idx_x, idx_y + 0, idx_z),
+                                                        0,
+                                                        0,
+                                                        m_options.m_bounds.z);
+                step_2b_calculate_between_cells_offset (get_cell_at (idx_x, idx_y + 1, idx_z),
+                                                        get_cell_at (idx_x, idx_y + 0, 0),
+                                                        0,
+                                                        0,
+                                                        -m_options.m_bounds.z);
+                step_2b_calculate_between_cells_offset (get_cell_at (idx_x, idx_y + 0, 0),
+                                                        get_cell_at (idx_x, idx_y + 0, idx_z),
+                                                        0,
+                                                        0,
+                                                        m_options.m_bounds.z);
             }
         }
         {
@@ -339,6 +621,66 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
             for (idx_z = 0; idx_z < m_size.z - 1; idx_z++) {
                 step_2b_calculate_between_cells (get_cell_at (idx_x, idx_y, idx_z + 1),
                                                  get_cell_at (idx_x, idx_y, idx_z + 0));
+                step_2b_calculate_between_cells_offset (get_cell_at (0, 0, idx_z + 1),
+                                                        get_cell_at (idx_x, idx_y, idx_z + 0),
+                                                        m_options.m_bounds.x,
+                                                        m_options.m_bounds.y,
+                                                        0);
+                step_2b_calculate_between_cells_offset (get_cell_at (0, 0, idx_z + 0),
+                                                        get_cell_at (idx_x, idx_y, idx_z + 0),
+                                                        m_options.m_bounds.x,
+                                                        m_options.m_bounds.y,
+                                                        0);
+                step_2b_calculate_between_cells_offset (get_cell_at (0, 0, idx_z + 0),
+                                                        get_cell_at (idx_x, idx_y, idx_z + 1),
+                                                        m_options.m_bounds.x,
+                                                        m_options.m_bounds.y,
+                                                        0);
+                step_2b_calculate_between_cells_offset (get_cell_at (0, idx_y, idx_z + 1),
+                                                        get_cell_at (idx_x, idx_y, idx_z + 0),
+                                                        m_options.m_bounds.x,
+                                                        0,
+                                                        0);
+                step_2b_calculate_between_cells_offset (get_cell_at (0, idx_y, idx_z + 0),
+                                                        get_cell_at (idx_x, idx_y, idx_z + 0),
+                                                        m_options.m_bounds.x,
+                                                        0,
+                                                        0);
+                step_2b_calculate_between_cells_offset (get_cell_at (0, idx_y, idx_z + 0),
+                                                        get_cell_at (idx_x, idx_y, idx_z + 1),
+                                                        m_options.m_bounds.x,
+                                                        0,
+                                                        0);
+                step_2b_calculate_between_cells_offset (get_cell_at (0, idx_y, idx_z + 1),
+                                                        get_cell_at (idx_x, 0, idx_z + 0),
+                                                        m_options.m_bounds.x,
+                                                        -m_options.m_bounds.y,
+                                                        0);
+                step_2b_calculate_between_cells_offset (get_cell_at (0, idx_y, idx_z + 0),
+                                                        get_cell_at (idx_x, 0, idx_z + 0),
+                                                        m_options.m_bounds.x,
+                                                        -m_options.m_bounds.y,
+                                                        0);
+                step_2b_calculate_between_cells_offset (get_cell_at (0, idx_y, idx_z + 0),
+                                                        get_cell_at (idx_x, 0, idx_z + 1),
+                                                        m_options.m_bounds.x,
+                                                        -m_options.m_bounds.y,
+                                                        0);
+                step_2b_calculate_between_cells_offset (get_cell_at (idx_x, 0, idx_z + 1),
+                                                        get_cell_at (idx_x, idx_y, idx_z + 0),
+                                                        0,
+                                                        m_options.m_bounds.y,
+                                                        0);
+                step_2b_calculate_between_cells_offset (get_cell_at (idx_x, 0, idx_z + 0),
+                                                        get_cell_at (idx_x, idx_y, idx_z + 0),
+                                                        0,
+                                                        m_options.m_bounds.y,
+                                                        0);
+                step_2b_calculate_between_cells_offset (get_cell_at (idx_x, 0, idx_z + 0),
+                                                        get_cell_at (idx_x, idx_y, idx_z + 1),
+                                                        0,
+                                                        m_options.m_bounds.y,
+                                                        0);
             }
         }
     }

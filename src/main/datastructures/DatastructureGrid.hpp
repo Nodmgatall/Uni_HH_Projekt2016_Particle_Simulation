@@ -126,6 +126,11 @@ class DatastructureGrid : public DatastructureBase {
      * @param p_cell2
      */
     void step_2b_calculate_between_cells (ParticleCell& p_cell_i, ParticleCell& p_cell_j);
+    void step_2b_calculate_between_cells_offset (ParticleCell& p_cell_i,
+                                                 ParticleCell& p_cell_j,
+                                                 data_type     offset_x,
+                                                 data_type     offset_y,
+                                                 data_type     offset_z);
     /**
      * verify that all particles in cell are in the correct cell. if there are
      * particles which should be
