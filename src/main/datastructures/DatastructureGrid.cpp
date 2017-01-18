@@ -178,7 +178,7 @@ void DatastructureGrid::step_3_remove_wrong_particles_from_cell (ParticleCell& p
             /* Vec3f p = Vec3f (p_cell.m_positions_x[m_idx_a][i],
                               p_cell.m_positions_y[m_idx_a][i],
                               p_cell.m_positions_z[m_idx_a][i]);
-               std::cout << DEBUG_VAR (idx)                //
+               std::cout << DEBUG_VAR (idx)                 //
                           << DEBUG_VAR (flag)               //
                           << DEBUG_VAR (m_options.m_bounds) //
                           << DEBUG_VAR (m_options.m_bounds) //
