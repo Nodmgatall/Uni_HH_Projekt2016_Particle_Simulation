@@ -15,7 +15,7 @@ clean: format
 doxygen:
 	cd .. && doxygen
 
-cmake: clean
+cmake: 
 ifeq ($(platform),Darwin)
 	cd .. && CC=clang-omp CXX=clang-omp++ cmake -G "Eclipse CDT4 - Unix Makefiles"
 	cat ../.cproject | sed 's/199711L/201402L/g' > ../.cproject1; mv -f  ../.cproject1 ../.cproject
