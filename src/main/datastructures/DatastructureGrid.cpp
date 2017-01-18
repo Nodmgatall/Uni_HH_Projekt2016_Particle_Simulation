@@ -206,8 +206,8 @@ void DatastructureGrid::step_3_remove_wrong_particles_from_cell (ParticleCell& p
                 p_cell.m_positions_y[j][i] += m_options.m_bounds.y;
             }
         }
-        while (p_cell.m_positions_y[m_idx_a][i] > m_options.m_bounds.y * 1000) {
-            if (isnan (p_cell.m_positions_y[0][i] - p_cell.m_positions_y[1][i])) {
+        while (p_cell.m_positions_y[m_idx_a][i] > m_options.m_bounds.y) {
+            if (p_cell.m_positions_x[m_idx_a][i] > m_options.m_bounds.y * 1000) {
                 m_error_stream << "something went badly wrong" << std::endl << p_cell << std::endl;
                 m_error_happened = true;
                 return;
