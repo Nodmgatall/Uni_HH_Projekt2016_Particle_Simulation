@@ -12,7 +12,7 @@ struct ParticleCell {
     std::vector<unsigned long> m_ids;
     Vec3f                      m_corner000, m_corner111;
     Vec3l                      m_idx;
-    ParticleCell (Vec3l p_idx, Vec3l p_size_per_cell);
+    ParticleCell (Vec3l p_idx, Vec3f p_size_per_cell);
     /**
      * adds an particle to this cell
      * @param p_current_position the current position of the particle to add

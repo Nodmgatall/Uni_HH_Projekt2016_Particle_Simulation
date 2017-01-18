@@ -497,16 +497,17 @@ BOOST_AUTO_TEST_CASE (test_step_3) {
     BOOST_CHECK_EQUAL (particlesGrid.get_particle_count (), 7);
     particlesGrid.public_step_3_remove_wrong_particles_from_cell (cell);
 
-    for (int i = 0; i < particlesGrid.get_size ().x; i++) {
+    /*for (int i = 0; i < particlesGrid.get_size ().x; i++) {
         for (int j = 0; j < particlesGrid.get_size ().y; j++) {
             for (int k = 0; k < particlesGrid.get_size ().z; k++) {
                 if (particlesGrid.public_get_cell_at (i, j, k).m_ids.size () > 0) {
                     BOOST_CHECK_MESSAGE (0, Vec3l (i, j, k));
-                    BOOST_CHECK_MESSAGE (0, particlesGrid.public_get_cell_at (i, j, k).m_ids.size ());
+                    BOOST_CHECK_MESSAGE (0, particlesGrid.public_get_cell_at (i, j, k).m_ids.size
+    ());
                 }
             }
         }
-    }
+    }*/
 
     BOOST_CHECK_EQUAL (particlesGrid.get_particle_count (), 7);
     BOOST_CHECK_EQUAL (particlesGrid.public_get_cell_at (x, y, z).m_ids.size (), 1);

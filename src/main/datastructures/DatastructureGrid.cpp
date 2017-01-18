@@ -175,6 +175,18 @@ void DatastructureGrid::step_3_remove_wrong_particles_from_cell (ParticleCell& p
                 p_cell.m_positions_z[m_idx_a][i] -= m_options.m_bounds.z;
                 flag = true;
             }
+            /* Vec3f p = Vec3f (p_cell.m_positions_x[m_idx_a][i],
+                              p_cell.m_positions_y[m_idx_a][i],
+                              p_cell.m_positions_z[m_idx_a][i]);
+               std::cout << DEBUG_VAR (idx)                //
+                          << DEBUG_VAR (flag)               //
+                          << DEBUG_VAR (m_options.m_bounds) //
+                          << DEBUG_VAR (m_options.m_bounds) //
+                          << DEBUG_VAR (p)                  //
+                          << DEBUG_VAR (p_cell.m_corner000) //
+                          << DEBUG_VAR (p_cell.m_corner111) //
+                          << DEBUG_VAR (m_size_per_cell)    //
+                          << std::endl;*/
         }
         if (idx != p_cell.m_idx) {
             ParticleCell& other_cell = get_cell_at (idx.x, idx.y, idx.z);
@@ -342,7 +354,7 @@ unsigned long DatastructureGrid::get_particle_count () {
     }
     return particle_count;
 }
-ParticleCell::ParticleCell (Vec3l p_idx, Vec3l p_size_per_cell) {
+ParticleCell::ParticleCell (Vec3l p_idx, Vec3f p_size_per_cell) {
     m_idx       = p_idx;
     m_corner000 = Vec3f (m_idx - 1L) * p_size_per_cell;
     m_corner111 = Vec3f (m_idx) * p_size_per_cell;
