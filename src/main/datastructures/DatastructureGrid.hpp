@@ -21,10 +21,22 @@ struct ParticleCell {
      * @param p_id the id for the added particle
      */
     void add_particle (Vec3f p_current_position, Vec3f p_old_position, int p_current_index, int p_id);
+    friend std::ostream& operator<< (std::ostream& stream, const ParticleCell& cell) {
+        stream << DEBUG_VAR (cell.m_corner000) << std::endl;
+        stream << DEBUG_VAR (cell.m_corner111) << std::endl;
+        stream << DEBUG_VAR (cell.m_idx) << std::endl;
+        stream << DEBUG_VAR (cell.m_ids) << std::endl;
+        stream << DEBUG_VAR (cell.m_positions_x) << std::endl;
+        stream << DEBUG_VAR (cell.m_positions_y) << std::endl;
+        stream << DEBUG_VAR (cell.m_positions_z) << std::endl;
+
+        return stream;
+    }
 };
 
 class DatastructureGrid : public DatastructureBase {
   protected:
+    bool m_error_happened;
     /**
      * the index for the "next" inserted particle
      */
@@ -132,7 +144,7 @@ class DatastructureGrid : public DatastructureBase {
      */
     ~DatastructureGrid ();
     void serialize ();
-    void run_simulation_iteration (unsigned long p_iteration_number = 0);
+    bool run_simulation_iteration (unsigned long p_iteration_number = 0);
     void add_particle (Vec3f p_current_position);
     void add_particle (Vec3f p_current_position, Vec3f p_current_velocity, int p_id = -1);
     unsigned long get_particle_count ();

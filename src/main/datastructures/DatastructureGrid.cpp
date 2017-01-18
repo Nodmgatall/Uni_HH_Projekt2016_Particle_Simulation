@@ -2,7 +2,8 @@
 
 DatastructureGrid::DatastructureGrid (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_particle_writer)
 : DatastructureBase (p_options, p_border, p_algorithm, p_particle_writer) {
-    m_stucture_name = "DatastructureGrid";
+    m_stucture_name  = "DatastructureGrid";
+    m_error_happened = false;
     unsigned int idx_x, idx_y, idx_z;
     long         max_usefull_size         = pow (m_options.m_particle_count, 1.0 / 3.0);
     m_iterations_until_rearange_particles = m_options.m_max_iterations_between_datastructure_rebuild;
@@ -145,57 +146,82 @@ void DatastructureGrid::step_2b_calculate_between_cells (ParticleCell& p_cell_i,
 }
 
 void DatastructureGrid::step_3_remove_wrong_particles_from_cell (ParticleCell& p_cell) {
-    int i;
+    int i, j;
     for (i = p_cell.m_ids.size () - 1; i >= 0; i--) {
         Vec3l idx;
-        bool  flag = true;
-        while (flag) {
-            flag = false;
-            idx  = get_cell_index_for_particle (p_cell.m_positions_x[m_idx_a][i],
-                                               p_cell.m_positions_y[m_idx_a][i],
-                                               p_cell.m_positions_z[m_idx_a][i]);
-            if (idx.x < 0) {
-                p_cell.m_positions_x[m_idx_a][i] += m_options.m_bounds.x;
-                flag = true;
-            } else if (idx.x >= m_size.x) {
-                p_cell.m_positions_x[m_idx_a][i] -= m_options.m_bounds.x;
-                flag = true;
+        while (p_cell.m_positions_x[m_idx_a][i] < 0) {
+            if (p_cell.m_positions_x[m_idx_a][i] < -m_options.m_bounds.x * 1000) {
+                m_error_stream << "something went badly wrong " << std::endl << p_cell << std::endl;
+                m_error_happened = true;
+                return;
             }
-            if (idx.y < 0) {
-                p_cell.m_positions_y[m_idx_a][i] += m_options.m_bounds.y;
-                flag = true;
-            } else if (idx.y >= m_size.y) {
-                p_cell.m_positions_y[m_idx_a][i] -= m_options.m_bounds.y;
-                flag = true;
+            for (j = 0; j <= 1; j++) {
+                p_cell.m_positions_x[j][i] += m_options.m_bounds.x;
             }
-            if (idx.z < 0) {
-                p_cell.m_positions_z[m_idx_a][i] += m_options.m_bounds.z;
-                flag = true;
-            } else if (idx.z >= m_size.z) {
-                p_cell.m_positions_z[m_idx_a][i] -= m_options.m_bounds.z;
-                flag = true;
-            }
-            /* Vec3f p = Vec3f (p_cell.m_positions_x[m_idx_a][i],
-                              p_cell.m_positions_y[m_idx_a][i],
-                              p_cell.m_positions_z[m_idx_a][i]);
-               std::cout << DEBUG_VAR (idx)                 //
-                          << DEBUG_VAR (flag)               //
-                          << DEBUG_VAR (m_options.m_bounds) //
-                          << DEBUG_VAR (m_options.m_bounds) //
-                          << DEBUG_VAR (p)                  //
-                          << DEBUG_VAR (p_cell.m_corner000) //
-                          << DEBUG_VAR (p_cell.m_corner111) //
-                          << DEBUG_VAR (m_size_per_cell)    //
-                          << std::endl;*/
         }
+        while (p_cell.m_positions_x[m_idx_a][i] >= m_options.m_bounds.x) {
+            if (p_cell.m_positions_x[m_idx_a][i] > m_options.m_bounds.x * 1000) {
+                m_error_stream << "something went badly wrong" << std::endl << p_cell << std::endl;
+                m_error_happened = true;
+                return;
+            }
+            for (j = 0; j <= 1; j++) {
+                p_cell.m_positions_x[j][i] -= m_options.m_bounds.x;
+            }
+        }
+        while (p_cell.m_positions_y[m_idx_a][i] < 0) {
+            if (p_cell.m_positions_y[m_idx_a][i] < -m_options.m_bounds.y * 1000) {
+                m_error_stream << "something went badly wrong" << std::endl << p_cell << std::endl;
+                m_error_happened = true;
+                return;
+            }
+            for (j = 0; j <= 1; j++) {
+                p_cell.m_positions_y[j][i] += m_options.m_bounds.y;
+            }
+        }
+        while (p_cell.m_positions_y[m_idx_a][i] > m_options.m_bounds.y * 1000) {
+            if (isnan (p_cell.m_positions_y[0][i] - p_cell.m_positions_y[1][i])) {
+                m_error_stream << "something went badly wrong" << std::endl << p_cell << std::endl;
+                m_error_happened = true;
+                return;
+            }
+            for (j = 0; j <= 1; j++) {
+                p_cell.m_positions_y[j][i] -= m_options.m_bounds.y;
+            }
+        }
+        while (p_cell.m_positions_z[m_idx_a][i] < 0) {
+            if (p_cell.m_positions_z[m_idx_a][i] < -m_options.m_bounds.z * 1000) {
+                m_error_stream << "something went badly wrong" << std::endl << p_cell << std::endl;
+                m_error_happened = true;
+                return;
+            }
+            for (j = 0; j <= 1; j++) {
+                p_cell.m_positions_z[j][i] += m_options.m_bounds.z;
+            }
+        }
+        while (p_cell.m_positions_z[m_idx_a][i] >= m_options.m_bounds.z) {
+            if (p_cell.m_positions_z[m_idx_a][i] > m_options.m_bounds.z * 1000) {
+                m_error_stream << "something went badly wrong" << std::endl << p_cell << std::endl;
+                m_error_happened = true;
+                return;
+            }
+            for (j = 0; j <= 1; j++) {
+                p_cell.m_positions_z[j][i] -= m_options.m_bounds.z;
+            }
+        }
+        idx = get_cell_index_for_particle (p_cell.m_positions_x[m_idx_a][i],
+                                           p_cell.m_positions_y[m_idx_a][i],
+                                           p_cell.m_positions_z[m_idx_a][i]);
         if (idx != p_cell.m_idx) {
             ParticleCell& other_cell = get_cell_at (idx.x, idx.y, idx.z);
             moveParticle (p_cell, other_cell, i);
         }
     }
 }
-void DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_number) {
+bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_number) {
+    m_error_happened = false;
     (void) p_iteration_number;
+    std::cout << DEBUG_VAR (p_iteration_number) << std::endl;
     m_iterations_until_rearange_particles--;
     unsigned int idx_x, idx_y, idx_z, parallel_offset;
     Benchmark::begin ("step 1+2a", false);
@@ -319,20 +345,19 @@ void DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
     Benchmark::end ();
     if (m_iterations_until_rearange_particles < 1) {
         Benchmark::begin ("step 3", false);
-        for (parallel_offset = 0; parallel_offset < 3; parallel_offset++) {
-            for (idx_x = 1 + parallel_offset; idx_x < m_size.x - 1; idx_x += 3) {
-                for (idx_y = 1; idx_y < m_size.y - 1; idx_y++) {
-                    for (idx_z = 1; idx_z < m_size.z - 1; idx_z++) {
-                        ParticleCell& cell = get_cell_at (idx_x, idx_y, idx_z);
-                        step_3_remove_wrong_particles_from_cell (cell);
-                    }
+        for (idx_x = 0; idx_x < m_size.x; idx_x++) {
+            for (idx_y = 0; idx_y < m_size.y; idx_y++) {
+                for (idx_z = 0; idx_z < m_size.z; idx_z++) {
+                    ParticleCell& cell = get_cell_at (idx_x, idx_y, idx_z);
+                    step_3_remove_wrong_particles_from_cell (cell);
                 }
             }
         }
         Benchmark::end ();
+        m_iterations_until_rearange_particles = m_options.m_max_iterations_between_datastructure_rebuild;
     }
-    m_iterations_until_rearange_particles = m_options.m_max_iterations_between_datastructure_rebuild;
     m_idx_b = !(m_idx_a = m_idx_b);
+    return m_error_happened;
 }
 inline void DatastructureGrid::moveParticle (ParticleCell& p_cell_from, ParticleCell& p_cell_to, long p_index_from) {
     unsigned int j;

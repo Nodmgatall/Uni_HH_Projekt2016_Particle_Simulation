@@ -33,9 +33,11 @@ class DatastructureBase {
     /**
      * runs a complete timestep simulation on all particles contained in this
      * datastructure
+     * @return true if an error happened and the simulation must be stopped after this iteration
+     * 		   false if everything is ok with the simulation
      * @param p_iteration_number unused? TODO remove?!?
      */
-    virtual void run_simulation_iteration (unsigned long p_iteration_number = 0) = 0;
+    virtual bool run_simulation_iteration (unsigned long p_iteration_number = 0) = 0;
     /**
      * adds an particle to the current simulation
      * @param p_position the position of the new particle

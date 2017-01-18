@@ -15,6 +15,7 @@ DatastructureList::DatastructureList (s_options& p_options, BorderBase& p_border
     m_last_id                        = 0;
     m_duration_list                  = 0;
     m_cnt_iterations_without_rebuild = 1;
+    m_shell_thickness                = 1;
     macro_debug_1 ("constructor of ParticleList called")
 }
 DatastructureList::~DatastructureList () {
@@ -54,8 +55,9 @@ void DatastructureList::add_particle (Vec3f p_position, Vec3f p_velocity, int p_
     //    add_particle (p_position); // TODO
 }
 
-void DatastructureList::run_simulation_iteration (unsigned long p_iteration_number) {
+bool DatastructureList::run_simulation_iteration (unsigned long p_iteration_number) {
     (void) p_iteration_number;
+    return true;
     /*testcase
      *
      * test_DatastructureBaseForList.cpp

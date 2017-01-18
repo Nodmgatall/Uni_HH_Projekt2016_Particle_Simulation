@@ -43,7 +43,7 @@ class DatastructureList : public DatastructureBase {
     void add_particle (Vec3f p_position);
     void add_particle (Vec3f p_position, Vec3f p_velocity, int p_id = -1);
     unsigned long get_particle_count ();
-    void run_simulation_iteration (unsigned long p_iteration_number);
+    bool run_simulation_iteration (unsigned long p_iteration_number);
     void      build_lists ();
     data_type get_cnt_average_neighbours ();
     void calculate_distances_squared (unsigned long particle_idx, data_type* p_distances_squared);

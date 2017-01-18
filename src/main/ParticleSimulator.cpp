@@ -24,7 +24,7 @@ void ParticleSimulator::simulate () {
     m_datastructure->serialize ();
     while (iteration_number < m_options.m_max_iterations) {
         Benchmark::begin ("Simulating the time-step");
-        m_datastructure->run_simulation_iteration (iteration_number);
+        bool error_happened = m_datastructure->run_simulation_iteration (iteration_number);
         timesteps_until_next_write--;
         if (!timesteps_until_next_write) {
             m_datastructure->serialize ();
@@ -32,6 +32,8 @@ void ParticleSimulator::simulate () {
         }
         iteration_number++;
         Benchmark::end ();
+        if (error_happened)
+            break;
     }
     m_writer->finalize ();
     Benchmark::end ();

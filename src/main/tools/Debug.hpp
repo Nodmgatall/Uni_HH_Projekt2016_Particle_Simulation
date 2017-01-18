@@ -12,6 +12,21 @@
 #include <fstream>
 #include <iostream>
 
+template <typename T>
+std::ostream& operator<< (std::ostream& stream, const std::vector<T>& array) {
+    stream << "[";
+    for (unsigned int i = 0; i < array.size (); i++) {
+        stream << array[i] << ",";
+    }
+    stream << "]";
+    return stream;
+}
+template <typename T>
+std::ostream& operator<< (std::ostream& stream, const std::vector<T> array[2]) {
+    stream << "[" << array[0] << "," << array[1] << "]";
+    return stream;
+}
+
 struct s_file_and_console_stream : std::ofstream {
     int         m_indent_count;
     bool        m_last_char_was_std_endl;
