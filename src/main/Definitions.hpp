@@ -23,6 +23,7 @@
 #include "enums/EnumOutputType.hpp"
 #include "tools/Benchmark.hpp"
 #include "tools/Debug.hpp"
+#include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <ctime>

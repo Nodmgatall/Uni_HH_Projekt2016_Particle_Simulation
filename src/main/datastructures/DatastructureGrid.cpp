@@ -11,11 +11,14 @@ DatastructureGrid::DatastructureGrid (s_options& p_options, BorderBase& p_border
     m_idx_a = !(m_idx_b = 0);
     // cut_off_radius*1.2 to allow particles to move before reconstruction of
     // cells is needed
-    m_size = Vec3l::min (Vec3l (m_options.m_bounds / (m_options.m_cut_off_radius * 1.2f)), max_usefull_size);
+    Vec3l tmp = m_options.m_bounds / (m_options.m_cut_off_radius * 1.2f);
+    m_size    = Vec3l (ceil (tmp.x), ceil (tmp.y), ceil (tmp.z));
+    m_size    = Vec3l::min (m_size, max_usefull_size);
     // m_size          = m_size + 1L; // round up to next natural number for cell-count
-    m_size          = Vec3l::max (m_size, Vec3l (2L));
-    m_size_per_cell = m_options.m_bounds / Vec3f (m_size);
-    m_size += 2; // 2 randzellen (links+rechts jeweils 1)
+    m_size = Vec3l::max (m_size, Vec3l (3L)); // 3 cells required because of periodic boundary
+    m_size_per_cell            = m_options.m_bounds / Vec3f (m_size);
+    m_options.m_cut_off_radius = MIN (m_size_per_cell.x, MIN (m_size_per_cell.y, m_size_per_cell.z));
+    m_size += 2; // 2 border cells (each border needs 1)
     m_cells.reserve (m_size.x * m_size.y * m_size.z);
     for (idx_x = 0; idx_x < m_size.x; idx_x++) {
         for (idx_y = 0; idx_y < m_size.y; idx_y++) {
@@ -29,6 +32,7 @@ DatastructureGrid::DatastructureGrid (s_options& p_options, BorderBase& p_border
         m_options.m_cut_off_radius = 1;
     }
     std::cout << DEBUG_VAR (m_stucture_name) << std::endl;
+    std::cout << DEBUG_VAR (m_options.m_cut_off_radius) << std::endl;
     std::cout << DEBUG_VAR (m_size) << std::endl;
     std::cout << DEBUG_VAR (m_size_per_cell) << std::endl;
     std::cout << DEBUG_VAR (m_options.m_bounds) << std::endl;

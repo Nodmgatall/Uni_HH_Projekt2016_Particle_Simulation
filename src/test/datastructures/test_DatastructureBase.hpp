@@ -276,7 +276,7 @@ BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_1) {
 BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_2) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
-    int size                 = 2;
+    int size                 = 3;
     options.m_particle_count = 999999999;
     options.m_bounds         = Vec3f (size, size, size);
     options.m_cut_off_radius = 1;
@@ -304,9 +304,21 @@ BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_2) {
         BOOST_CHECK_EQUAL (algorithm.m_step_2_helper[i][i], 0);
         for (unsigned int j = i + 1; j < allParticles.size (); j++) {
             float distance = (allParticles[i] - allParticles[j]).length ();
+            BOOST_CHECK_EQUAL (algorithm.m_step_2_helper[i][j], algorithm.m_step_2_helper[j][i]);
             if (distance < options.m_cut_off_radius) {
-                BOOST_CHECK_EQUAL (algorithm.m_step_2_helper[i][j], 1);
-                BOOST_CHECK_EQUAL (algorithm.m_step_2_helper[j][i], 1);
+                if (algorithm.m_step_2_helper[i][j] != 1) { // error
+                    BOOST_CHECK_EQUAL (algorithm.m_step_2_helper[i][j], 1);
+                    std::stringstream tmp;
+                    tmp << DEBUG_VAR (i);
+                    tmp << DEBUG_VAR (j);
+                    tmp << DEBUG_VAR (allParticles[i]);
+                    tmp << DEBUG_VAR (allParticles[j]);
+                    tmp << DEBUG_VAR (algorithm.m_step_2_helper[i][j]);
+                    BOOST_CHECK_MESSAGE (0, tmp.str ().c_str ());
+                }
+            } else {
+                BOOST_CHECK_GE (algorithm.m_step_2_helper[i][j], 0);
+                BOOST_CHECK_LE (algorithm.m_step_2_helper[i][j], 1);
             }
         }
     }
