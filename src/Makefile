@@ -108,6 +108,15 @@ run_6_particles_list: build_release
 	rm -rf ../logdata/6_particles
 	cd .. && ./particle_simulation.x --algorithm=LENNARD_JONES --data_structure=GRID --input=FILE_CSV  --in_file_name="./Testing/Resources/6_particles.csv" --output=FILE_CSV+AVI --max_iterations=709000  --write_fequency=10  --cut_off_radius=2.5 --timestep=0.005 --bounds=5/5/5 --verbose
 
+test_grid:
+	rm -rf ../Testing/Binary/*
+	rm -rf ../Testing/Temporary/*
+	rm -rf ../Testing/Coverage
+	mkdir ../Testing/Coverage
+	$(MAKE) cmake build 
+	../Testing/Binary/test_DatastructureBaseForGrid.x
+	../Testing/Binary/test_DatastructureGrid.x
+
 test: 
 	rm -rf ../Testing/Binary/*
 	rm -rf ../Testing/Temporary/*
