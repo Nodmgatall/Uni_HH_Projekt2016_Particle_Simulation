@@ -317,8 +317,11 @@ BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_2) {
                     BOOST_CHECK_MESSAGE (0, tmp.str ().c_str ());
                 }
             } else {
-                BOOST_CHECK_GE (algorithm.m_step_2_helper[i][j], 0);//this should really never fail
-                BOOST_CHECK_LE (algorithm.m_step_2_helper[i][j], 1);//interactions between particles must not be calculated more than once
+                BOOST_CHECK_GE (algorithm.m_step_2_helper[i][j], 0); // this should really never
+                                                                     // fail
+                BOOST_CHECK_LE (algorithm.m_step_2_helper[i][j], 1); // interactions between
+                                                                     // particles must not be
+                                                                     // calculated more than once
             }
         }
     }

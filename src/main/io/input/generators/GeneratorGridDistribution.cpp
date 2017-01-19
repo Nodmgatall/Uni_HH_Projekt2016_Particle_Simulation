@@ -11,10 +11,8 @@ GeneratorGridDistribution::GeneratorGridDistribution (s_options& p_options, Data
 : InputBase (p_options, p_datastructure) {
     m_stucture_name = "GeneratorGridDistribution";
 }
-
 GeneratorGridDistribution::~GeneratorGridDistribution () {
 }
-
 void GeneratorGridDistribution::initialize_datastructure () {
     Vec3f particle_free_Border_size = m_options.m_bounds * 0.001;
     Benchmark::begin ("ParticleGeneratorGridDistribution");

@@ -181,8 +181,9 @@ void DatastructureGrid::step_3_remove_wrong_particles_from_cell (ParticleCell& p
     for (i = p_cell.m_ids.size () - 1; i >= 0; i--) {
         Vec3l idx;
         while (p_cell.m_positions_x[m_idx_a][i] < 0) {
-            if (p_cell.m_positions_x[m_idx_a][i] < -m_options.m_bounds.x * 1000) {
-                m_error_stream << "something went badly wrong " << std::endl << p_cell << std::endl;
+            if (!(p_cell.m_positions_x[m_idx_a][i] >=
+                  -m_options.m_bounds.x * 1000)) { // comparisions with NaN (except!=)return false
+                m_error_stream << "something went badly wrong" << std::endl << p_cell << std::endl;
                 m_error_happened = true;
                 return;
             }
@@ -191,7 +192,7 @@ void DatastructureGrid::step_3_remove_wrong_particles_from_cell (ParticleCell& p
             }
         }
         while (p_cell.m_positions_x[m_idx_a][i] >= m_options.m_bounds.x) {
-            if (p_cell.m_positions_x[m_idx_a][i] > m_options.m_bounds.x * 1000) {
+            if (!(p_cell.m_positions_x[m_idx_a][i] <= m_options.m_bounds.x * 1000)) {
                 m_error_stream << "something went badly wrong" << std::endl << p_cell << std::endl;
                 m_error_happened = true;
                 return;
@@ -201,7 +202,7 @@ void DatastructureGrid::step_3_remove_wrong_particles_from_cell (ParticleCell& p
             }
         }
         while (p_cell.m_positions_y[m_idx_a][i] < 0) {
-            if (p_cell.m_positions_y[m_idx_a][i] < -m_options.m_bounds.y * 1000) {
+            if (!(p_cell.m_positions_y[m_idx_a][i] >= -m_options.m_bounds.y * 1000)) {
                 m_error_stream << "something went badly wrong" << std::endl << p_cell << std::endl;
                 m_error_happened = true;
                 return;
@@ -211,7 +212,7 @@ void DatastructureGrid::step_3_remove_wrong_particles_from_cell (ParticleCell& p
             }
         }
         while (p_cell.m_positions_y[m_idx_a][i] > m_options.m_bounds.y) {
-            if (p_cell.m_positions_x[m_idx_a][i] > m_options.m_bounds.y * 1000) {
+            if (!(p_cell.m_positions_y[m_idx_a][i] <= m_options.m_bounds.y * 1000)) {
                 m_error_stream << "something went badly wrong" << std::endl << p_cell << std::endl;
                 m_error_happened = true;
                 return;
@@ -221,7 +222,7 @@ void DatastructureGrid::step_3_remove_wrong_particles_from_cell (ParticleCell& p
             }
         }
         while (p_cell.m_positions_z[m_idx_a][i] < 0) {
-            if (p_cell.m_positions_z[m_idx_a][i] < -m_options.m_bounds.z * 1000) {
+            if (!(p_cell.m_positions_z[m_idx_a][i] >= -m_options.m_bounds.z * 1000)) {
                 m_error_stream << "something went badly wrong" << std::endl << p_cell << std::endl;
                 m_error_happened = true;
                 return;
@@ -231,7 +232,7 @@ void DatastructureGrid::step_3_remove_wrong_particles_from_cell (ParticleCell& p
             }
         }
         while (p_cell.m_positions_z[m_idx_a][i] >= m_options.m_bounds.z) {
-            if (p_cell.m_positions_z[m_idx_a][i] > m_options.m_bounds.z * 1000) {
+            if (!(p_cell.m_positions_z[m_idx_a][i] <= m_options.m_bounds.z * 1000)) {
                 m_error_stream << "something went badly wrong" << std::endl << p_cell << std::endl;
                 m_error_happened = true;
                 return;
@@ -256,7 +257,6 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
     m_iterations_until_rearange_particles--;
     unsigned int idx_x, idx_y, idx_z;
     Benchmark::begin ("step 1+2a", false);
-
     for (idx_x = 0; idx_x < m_size.x; idx_x++) {
         for (idx_y = 0; idx_y < m_size.y; idx_y++) {
             for (idx_z = 0; idx_z < m_size.z; idx_z++) {
@@ -267,14 +267,17 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
         }
     }
     Benchmark::end ();
+    if (m_error_happened)
+        return m_error_happened;
     Benchmark::begin ("step 2b", false);
     {
-        const long lx = 0;
-        const long ly = 0;
-        const long lz = 0;
-        const long rx = m_size.x - 1;
-        const long ry = m_size.y - 1;
-        const long rz = m_size.z - 1;
+        const long border_cells_ignored_count = 1; // 0 or 1
+        const long lx                         = border_cells_ignored_count;
+        const long ly                         = border_cells_ignored_count;
+        const long lz                         = border_cells_ignored_count;
+        const long rx                         = m_size.x - 1 - border_cells_ignored_count;
+        const long ry                         = m_size.y - 1 - border_cells_ignored_count;
+        const long rz                         = m_size.z - 1 - border_cells_ignored_count;
         { // Cells in the middle of the simulated Volume
             for (idx_x = lx; idx_x < rx; idx_x++) {
                 for (idx_y = ly; idx_y < ry; idx_y++) {
@@ -309,6 +312,8 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
                 }
             }
         }
+        if (m_error_happened)
+            return m_error_happened;
         { // Wraparound-interaction at the X-Border
             for (idx_y = ly; idx_y < ry; idx_y++) {
                 for (idx_z = lz; idx_z < rz; idx_z++) {
@@ -368,6 +373,8 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
                 }
             }
         }
+        if (m_error_happened)
+            return m_error_happened;
         { // Wraparound-interaction at the Y-Border
             for (idx_x = lx; idx_x < rx; idx_x++) {
                 for (idx_z = lz; idx_z < rz; idx_z++) {
@@ -427,6 +434,8 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
                 }
             }
         }
+        if (m_error_happened)
+            return m_error_happened;
         { // Wraparound-interaction at the Z-Border
             for (idx_x = lx; idx_x < rx; idx_x++) {
                 for (idx_y = ly; idx_y < ry; idx_y++) {
@@ -486,6 +495,8 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
                 }
             }
         }
+        if (m_error_happened)
+            return m_error_happened;
         { // Wraparound-interaction at the YZ-Border
             for (idx_x = lx; idx_x < rx; idx_x++) {
                 step_2b_calculate_between_cells (get_cell_at (idx_x + 1, ry, rz),
@@ -552,6 +563,8 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
                                                         m_options.m_bounds.z);
             }
         }
+        if (m_error_happened)
+            return m_error_happened;
         { // Wraparound-interaction at the XZ-Border
             for (idx_y = ly; idx_y < ry; idx_y++) {
                 step_2b_calculate_between_cells (get_cell_at (rx, idx_y + 1, rz),
@@ -618,6 +631,8 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
                                                         m_options.m_bounds.z);
             }
         }
+        if (m_error_happened)
+            return m_error_happened;
         { // Wraparound-interaction at the XY-Border
             for (idx_z = lz; idx_z < rz; idx_z++) {
                 step_2b_calculate_between_cells (get_cell_at (rx, ry, idx_z + 1),
@@ -684,6 +699,8 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
                                                         0);
             }
         }
+        if (m_error_happened)
+            return m_error_happened;
         { // Wraparound-interaction at the XYZ-Corner
             step_2b_calculate_between_cells_offset (get_cell_at (lx, ly, lz),
                                                     get_cell_at (rx, ry, rz),
@@ -744,6 +761,8 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
         }
     }
     Benchmark::end ();
+    if (m_error_happened)
+        return m_error_happened;
     if (m_iterations_until_rearange_particles < 1) {
         Benchmark::begin ("step 3", false);
         for (idx_x = 0; idx_x < m_size.x; idx_x++) {
@@ -755,6 +774,8 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
             }
         }
         Benchmark::end ();
+        if (m_error_happened)
+            return m_error_happened;
         m_iterations_until_rearange_particles = m_options.m_max_iterations_between_datastructure_rebuild;
     }
     m_idx_b = !(m_idx_a = m_idx_b);
