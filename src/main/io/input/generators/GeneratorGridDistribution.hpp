@@ -1,7 +1,7 @@
 /*
  * GeneratorGridDistribution.h
  *
- *  Created on: 11.11.2016
+ *  Created on:  11.11.2016
  *      Author: benjamin
  */
 
