@@ -22,7 +22,7 @@ bool DatastructureListGrid::run_simulation_iteration (unsigned long p_iteration_
     (void) p_iteration_number;
     bool result = DatastructureGrid::run_simulation_iteration ();
     if (m_iterations_until_rearange_particles == m_options.m_max_iterations_between_datastructure_rebuild) {
-        for (ParticleGroup cell : m_particle_groups) {
+        for (ParticleGroup cell : DatastructureGrid::m_particle_groups) {
             list_rebuild (cell);
         }
     }
@@ -33,4 +33,7 @@ void DatastructureListGrid::add_particle (Vec3f p_position) {
 }
 void DatastructureListGrid::add_particle (Vec3f p_current_position, Vec3f p_current_velocity, int p_id) {
     DatastructureGrid::add_particle (p_current_position, p_current_velocity, p_id);
+}
+void DatastructureListGrid::grid_step_2a_calculate_inside_cell (ParticleGroup& p_cell) {
+    DatastructureListBenjamin::list_step_2_calculate (p_cell);
 }
