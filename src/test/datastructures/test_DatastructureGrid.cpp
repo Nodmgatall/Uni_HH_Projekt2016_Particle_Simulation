@@ -225,31 +225,31 @@ class BoundsCorrection : public BorderBase {
 class DatastructureGridTestClass : public DatastructureGrid {
   public:
     unsigned long public_get_cell_index (long x, long y, long z) {
-        return get_cell_index (x, y, z);
+        return grid_get_cell_index (x, y, z);
     }
     ParticleGroup& public_get_cell_at (long x, long y, long z) {
-        return get_cell_at (x, y, z);
+        return grid_get_cell_at (x, y, z);
     }
     ParticleGroup& public_get_cell_for_particle (data_type x, data_type y, data_type z) {
-        return get_cell_for_particle (x, y, z);
+        return grid_get_cell_for_particle (x, y, z);
     }
     ParticleGroup& public_get_cell_for_particle (Vec3f m_position) {
-        return get_cell_for_particle (m_position);
+        return grid_get_cell_for_particle (m_position);
     }
     void public_moveParticle (ParticleGroup& p_cell_from, ParticleGroup& p_cell_to, long p_index_from) {
-        moveParticle (p_cell_from, p_cell_to, p_index_from);
+        grid_moveParticle (p_cell_from, p_cell_to, p_index_from);
     }
     void public_step_1_prepare_cell (ParticleGroup& p_cell) {
         step_1_prepare_cell (p_cell);
     }
     void public_step_2a_calculate_inside_cell (ParticleGroup& p_cell) {
-        step_2a_calculate_inside_cell (p_cell);
+        grid_step_2a_calculate_inside_cell (p_cell);
     }
     void public_step_2b_calculate_between_cells (ParticleGroup& p_cell1, ParticleGroup& p_cell2) {
-        step_2b_calculate_between_cells (p_cell1, p_cell2);
+        grid_step_2b_calculate_between_cells (p_cell1, p_cell2);
     }
     void public_step_3_remove_wrong_particles_from_cell (ParticleGroup& p_cell) {
-        step_3_remove_wrong_particles_from_cell (p_cell);
+        grid_step_3_remove_wrong_particles_from_cell (p_cell);
     }
     DatastructureGridTestClass (s_options&     p_options,
                                 BorderBase&    p_particle_bounds_correction,
@@ -260,7 +260,7 @@ class DatastructureGridTestClass : public DatastructureGrid {
     ~DatastructureGridTestClass () {
     }
     const std::vector<ParticleGroup>& get_cells () {
-        return m_cells;
+        return m_particle_groups;
     }
     unsigned int get_idx_a () {
         return m_idx_a;
@@ -272,10 +272,10 @@ class DatastructureGridTestClass : public DatastructureGrid {
         return m_max_id;
     }
     const Vec3l& get_size () {
-        return m_size;
+        return grid_size;
     }
     const Vec3f& get_size_per_cell () {
-        return m_size_per_cell;
+        return grid_size_per_cell;
     }
     void set_iterations_until_rearange_particles (int p_iterations) {
         m_iterations_until_rearange_particles = p_iterations;
