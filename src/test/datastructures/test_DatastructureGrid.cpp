@@ -227,28 +227,28 @@ class DatastructureGridTestClass : public DatastructureGrid {
     unsigned long public_get_cell_index (long x, long y, long z) {
         return get_cell_index (x, y, z);
     }
-    ParticleCell& public_get_cell_at (long x, long y, long z) {
+    ParticleGroup& public_get_cell_at (long x, long y, long z) {
         return get_cell_at (x, y, z);
     }
-    ParticleCell& public_get_cell_for_particle (data_type x, data_type y, data_type z) {
+    ParticleGroup& public_get_cell_for_particle (data_type x, data_type y, data_type z) {
         return get_cell_for_particle (x, y, z);
     }
-    ParticleCell& public_get_cell_for_particle (Vec3f m_position) {
+    ParticleGroup& public_get_cell_for_particle (Vec3f m_position) {
         return get_cell_for_particle (m_position);
     }
-    void public_moveParticle (ParticleCell& p_cell_from, ParticleCell& p_cell_to, long p_index_from) {
+    void public_moveParticle (ParticleGroup& p_cell_from, ParticleGroup& p_cell_to, long p_index_from) {
         moveParticle (p_cell_from, p_cell_to, p_index_from);
     }
-    void public_step_1_prepare_cell (ParticleCell& p_cell) {
+    void public_step_1_prepare_cell (ParticleGroup& p_cell) {
         step_1_prepare_cell (p_cell);
     }
-    void public_step_2a_calculate_inside_cell (ParticleCell& p_cell) {
+    void public_step_2a_calculate_inside_cell (ParticleGroup& p_cell) {
         step_2a_calculate_inside_cell (p_cell);
     }
-    void public_step_2b_calculate_between_cells (ParticleCell& p_cell1, ParticleCell& p_cell2) {
+    void public_step_2b_calculate_between_cells (ParticleGroup& p_cell1, ParticleGroup& p_cell2) {
         step_2b_calculate_between_cells (p_cell1, p_cell2);
     }
-    void public_step_3_remove_wrong_particles_from_cell (ParticleCell& p_cell) {
+    void public_step_3_remove_wrong_particles_from_cell (ParticleGroup& p_cell) {
         step_3_remove_wrong_particles_from_cell (p_cell);
     }
     DatastructureGridTestClass (s_options&     p_options,
@@ -259,7 +259,7 @@ class DatastructureGridTestClass : public DatastructureGrid {
     }
     ~DatastructureGridTestClass () {
     }
-    const std::vector<ParticleCell>& get_cells () {
+    const std::vector<ParticleGroup>& get_cells () {
         return m_cells;
     }
     unsigned int get_idx_a () {
@@ -320,7 +320,7 @@ BOOST_AUTO_TEST_CASE (test_add_particle_1) {
     for (idx_x = 0; idx_x < particlesGrid.get_size ().x; idx_x++) {
         for (idx_y = 0; idx_y < particlesGrid.get_size ().y; idx_y++) {
             for (idx_z = 0; idx_z < particlesGrid.get_size ().z; idx_z++) {
-                ParticleCell& cell = particlesGrid.public_get_cell_at (idx_x, idx_y, idx_z);
+                ParticleGroup& cell = particlesGrid.public_get_cell_at (idx_x, idx_y, idx_z);
                 for (idx_s = 0; idx_s < cell.m_ids.size (); idx_s++) {
                     Vec3f position = Vec3f (cell.m_positions_x[particlesGrid.get_idx_a ()][idx_s],
                                             cell.m_positions_y[particlesGrid.get_idx_a ()][idx_s],
@@ -371,7 +371,7 @@ BOOST_AUTO_TEST_CASE (test_get_cell_at) {
     for (idx_z = 0; idx_z < particlesGrid.get_size ().z; idx_z++) {
         for (idx_y = 0; idx_y < particlesGrid.get_size ().y; idx_y++) {
             for (idx_x = 0; idx_x < particlesGrid.get_size ().x; idx_x++) {
-                ParticleCell& cell = particlesGrid.public_get_cell_at (idx_x, idx_y, idx_z);
+                ParticleGroup& cell = particlesGrid.public_get_cell_at (idx_x, idx_y, idx_z);
                 BOOST_CHECK_EQUAL (&cell, &particlesGrid.get_cells ()[counter++]);
             }
         }
@@ -386,8 +386,8 @@ BOOST_AUTO_TEST_CASE (test_moveParticle) {
     Algorithm                  algorithm (options);
     ParticleWriter             writer = ParticleWriter ();
     DatastructureGridTestClass particlesGrid (options, border, algorithm, writer);
-    ParticleCell               cell1 = ParticleCell (Vec3l (), particlesGrid.get_size_per_cell ());
-    ParticleCell               cell2 = ParticleCell (Vec3l (), particlesGrid.get_size_per_cell ());
+    ParticleGroup              cell1 = ParticleGroup (Vec3l (), particlesGrid.get_size_per_cell ());
+    ParticleGroup              cell2 = ParticleGroup (Vec3l (), particlesGrid.get_size_per_cell ());
     cell1.add_particle (Vec3f (1, 2, 3), Vec3f (11, 12, 13), 0, 0);
     cell1.add_particle (Vec3f (2, 3, 4), Vec3f (12, 13, 14), 0, 1);
     cell1.add_particle (Vec3f (3, 4, 5), Vec3f (13, 14, 15), 0, 2);
@@ -450,7 +450,7 @@ BOOST_AUTO_TEST_CASE (test_step_1) {
     Algorithm                  algorithm (options);
     ParticleWriter             writer = ParticleWriter ();
     DatastructureGridTestClass particlesGrid (options, border, algorithm, writer);
-    ParticleCell               cell = ParticleCell (Vec3l (), particlesGrid.get_size_per_cell ());
+    ParticleGroup              cell = ParticleGroup (Vec3l (), particlesGrid.get_size_per_cell ());
     const int                  particleCount = 4;
     for (int i = 0; i < particleCount; i++)
         cell.add_particle (Vec3f (i + 1, i + 2, i + 3), Vec3f (i + 11, i + 12, i + 13), 0, i);
@@ -477,7 +477,7 @@ BOOST_AUTO_TEST_CASE (test_step_2a) {
     Algorithm                  algorithm (options);
     ParticleWriter             writer = ParticleWriter ();
     DatastructureGridTestClass particlesGrid (options, border, algorithm, writer);
-    ParticleCell               cell = ParticleCell (Vec3l (), particlesGrid.get_size_per_cell ());
+    ParticleGroup              cell = ParticleGroup (Vec3l (), particlesGrid.get_size_per_cell ());
     const int                  particleCount = 4;
     for (int i = 0; i < particleCount; i++)
         cell.add_particle (Vec3f (i + 1, i + 2, i + 3), Vec3f (i + 11, i + 12, i + 13), 0, i);
@@ -499,10 +499,10 @@ BOOST_AUTO_TEST_CASE (test_step_2b) {
     Algorithm                  algorithm (options);
     ParticleWriter             writer = ParticleWriter ();
     DatastructureGridTestClass particlesGrid (options, border, algorithm, writer);
-    ParticleCell               cell_i = ParticleCell (Vec3l (), particlesGrid.get_size_per_cell ());
-    ParticleCell               cell_j = ParticleCell (Vec3l (), particlesGrid.get_size_per_cell ());
-    const int                  particleCount_i = 4;
-    const int                  particleCount_j = 3;
+    ParticleGroup cell_i          = ParticleGroup (Vec3l (), particlesGrid.get_size_per_cell ());
+    ParticleGroup cell_j          = ParticleGroup (Vec3l (), particlesGrid.get_size_per_cell ());
+    const int     particleCount_i = 4;
+    const int     particleCount_j = 3;
     for (int i = 0; i < particleCount_i; i++)
         cell_i.add_particle (Vec3f (i + 1, i + 2, i + 3), Vec3f (i + 11, i + 12, i + 13), 0, i);
     for (int i = particleCount_i; i < particleCount_i + particleCount_j; i++)
@@ -535,7 +535,7 @@ BOOST_AUTO_TEST_CASE (test_step_3) {
     ParticleWriter             writer = ParticleWriter ();
     DatastructureGridTestClass particlesGrid (options, border, algorithm, writer);
     int                        x = 2, y = 2, z = 2;
-    ParticleCell&              cell = particlesGrid.public_get_cell_at (x, y, z);
+    ParticleGroup&             cell = particlesGrid.public_get_cell_at (x, y, z);
     cell.add_particle (cell.m_corner000 + Vec3f (0.01, 0.01, 0.01), cell.m_corner000 + Vec3f (0.01, 0.01, 0.01), 0, 0);
     cell.add_particle (cell.m_corner000 - Vec3f (0.01, 0, 0), cell.m_corner000 - Vec3f (0.01, 0, 0), 0, 1);
     cell.add_particle (cell.m_corner000 - Vec3f (0, 0.01, 0), cell.m_corner000 - Vec3f (0, 0.01, 0), 0, 2);
@@ -585,7 +585,7 @@ BOOST_AUTO_TEST_CASE (test_step_3_wrapparound) {
     ParticleWriter             writer = ParticleWriter ();
     DatastructureGridTestClass particlesGrid (options, border, algorithm, writer);
     int                        x = 2, y = 2, z = 2;
-    ParticleCell&              cell    = particlesGrid.public_get_cell_at (x, y, z);
+    ParticleGroup&             cell    = particlesGrid.public_get_cell_at (x, y, z);
     float                      x1      = 0.0;
     float                      y1      = 0.0;
     float                      z1      = 0.0;

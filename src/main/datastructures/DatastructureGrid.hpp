@@ -4,35 +4,7 @@
 #include "DatastructureBase.hpp"
 #include "Definitions.hpp"
 #include "Vec3.hpp"
-
-struct ParticleCell {
-    std::vector<data_type>     m_positions_x[2];
-    std::vector<data_type>     m_positions_y[2];
-    std::vector<data_type>     m_positions_z[2];
-    std::vector<unsigned long> m_ids;
-    Vec3f                      m_corner000, m_corner111;
-    Vec3l                      m_idx;
-    ParticleCell (Vec3l p_idx, Vec3f p_size_per_cell);
-    /**
-     * adds an particle to this cell
-     * @param p_current_position the current position of the particle to add
-     * @param p_old_position the position which the particle had the last timestep
-     * @param p_current_index in which array should the current value be stored
-     * @param p_id the id for the added particle
-     */
-    void add_particle (Vec3f p_current_position, Vec3f p_old_position, int p_current_index, int p_id);
-    friend std::ostream& operator<< (std::ostream& stream, const ParticleCell& cell) {
-        stream << DEBUG_VAR (cell.m_corner000) << std::endl;
-        stream << DEBUG_VAR (cell.m_corner111) << std::endl;
-        stream << DEBUG_VAR (cell.m_idx) << std::endl;
-        stream << DEBUG_VAR (cell.m_ids) << std::endl;
-        stream << DEBUG_VAR (cell.m_positions_x) << std::endl;
-        stream << DEBUG_VAR (cell.m_positions_y) << std::endl;
-        stream << DEBUG_VAR (cell.m_positions_z) << std::endl;
-
-        return stream;
-    }
-};
+#include "helper/ParticleGroup.hpp"
 
 class DatastructureGrid : public DatastructureBase {
   protected:
@@ -44,7 +16,7 @@ class DatastructureGrid : public DatastructureBase {
     /**
      * the cells in which the particles are stored
      */
-    std::vector<ParticleCell> m_cells;
+    std::vector<ParticleGroup> m_cells;
     /**
      * the count of cells in 3 dimensions
      * refer to m_cells
@@ -82,7 +54,7 @@ class DatastructureGrid : public DatastructureBase {
      * @param z index
      * @return the cell
      */
-    ParticleCell& get_cell_at (long x, long y, long z);
+    ParticleGroup& get_cell_at (long x, long y, long z);
     /**
      * return the cell for the given coordinate
      * @param x coordinate
@@ -90,34 +62,41 @@ class DatastructureGrid : public DatastructureBase {
      * @param z coordinate
      * @return the cell
      */
-    ParticleCell& get_cell_for_particle (data_type x, data_type y, data_type z);
+    ParticleGroup& get_cell_for_particle (data_type x, data_type y, data_type z);
+    /**
+     *
+     * @param x
+     * @param y
+     * @param z
+     * @return the index for the cell given as x y and z
+     */
     Vec3l get_cell_index_for_particle (data_type x, data_type y, data_type z);
     /**
      * return the cell for the given position
      * @param m_position the position
      * @return the cell
      */
-    ParticleCell& get_cell_for_particle (Vec3f m_position);
+    ParticleGroup& get_cell_for_particle (Vec3f m_position);
     /**
      * moves an particle from one cell to another
      * @param p_cell_from
      * @param p_cell_to
      * @param p_index_from
      */
-    void moveParticle (ParticleCell& p_cell_from, ParticleCell& p_cell_to, long p_index_from);
+    void moveParticle (ParticleGroup& p_cell_from, ParticleGroup& p_cell_to, long p_index_from);
     /**
      * first step in each iteration. Calculates the new particle position based on
      * its own speed
      * @param p_cell the cell contains the particles which are calculated
      */
-    void step_1_prepare_cell (ParticleCell& p_cell);
+    void step_1_prepare_cell (ParticleGroup& p_cell);
     /**
      * calculates the movement of particles based on the forces between every
      * particle-pair in the given
      * cell
      * @param p_cell the cell which contains the particles
      */
-    void step_2a_calculate_inside_cell (ParticleCell& p_cell);
+    void step_2a_calculate_inside_cell (ParticleGroup& p_cell);
     /**
      * calculates the movement based on forces between particles which are in
      * different cells each particle-pair consists of one particle from each cell given as
@@ -125,19 +104,27 @@ class DatastructureGrid : public DatastructureBase {
      * @param p_cell1
      * @param p_cell2
      */
-    void step_2b_calculate_between_cells (ParticleCell& p_cell_i, ParticleCell& p_cell_j);
-    void step_2b_calculate_between_cells_offset (ParticleCell& p_cell_i,
-                                                 ParticleCell& p_cell_j,
-                                                 data_type     offset_x,
-                                                 data_type     offset_y,
-                                                 data_type     offset_z);
+    void step_2b_calculate_between_cells (ParticleGroup& p_cell_i, ParticleGroup& p_cell_j);
+    /**
+         * calculates the movement based on forces between particles which are in
+         * different cells each particle-pair consists of one particle from each cell given as
+         * if this function is called it is assumed, that the given cells are only neigbours over the borders of the simulated volume
+         * parameters
+         * @param p_cell1
+         * @param p_cell2
+         */
+    void step_2b_calculate_between_cells_offset (ParticleGroup& p_cell_i,
+                                                 ParticleGroup& p_cell_j,
+                                                 data_type      offset_x,
+                                                 data_type      offset_y,
+                                                 data_type      offset_z);
     /**
      * verify that all particles in cell are in the correct cell. if there are
      * particles which should be
      * in an other cell, these particles get moved
      * @param p_cell
      */
-    void step_3_remove_wrong_particles_from_cell (ParticleCell& p_cell);
+    void step_3_remove_wrong_particles_from_cell (ParticleGroup& p_cell);
 
   public:
     /**

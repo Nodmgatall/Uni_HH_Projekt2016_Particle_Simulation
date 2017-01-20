@@ -23,7 +23,7 @@ DatastructureGrid::DatastructureGrid (s_options& p_options, BorderBase& p_border
     for (idx_x = 0; idx_x < m_size.x; idx_x++) {
         for (idx_y = 0; idx_y < m_size.y; idx_y++) {
             for (idx_z = 0; idx_z < m_size.z; idx_z++) {
-                m_cells.push_back (ParticleCell (Vec3l (idx_x, idx_y, idx_z), m_size_per_cell));
+                m_cells.push_back (ParticleGroup (Vec3l (idx_x, idx_y, idx_z), m_size_per_cell));
             }
         }
     }
@@ -42,10 +42,10 @@ DatastructureGrid::~DatastructureGrid () {
 unsigned long DatastructureGrid::get_cell_index (long x, long y, long z) {
     return x + m_size.x * (y + m_size.y * z);
 }
-ParticleCell& DatastructureGrid::get_cell_at (long x, long y, long z) {
+ParticleGroup& DatastructureGrid::get_cell_at (long x, long y, long z) {
     return m_cells[get_cell_index (x, y, z)];
 }
-ParticleCell& DatastructureGrid::get_cell_for_particle (data_type x, data_type y, data_type z) {
+ParticleGroup& DatastructureGrid::get_cell_for_particle (data_type x, data_type y, data_type z) {
     Vec3l idx = get_cell_index_for_particle (x, y, z);
     return m_cells[get_cell_index (idx.x, idx.y, idx.z)];
 }
@@ -54,7 +54,7 @@ Vec3l DatastructureGrid::get_cell_index_for_particle (data_type x, data_type y, 
                   (long) (y / m_size_per_cell.y) + 1,
                   (long) (z / m_size_per_cell.z) + 1);
 }
-ParticleCell& DatastructureGrid::get_cell_for_particle (Vec3f m_position) {
+ParticleGroup& DatastructureGrid::get_cell_for_particle (Vec3f m_position) {
     return get_cell_for_particle (m_position.x, m_position.y, m_position.z);
 }
 void DatastructureGrid::add_particle (Vec3f p_current_position) {
@@ -76,13 +76,13 @@ void DatastructureGrid::add_particle (Vec3f p_current_position, Vec3f p_current_
                              old_position.x,
                              old_position.y,
                              old_position.z);
-    ParticleCell& cell = get_cell_for_particle (p_current_position);
+    ParticleGroup& cell = get_cell_for_particle (p_current_position);
     cell.add_particle (p_current_position, old_position, m_idx_a, id);
 }
 void DatastructureGrid::serialize () {
     Benchmark::begin ("saving the data", false);
     m_writer.start ();
-    for (ParticleCell cell : m_cells) {
+    for (ParticleGroup cell : m_cells) {
         if (!(cell.m_ids.empty ())) {
             m_writer.saveData (cell.m_positions_x[m_idx_a],
                                cell.m_positions_y[m_idx_a],
@@ -93,7 +93,7 @@ void DatastructureGrid::serialize () {
     m_writer.end ();
     Benchmark::end ();
 }
-void DatastructureGrid::step_1_prepare_cell (ParticleCell& p_cell) {
+void DatastructureGrid::step_1_prepare_cell (ParticleGroup& p_cell) {
     unsigned int       i;
     const unsigned int max = p_cell.m_ids.size ();
     for (i = 0; i < max; i++) {
@@ -105,7 +105,7 @@ void DatastructureGrid::step_1_prepare_cell (ParticleCell& p_cell) {
                             p_cell.m_positions_z[m_idx_b][i]);
     }
 }
-void DatastructureGrid::step_2a_calculate_inside_cell (ParticleCell& p_cell) {
+void DatastructureGrid::step_2a_calculate_inside_cell (ParticleGroup& p_cell) {
     unsigned long      i;
     const unsigned int max   = p_cell.m_ids.size ();
     const unsigned int max_1 = max - 1;
@@ -128,7 +128,7 @@ void DatastructureGrid::step_2a_calculate_inside_cell (ParticleCell& p_cell) {
         }
     }
 }
-void DatastructureGrid::step_2b_calculate_between_cells (ParticleCell& p_cell_i, ParticleCell& p_cell_j) {
+void DatastructureGrid::step_2b_calculate_between_cells (ParticleGroup& p_cell_i, ParticleGroup& p_cell_j) {
     unsigned int       i;
     const unsigned int max = p_cell_i.m_ids.size ();
     for (i = 0; i < max; i++) {
@@ -148,11 +148,11 @@ void DatastructureGrid::step_2b_calculate_between_cells (ParticleCell& p_cell_i,
                             p_cell_j.m_ids.size ());
     }
 }
-void DatastructureGrid::step_2b_calculate_between_cells_offset (ParticleCell& p_cell_i,
-                                                                ParticleCell& p_cell_j,
-                                                                data_type     offset_x,
-                                                                data_type     offset_y,
-                                                                data_type     offset_z) {
+void DatastructureGrid::step_2b_calculate_between_cells_offset (ParticleGroup& p_cell_i,
+                                                                ParticleGroup& p_cell_j,
+                                                                data_type      offset_x,
+                                                                data_type      offset_y,
+                                                                data_type      offset_z) {
     unsigned int       i;
     const unsigned int max = p_cell_i.m_ids.size ();
     for (i = 0; i < max; i++) {
@@ -176,7 +176,7 @@ void DatastructureGrid::step_2b_calculate_between_cells_offset (ParticleCell& p_
     }
 }
 
-void DatastructureGrid::step_3_remove_wrong_particles_from_cell (ParticleCell& p_cell) {
+void DatastructureGrid::step_3_remove_wrong_particles_from_cell (ParticleGroup& p_cell) {
     int i, j;
     for (i = p_cell.m_ids.size () - 1; i >= 0; i--) {
         Vec3l idx;
@@ -245,7 +245,7 @@ void DatastructureGrid::step_3_remove_wrong_particles_from_cell (ParticleCell& p
                                            p_cell.m_positions_y[m_idx_a][i],
                                            p_cell.m_positions_z[m_idx_a][i]);
         if (idx != p_cell.m_idx) {
-            ParticleCell& other_cell = get_cell_at (idx.x, idx.y, idx.z);
+            ParticleGroup& other_cell = get_cell_at (idx.x, idx.y, idx.z);
             moveParticle (p_cell, other_cell, i);
         }
     }
@@ -260,7 +260,7 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
     for (idx_x = 0; idx_x < m_size.x; idx_x++) {
         for (idx_y = 0; idx_y < m_size.y; idx_y++) {
             for (idx_z = 0; idx_z < m_size.z; idx_z++) {
-                ParticleCell& cell = get_cell_at (idx_x, idx_y, idx_z);
+                ParticleGroup& cell = get_cell_at (idx_x, idx_y, idx_z);
                 step_1_prepare_cell (cell);
                 step_2a_calculate_inside_cell (cell);
             }
@@ -768,7 +768,7 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
         for (idx_x = 0; idx_x < m_size.x; idx_x++) {
             for (idx_y = 0; idx_y < m_size.y; idx_y++) {
                 for (idx_z = 0; idx_z < m_size.z; idx_z++) {
-                    ParticleCell& cell = get_cell_at (idx_x, idx_y, idx_z);
+                    ParticleGroup& cell = get_cell_at (idx_x, idx_y, idx_z);
                     step_3_remove_wrong_particles_from_cell (cell);
                 }
             }
@@ -781,7 +781,7 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
     m_idx_b = !(m_idx_a = m_idx_b);
     return m_error_happened;
 }
-inline void DatastructureGrid::moveParticle (ParticleCell& p_cell_from, ParticleCell& p_cell_to, long p_index_from) {
+inline void DatastructureGrid::moveParticle (ParticleGroup& p_cell_from, ParticleGroup& p_cell_to, long p_index_from) {
     unsigned int j;
     p_cell_to.m_ids.push_back (p_cell_from.m_ids[p_index_from]);
     p_cell_from.m_ids.erase (p_cell_from.m_ids.begin () + p_index_from);
@@ -796,22 +796,8 @@ inline void DatastructureGrid::moveParticle (ParticleCell& p_cell_from, Particle
 }
 unsigned long DatastructureGrid::get_particle_count () {
     unsigned long particle_count = 0;
-    for (ParticleCell cell : m_cells) {
+    for (ParticleGroup cell : m_cells) {
         particle_count += cell.m_ids.size ();
     }
     return particle_count;
-}
-ParticleCell::ParticleCell (Vec3l p_idx, Vec3f p_size_per_cell) {
-    m_idx       = p_idx;
-    m_corner000 = Vec3f (m_idx - 1L) * p_size_per_cell;
-    m_corner111 = Vec3f (m_idx) * p_size_per_cell;
-}
-void ParticleCell::add_particle (Vec3f p_current_position, Vec3f p_old_position, int p_current_index, int p_id) {
-    m_positions_x[p_current_index].push_back (p_current_position.x);
-    m_positions_y[p_current_index].push_back (p_current_position.y);
-    m_positions_z[p_current_index].push_back (p_current_position.z);
-    m_positions_x[!p_current_index].push_back (p_old_position.x);
-    m_positions_y[!p_current_index].push_back (p_old_position.y);
-    m_positions_z[!p_current_index].push_back (p_old_position.z);
-    m_ids.push_back (p_id);
 }
