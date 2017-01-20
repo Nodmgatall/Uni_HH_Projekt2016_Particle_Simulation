@@ -255,7 +255,8 @@ class DatastructureGridTestClass : public DatastructureGrid {
                                 BorderBase&    p_particle_bounds_correction,
                                 AlgorithmBase& p_algorithm,
                                 WriterBase&    p_particle_file_writer)
-    : DatastructureGrid (p_options, p_particle_bounds_correction, p_algorithm, p_particle_file_writer) {
+    : DatastructureBase (p_options, p_particle_bounds_correction, p_algorithm, p_particle_file_writer),
+      DatastructureGrid (p_options, p_particle_bounds_correction, p_algorithm, p_particle_file_writer) {
     }
     ~DatastructureGridTestClass () {
     }

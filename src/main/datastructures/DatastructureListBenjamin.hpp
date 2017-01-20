@@ -13,12 +13,8 @@
 #include "Vec3.hpp"
 #include "helper/ParticleGroup.hpp"
 
-class DatastructureListBenjamin : public DatastructureBase {
+class DatastructureListBenjamin : virtual public DatastructureBase {
   protected:
-    /**
-     * list of neighbors to calculate the interaction with
-     */
-    std::vector<std::vector<unsigned long>> list_neighbors;
     /**
          * first step in each iteration. Calculates the new particle position based on
          * its own speed
@@ -32,6 +28,7 @@ class DatastructureListBenjamin : public DatastructureBase {
      * @param p_cell the cell which contains the particles
      */
     void list_step_2_calculate (ParticleGroup& p_cell);
+    void list_rebuild (ParticleGroup& p_cell);
 
   public:
     /**
@@ -45,7 +42,6 @@ class DatastructureListBenjamin : public DatastructureBase {
     bool run_simulation_iteration (unsigned long p_iteration_number = 0);
     void add_particle (Vec3f p_position);
     void add_particle (Vec3f p_current_position, Vec3f p_current_velocity, int p_id = -1);
-    unsigned long get_particle_count ();
 };
 
 #endif /* SRC_MAIN_DATASTRUCTURES_DATASTRUCTURELISTBENJAMIN_HPP_ */

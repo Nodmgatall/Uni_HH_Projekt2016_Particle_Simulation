@@ -164,6 +164,354 @@ void DatastructureGrid::grid_step_3_remove_wrong_particles_from_cell (ParticleGr
         }
     }
 }
+bool DatastructureGrid::grid_step_2 () {
+    unsigned int idx_x, idx_y, idx_z;
+    Benchmark::begin ("step 2b", false);
+    const long      border_cells_ignored_count = 1; // 0 or 1
+    const long      lx                         = border_cells_ignored_count;
+    const long      ly                         = border_cells_ignored_count;
+    const long      lz                         = border_cells_ignored_count;
+    const long      rx                         = grid_size.x - 1 - border_cells_ignored_count;
+    const long      ry                         = grid_size.y - 1 - border_cells_ignored_count;
+    const long      rz                         = grid_size.z - 1 - border_cells_ignored_count;
+    const data_type ox                         = m_options.m_bounds.x;
+    const data_type oy                         = m_options.m_bounds.y;
+    const data_type oz                         = m_options.m_bounds.z;
+    { // Cells in the middle of the simulated Volume
+        for (idx_x = lx; idx_x < rx; idx_x++) {
+            for (idx_y = ly; idx_y < ry; idx_y++) {
+                for (idx_z = lz; idx_z < rz; idx_z++) {
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 1, idx_z + 1),
+                                                          grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 1, idx_z + 0),
+                                                          grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 1, idx_z + 0),
+                                                          grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 1));
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, idx_z + 1),
+                                                          grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, idx_z + 0),
+                                                          grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, idx_z + 0),
+                                                          grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 1));
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, idx_z + 1),
+                                                          grid_get_cell_at (idx_x + 0, idx_y + 1, idx_z + 0));
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, idx_z + 0),
+                                                          grid_get_cell_at (idx_x + 0, idx_y + 1, idx_z + 0));
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, idx_z + 0),
+                                                          grid_get_cell_at (idx_x + 0, idx_y + 1, idx_z + 1));
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, idx_y + 1, idx_z + 1),
+                                                          grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, idx_y + 1, idx_z + 0),
+                                                          grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, idx_y + 1, idx_z + 0),
+                                                          grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 1));
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 1),
+                                                          grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
+                }
+            }
+        }
+    }
+    if (m_error_happened)
+        return m_error_happened;
+    { // Wraparound-interaction at the X-Border
+        for (idx_y = ly; idx_y < ry; idx_y++) {
+            for (idx_z = lz; idx_z < rz; idx_z++) {
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (rx, idx_y + 1, idx_z + 1),
+                                                      grid_get_cell_at (rx, idx_y + 0, idx_z + 0));
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (rx, idx_y + 1, idx_z + 0),
+                                                      grid_get_cell_at (rx, idx_y + 0, idx_z + 0));
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (rx, idx_y + 1, idx_z + 0),
+                                                      grid_get_cell_at (rx, idx_y + 0, idx_z + 1));
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (rx, idx_y + 0, idx_z + 1),
+                                                      grid_get_cell_at (rx, idx_y + 0, idx_z + 0));
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 1, idx_z + 1),
+                                                      grid_get_cell_at (rx, idx_y + 0, idx_z + 0),
+                                                      ox,
+                                                      0,
+                                                      0);
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 1, idx_z + 0),
+                                                      grid_get_cell_at (rx, idx_y + 0, idx_z + 0),
+                                                      ox,
+                                                      0,
+                                                      0);
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 1, idx_z + 0),
+                                                      grid_get_cell_at (rx, idx_y + 0, idx_z + 1),
+                                                      ox,
+                                                      0,
+                                                      0);
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 0, idx_z + 1),
+                                                      grid_get_cell_at (rx, idx_y + 0, idx_z + 0),
+                                                      ox,
+                                                      0,
+                                                      0);
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 0, idx_z + 0),
+                                                      grid_get_cell_at (rx, idx_y + 0, idx_z + 0),
+                                                      ox,
+                                                      0,
+                                                      0);
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 0, idx_z + 0),
+                                                      grid_get_cell_at (rx, idx_y + 0, idx_z + 1),
+                                                      ox,
+                                                      0,
+                                                      0);
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 0, idx_z + 1),
+                                                      grid_get_cell_at (rx, idx_y + 1, idx_z + 0),
+                                                      ox,
+                                                      0,
+                                                      0);
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 0, idx_z + 0),
+                                                      grid_get_cell_at (rx, idx_y + 1, idx_z + 0),
+                                                      ox,
+                                                      0,
+                                                      0);
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 0, idx_z + 0),
+                                                      grid_get_cell_at (rx, idx_y + 1, idx_z + 1),
+                                                      ox,
+                                                      0,
+                                                      0);
+            }
+        }
+    }
+    if (m_error_happened)
+        return m_error_happened;
+    { // Wraparound-interaction at the Y-Border
+        for (idx_x = lx; idx_x < rx; idx_x++) {
+            for (idx_z = lz; idx_z < rz; idx_z++) {
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ry, idx_z + 1),
+                                                      grid_get_cell_at (idx_x + 0, ry, idx_z + 0));
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ry, idx_z + 0),
+                                                      grid_get_cell_at (idx_x + 0, ry, idx_z + 0));
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ry, idx_z + 0),
+                                                      grid_get_cell_at (idx_x + 0, ry, idx_z + 1));
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, ry, idx_z + 1),
+                                                      grid_get_cell_at (idx_x + 0, ry, idx_z + 0));
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ly, idx_z + 1),
+                                                      grid_get_cell_at (idx_x + 0, ry, idx_z + 0),
+                                                      0,
+                                                      oy,
+                                                      0);
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ly, idx_z + 0),
+                                                      grid_get_cell_at (idx_x + 0, ry, idx_z + 0),
+                                                      0,
+                                                      oy,
+                                                      0);
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ly, idx_z + 0),
+                                                      grid_get_cell_at (idx_x + 0, ry, idx_z + 1),
+                                                      0,
+                                                      oy,
+                                                      0);
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ry, idx_z + 1),
+                                                      grid_get_cell_at (idx_x + 0, ly, idx_z + 0),
+                                                      0,
+                                                      -oy,
+                                                      0);
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ry, idx_z + 0),
+                                                      grid_get_cell_at (idx_x + 0, ly, idx_z + 0),
+                                                      0,
+                                                      -oy,
+                                                      0);
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ry, idx_z + 0),
+                                                      grid_get_cell_at (idx_x + 0, ly, idx_z + 1),
+                                                      0,
+                                                      -oy,
+                                                      0);
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, ly, idx_z + 1),
+                                                      grid_get_cell_at (idx_x + 0, ry, idx_z + 0),
+                                                      0,
+                                                      oy,
+                                                      0);
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, ly, idx_z + 0),
+                                                      grid_get_cell_at (idx_x + 0, ry, idx_z + 0),
+                                                      0,
+                                                      oy,
+                                                      0);
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, ly, idx_z + 0),
+                                                      grid_get_cell_at (idx_x + 0, ry, idx_z + 1),
+                                                      0,
+                                                      oy,
+                                                      0);
+            }
+        }
+    }
+    if (m_error_happened)
+        return m_error_happened;
+    { // Wraparound-interaction at the Z-Border
+        for (idx_x = lx; idx_x < rx; idx_x++) {
+            for (idx_y = ly; idx_y < ry; idx_y++) {
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 1, rz),
+                                                      grid_get_cell_at (idx_x + 0, idx_y + 0, rz));
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, rz),
+                                                      grid_get_cell_at (idx_x + 0, idx_y + 0, rz));
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, rz),
+                                                      grid_get_cell_at (idx_x + 0, idx_y + 1, rz));
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, idx_y + 1, rz),
+                                                      grid_get_cell_at (idx_x + 0, idx_y + 0, rz));
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 1, lz),
+                                                      grid_get_cell_at (idx_x + 0, idx_y + 0, rz),
+                                                      0,
+                                                      0,
+                                                      oz);
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 1, rz),
+                                                      grid_get_cell_at (idx_x + 0, idx_y + 0, lz),
+                                                      0,
+                                                      0,
+                                                      -oz);
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, lz),
+                                                      grid_get_cell_at (idx_x + 0, idx_y + 0, rz),
+                                                      0,
+                                                      0,
+                                                      oz);
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, rz),
+                                                      grid_get_cell_at (idx_x + 0, idx_y + 0, lz),
+                                                      0,
+                                                      0,
+                                                      -oz);
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, lz),
+                                                      grid_get_cell_at (idx_x + 0, idx_y + 1, rz),
+                                                      0,
+                                                      0,
+                                                      oz);
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, rz),
+                                                      grid_get_cell_at (idx_x + 0, idx_y + 1, lz),
+                                                      0,
+                                                      0,
+                                                      -oz);
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, idx_y + 1, lz),
+                                                      grid_get_cell_at (idx_x + 0, idx_y + 0, rz),
+                                                      0,
+                                                      0,
+                                                      oz);
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, idx_y + 1, rz),
+                                                      grid_get_cell_at (idx_x + 0, idx_y + 0, lz),
+                                                      0,
+                                                      0,
+                                                      -oz);
+                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, idx_y + 0, lz),
+                                                      grid_get_cell_at (idx_x + 0, idx_y + 0, rz),
+                                                      0,
+                                                      0,
+                                                      oz);
+            }
+        }
+    }
+    if (m_error_happened)
+        return m_error_happened;
+    { // Wraparound-interaction at the YZ-Border
+        for (idx_x = lx; idx_x < rx; idx_x++) {
+            grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ry, rz),
+                                                  grid_get_cell_at (idx_x + 0, ry, rz));
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (idx_x + 1, ly, lz), grid_get_cell_at (idx_x + 0, ry, rz), 0, oy, oz);
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (idx_x + 1, ly, rz), grid_get_cell_at (idx_x + 0, ry, rz), 0, oy, 0);
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (idx_x + 1, ly, rz), grid_get_cell_at (idx_x + 0, ry, lz), 0, oy, -oz);
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (idx_x + 1, ry, lz), grid_get_cell_at (idx_x + 0, ry, rz), 0, 0, oz);
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (idx_x + 1, ry, rz), grid_get_cell_at (idx_x + 0, ry, lz), 0, 0, -oz);
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (idx_x + 1, ry, lz), grid_get_cell_at (idx_x + 0, ly, rz), 0, -oy, oz);
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (idx_x + 1, ry, rz), grid_get_cell_at (idx_x + 0, ly, rz), 0, -oy, 0);
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (idx_x + 1, ry, rz), grid_get_cell_at (idx_x + 0, ly, lz), 0, -oy, -oz);
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (idx_x + 0, ly, lz), grid_get_cell_at (idx_x + 0, ry, rz), 0, oy, oz);
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (idx_x + 0, ly, rz), grid_get_cell_at (idx_x + 0, ry, rz), 0, oy, 0);
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (idx_x + 0, ly, rz), grid_get_cell_at (idx_x + 0, ry, lz), 0, oy, -oz);
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (idx_x + 0, ry, lz), grid_get_cell_at (idx_x + 0, ry, rz), 0, 0, oz);
+        }
+    }
+    if (m_error_happened)
+        return m_error_happened;
+    { // Wraparound-interaction at the XZ-Border
+        for (idx_y = ly; idx_y < ry; idx_y++) {
+            grid_step_2b_calculate_between_cells (grid_get_cell_at (rx, idx_y + 1, rz),
+                                                  grid_get_cell_at (rx, idx_y + 0, rz));
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (lx, idx_y + 1, lz), grid_get_cell_at (rx, idx_y + 0, rz), ox, 0, oz);
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (lx, idx_y + 1, rz), grid_get_cell_at (rx, idx_y + 0, rz), ox, 0, 0);
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (lx, idx_y + 1, rz), grid_get_cell_at (rx, idx_y + 0, lz), ox, 0, -oz);
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (lx, idx_y + 0, lz), grid_get_cell_at (rx, idx_y + 0, rz), ox, 0, oz);
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (lx, idx_y + 0, rz), grid_get_cell_at (rx, idx_y + 0, rz), ox, 0, 0);
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (lx, idx_y + 0, rz), grid_get_cell_at (rx, idx_y + 0, lz), ox, 0, -oz);
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (lx, idx_y + 0, lz), grid_get_cell_at (rx, idx_y + 1, rz), ox, 0, oz);
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (lx, idx_y + 0, rz), grid_get_cell_at (rx, idx_y + 1, rz), ox, 0, 0);
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (lx, idx_y + 0, rz), grid_get_cell_at (rx, idx_y + 1, lz), ox, 0, -oz);
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (rx, idx_y + 1, lz), grid_get_cell_at (rx, idx_y + 0, rz), 0, 0, oz);
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (rx, idx_y + 1, rz), grid_get_cell_at (rx, idx_y + 0, lz), 0, 0, -oz);
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (rx, idx_y + 0, lz), grid_get_cell_at (rx, idx_y + 0, rz), 0, 0, oz);
+        }
+    }
+    if (m_error_happened)
+        return m_error_happened;
+    { // Wraparound-interaction at the XY-Border
+        for (idx_z = lz; idx_z < rz; idx_z++) {
+            grid_step_2b_calculate_between_cells (grid_get_cell_at (rx, ry, idx_z + 1),
+                                                  grid_get_cell_at (rx, ry, idx_z + 0));
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (lx, ly, idx_z + 1), grid_get_cell_at (rx, ry, idx_z + 0), ox, oy, 0);
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (lx, ly, idx_z + 0), grid_get_cell_at (rx, ry, idx_z + 0), ox, oy, 0);
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (lx, ly, idx_z + 0), grid_get_cell_at (rx, ry, idx_z + 1), ox, oy, 0);
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (lx, ry, idx_z + 1), grid_get_cell_at (rx, ry, idx_z + 0), ox, 0, 0);
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (lx, ry, idx_z + 0), grid_get_cell_at (rx, ry, idx_z + 0), ox, 0, 0);
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (lx, ry, idx_z + 0), grid_get_cell_at (rx, ry, idx_z + 1), ox, 0, 0);
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (lx, ry, idx_z + 1), grid_get_cell_at (rx, ly, idx_z + 0), ox, -oy, 0);
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (lx, ry, idx_z + 0), grid_get_cell_at (rx, ly, idx_z + 0), ox, -oy, 0);
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (lx, ry, idx_z + 0), grid_get_cell_at (rx, ly, idx_z + 1), ox, -oy, 0);
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (rx, ly, idx_z + 1), grid_get_cell_at (rx, ry, idx_z + 0), 0, oy, 0);
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (rx, ly, idx_z + 0), grid_get_cell_at (rx, ry, idx_z + 0), 0, oy, 0);
+            grid_step_2b_calculate_between_cells (
+                grid_get_cell_at (rx, ly, idx_z + 0), grid_get_cell_at (rx, ry, idx_z + 1), 0, oy, 0);
+        }
+    }
+    if (m_error_happened)
+        return m_error_happened;
+    { // Wraparound-interaction at the XYZ-Corner
+        grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, ly, lz), grid_get_cell_at (rx, ry, rz), ox, oy, oz);
+        grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, ly, rz), grid_get_cell_at (rx, ry, rz), ox, oy, 0);
+        grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, ly, rz), grid_get_cell_at (rx, ry, lz), ox, oy, -oz);
+        grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, ry, lz), grid_get_cell_at (rx, ry, rz), ox, 0, oz);
+        grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, ry, rz), grid_get_cell_at (rx, ry, rz), ox, 0, 0);
+        grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, ry, rz), grid_get_cell_at (rx, ry, lz), ox, 0, -oz);
+        grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, ry, lz), grid_get_cell_at (rx, ly, rz), ox, -oy, oz);
+        grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, ry, rz), grid_get_cell_at (rx, ly, rz), ox, -oy, 0);
+        grid_step_2b_calculate_between_cells (
+            grid_get_cell_at (lx, ry, rz), grid_get_cell_at (rx, ly, lz), ox, -oy, -oz);
+        grid_step_2b_calculate_between_cells (grid_get_cell_at (rx, ly, lz), grid_get_cell_at (rx, ry, rz), 0, oy, oz);
+        grid_step_2b_calculate_between_cells (grid_get_cell_at (rx, ly, rz), grid_get_cell_at (rx, ry, rz), 0, oy, 0);
+        grid_step_2b_calculate_between_cells (grid_get_cell_at (rx, ly, rz), grid_get_cell_at (rx, ry, lz), 0, oy, -oz);
+        grid_step_2b_calculate_between_cells (grid_get_cell_at (rx, ry, lz), grid_get_cell_at (rx, ry, rz), 0, 0, oz);
+    }
+    Benchmark::end ();
+    return false;
+}
+
 bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_number) {
     m_error_happened = false;
     (void) p_iteration_number;
@@ -185,393 +533,10 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
     }
     if (m_error_happened)
         return m_error_happened;
-    {
-        Benchmark::begin ("step 2b", false);
-        const long      border_cells_ignored_count = 1; // 0 or 1
-        const long      lx                         = border_cells_ignored_count;
-        const long      ly                         = border_cells_ignored_count;
-        const long      lz                         = border_cells_ignored_count;
-        const long      rx                         = grid_size.x - 1 - border_cells_ignored_count;
-        const long      ry                         = grid_size.y - 1 - border_cells_ignored_count;
-        const long      rz                         = grid_size.z - 1 - border_cells_ignored_count;
-        const data_type ox                         = m_options.m_bounds.x;
-        const data_type oy                         = m_options.m_bounds.y;
-        const data_type oz                         = m_options.m_bounds.z;
-        { // Cells in the middle of the simulated Volume
-            for (idx_x = lx; idx_x < rx; idx_x++) {
-                for (idx_y = ly; idx_y < ry; idx_y++) {
-                    for (idx_z = lz; idx_z < rz; idx_z++) {
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 1, idx_z + 1),
-                                                              grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 1, idx_z + 0),
-                                                              grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 1, idx_z + 0),
-                                                              grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 1));
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, idx_z + 1),
-                                                              grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, idx_z + 0),
-                                                              grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, idx_z + 0),
-                                                              grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 1));
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, idx_z + 1),
-                                                              grid_get_cell_at (idx_x + 0, idx_y + 1, idx_z + 0));
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, idx_z + 0),
-                                                              grid_get_cell_at (idx_x + 0, idx_y + 1, idx_z + 0));
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, idx_z + 0),
-                                                              grid_get_cell_at (idx_x + 0, idx_y + 1, idx_z + 1));
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, idx_y + 1, idx_z + 1),
-                                                              grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, idx_y + 1, idx_z + 0),
-                                                              grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, idx_y + 1, idx_z + 0),
-                                                              grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 1));
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 1),
-                                                              grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
-                    }
-                }
-            }
-        }
-        if (m_error_happened)
-            return m_error_happened;
-        { // Wraparound-interaction at the X-Border
-            for (idx_y = ly; idx_y < ry; idx_y++) {
-                for (idx_z = lz; idx_z < rz; idx_z++) {
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (rx, idx_y + 1, idx_z + 1),
-                                                          grid_get_cell_at (rx, idx_y + 0, idx_z + 0));
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (rx, idx_y + 1, idx_z + 0),
-                                                          grid_get_cell_at (rx, idx_y + 0, idx_z + 0));
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (rx, idx_y + 1, idx_z + 0),
-                                                          grid_get_cell_at (rx, idx_y + 0, idx_z + 1));
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (rx, idx_y + 0, idx_z + 1),
-                                                          grid_get_cell_at (rx, idx_y + 0, idx_z + 0));
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 1, idx_z + 1),
-                                                          grid_get_cell_at (rx, idx_y + 0, idx_z + 0),
-                                                          ox,
-                                                          0,
-                                                          0);
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 1, idx_z + 0),
-                                                          grid_get_cell_at (rx, idx_y + 0, idx_z + 0),
-                                                          ox,
-                                                          0,
-                                                          0);
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 1, idx_z + 0),
-                                                          grid_get_cell_at (rx, idx_y + 0, idx_z + 1),
-                                                          ox,
-                                                          0,
-                                                          0);
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 0, idx_z + 1),
-                                                          grid_get_cell_at (rx, idx_y + 0, idx_z + 0),
-                                                          ox,
-                                                          0,
-                                                          0);
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 0, idx_z + 0),
-                                                          grid_get_cell_at (rx, idx_y + 0, idx_z + 0),
-                                                          ox,
-                                                          0,
-                                                          0);
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 0, idx_z + 0),
-                                                          grid_get_cell_at (rx, idx_y + 0, idx_z + 1),
-                                                          ox,
-                                                          0,
-                                                          0);
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 0, idx_z + 1),
-                                                          grid_get_cell_at (rx, idx_y + 1, idx_z + 0),
-                                                          ox,
-                                                          0,
-                                                          0);
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 0, idx_z + 0),
-                                                          grid_get_cell_at (rx, idx_y + 1, idx_z + 0),
-                                                          ox,
-                                                          0,
-                                                          0);
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 0, idx_z + 0),
-                                                          grid_get_cell_at (rx, idx_y + 1, idx_z + 1),
-                                                          ox,
-                                                          0,
-                                                          0);
-                }
-            }
-        }
-        if (m_error_happened)
-            return m_error_happened;
-        { // Wraparound-interaction at the Y-Border
-            for (idx_x = lx; idx_x < rx; idx_x++) {
-                for (idx_z = lz; idx_z < rz; idx_z++) {
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ry, idx_z + 1),
-                                                          grid_get_cell_at (idx_x + 0, ry, idx_z + 0));
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ry, idx_z + 0),
-                                                          grid_get_cell_at (idx_x + 0, ry, idx_z + 0));
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ry, idx_z + 0),
-                                                          grid_get_cell_at (idx_x + 0, ry, idx_z + 1));
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, ry, idx_z + 1),
-                                                          grid_get_cell_at (idx_x + 0, ry, idx_z + 0));
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ly, idx_z + 1),
-                                                          grid_get_cell_at (idx_x + 0, ry, idx_z + 0),
-                                                          0,
-                                                          oy,
-                                                          0);
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ly, idx_z + 0),
-                                                          grid_get_cell_at (idx_x + 0, ry, idx_z + 0),
-                                                          0,
-                                                          oy,
-                                                          0);
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ly, idx_z + 0),
-                                                          grid_get_cell_at (idx_x + 0, ry, idx_z + 1),
-                                                          0,
-                                                          oy,
-                                                          0);
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ry, idx_z + 1),
-                                                          grid_get_cell_at (idx_x + 0, ly, idx_z + 0),
-                                                          0,
-                                                          -oy,
-                                                          0);
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ry, idx_z + 0),
-                                                          grid_get_cell_at (idx_x + 0, ly, idx_z + 0),
-                                                          0,
-                                                          -oy,
-                                                          0);
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ry, idx_z + 0),
-                                                          grid_get_cell_at (idx_x + 0, ly, idx_z + 1),
-                                                          0,
-                                                          -oy,
-                                                          0);
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, ly, idx_z + 1),
-                                                          grid_get_cell_at (idx_x + 0, ry, idx_z + 0),
-                                                          0,
-                                                          oy,
-                                                          0);
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, ly, idx_z + 0),
-                                                          grid_get_cell_at (idx_x + 0, ry, idx_z + 0),
-                                                          0,
-                                                          oy,
-                                                          0);
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, ly, idx_z + 0),
-                                                          grid_get_cell_at (idx_x + 0, ry, idx_z + 1),
-                                                          0,
-                                                          oy,
-                                                          0);
-                }
-            }
-        }
-        if (m_error_happened)
-            return m_error_happened;
-        { // Wraparound-interaction at the Z-Border
-            for (idx_x = lx; idx_x < rx; idx_x++) {
-                for (idx_y = ly; idx_y < ry; idx_y++) {
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 1, rz),
-                                                          grid_get_cell_at (idx_x + 0, idx_y + 0, rz));
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, rz),
-                                                          grid_get_cell_at (idx_x + 0, idx_y + 0, rz));
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, rz),
-                                                          grid_get_cell_at (idx_x + 0, idx_y + 1, rz));
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, idx_y + 1, rz),
-                                                          grid_get_cell_at (idx_x + 0, idx_y + 0, rz));
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 1, lz),
-                                                          grid_get_cell_at (idx_x + 0, idx_y + 0, rz),
-                                                          0,
-                                                          0,
-                                                          oz);
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 1, rz),
-                                                          grid_get_cell_at (idx_x + 0, idx_y + 0, lz),
-                                                          0,
-                                                          0,
-                                                          -oz);
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, lz),
-                                                          grid_get_cell_at (idx_x + 0, idx_y + 0, rz),
-                                                          0,
-                                                          0,
-                                                          oz);
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, rz),
-                                                          grid_get_cell_at (idx_x + 0, idx_y + 0, lz),
-                                                          0,
-                                                          0,
-                                                          -oz);
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, lz),
-                                                          grid_get_cell_at (idx_x + 0, idx_y + 1, rz),
-                                                          0,
-                                                          0,
-                                                          oz);
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, rz),
-                                                          grid_get_cell_at (idx_x + 0, idx_y + 1, lz),
-                                                          0,
-                                                          0,
-                                                          -oz);
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, idx_y + 1, lz),
-                                                          grid_get_cell_at (idx_x + 0, idx_y + 0, rz),
-                                                          0,
-                                                          0,
-                                                          oz);
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, idx_y + 1, rz),
-                                                          grid_get_cell_at (idx_x + 0, idx_y + 0, lz),
-                                                          0,
-                                                          0,
-                                                          -oz);
-                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, idx_y + 0, lz),
-                                                          grid_get_cell_at (idx_x + 0, idx_y + 0, rz),
-                                                          0,
-                                                          0,
-                                                          oz);
-                }
-            }
-        }
-        if (m_error_happened)
-            return m_error_happened;
-        { // Wraparound-interaction at the YZ-Border
-            for (idx_x = lx; idx_x < rx; idx_x++) {
-                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ry, rz),
-                                                      grid_get_cell_at (idx_x + 0, ry, rz));
-                grid_step_2b_calculate_between_cells (
-                    grid_get_cell_at (idx_x + 1, ly, lz), grid_get_cell_at (idx_x + 0, ry, rz), 0, oy, oz);
-                grid_step_2b_calculate_between_cells (
-                    grid_get_cell_at (idx_x + 1, ly, rz), grid_get_cell_at (idx_x + 0, ry, rz), 0, oy, 0);
-                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ly, rz),
-                                                      grid_get_cell_at (idx_x + 0, ry, lz),
-                                                      0,
-                                                      oy,
-                                                      -oz);
-                grid_step_2b_calculate_between_cells (
-                    grid_get_cell_at (idx_x + 1, ry, lz), grid_get_cell_at (idx_x + 0, ry, rz), 0, 0, oz);
-                grid_step_2b_calculate_between_cells (
-                    grid_get_cell_at (idx_x + 1, ry, rz), grid_get_cell_at (idx_x + 0, ry, lz), 0, 0, -oz);
-                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ry, lz),
-                                                      grid_get_cell_at (idx_x + 0, ly, rz),
-                                                      0,
-                                                      -oy,
-                                                      oz);
-                grid_step_2b_calculate_between_cells (
-                    grid_get_cell_at (idx_x + 1, ry, rz), grid_get_cell_at (idx_x + 0, ly, rz), 0, -oy, 0);
-                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ry, rz),
-                                                      grid_get_cell_at (idx_x + 0, ly, lz),
-                                                      0,
-                                                      -oy,
-                                                      -oz);
-                grid_step_2b_calculate_between_cells (
-                    grid_get_cell_at (idx_x + 0, ly, lz), grid_get_cell_at (idx_x + 0, ry, rz), 0, oy, oz);
-                grid_step_2b_calculate_between_cells (
-                    grid_get_cell_at (idx_x + 0, ly, rz), grid_get_cell_at (idx_x + 0, ry, rz), 0, oy, 0);
-                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, ly, rz),
-                                                      grid_get_cell_at (idx_x + 0, ry, lz),
-                                                      0,
-                                                      oy,
-                                                      -oz);
-                grid_step_2b_calculate_between_cells (
-                    grid_get_cell_at (idx_x + 0, ry, lz), grid_get_cell_at (idx_x + 0, ry, rz), 0, 0, oz);
-            }
-        }
-        if (m_error_happened)
-            return m_error_happened;
-        { // Wraparound-interaction at the XZ-Border
-            for (idx_y = ly; idx_y < ry; idx_y++) {
-                grid_step_2b_calculate_between_cells (grid_get_cell_at (rx, idx_y + 1, rz),
-                                                      grid_get_cell_at (rx, idx_y + 0, rz));
-                grid_step_2b_calculate_between_cells (
-                    grid_get_cell_at (lx, idx_y + 1, lz), grid_get_cell_at (rx, idx_y + 0, rz), ox, 0, oz);
-                grid_step_2b_calculate_between_cells (
-                    grid_get_cell_at (lx, idx_y + 1, rz), grid_get_cell_at (rx, idx_y + 0, rz), ox, 0, 0);
-                grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 1, rz),
-                                                      grid_get_cell_at (rx, idx_y + 0, lz),
-                                                      ox,
-                                                      0,
-                                                      -oz);
-                grid_step_2b_calculate_between_cells (
-                    grid_get_cell_at (lx, idx_y + 0, lz), grid_get_cell_at (rx, idx_y + 0, rz), ox, 0, oz);
-                grid_step_2b_calculate_between_cells (
-                    grid_get_cell_at (lx, idx_y + 0, rz), grid_get_cell_at (rx, idx_y + 0, rz), ox, 0, 0);
-                grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 0, rz),
-                                                      grid_get_cell_at (rx, idx_y + 0, lz),
-                                                      ox,
-                                                      0,
-                                                      -oz);
-                grid_step_2b_calculate_between_cells (
-                    grid_get_cell_at (lx, idx_y + 0, lz), grid_get_cell_at (rx, idx_y + 1, rz), ox, 0, oz);
-                grid_step_2b_calculate_between_cells (
-                    grid_get_cell_at (lx, idx_y + 0, rz), grid_get_cell_at (rx, idx_y + 1, rz), ox, 0, 0);
-                grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 0, rz),
-                                                      grid_get_cell_at (rx, idx_y + 1, lz),
-                                                      ox,
-                                                      0,
-                                                      -oz);
-                grid_step_2b_calculate_between_cells (
-                    grid_get_cell_at (rx, idx_y + 1, lz), grid_get_cell_at (rx, idx_y + 0, rz), 0, 0, oz);
-                grid_step_2b_calculate_between_cells (
-                    grid_get_cell_at (rx, idx_y + 1, rz), grid_get_cell_at (rx, idx_y + 0, lz), 0, 0, -oz);
-                grid_step_2b_calculate_between_cells (
-                    grid_get_cell_at (rx, idx_y + 0, lz), grid_get_cell_at (rx, idx_y + 0, rz), 0, 0, oz);
-            }
-        }
-        if (m_error_happened)
-            return m_error_happened;
-        { // Wraparound-interaction at the XY-Border
-            for (idx_z = lz; idx_z < rz; idx_z++) {
-                grid_step_2b_calculate_between_cells (grid_get_cell_at (rx, ry, idx_z + 1),
-                                                      grid_get_cell_at (rx, ry, idx_z + 0));
-                grid_step_2b_calculate_between_cells (
-                    grid_get_cell_at (lx, ly, idx_z + 1), grid_get_cell_at (rx, ry, idx_z + 0), ox, oy, 0);
-                grid_step_2b_calculate_between_cells (
-                    grid_get_cell_at (lx, ly, idx_z + 0), grid_get_cell_at (rx, ry, idx_z + 0), ox, oy, 0);
-                grid_step_2b_calculate_between_cells (
-                    grid_get_cell_at (lx, ly, idx_z + 0), grid_get_cell_at (rx, ry, idx_z + 1), ox, oy, 0);
-                grid_step_2b_calculate_between_cells (
-                    grid_get_cell_at (lx, ry, idx_z + 1), grid_get_cell_at (rx, ry, idx_z + 0), ox, 0, 0);
-                grid_step_2b_calculate_between_cells (
-                    grid_get_cell_at (lx, ry, idx_z + 0), grid_get_cell_at (rx, ry, idx_z + 0), ox, 0, 0);
-                grid_step_2b_calculate_between_cells (
-                    grid_get_cell_at (lx, ry, idx_z + 0), grid_get_cell_at (rx, ry, idx_z + 1), ox, 0, 0);
-                grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, ry, idx_z + 1),
-                                                      grid_get_cell_at (rx, ly, idx_z + 0),
-                                                      ox,
-                                                      -oy,
-                                                      0);
-                grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, ry, idx_z + 0),
-                                                      grid_get_cell_at (rx, ly, idx_z + 0),
-                                                      ox,
-                                                      -oy,
-                                                      0);
-                grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, ry, idx_z + 0),
-                                                      grid_get_cell_at (rx, ly, idx_z + 1),
-                                                      ox,
-                                                      -oy,
-                                                      0);
-                grid_step_2b_calculate_between_cells (
-                    grid_get_cell_at (rx, ly, idx_z + 1), grid_get_cell_at (rx, ry, idx_z + 0), 0, oy, 0);
-                grid_step_2b_calculate_between_cells (
-                    grid_get_cell_at (rx, ly, idx_z + 0), grid_get_cell_at (rx, ry, idx_z + 0), 0, oy, 0);
-                grid_step_2b_calculate_between_cells (
-                    grid_get_cell_at (rx, ly, idx_z + 0), grid_get_cell_at (rx, ry, idx_z + 1), 0, oy, 0);
-            }
-        }
-        if (m_error_happened)
-            return m_error_happened;
-        { // Wraparound-interaction at the XYZ-Corner
-            grid_step_2b_calculate_between_cells (
-                grid_get_cell_at (lx, ly, lz), grid_get_cell_at (rx, ry, rz), ox, oy, oz);
-            grid_step_2b_calculate_between_cells (
-                grid_get_cell_at (lx, ly, rz), grid_get_cell_at (rx, ry, rz), ox, oy, 0);
-            grid_step_2b_calculate_between_cells (
-                grid_get_cell_at (lx, ly, rz), grid_get_cell_at (rx, ry, lz), ox, oy, -oz);
-            grid_step_2b_calculate_between_cells (
-                grid_get_cell_at (lx, ry, lz), grid_get_cell_at (rx, ry, rz), ox, 0, oz);
-            grid_step_2b_calculate_between_cells (
-                grid_get_cell_at (lx, ry, rz), grid_get_cell_at (rx, ry, rz), ox, 0, 0);
-            grid_step_2b_calculate_between_cells (
-                grid_get_cell_at (lx, ry, rz), grid_get_cell_at (rx, ry, lz), ox, 0, -oz);
-            grid_step_2b_calculate_between_cells (
-                grid_get_cell_at (lx, ry, lz), grid_get_cell_at (rx, ly, rz), ox, -oy, oz);
-            grid_step_2b_calculate_between_cells (
-                grid_get_cell_at (lx, ry, rz), grid_get_cell_at (rx, ly, rz), ox, -oy, 0);
-            grid_step_2b_calculate_between_cells (
-                grid_get_cell_at (lx, ry, rz), grid_get_cell_at (rx, ly, lz), ox, -oy, -oz);
-            grid_step_2b_calculate_between_cells (
-                grid_get_cell_at (rx, ly, lz), grid_get_cell_at (rx, ry, rz), 0, oy, oz);
-            grid_step_2b_calculate_between_cells (
-                grid_get_cell_at (rx, ly, rz), grid_get_cell_at (rx, ry, rz), 0, oy, 0);
-            grid_step_2b_calculate_between_cells (
-                grid_get_cell_at (rx, ly, rz), grid_get_cell_at (rx, ry, lz), 0, oy, -oz);
-            grid_step_2b_calculate_between_cells (
-                grid_get_cell_at (rx, ry, lz), grid_get_cell_at (rx, ry, rz), 0, 0, oz);
-        }
-    }
-    Benchmark::end ();
+    grid_step_2 ();
+    if (m_error_happened)
+        return m_error_happened;
+
     if (m_error_happened)
         return m_error_happened;
     {
@@ -607,13 +572,7 @@ inline void DatastructureGrid::grid_moveParticle (ParticleGroup& p_cell_from, Pa
         p_cell_from.m_positions_z[j].erase (p_cell_from.m_positions_z[j].begin () + p_index_from);
     }
 }
-unsigned long DatastructureGrid::get_particle_count () {
-    unsigned long particle_count = 0;
-    for (ParticleGroup cell : m_particle_groups) {
-        particle_count += cell.m_ids.size ();
-    }
-    return particle_count;
-}
+
 void DatastructureGrid::add_particle (Vec3f p_position) {
     add_particle (p_position, Vec3f (0));
 }

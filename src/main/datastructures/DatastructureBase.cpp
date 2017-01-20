@@ -19,7 +19,6 @@ void DatastructureBase::step_1_prepare_cell (ParticleGroup& p_cell) {
                             p_cell.m_positions_z[m_idx_b][i]);
     }
 }
-
 void DatastructureBase::step_3_fit_into_borders (ParticleGroup& p_cell) {
     int i, j;
     for (i = p_cell.m_ids.size () - 1; i >= 0; i--) {
@@ -104,4 +103,11 @@ void DatastructureBase::serialize () {
 }
 void DatastructureBase::add_particle (Vec3f p_position) {
     add_particle (p_position, Vec3f (0));
+}
+unsigned long DatastructureBase::get_particle_count () {
+    unsigned long particle_count = 0;
+    for (ParticleGroup cell : m_particle_groups) {
+        particle_count += cell.m_ids.size ();
+    }
+    return particle_count;
 }

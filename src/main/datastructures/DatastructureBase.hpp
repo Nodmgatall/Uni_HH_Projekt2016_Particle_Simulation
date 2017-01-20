@@ -93,7 +93,7 @@ class DatastructureBase {
                                                      /**
                                                       * @return the total number of particles in all cells
                                                       */
-    virtual unsigned long get_particle_count () = 0;
+    unsigned long get_particle_count ();
     /**
      * saves all particles to an file
      */

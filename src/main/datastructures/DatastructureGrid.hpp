@@ -5,7 +5,7 @@
 #include "Definitions.hpp"
 #include "Vec3.hpp"
 
-class DatastructureGrid : public DatastructureBase {
+class DatastructureGrid : virtual public DatastructureBase {
   protected:
     /**
      * the count of cells in 3 dimensions
@@ -60,7 +60,10 @@ class DatastructureGrid : public DatastructureBase {
      * @param p_index_from
      */
     void grid_moveParticle (ParticleGroup& p_cell_from, ParticleGroup& p_cell_to, long p_index_from);
-
+    /**
+     * complete second step of calculation
+     */
+    bool grid_step_2 ();
     /**
      * calculates the movement of particles based on the forces between every
      * particle-pair in the given
@@ -110,6 +113,5 @@ class DatastructureGrid : public DatastructureBase {
     bool run_simulation_iteration (unsigned long p_iteration_number = 0);
     void add_particle (Vec3f p_position);
     void add_particle (Vec3f p_current_position, Vec3f p_current_velocity, int p_id = -1);
-    unsigned long get_particle_count ();
 };
 #endif

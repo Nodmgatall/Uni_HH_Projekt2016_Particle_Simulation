@@ -19,6 +19,10 @@ struct ParticleGroup {
     std::vector<unsigned long> m_ids;
     Vec3f                      m_corner000, m_corner111;
     Vec3l                      m_idx;
+    /**
+     * list of neighbors to calculate the interaction with
+     */
+    std::vector<std::vector<unsigned long>> m_neighbors;
     ParticleGroup (Vec3l p_idx, Vec3f p_size_per_cell);
     /**
      * adds an particle to this cell
