@@ -15,12 +15,12 @@ DatastructureBase* DatastructureFactory::build (s_options&     p_options,
         case e_datastructure_type::GRID:
             return new DatastructureGrid (p_options, p_border, p_algorithm, p_writer);
         case e_datastructure_type::LIST:
-                    return new DatastructureList (p_options, p_border, p_algorithm, p_writer);
+            return new DatastructureList (p_options, p_border, p_algorithm, p_writer);
         case e_datastructure_type::LIST_BENJAMIN:
-                    return new DatastructureListBenjamin (p_options, p_border, p_algorithm, p_writer);
+            return new DatastructureListBenjamin (p_options, p_border, p_algorithm, p_writer);
         case e_datastructure_type::LISTEDGIRD:
-                    return new DatastructureListGrid (p_options, p_border, p_algorithm, p_writer);
-                default:
+            return new DatastructureListGrid (p_options, p_border, p_algorithm, p_writer);
+        default:
             throw DatastructureTypeInvalidException (p_options.m_data_structure_type);
     }
 }

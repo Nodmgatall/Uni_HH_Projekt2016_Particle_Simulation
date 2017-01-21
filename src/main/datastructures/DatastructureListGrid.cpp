@@ -19,8 +19,8 @@ DatastructureListGrid::DatastructureListGrid (s_options&     p_options,
 DatastructureListGrid::~DatastructureListGrid () {
 }
 bool DatastructureListGrid::run_simulation_iteration (unsigned long p_iteration_number) {
-	//TODO fix SEGFAULT
-	//TODO include lists in inter-cell-interaction
+    // TODO fix SEGFAULT
+    // TODO include lists in inter-cell-interaction
     (void) p_iteration_number;
     bool result = DatastructureGrid::run_simulation_iteration ();
     if (m_iterations_until_rearange_particles == m_options.m_max_iterations_between_datastructure_rebuild) {
