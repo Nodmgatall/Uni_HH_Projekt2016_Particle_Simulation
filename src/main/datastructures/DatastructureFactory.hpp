@@ -11,6 +11,8 @@
 #include "DatastructureBase.hpp"
 #include "DatastructureGrid.hpp"
 #include "DatastructureList.hpp"
+#include "DatastructureListBenjamin.hpp"
+#include "DatastructureListGrid.hpp"
 #include "algorithms/AlgorithmBase.hpp"
 #include "borders/BorderBase.hpp"
 #include "io/output/WriterBase.hpp"

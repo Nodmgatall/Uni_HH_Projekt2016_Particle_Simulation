@@ -14,7 +14,7 @@
 #include <ostream>
 #include <vector>
 
-enum class e_datastructure_type { GRID = 1, LIST = 2, LISTEDGIRD = 3 };
+enum class e_datastructure_type { GRID = 1, LIST = 2, LIST_BENJAMIN = 3, LISTEDGIRD = 4 };
 
 std::ostream& operator<< (std::ostream& stream, const e_datastructure_type& p_datastructure_type);
 std::istream& operator>> (std::istream& stream, e_datastructure_type& p_datastructure_type);
