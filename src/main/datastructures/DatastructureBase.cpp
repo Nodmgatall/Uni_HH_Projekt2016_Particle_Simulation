@@ -86,7 +86,6 @@ void DatastructureBase::step_3_fit_into_borders (ParticleGroup& p_cell) {
         }
     }
 }
-
 void DatastructureBase::serialize () {
     Benchmark::begin ("saving the data", false);
     m_writer.start ();
@@ -100,6 +99,27 @@ void DatastructureBase::serialize () {
     }
     m_writer.end ();
     Benchmark::end ();
+}
+bool DatastructureBase::run_simulation_iteration (unsigned long p_iteration_number) {
+    (void) p_iteration_number;
+    return true; // this should never be called !!!!! -> return error
+}
+void DatastructureBase::add_particle (Vec3f p_current_position, Vec3f p_current_velocity, int p_id) {
+    long id = 0;
+    if (p_id >= 0) {
+        id       = p_id;
+        m_max_id = MAX (m_max_id, p_id + 1);
+    } else {
+        id = m_max_id++;
+    }
+    Vec3f old_position = p_current_position - p_current_velocity * m_options.m_timestep;
+    m_border.updatePosition (p_current_position.x,
+                             p_current_position.y,
+                             p_current_position.z,
+                             old_position.x,
+                             old_position.y,
+                             old_position.z);
+    m_particle_groups[0].add_particle (p_current_position, old_position, m_idx_a, id);
 }
 void DatastructureBase::add_particle (Vec3f p_position) {
     add_particle (p_position, Vec3f (0));

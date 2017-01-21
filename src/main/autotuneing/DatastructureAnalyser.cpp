@@ -1,0 +1,98 @@
+/*
+ * DatastructureAnalyser.cpp
+ *
+ *  Created on: 21.01.2017
+ *      Author: benjamin
+ */
+
+#include <autotuneing/DatastructureAnalyser.hpp>
+/*m_idx_a -> position*/
+/*m_idx_a -> velocity*/
+DatastructureAnalyser::DatastructureAnalyser (s_options&     p_options,
+                                              BorderBase&    p_border,
+                                              AlgorithmBase& p_algorithm,
+                                              WriterBase&    p_particle_writer)
+: DatastructureBase (p_options, p_border, p_algorithm, p_particle_writer) {
+    m_stucture_name = "DatastructureAnalyser";
+    m_particle_groups.push_back (ParticleGroup (Vec3l (), m_options.m_bounds));
+}
+
+DatastructureAnalyser::~DatastructureAnalyser () {
+}
+
+void DatastructureAnalyser::transfer_particles_to (DatastructureBase& p_datastructure) {
+    unsigned long i;
+    for (i = 0; i < get_particle_count (); i++) {
+        p_datastructure.add_particle (Vec3f (m_particle_groups[0].m_positions_x[m_idx_a][i],
+                                             m_particle_groups[0].m_positions_y[m_idx_a][i],
+                                             m_particle_groups[0].m_positions_z[m_idx_a][i]),
+                                      Vec3f (m_particle_groups[0].m_positions_x[m_idx_b][i],
+                                             m_particle_groups[0].m_positions_y[m_idx_b][i],
+                                             m_particle_groups[0].m_positions_z[m_idx_b][i]),
+                                      m_particle_groups[0].m_ids[i]);
+    }
+}
+void DatastructureAnalyser::analyse () {
+    if (m_particle_groups[0].m_ids.size () > 0) {
+        // variables for statistics -->>
+        std::vector<unsigned long> interaction_count; // each interaction-pair count just once
+        unsigned long  sum_interaction_count;
+        unsigned long  avg_interaction_count;
+        unsigned float avg_place_per_particle;
+        data_type      xl = m_particle_groups[0].m_positions_x[m_idx_a][0];
+        data_type      yl = m_particle_groups[0].m_positions_x[m_idx_a][0];
+        data_type      zl = m_particle_groups[0].m_positions_x[m_idx_a][0];
+        data_type      xr = xl;
+        data_type      yr = yl;
+        data_type      zr = zl;
+        // variables for statistics <<--
+        unsigned long i;
+        unsigned long j;
+        data_type cut_off_radius_squared = m_options.m_cut_off_radius * m_options.m_cut_off_radius;
+        interaction_count.resize (m_particle_groups[0].m_ids.size ());
+        for (i = 0; i < m_particle_groups[0].m_ids.size (); i++) {
+            interaction_count[i] = 0;
+            if (xl > m_particle_groups[0].m_positions_x[m_idx_a][i])
+                xl = m_particle_groups[0].m_positions_x[m_idx_a][i];
+            if (xr < m_particle_groups[0].m_positions_x[m_idx_a][i])
+                xr = m_particle_groups[0].m_positions_x[m_idx_a][i];
+            if (yl > m_particle_groups[0].m_positions_y[m_idx_a][i])
+                yl = m_particle_groups[0].m_positions_y[m_idx_a][i];
+            if (yr < m_particle_groups[0].m_positions_y[m_idx_a][i])
+                yr = m_particle_groups[0].m_positions_y[m_idx_a][i];
+            if (zl > m_particle_groups[0].m_positions_z[m_idx_a][i])
+                zl = m_particle_groups[0].m_positions_z[m_idx_a][i];
+            if (zr < m_particle_groups[0].m_positions_z[m_idx_a][i])
+                zr = m_particle_groups[0].m_positions_z[m_idx_a][i];
+            for (j = 0; j < i; j++) {
+                data_type dx = m_particle_groups[0].m_positions_x[m_idx_a][i] -
+                               m_particle_groups[0].m_positions_x[m_idx_a][j];
+                data_type dy = m_particle_groups[0].m_positions_y[m_idx_a][i] -
+                               m_particle_groups[0].m_positions_y[m_idx_a][j];
+                data_type dz = m_particle_groups[0].m_positions_z[m_idx_a][i] -
+                               m_particle_groups[0].m_positions_z[m_idx_a][j];
+                if (cut_off_radius_squared >= (dx * dx + dy * dy + dz * dz)) {
+                    interaction_count[i]++;
+                    sum_interaction_count++;
+                }
+            }
+        }
+        avg_interaction_count = sum_interaction_count / m_particle_groups[0].m_ids.size ();
+        avg_place_per_particle=((xr-xl)*(yr-yl)*(zr-zl))/m_particle_groups[0].m_ids.size ();
+    } else {
+        // error cannot analyse not existing data
+    }
+}
+void DatastructureBase::add_particle (Vec3f p_current_position, Vec3f p_current_velocity, int p_id) {
+    long id = 0;
+    if (p_id >= 0) {
+        id       = p_id;
+        m_max_id = MAX (m_max_id, p_id + 1);
+    } else {
+        id = m_max_id++;
+    }
+    m_particle_groups[0].add_particle (p_current_position, p_current_velocity, m_idx_a, id);
+}
+void DatastructureBase::add_particle (Vec3f p_position) {
+    add_particle (p_position, Vec3f (0));
+}

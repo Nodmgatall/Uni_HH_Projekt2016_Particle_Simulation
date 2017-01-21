@@ -40,8 +40,6 @@ class DatastructureListBenjamin : virtual public DatastructureBase {
      */
     ~DatastructureListBenjamin ();
     bool run_simulation_iteration (unsigned long p_iteration_number = 0);
-    void add_particle (Vec3f p_position);
-    void add_particle (Vec3f p_current_position, Vec3f p_current_velocity, int p_id = -1);
 };
 
 #endif /* SRC_MAIN_DATASTRUCTURES_DATASTRUCTURELISTBENJAMIN_HPP_ */
