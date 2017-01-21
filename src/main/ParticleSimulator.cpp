@@ -1,21 +1,13 @@
 
 #include "ParticleSimulator.hpp"
 
-ParticleSimulator::ParticleSimulator (s_options& p_options)
-: m_options (p_options),                                                                         //
-  m_writer (new FileWriterCSV (p_options, std::string (log_folder) + "/data")),                  //
-  m_border (new BorderWrapparound (m_options.m_bounds)),                                         //
-  m_algorithm (AlgorithmFactory::build (m_options)),                                             //
-  m_datastructure (DatastructureFactory::build (m_options, *m_border, *m_algorithm, *m_writer)), //
-  m_input (InputFactory::build (m_options, *m_datastructure)) {
-    m_input->initialize_datastructure ();
+ParticleSimulator::ParticleSimulator (s_options& p_options, DatastructureBase* p_datastructure)
+: m_options (p_options),            //
+  m_datastructure (p_datastructure) //
+{
 }
 ParticleSimulator::~ParticleSimulator () {
-    delete (m_algorithm);
-    delete (m_border);
-    delete (m_writer);
     delete (m_datastructure);
-    delete (m_input);
 }
 void ParticleSimulator::simulate () {
     Benchmark::begin ("Simulation");
@@ -35,6 +27,5 @@ void ParticleSimulator::simulate () {
         if (error_happened)
             break;
     }
-    m_writer->finalize ();
     Benchmark::end ();
 }

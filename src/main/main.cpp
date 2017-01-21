@@ -3,6 +3,15 @@
 #include "options/OptionHandler.hpp"
 #include <unistd.h>
 
+#include "options/OptionHandler.hpp"
+
+#include "borders/BorderWrapparound.hpp"
+#include "io/output/file/FileWriterCSV.hpp"
+
+#include "algorithms/AlgorithmFactory.hpp"
+#include "datastructures/DatastructureFactory.hpp"
+#include "io/input/InputFactory.hpp"
+
 std::string output_folder_name;
 
 void createOutputDirectory () {
@@ -34,10 +43,23 @@ int main (int argc, char** argv) {
     OptionHandler option_handler;
     if (int return_value = option_handler.handle_options (argc, argv, options))
         return return_value;
-    ParticleSimulator particle_simulator (options);
+
+    WriterBase*    writer    = new FileWriterCSV (options, std::string (log_folder) + "/data");
+    BorderBase*    border    = new BorderWrapparound (options.m_bounds);
+    AlgorithmBase* algorithm = AlgorithmFactory::build (options);
+    DatastructureBase* datastructure = DatastructureFactory::build (options, *border, *algorithm, *writer);
+
+    InputBase* input = InputFactory::build (options, *datastructure);
+
+    input->initialize_datastructure ();
+
+    ParticleSimulator particle_simulator (options, datastructure);
     Benchmark::begin ("everything", false);
     particle_simulator.simulate ();
     Benchmark::end ();
+
+    writer->finalize ();
+
     if (options.m_out_file_name.length () > 0) {
         if (rename (output_folder_name.c_str (), options.m_out_file_name.c_str ())) {
             m_error_stream << "moving to " << options.m_out_file_name << " failed" << std::endl;

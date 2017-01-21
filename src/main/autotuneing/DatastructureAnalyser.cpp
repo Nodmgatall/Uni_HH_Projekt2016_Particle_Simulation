@@ -6,13 +6,14 @@
  */
 
 #include <autotuneing/DatastructureAnalyser.hpp>
+
 /*m_idx_a -> position*/
 /*m_idx_a -> velocity*/
 DatastructureAnalyser::DatastructureAnalyser (s_options&     p_options,
                                               BorderBase&    p_border,
                                               AlgorithmBase& p_algorithm,
-                                              WriterBase&    p_particle_writer)
-: DatastructureBase (p_options, p_border, p_algorithm, p_particle_writer) {
+                                              WriterBase&    p_writer)
+: DatastructureBase (p_options, p_border, p_algorithm, p_writer) {
     m_stucture_name = "DatastructureAnalyser";
     m_particle_groups.push_back (ParticleGroup (Vec3l (), m_options.m_bounds));
 }
@@ -32,19 +33,19 @@ void DatastructureAnalyser::transfer_particles_to (DatastructureBase& p_datastru
                                       m_particle_groups[0].m_ids[i]);
     }
 }
-void DatastructureAnalyser::analyse () {
+e_datastructure_type DatastructureAnalyser::analyse () {
     if (m_particle_groups[0].m_ids.size () > 0) {
         // variables for statistics -->>
         std::vector<unsigned long> interaction_count; // each interaction-pair count just once
-        unsigned long  sum_interaction_count;
-        unsigned long  avg_interaction_count;
-        unsigned float avg_place_per_particle;
-        data_type      xl = m_particle_groups[0].m_positions_x[m_idx_a][0];
-        data_type      yl = m_particle_groups[0].m_positions_x[m_idx_a][0];
-        data_type      zl = m_particle_groups[0].m_positions_x[m_idx_a][0];
-        data_type      xr = xl;
-        data_type      yr = yl;
-        data_type      zr = zl;
+        unsigned long              sum_interaction_count = 0;
+        unsigned long              avg_interaction_count;
+        float                      avg_place_per_particle;
+        data_type                  xl = m_particle_groups[0].m_positions_x[m_idx_a][0];
+        data_type                  yl = m_particle_groups[0].m_positions_x[m_idx_a][0];
+        data_type                  zl = m_particle_groups[0].m_positions_x[m_idx_a][0];
+        data_type                  xr = xl;
+        data_type                  yr = yl;
+        data_type                  zr = zl;
         // variables for statistics <<--
         unsigned long i;
         unsigned long j;
@@ -78,12 +79,13 @@ void DatastructureAnalyser::analyse () {
             }
         }
         avg_interaction_count = sum_interaction_count / m_particle_groups[0].m_ids.size ();
-        avg_place_per_particle=((xr-xl)*(yr-yl)*(zr-zl))/m_particle_groups[0].m_ids.size ();
+        avg_place_per_particle = ((xr - xl) * (yr - yl) * (zr - zl)) / m_particle_groups[0].m_ids.size ();
     } else {
         // error cannot analyse not existing data
     }
+    return e_datastructure_type::GRID;
 }
-void DatastructureBase::add_particle (Vec3f p_current_position, Vec3f p_current_velocity, int p_id) {
+void DatastructureAnalyser::add_particle (Vec3f p_current_position, Vec3f p_current_velocity, int p_id) {
     long id = 0;
     if (p_id >= 0) {
         id       = p_id;
@@ -93,6 +95,6 @@ void DatastructureBase::add_particle (Vec3f p_current_position, Vec3f p_current_
     }
     m_particle_groups[0].add_particle (p_current_position, p_current_velocity, m_idx_a, id);
 }
-void DatastructureBase::add_particle (Vec3f p_position) {
+void DatastructureAnalyser::add_particle (Vec3f p_position) {
     add_particle (p_position, Vec3f (0));
 }
