@@ -1,11 +1,9 @@
 #ifndef OPTION_HANDLER_HPP
 #define OPTION_HANDLER_HPP
-
 #include "Definitions.hpp"
 #include "Options.hpp"
 #include <cstring>
 #include <getopt.h>
-
 class OptionHandler {
   protected:
     /**
@@ -34,7 +32,6 @@ class OptionHandler {
     void print_usage_particle_sim ();
     void print_header ();
     void print_usage_print_config ();
-
   public:
     /**
      * takes the arguments passed to application and parses them into the option struct
@@ -50,5 +47,4 @@ class OptionHandler {
      */
     void print_choosen_options (s_options& p_options);
 };
-
 #endif

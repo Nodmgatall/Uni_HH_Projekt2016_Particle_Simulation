@@ -4,7 +4,6 @@
  *  Created on: Dec 8, 2016
  *      Author: benjamin
  */
-
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "DatastructureGrid"
 #include "algorithms/AlgorithmBase.hpp"
@@ -13,13 +12,9 @@
 #include "io/output/WriterBase.hpp"
 #include <boost/test/unit_test.hpp>
 #include <cstring>
-
 class ParticleWriter : public WriterBase {
   public:
-    void saveData (std::vector<data_type>&     p_positions_x,
-                   std::vector<data_type>&     p_positions_y,
-                   std::vector<data_type>&     p_positions_z,
-                   std::vector<unsigned long>& p_ids) {
+    void saveData (std::vector<data_type>& p_positions_x, std::vector<data_type>& p_positions_y, std::vector<data_type>& p_positions_z, std::vector<unsigned long>& p_ids) {
         (void) p_positions_x;
         (void) p_positions_y;
         (void) p_positions_z;
@@ -34,21 +29,14 @@ class ParticleWriter : public WriterBase {
     void finalize () {
     }
 };
-
 class Algorithm : public AlgorithmBase {
   public:
     std::vector<int>              m_step_1_helper;
     std::vector<std::vector<int>> m_step_2_helper;
     int                           m_count;
-
     Algorithm (s_options& p_options) : AlgorithmBase (p_options), m_count (0) {
     }
-    void step_1 (const data_type& p_position_ax,
-                 const data_type& p_position_ay,
-                 const data_type& p_position_az,
-                 data_type&       p_position_bx,
-                 data_type&       p_position_by,
-                 data_type&       p_position_bz) {
+    void step_1 (const data_type& p_position_ax, const data_type& p_position_ay, const data_type& p_position_az, data_type& p_position_bx, data_type& p_position_by, data_type& p_position_bz) {
         BOOST_CHECK_EQUAL (p_position_ax, p_position_ay - 1);
         BOOST_CHECK_EQUAL (p_position_ay, p_position_az - 1);
         BOOST_CHECK_EQUAL (p_position_bx, p_position_by - 1);
@@ -175,14 +163,7 @@ class BoundsCorrection : public BorderBase {
     }
     virtual ~BoundsCorrection () {
     }
-    bool updatePosition (data_type&   m_x,
-                         data_type&   m_y,
-                         data_type&   m_z,
-                         data_type&   m_other_x,
-                         data_type&   m_other_y,
-                         data_type&   m_other_z,
-                         const Vec3f& m_corner000,
-                         const Vec3f& m_corner111) {
+    bool updatePosition (data_type& m_x, data_type& m_y, data_type& m_z, data_type& m_other_x, data_type& m_other_y, data_type& m_other_z, const Vec3f& m_corner000, const Vec3f& m_corner111) {
         (void) m_x;
         (void) m_y;
         (void) m_z;
@@ -251,10 +232,7 @@ class DatastructureGridTestClass : public DatastructureGrid {
     void public_step_3_remove_wrong_particles_from_cell (ParticleGroup& p_cell) {
         grid_step_3_remove_wrong_particles_from_cell (p_cell);
     }
-    DatastructureGridTestClass (s_options&     p_options,
-                                BorderBase&    p_particle_bounds_correction,
-                                AlgorithmBase& p_algorithm,
-                                WriterBase&    p_particle_file_writer)
+    DatastructureGridTestClass (s_options& p_options, BorderBase& p_particle_bounds_correction, AlgorithmBase& p_algorithm, WriterBase& p_particle_file_writer)
     : DatastructureBase (p_options, p_particle_bounds_correction, p_algorithm, p_particle_file_writer),
       DatastructureGrid (p_options, p_particle_bounds_correction, p_algorithm, p_particle_file_writer) {
     }
@@ -282,7 +260,6 @@ class DatastructureGridTestClass : public DatastructureGrid {
         m_iterations_until_rearange_particles = p_iterations;
     }
 };
-
 BOOST_AUTO_TEST_CASE (test_add_particle_1) {
     unsigned int idx_x, idx_y, idx_z, idx_s, idx_t;
     s_options    options;
@@ -451,7 +428,7 @@ BOOST_AUTO_TEST_CASE (test_step_1) {
     Algorithm                  algorithm (options);
     ParticleWriter             writer = ParticleWriter ();
     DatastructureGridTestClass particlesGrid (options, border, algorithm, writer);
-    ParticleGroup              cell = ParticleGroup (Vec3l (), particlesGrid.get_size_per_cell ());
+    ParticleGroup              cell          = ParticleGroup (Vec3l (), particlesGrid.get_size_per_cell ());
     const int                  particleCount = 4;
     for (int i = 0; i < particleCount; i++)
         cell.add_particle (Vec3f (i + 1, i + 2, i + 3), Vec3f (i + 11, i + 12, i + 13), 0, i);
@@ -478,7 +455,7 @@ BOOST_AUTO_TEST_CASE (test_step_2a) {
     Algorithm                  algorithm (options);
     ParticleWriter             writer = ParticleWriter ();
     DatastructureGridTestClass particlesGrid (options, border, algorithm, writer);
-    ParticleGroup              cell = ParticleGroup (Vec3l (), particlesGrid.get_size_per_cell ());
+    ParticleGroup              cell          = ParticleGroup (Vec3l (), particlesGrid.get_size_per_cell ());
     const int                  particleCount = 4;
     for (int i = 0; i < particleCount; i++)
         cell.add_particle (Vec3f (i + 1, i + 2, i + 3), Vec3f (i + 11, i + 12, i + 13), 0, i);
@@ -500,10 +477,10 @@ BOOST_AUTO_TEST_CASE (test_step_2b) {
     Algorithm                  algorithm (options);
     ParticleWriter             writer = ParticleWriter ();
     DatastructureGridTestClass particlesGrid (options, border, algorithm, writer);
-    ParticleGroup cell_i          = ParticleGroup (Vec3l (), particlesGrid.get_size_per_cell ());
-    ParticleGroup cell_j          = ParticleGroup (Vec3l (), particlesGrid.get_size_per_cell ());
-    const int     particleCount_i = 4;
-    const int     particleCount_j = 3;
+    ParticleGroup              cell_i          = ParticleGroup (Vec3l (), particlesGrid.get_size_per_cell ());
+    ParticleGroup              cell_j          = ParticleGroup (Vec3l (), particlesGrid.get_size_per_cell ());
+    const int                  particleCount_i = 4;
+    const int                  particleCount_j = 3;
     for (int i = 0; i < particleCount_i; i++)
         cell_i.add_particle (Vec3f (i + 1, i + 2, i + 3), Vec3f (i + 11, i + 12, i + 13), 0, i);
     for (int i = particleCount_i; i < particleCount_i + particleCount_j; i++)
@@ -546,7 +523,6 @@ BOOST_AUTO_TEST_CASE (test_step_3) {
     cell.add_particle (cell.m_corner111 - Vec3f (0.01, 0.01, 0), cell.m_corner111 - Vec3f (0.01, 0.01, 0), 0, 6);
     BOOST_CHECK_EQUAL (particlesGrid.get_particle_count (), 7);
     particlesGrid.public_step_3_remove_wrong_particles_from_cell (cell);
-
     /*for (int i = 0; i < particlesGrid.get_size ().x; i++) {
         for (int j = 0; j < particlesGrid.get_size ().y; j++) {
             for (int k = 0; k < particlesGrid.get_size ().z; k++) {
@@ -558,7 +534,6 @@ BOOST_AUTO_TEST_CASE (test_step_3) {
             }
         }
     }*/
-
     BOOST_CHECK_EQUAL (particlesGrid.get_particle_count (), 7);
     BOOST_CHECK_EQUAL (particlesGrid.public_get_cell_at (x, y, z).m_ids.size (), 1);
     BOOST_CHECK_EQUAL (particlesGrid.public_get_cell_at (x - 1, y, z).m_ids.size (), 1);

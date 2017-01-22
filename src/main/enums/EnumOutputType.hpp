@@ -4,10 +4,8 @@
  *  Created on: Dec 10, 2016
  *      Author: benjamin
  */
-
 #ifndef SRC_MAIN_OPTIONS_ENUM_OUTPUT_TYPE_HPP_
 #define SRC_MAIN_OPTIONS_ENUM_OUTPUT_TYPE_HPP_
-
 #include <cstring>
 #include <exception>
 #include <istream>
@@ -16,17 +14,8 @@
 /**
  * implemented or planned output types for simulation
  */
-enum class e_output_type {
-    FILE_CSV      = 1,
-    FILE_LAMMPS   = 2,
-    FILE_ESPRESSO = 3,
-    FILE_GROMACS  = 4,
-    FILE_VMD      = 5,
-    FILE_VTK      = 6,
-    FILE_CSV_AVI  = 7
-};
+enum class e_output_type { FILE_CSV = 1, FILE_LAMMPS = 2, FILE_ESPRESSO = 3, FILE_GROMACS = 4, FILE_VMD = 5, FILE_VTK = 6, FILE_CSV_AVI = 7 };
 // CSV::ParaView	how to  -> http://www.paraview.org/Wiki/ParaView/Data_formats
-
 /* visualisierungs software
  *
     http://lammps.sandia.gov/viz.html
@@ -40,17 +29,13 @@ enum class e_output_type {
     RasMol
  *
  * */
-
 std::ostream& operator<< (std::ostream& stream, const e_output_type& p_output_type);
 std::istream& operator>> (std::istream& stream, e_output_type& p_output_type);
-
 extern std::vector<const char*> g_output_names;
 extern std::vector<bool>        g_output_implemented;
-
 class OutputTypeInvalidException : public std::exception {
   private:
     char* m_what;
-
   public:
     OutputTypeInvalidException () {
         m_what = (char*) malloc (100);
@@ -67,5 +52,4 @@ class OutputTypeInvalidException : public std::exception {
         return m_what;
     }
 };
-
 #endif /* SRC_MAIN_OPTIONS_ENUMOUTPUTFORMAT_HPP_ */

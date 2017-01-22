@@ -4,10 +4,8 @@
  *  Created on: Nov 16, 2016
  *      Author: benjamin
  */
-
 #ifndef SRC_VEC3_HPP_
 #define SRC_VEC3_HPP_
-
 #include "DataType.hpp"
 #include "tools/Debug.hpp"
 #include <iostream>
@@ -15,7 +13,6 @@
 #include <math.h>
 #include <ostream>
 #include <sstream>
-
 template <typename T>
 struct Vec3 {
     T x, y, z;
@@ -153,13 +150,11 @@ struct Vec3 {
             stream.ignore ();
         }
         stream >> vec.x;
-        while ((stream.peek () == ' ') || (stream.peek () == '/') || (stream.peek () == '|') ||
-               ((char) stream.peek () == ',')) {
+        while ((stream.peek () == ' ') || (stream.peek () == '/') || (stream.peek () == '|') || ((char) stream.peek () == ',')) {
             stream.ignore ();
         }
         stream >> vec.y;
-        while ((stream.peek () == ' ') || (stream.peek () == '/') || (stream.peek () == '|') ||
-               ((char) stream.peek () == ',')) {
+        while ((stream.peek () == ' ') || (stream.peek () == '/') || (stream.peek () == '|') || ((char) stream.peek () == ',')) {
             stream.ignore ();
         }
         stream >> vec.z;
@@ -185,5 +180,4 @@ extern const Vec3f g_vec3f_0;
  * an global vector containing only 0 for all thre components
  */
 extern const Vec3l g_vec3l_0;
-
 #endif /* SRC_Vec3_HPP_ */

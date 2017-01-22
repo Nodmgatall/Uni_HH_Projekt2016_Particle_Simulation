@@ -4,13 +4,10 @@
  *  Created on: Dec 9, 2016
  *      Author: benjamin
  */
-
 #ifndef SRC_MAIN_ALGORITHMS_ALGORITHMBASE_HPP_
 #define SRC_MAIN_ALGORITHMS_ALGORITHMBASE_HPP_
-
 #include "Definitions.hpp"
 #include "options/Options.hpp"
-
 class AlgorithmBase {
   protected:
     /**
@@ -21,7 +18,6 @@ class AlgorithmBase {
      * identifier of subclass name
      */
     std::string m_stucture_name;
-
   public:
     /**
      * constructor
@@ -49,12 +45,7 @@ class AlgorithmBase {
          * @param p_position_by input old_position -> output next_position
          * @param p_position_bz input old_position -> output next_position
          */
-    virtual void step_1 (const data_type& p_position_ax,
-                         const data_type& p_position_ay,
-                         const data_type& p_position_az,
-                         data_type&       p_position_bx,
-                         data_type&       p_position_by,
-                         data_type&       p_position_bz) = 0;
+    virtual void step_1 (const data_type& p_position_ax, const data_type& p_position_ay, const data_type& p_position_az, data_type& p_position_bx, data_type& p_position_by, data_type& p_position_bz) = 0;
     /**
         * second part of Calculation
         * a__ -> current
@@ -139,5 +130,4 @@ class AlgorithmBase {
                                 const unsigned long    p_index_j_begin,
                                 const unsigned long    p_index_j_end) = 0;
 };
-
 #endif /* SRC_MAIN_ALGORITHMS_ALGORITHMBASE_HPP_ */

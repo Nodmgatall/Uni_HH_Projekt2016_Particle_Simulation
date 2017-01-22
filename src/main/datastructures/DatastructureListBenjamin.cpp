@@ -4,23 +4,15 @@
  *  Created on: Jan 20, 2017
  *      Author: benjamin
  */
-
 #include <datastructures/DatastructureListBenjamin.hpp>
-
-DatastructureListBenjamin::DatastructureListBenjamin (s_options&     p_options,
-                                                      BorderBase&    p_border,
-                                                      AlgorithmBase& p_algorithm,
-                                                      WriterBase&    p_particle_writer)
+DatastructureListBenjamin::DatastructureListBenjamin (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_particle_writer)
 : DatastructureBase (p_options, p_border, p_algorithm, p_particle_writer) {
     m_stucture_name = "DatastructureListGrid";
     m_particle_groups.push_back (ParticleGroup (Vec3l (), m_options.m_bounds));
 }
 DatastructureListBenjamin::~DatastructureListBenjamin () {
 }
-void DatastructureListBenjamin::list_step_2_calculate (ParticleGroup& p_cell,
-                                                       AlgorithmBase& p_algorithm,
-                                                       unsigned int   p_idx_a,
-                                                       unsigned int   p_idx_b) {
+void DatastructureListBenjamin::list_step_2_calculate (ParticleGroup& p_cell, AlgorithmBase& p_algorithm, unsigned int p_idx_a, unsigned int p_idx_b) {
     unsigned long i, j;
     for (i = 0; i < p_cell.m_neighbors.size (); i++) {
         for (j = 0; j < p_cell.m_neighbors[i].size (); j++) {

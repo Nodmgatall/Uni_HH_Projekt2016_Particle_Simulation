@@ -41,5 +41,4 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <vector>
-
 #endif /* DEFINITIONS_HPP_ */

@@ -4,12 +4,9 @@
  *  Created on: Oct 29, 2016
  *      Author: benjamin
  */
-
 #ifndef SRC_PARTICLEFILEWRITER_HPP_
 #define SRC_PARTICLEFILEWRITER_HPP_
-
 #include "io/output/WriterBase.hpp"
-
 class FileWriterCSV : public WriterBase {
   protected:
     /**
@@ -29,12 +26,8 @@ class FileWriterCSV : public WriterBase {
         * The option struct generated from the parameters given aut program-launch
         */
     s_options& m_options;
-
   public:
-    void saveData (std::vector<data_type>&     p_positions_x,
-                   std::vector<data_type>&     p_positions_y,
-                   std::vector<data_type>&     p_positions_z,
-                   std::vector<unsigned long>& p_ids) override;
+    void saveData (std::vector<data_type>& p_positions_x, std::vector<data_type>& p_positions_y, std::vector<data_type>& p_positions_z, std::vector<unsigned long>& p_ids) override;
     /**
      * constructor
      */
@@ -43,5 +36,4 @@ class FileWriterCSV : public WriterBase {
     void end () override;
     void finalize () override;
 };
-
 #endif /* SRC_PARTICLEFILEWRITER_HPP_ */

@@ -4,9 +4,7 @@
  *  Created on: Jan 20, 2017
  *      Author: benjamin
  */
-
 #include <datastructures/helper/ParticleGroup.hpp>
-
 ParticleGroup::ParticleGroup (Vec3l p_idx, Vec3f p_size_per_group) {
     m_idx       = p_idx;
     m_corner000 = Vec3f (m_idx - 1L) * p_size_per_group;

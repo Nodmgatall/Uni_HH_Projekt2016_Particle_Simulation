@@ -9,7 +9,6 @@
 #include "enums/EnumOutputType.hpp"
 #include <boost/test/unit_test.hpp>
 #include <sstream>
-
 BOOST_AUTO_TEST_CASE (testException1) {
     OutputTypeInvalidException exception (e_output_type::FILE_CSV);
     BOOST_CHECK_EQUAL (exception.what (), "output type ( FILE_CSV ) is invalid");

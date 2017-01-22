@@ -8,10 +8,8 @@
 #include "io/output/file/FileWriterCSV.hpp"
 #include "options/OptionHandler.hpp"
 #include "options/OptionHandler.hpp"
-
 std::string output_folder_name;
-
-void createOutputDirectory () {
+void        createOutputDirectory () {
     time_t     current_time;
     struct tm* time_info;
     time (&current_time);
@@ -40,11 +38,9 @@ int main (int argc, char** argv) {
     OptionHandler option_handler;
     if (int return_value = option_handler.handle_options (argc, argv, options))
         return return_value;
-
-    WriterBase*    writer    = new FileWriterCSV (options, std::string (log_folder) + "/data");
-    BorderBase*    border    = new BorderWrapparound (options.m_bounds);
-    AlgorithmBase* algorithm = AlgorithmFactory::build (options);
-
+    WriterBase*        writer        = new FileWriterCSV (options, std::string (log_folder) + "/data");
+    BorderBase*        border        = new BorderWrapparound (options.m_bounds);
+    AlgorithmBase*     algorithm     = AlgorithmFactory::build (options);
     DatastructureBase* datastructure = 0;
     if (options.m_autotuneing) {
         datastructure = Autotuneing::get_best_datastructure (options, *border, *algorithm, *writer);
@@ -54,19 +50,15 @@ int main (int argc, char** argv) {
         input->initialize_datastructure ();
         delete input;
     }
-
     ParticleSimulator particle_simulator (options, datastructure);
     Benchmark::begin ("everything", false);
     particle_simulator.simulate ();
     Benchmark::end ();
-
     writer->finalize ();
-
     delete writer;
     delete border;
     delete algorithm;
     delete datastructure;
-
     if (options.m_out_file_name.length () > 0) {
         if (rename (output_folder_name.c_str (), options.m_out_file_name.c_str ())) {
             m_error_stream << "moving to " << options.m_out_file_name << " failed" << std::endl;
@@ -84,8 +76,7 @@ int main (int argc, char** argv) {
                     // unable to get current directory
                 }
             }
-            if (symlink ((path_prefix + options.m_out_file_name.c_str ()).c_str (),
-                         "logdata/latest")) {
+            if (symlink ((path_prefix + options.m_out_file_name.c_str ()).c_str (), "logdata/latest")) {
                 m_error_stream << "symlink @ 'logdata/latest' failed" << std::endl;
                 exit (1);
             }

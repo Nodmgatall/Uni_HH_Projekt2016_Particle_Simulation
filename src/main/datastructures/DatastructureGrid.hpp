@@ -1,10 +1,8 @@
 #ifndef PARTICLESGRID_HPP
 #define PARTICLESGRID_HPP
-
 #include "DatastructureBase.hpp"
 #include "Definitions.hpp"
 #include "Vec3.hpp"
-
 class DatastructureGrid : virtual public DatastructureBase {
   protected:
     /**
@@ -88,11 +86,7 @@ class DatastructureGrid : virtual public DatastructureBase {
          * @param p_cell1
          * @param p_cell2
          */
-    void grid_step_2b_calculate_between_cells (ParticleGroup& p_cell_i,
-                                               ParticleGroup& p_cell_j,
-                                               data_type      offset_x,
-                                               data_type      offset_y,
-                                               data_type      offset_z);
+    void grid_step_2b_calculate_between_cells (ParticleGroup& p_cell_i, ParticleGroup& p_cell_j, data_type offset_x, data_type offset_y, data_type offset_z);
     /**
      * verify that all particles in cell are in the correct cell. if there are
      * particles which should be
@@ -100,7 +94,6 @@ class DatastructureGrid : virtual public DatastructureBase {
      * @param p_cell
      */
     void grid_step_3_remove_wrong_particles_from_cell (ParticleGroup& p_cell);
-
   public:
     /**
      * constructor

@@ -4,7 +4,6 @@
  *  Created on: 11.11.2016
  *      Author: benjamin
  */
-
 #ifndef SRC_TOOLS_BENCHMARK_HPP_
 #define SRC_TOOLS_BENCHMARK_HPP_
 #include "Debug.hpp"
@@ -28,7 +27,6 @@ class Benchmark {
      * between begin and end should be indented
      */
     static std::stack<bool> m_section_print;
-
   public:
     /**
      * beginns the next section of time-mesurement
@@ -39,5 +37,4 @@ class Benchmark {
      */
     static void end ();
 };
-
 #endif /* SRC_TOOLS_BENCHMARK_HPP_ */

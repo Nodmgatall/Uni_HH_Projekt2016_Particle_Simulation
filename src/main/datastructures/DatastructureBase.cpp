@@ -4,9 +4,7 @@
  *  Created on: Jan 20, 2017
  *      Author: benjamin
  */
-
 #include "DatastructureListBenjamin.hpp"
-
 void DatastructureBase::step_1_prepare_cell (ParticleGroup& p_cell) {
     unsigned int       i;
     const unsigned int max = p_cell.m_ids.size ();
@@ -24,8 +22,7 @@ void DatastructureBase::step_3_fit_into_borders (ParticleGroup& p_cell) {
     for (i = p_cell.m_ids.size () - 1; i >= 0; i--) {
         Vec3l idx;
         while (p_cell.m_positions_x[m_idx_a][i] < 0) {
-            if (!(p_cell.m_positions_x[m_idx_a][i] >=
-                  -m_options.m_bounds.x * 1000)) { // Comparisons with NaN (except!=)return false
+            if (!(p_cell.m_positions_x[m_idx_a][i] >= -m_options.m_bounds.x * 1000)) { // Comparisons with NaN (except!=)return false
                 m_error_stream << "something went badly wrong" << std::endl << p_cell << std::endl;
                 m_error_happened = true;
                 return;
@@ -91,10 +88,7 @@ void DatastructureBase::serialize () {
     m_writer.start ();
     for (ParticleGroup cell : m_particle_groups) {
         if (!(cell.m_ids.empty ())) {
-            m_writer.saveData (cell.m_positions_x[m_idx_a],
-                               cell.m_positions_y[m_idx_a],
-                               cell.m_positions_z[m_idx_a],
-                               cell.m_ids);
+            m_writer.saveData (cell.m_positions_x[m_idx_a], cell.m_positions_y[m_idx_a], cell.m_positions_z[m_idx_a], cell.m_ids);
         }
     }
     m_writer.end ();
@@ -113,12 +107,7 @@ void DatastructureBase::add_particle (Vec3f p_current_position, Vec3f p_current_
         id = m_max_id++;
     }
     Vec3f old_position = p_current_position - p_current_velocity * m_options.m_timestep;
-    m_border.updatePosition (p_current_position.x,
-                             p_current_position.y,
-                             p_current_position.z,
-                             old_position.x,
-                             old_position.y,
-                             old_position.z);
+    m_border.updatePosition (p_current_position.x, p_current_position.y, p_current_position.z, old_position.x, old_position.y, old_position.z);
     m_particle_groups[0].add_particle (p_current_position, old_position, m_idx_a, id);
 }
 void DatastructureBase::add_particle (Vec3f p_position) {

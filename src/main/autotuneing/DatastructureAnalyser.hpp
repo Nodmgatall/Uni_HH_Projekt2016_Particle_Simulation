@@ -4,15 +4,12 @@
  *  Created on: 21.01.2017
  *      Author: benjamin
  */
-
 #ifndef SRC_MAIN_AUTOTUNEING_DATASTRUCTUREANALYSER_HPP_
 #define SRC_MAIN_AUTOTUNEING_DATASTRUCTUREANALYSER_HPP_
-
 #include "borders/BorderWrapparound.hpp"
 #include "io/output/file/FileWriterCSV.hpp"
 #include <algorithms/AlgorithmStoermerVerletLennardJones.hpp>
 #include <datastructures/DatastructureBase.hpp>
-
 class DatastructureAnalyser : public DatastructureBase {
   public:
     /**
@@ -34,5 +31,4 @@ class DatastructureAnalyser : public DatastructureBase {
     void add_particle (Vec3f p_position) override;
     void add_particle (Vec3f p_position, Vec3f p_velocity, int p_id = -1) override;
 };
-
 #endif /* SRC_MAIN_AUTOTUNEING_DATASTRUCTUREANALYSER_HPP_ */

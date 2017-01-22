@@ -4,13 +4,10 @@
  *  Created on: Jan 20, 2017
  *      Author: benjamin
  */
-
 #ifndef SRC_MAIN_DATASTRUCTURES_HELPER_PARTICLEGROUP_HPP_
 #define SRC_MAIN_DATASTRUCTURES_HELPER_PARTICLEGROUP_HPP_
-
 #include "Definitions.hpp"
 #include "Vec3.hpp"
-
 struct ParticleGroup {
   public:
     /**
@@ -69,5 +66,4 @@ struct ParticleGroup {
         return stream;
     }
 };
-
 #endif /* SRC_MAIN_DATASTRUCTURES_HELPER_PARTICLEGROUP_HPP_ */

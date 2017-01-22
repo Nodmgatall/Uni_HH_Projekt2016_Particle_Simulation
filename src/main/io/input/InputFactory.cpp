@@ -4,9 +4,7 @@
  *  Created on: Oct 29, 2016
  *      Author: benjamin
  */
-
 #include "InputFactory.hpp"
-
 InputBase* InputFactory::build (s_options& p_options, DatastructureBase& p_datastructure) {
     switch (p_options.m_input_type) {
         case e_input_type::FILE_CSV:

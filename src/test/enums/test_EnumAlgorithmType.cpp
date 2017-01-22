@@ -9,20 +9,17 @@
 #include "enums/EnumAlgorithmType.hpp"
 #include <boost/test/unit_test.hpp>
 #include <sstream>
-
 BOOST_AUTO_TEST_CASE (testException1) {
     AlgorithmTypeInvalidException exception (e_algorithm_type::LENNARD_JONES);
     BOOST_CHECK_EQUAL (exception.what (), "algorithm type ( LENNARD_JONES ) is invalid");
 }
 BOOST_AUTO_TEST_CASE (testException2) {
     AlgorithmTypeInvalidException exception (e_algorithm_type::SMOTHED_PARTICLE_HYDRODYNAMICS);
-    BOOST_CHECK_EQUAL (exception.what (),
-                       "algorithm type ( SMOTHED_PARTICLE_HYDRODYNAMICS ) is invalid");
+    BOOST_CHECK_EQUAL (exception.what (), "algorithm type ( SMOTHED_PARTICLE_HYDRODYNAMICS ) is invalid");
 }
 BOOST_AUTO_TEST_CASE (testException3) {
     AlgorithmTypeInvalidException exception (e_algorithm_type::DISSIPATIVE_PARTICLE_DYNAMICS);
-    BOOST_CHECK_EQUAL (exception.what (),
-                       "algorithm type ( DISSIPATIVE_PARTICLE_DYNAMICS ) is invalid");
+    BOOST_CHECK_EQUAL (exception.what (), "algorithm type ( DISSIPATIVE_PARTICLE_DYNAMICS ) is invalid");
 }
 BOOST_AUTO_TEST_CASE (testStringOut1) {
     std::stringstream s;

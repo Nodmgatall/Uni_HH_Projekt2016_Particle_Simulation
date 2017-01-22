@@ -9,7 +9,6 @@
 #include "options/Options.hpp"
 #include <iostream>
 #include <vector>
-
 class DatastructureBase {
   protected:
     std::string    m_stucture_name;
@@ -52,7 +51,6 @@ class DatastructureBase {
          * @param p_cell
          */
     void step_3_fit_into_borders (ParticleGroup& p_cell);
-
   public:
     /**
      *destructor
@@ -63,9 +61,8 @@ class DatastructureBase {
      * constructor
      */
     DatastructureBase (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_writer)
-    : m_options (p_options), m_border (p_border), m_algorithm (p_algorithm), m_writer (p_writer),
-      m_error_happened (false), m_iterations_until_rearange_particles (0), m_idx_a (0), m_idx_b (1),
-      m_max_id (0) {
+    : m_options (p_options), m_border (p_border), m_algorithm (p_algorithm), m_writer (p_writer), m_error_happened (false), m_iterations_until_rearange_particles (0), m_idx_a (0),
+      m_idx_b (1), m_max_id (0) {
     }
     /**
      * @return returns a string form of the name of this datastructure. Can be used to verify the

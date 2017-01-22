@@ -6,12 +6,10 @@
  */
 #ifndef DEBUG_HPP_
 #define DEBUG_HPP_
-
 #include "Definitions.hpp"
 #include "Vec3.hpp"
 #include <fstream>
 #include <iostream>
-
 template <typename T>
 std::ostream& operator<< (std::ostream& stream, const std::vector<T>& array) {
     stream << "[";
@@ -26,14 +24,11 @@ std::ostream& operator<< (std::ostream& stream, const std::vector<T> array[2]) {
     stream << "[" << array[0] << "," << array[1] << "]";
     return stream;
 }
-
 struct s_file_and_console_stream : std::ofstream {
     int         m_indent_count;
     bool        m_last_char_was_std_endl;
     std::string m_file_and_line;
-    s_file_and_console_stream ()
-    : m_indent_count (0), m_last_char_was_std_endl (true),
-      m_file_and_line (std::string (__FILE__) + ":" + std::to_string (__LINE__) + " -> ") {
+    s_file_and_console_stream () : m_indent_count (0), m_last_char_was_std_endl (true), m_file_and_line (std::string (__FILE__) + ":" + std::to_string (__LINE__) + " -> ") {
     }
     s_file_and_console_stream& operator<< (std::ostream& (*manipulator) (std::ostream&) ) {
         manipulator (std::cout);
@@ -41,7 +36,6 @@ struct s_file_and_console_stream : std::ofstream {
         m_last_char_was_std_endl = true;
         return *this;
     }
-
     template <typename T>
     void print (const T& var) {
         if (m_last_char_was_std_endl) {
@@ -59,7 +53,6 @@ struct s_file_and_console_stream : std::ofstream {
         print (var ? "ON" : "OFF");
         return *this;
     }
-
     //////////////////////////////////////////////////////////////////////
     //<<<<--- veränderter output
     //////////////////////////////////////////////////////////////////////
@@ -81,18 +74,15 @@ struct s_file_and_console_stream : std::ofstream {
         if (m_indent_count > 0)
             m_indent_count--;
     }
-
     s_file_and_console_stream& set_file_and_line (const char* p_file, long p_line) {
         m_file_and_line = std::string (p_file) + ":" + std::to_string (p_line) + " -> ";
         ;
         return *this;
     }
 };
-
 extern char                      log_folder[29];
 extern s_file_and_console_stream g_log_file;
 extern bool                      g_verbose;
-
 #if !defined(RELEASE)
 #define DEBUG_ELIMINATOR if (0)
 #elif defined(DEBUG)
@@ -100,16 +90,12 @@ extern bool                      g_verbose;
 #else
 #define DEBUG_ELIMINATOR if (1)
 #endif
-
 #define VERBOSE_ELIMINATOR if (g_verbose)
-
 #define m_standard_stream g_log_file.set_file_and_line (__FILE__, __LINE__)
 #define m_error_stream g_log_file.set_file_and_line (__FILE__, __LINE__)
 #define m_debug_stream DEBUG_ELIMINATOR     g_log_file.set_file_and_line (__FILE__, __LINE__)
 #define m_verbose_stream VERBOSE_ELIMINATOR g_log_file.set_file_and_line (__FILE__, __LINE__)
-
 #define macro_debug_1(x) m_debug_stream << x << std::endl;
 #define macro_debug(x, y) m_debug_stream << x << " = " << y << std::endl;
-
 #define DEBUG_VAR(var) #var << " = " << var
 #endif /* DEBUG_HPP_ */

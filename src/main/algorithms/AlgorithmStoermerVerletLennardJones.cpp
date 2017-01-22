@@ -4,10 +4,8 @@
  *  Created on: Nov 18, 2016
  *      Author: benjamin
  */
-
 #include <algorithms/AlgorithmStoermerVerletLennardJones.hpp>
-AlgorithmStoermerVerletLennardJones::AlgorithmStoermerVerletLennardJones (s_options& p_options)
-: AlgorithmBase (p_options) {
+AlgorithmStoermerVerletLennardJones::AlgorithmStoermerVerletLennardJones (s_options& p_options) : AlgorithmBase (p_options) {
     m_stucture_name = "AlgorithmStoermerVerletLennardJones";
     A_ij            = 48 * p_options.m_timestep * p_options.m_timestep;
     B_ij            = 24 * p_options.m_timestep * p_options.m_timestep;
@@ -17,7 +15,6 @@ AlgorithmStoermerVerletLennardJones::AlgorithmStoermerVerletLennardJones (s_opti
 void AlgorithmStoermerVerletLennardJones::step_1_local (const data_type& p_position_a, data_type& p_position_b) {
     p_position_b = p_position_a * 2 - p_position_b;
 }
-
 void AlgorithmStoermerVerletLennardJones::step_1 (const data_type& p_position_ax,
                                                   const data_type& p_position_ay,
                                                   const data_type& p_position_az,
@@ -28,7 +25,6 @@ void AlgorithmStoermerVerletLennardJones::step_1 (const data_type& p_position_ax
     step_1_local (p_position_ay, p_position_by);
     step_1_local (p_position_az, p_position_bz);
 }
-
 void AlgorithmStoermerVerletLennardJones::step_2 (const data_type&       p_position_aix,
                                                   const data_type&       p_position_aiy,
                                                   const data_type&       p_position_aiz,
@@ -66,15 +62,15 @@ void AlgorithmStoermerVerletLennardJones::step_2 (const data_type&       p_posit
         p_position_bjz[j] += s_ij_z / m_j;
     }
 }
-void AlgorithmStoermerVerletLennardJones::step_2_offset (const data_type& p_offset_position_aix,
-                                                         const data_type& p_offset_position_aiy,
-                                                         const data_type& p_offset_position_aiz,
-                                                         const data_type& p_position_aix,
-                                                         const data_type& p_position_aiy,
-                                                         const data_type& p_position_aiz,
-                                                         data_type&       p_position_bix,
-                                                         data_type&       p_position_biy,
-                                                         data_type&       p_position_biz,
+void AlgorithmStoermerVerletLennardJones::step_2_offset (const data_type&       p_offset_position_aix,
+                                                         const data_type&       p_offset_position_aiy,
+                                                         const data_type&       p_offset_position_aiz,
+                                                         const data_type&       p_position_aix,
+                                                         const data_type&       p_position_aiy,
+                                                         const data_type&       p_position_aiz,
+                                                         data_type&             p_position_bix,
+                                                         data_type&             p_position_biy,
+                                                         data_type&             p_position_biz,
                                                          const data_type* const p_position_ajx,
                                                          const data_type* const p_position_ajy,
                                                          const data_type* const p_position_ajz,

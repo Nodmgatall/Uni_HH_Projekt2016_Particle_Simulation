@@ -10,7 +10,6 @@
 #include <boost/test/unit_test.hpp>
 #include <sstream>
 #include <string>
-
 BOOST_AUTO_TEST_CASE (constructors1) {
     Vec3<int> obj = Vec3<int> (3);
     BOOST_CHECK_EQUAL (obj.x, 3);

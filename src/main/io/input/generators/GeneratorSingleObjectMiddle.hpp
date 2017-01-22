@@ -4,13 +4,10 @@
  *  Created on: 23.11.2016
  *      Author: benjamin
  */
-
 #ifndef SRC_GENERATORS_GENERATORSINGLEOBJECTMIDDLE_HPP_
 #define SRC_GENERATORS_GENERATORSINGLEOBJECTMIDDLE_HPP_
-
 #include "io/input/InputBase.hpp"
 #include <math.h>
-
 class GeneratorSingleObjectMiddle : public InputBase {
   public:
     /**
@@ -23,5 +20,4 @@ class GeneratorSingleObjectMiddle : public InputBase {
     virtual ~GeneratorSingleObjectMiddle ();
     void initialize_datastructure () override;
 };
-
 #endif /* SRC_GENERATORS_GENERATORSINGLEOBJECTMIDDLE_HPP_ */
