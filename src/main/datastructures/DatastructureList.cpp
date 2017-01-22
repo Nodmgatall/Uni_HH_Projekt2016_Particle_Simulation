@@ -25,10 +25,10 @@ void DatastructureList::add_particle (Vec3f p_position) {
     } else {
         m_particle_ids.push_back (m_last_id++);
         /*
-            m_velocities_x_now.push_back (0);
-            m_velocities_y_now.push_back (0);
-            m_velocities_z_now.push_back (0);
-        */
+         m_velocities_x_now.push_back (0);
+         m_velocities_y_now.push_back (0);
+         m_velocities_z_now.push_back (0);
+         */
         m_positions_x_now.push_back (p_position.x);
         m_positions_y_now.push_back (p_position.y);
         m_positions_z_now.push_back (p_position.z);
@@ -36,10 +36,10 @@ void DatastructureList::add_particle (Vec3f p_position) {
         m_positions_y_old.push_back (p_position.y);
         m_positions_z_old.push_back (p_position.z);
         /*
-            m_accelerations_x_now.push_back (0);
-            m_accelerations_y_now.push_back (0);
-            m_accelerations_z_now.push_back (0);
-        */
+         m_accelerations_x_now.push_back (0);
+         m_accelerations_y_now.push_back (0);
+         m_accelerations_z_now.push_back (0);
+         */
     }
 }
 void DatastructureList::add_particle (Vec3f p_position, Vec3f p_velocity, int p_id) {
@@ -60,114 +60,114 @@ bool DatastructureList::run_simulation_iteration (unsigned long p_iteration_numb
      *
      * endlosschleife !!!!
 
-    Benchmark::begin ("Run sim iter in list", false);
-    unsigned long particle_count = m_positions_x_now.size ();
-    if (p_iteration_number % 2 == 0) {
-        // std::cout << "Building list" << std::endl;
-        build_lists ();
-    }
-#pragma omp parallel for
-    for (unsigned long particle_idx = 0; particle_idx < particle_count; particle_idx++) {
-        m_algorithm.step_1 (m_positions_x_now[particle_idx],
-                            m_positions_y_now[particle_idx],
-                            m_positions_z_now[particle_idx],
-                            m_positions_x_old[particle_idx],
-                            m_positions_y_old[particle_idx],
-                            m_positions_z_old[particle_idx]);
-    }
-#pragma omp parallel for
-    for (unsigned long particle_idx = 0; particle_idx < particle_count - 1; particle_idx++) {
-        // std::cout << particle_idx << std::endl;
+     Benchmark::begin ("Run sim iter in list", false);
+     unsigned long particle_count = m_positions_x_now.size ();
+     if (p_iteration_number % 2 == 0) {
+     // std::cout << "Building list" << std::endl;
+     build_lists ();
+     }
+     #pragma omp parallel for
+     for (unsigned long particle_idx = 0; particle_idx < particle_count; particle_idx++) {
+     m_algorithm.step_1 (m_positions_x_now[particle_idx],
+     m_positions_y_now[particle_idx],
+     m_positions_z_now[particle_idx],
+     m_positions_x_old[particle_idx],
+     m_positions_y_old[particle_idx],
+     m_positions_z_old[particle_idx]);
+     }
+     #pragma omp parallel for
+     for (unsigned long particle_idx = 0; particle_idx < particle_count - 1; particle_idx++) {
+     // std::cout << particle_idx << std::endl;
 
-        // std::cout << "db: "<< m_neighbour_section_idxs[particle_idx] << " " <<
-        // m_neighbour_section_idxs[particle_idx + 1] << std::endl;
-        for (unsigned long list_idx = m_neighbour_section_idxs[particle_idx];
-             list_idx < m_neighbour_section_idxs[particle_idx + 1];
-             list_idx++) {
-            // std::cout << m_neighbour_idxs_list[list_idx] << std::endl;
-            m_algorithm.step_2 (m_positions_x_now[particle_idx],
-                                m_positions_y_now[particle_idx],
-                                m_positions_z_now[particle_idx],
-                                m_positions_x_old[particle_idx],
-                                m_positions_y_old[particle_idx],
-                                m_positions_z_old[particle_idx],
-                                &m_positions_x_now[m_neighbour_idxs_list[list_idx]],
-                                &m_positions_y_now[m_neighbour_idxs_list[list_idx]],
-                                &m_positions_z_now[m_neighbour_idxs_list[list_idx]],
-                                &m_positions_x_old[m_neighbour_idxs_list[list_idx]],
-                                &m_positions_y_old[m_neighbour_idxs_list[list_idx]],
-                                &m_positions_z_old[m_neighbour_idxs_list[list_idx]],
-                                0,
-                                1);
-        }
-        // std::cout << "diff new old = " << m_positions_x_old[particle_idx] -
-        // m_positions_x_now[particle_idx] << std::endl;
-    }
-    check_boundaries ();
-    m_positions_x_now.swap (m_positions_x_old);
-    m_positions_y_now.swap (m_positions_y_old);
-    m_positions_z_now.swap (m_positions_z_old);
-    Benchmark::end ();
+     // std::cout << "db: "<< m_neighbour_section_idxs[particle_idx] << " " <<
+     // m_neighbour_section_idxs[particle_idx + 1] << std::endl;
+     for (unsigned long list_idx = m_neighbour_section_idxs[particle_idx];
+     list_idx < m_neighbour_section_idxs[particle_idx + 1];
+     list_idx++) {
+     // std::cout << m_neighbour_idxs_list[list_idx] << std::endl;
+     m_algorithm.step_2 (m_positions_x_now[particle_idx],
+     m_positions_y_now[particle_idx],
+     m_positions_z_now[particle_idx],
+     m_positions_x_old[particle_idx],
+     m_positions_y_old[particle_idx],
+     m_positions_z_old[particle_idx],
+     &m_positions_x_now[m_neighbour_idxs_list[list_idx]],
+     &m_positions_y_now[m_neighbour_idxs_list[list_idx]],
+     &m_positions_z_now[m_neighbour_idxs_list[list_idx]],
+     &m_positions_x_old[m_neighbour_idxs_list[list_idx]],
+     &m_positions_y_old[m_neighbour_idxs_list[list_idx]],
+     &m_positions_z_old[m_neighbour_idxs_list[list_idx]],
+     0,
+     1);
+     }
+     // std::cout << "diff new old = " << m_positions_x_old[particle_idx] -
+     // m_positions_x_now[particle_idx] << std::endl;
+     }
+     check_boundaries ();
+     m_positions_x_now.swap (m_positions_x_old);
+     m_positions_y_now.swap (m_positions_y_old);
+     m_positions_z_now.swap (m_positions_z_old);
+     Benchmark::end ();
 
-    */
+     */
 }
 void DatastructureList::check_boundaries () {
     /* TODO ‘isnormal’ was not declared in this scope -->> compile error
      *
      *
      *
-    unsigned long particle_count = get_particle_count ();
-    data_type     test;
-    bool          b_exit = false;
-    for (unsigned long particle_idx = 0; particle_idx < particle_count; particle_idx++) {
-        test = std::floor (m_positions_x_now[particle_idx] / m_options.m_bounds.x);
-        if (test != 0) {
-            if (!isnormal (m_positions_x_now[particle_idx])) {
-                b_exit = true;
-            }
-            // std::cout << particle_idx << " x " << m_positions_x_now[particle_idx] << " "
-            //        << m_options.m_bounds.x << " " << test;
-            m_positions_x_now[particle_idx] = m_positions_x_now[particle_idx] - m_options.m_bounds.x
-    * test;
-            m_positions_x_old[particle_idx] = m_positions_x_old[particle_idx] - m_options.m_bounds.x
-    * test;
-            // std::cout << "  result: " << m_positions_x_now[particle_idx];
-            // std::cout << "  result: " << m_positions_x_old[particle_idx] << std::endl;
-        }
-        test = std::floor (m_positions_y_now[particle_idx] / m_options.m_bounds.y);
-        if (test != 0) {
-            if (!isnormal (m_positions_y_now[particle_idx])) {
-                b_exit = true;
-            }
-            // std::cout << particle_idx << " y " << m_positions_y_now[particle_idx] << " "
-            //        << m_options.m_bounds.y << " " << test;
-            m_positions_y_now[particle_idx] = m_positions_y_now[particle_idx] - m_options.m_bounds.y
-    * test;
-            m_positions_y_old[particle_idx] = m_positions_y_old[particle_idx] - m_options.m_bounds.y
-    * test;
-            // std::cout << "  result: " << m_positions_x_now[particle_idx];
-            // std::cout << "  result: " << m_positions_x_old[particle_idx] << std::endl;
-        }
-        test = std::floor (m_positions_z_now[particle_idx] / m_options.m_bounds.z);
-        if (test != 0) {
-            if (!isnormal (m_positions_z_now[particle_idx])) {
-                b_exit = true;
-            }
-            // std::cout << particle_idx << " z " << m_positions_z_now[particle_idx] << " "
-            //        << m_options.m_bounds.z << " " << test;
-            m_positions_z_now[particle_idx] = m_positions_z_now[particle_idx] - m_options.m_bounds.z
-    * test;
-            m_positions_z_old[particle_idx] = m_positions_z_old[particle_idx] - m_options.m_bounds.z
-    * test;
-            // std::cout << "  result: " << m_positions_x_now[particle_idx];
-            // std::cout << "  result: " << m_positions_x_old[particle_idx] << std::endl;
-        }
-        if (b_exit == true) {
-            std::cout << "ERROR" << particle_idx << std::endl;
-            exit (EXIT_FAILURE);
-        }
-    }
-    */
+     unsigned long particle_count = get_particle_count ();
+     data_type     test;
+     bool          b_exit = false;
+     for (unsigned long particle_idx = 0; particle_idx < particle_count; particle_idx++) {
+     test = std::floor (m_positions_x_now[particle_idx] / m_options.m_bounds.x);
+     if (test != 0) {
+     if (!isnormal (m_positions_x_now[particle_idx])) {
+     b_exit = true;
+     }
+     // std::cout << particle_idx << " x " << m_positions_x_now[particle_idx] << " "
+     //        << m_options.m_bounds.x << " " << test;
+     m_positions_x_now[particle_idx] = m_positions_x_now[particle_idx] - m_options.m_bounds.x
+     * test;
+     m_positions_x_old[particle_idx] = m_positions_x_old[particle_idx] - m_options.m_bounds.x
+     * test;
+     // std::cout << "  result: " << m_positions_x_now[particle_idx];
+     // std::cout << "  result: " << m_positions_x_old[particle_idx] << std::endl;
+     }
+     test = std::floor (m_positions_y_now[particle_idx] / m_options.m_bounds.y);
+     if (test != 0) {
+     if (!isnormal (m_positions_y_now[particle_idx])) {
+     b_exit = true;
+     }
+     // std::cout << particle_idx << " y " << m_positions_y_now[particle_idx] << " "
+     //        << m_options.m_bounds.y << " " << test;
+     m_positions_y_now[particle_idx] = m_positions_y_now[particle_idx] - m_options.m_bounds.y
+     * test;
+     m_positions_y_old[particle_idx] = m_positions_y_old[particle_idx] - m_options.m_bounds.y
+     * test;
+     // std::cout << "  result: " << m_positions_x_now[particle_idx];
+     // std::cout << "  result: " << m_positions_x_old[particle_idx] << std::endl;
+     }
+     test = std::floor (m_positions_z_now[particle_idx] / m_options.m_bounds.z);
+     if (test != 0) {
+     if (!isnormal (m_positions_z_now[particle_idx])) {
+     b_exit = true;
+     }
+     // std::cout << particle_idx << " z " << m_positions_z_now[particle_idx] << " "
+     //        << m_options.m_bounds.z << " " << test;
+     m_positions_z_now[particle_idx] = m_positions_z_now[particle_idx] - m_options.m_bounds.z
+     * test;
+     m_positions_z_old[particle_idx] = m_positions_z_old[particle_idx] - m_options.m_bounds.z
+     * test;
+     // std::cout << "  result: " << m_positions_x_now[particle_idx];
+     // std::cout << "  result: " << m_positions_x_old[particle_idx] << std::endl;
+     }
+     if (b_exit == true) {
+     std::cout << "ERROR" << particle_idx << std::endl;
+     exit (EXIT_FAILURE);
+     }
+     }
+     */
 }
 void DatastructureList::build_lists () {
     Benchmark::begin ("build_lists", false);

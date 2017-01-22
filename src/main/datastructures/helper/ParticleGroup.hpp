@@ -13,17 +13,19 @@ struct ParticleGroup {
     /**
      * this array hold the x Coordinate part of the Particle-position for current and last position
      */
-    std::vector<data_type> m_positions_x[2]; /**
-  * this array hold the y Coordinate part of the Particle-position for current and last position
-  */
-    std::vector<data_type> m_positions_y[2]; /**
-  * this array hold the z Coordinate part of the Particle-position for current and last position
-  */
+    std::vector<data_type> m_positions_x[2];
+    /**
+     * this array hold the y Coordinate part of the Particle-position for current and last position
+     */
+    std::vector<data_type> m_positions_y[2];
+    /**
+     * this array hold the z Coordinate part of the Particle-position for current and last position
+     */
     std::vector<data_type> m_positions_z[2];
     /**
-         * this array hold the id for the given particle to be able to trac these particles in the
+     * this array hold the id for the given particle to be able to trac these particles in the
      * visualisation
-         */
+     */
     std::vector<unsigned long> m_ids;
     /**
      * the boundarys for this cell. important for grid datastructure

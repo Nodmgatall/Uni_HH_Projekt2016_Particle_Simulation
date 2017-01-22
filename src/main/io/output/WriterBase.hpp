@@ -11,8 +11,8 @@
 class WriterBase {
   protected:
     /**
-        * the name of the child-class to verify which subclass is used at runtime
-        */
+     * the name of the child-class to verify which subclass is used at runtime
+     */
     std::string m_stucture_name;
 
   public:
@@ -47,12 +47,12 @@ class WriterBase {
      */
     virtual void start () = 0;
     /**
-         * stop writing
-         */
+     * stop writing
+     */
     virtual void end () = 0;
     /**
-         * called after the last timestep
-         */
+     * called after the last timestep
+     */
     virtual void finalize () = 0;
 };
 #endif /* SRC_MAIN_IO_PARTICLEWRITERBASE_HPP_ */

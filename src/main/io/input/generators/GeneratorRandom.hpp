@@ -10,8 +10,8 @@
 class GeneratorRandom : public InputBase {
   public:
     /**
-  *constructor
-  */
+     *constructor
+     */
     GeneratorRandom (s_options& p_options, DatastructureBase& p_datastructure);
     /**
      * destructor

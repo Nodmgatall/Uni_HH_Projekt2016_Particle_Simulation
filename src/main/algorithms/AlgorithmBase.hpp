@@ -37,39 +37,39 @@ class AlgorithmBase {
         return m_stucture_name;
     }
     /**
-         * first part of  Calculation
-         *
-         * @param p_position_ax current_position
-         * @param p_position_ay current_position
-         * @param p_position_az current_position
-         * @param p_position_bx input old_position -> output next_position
-         * @param p_position_by input old_position -> output next_position
-         * @param p_position_bz input old_position -> output next_position
-         */
+     * first part of  Calculation
+     *
+     * @param p_position_ax current_position
+     * @param p_position_ay current_position
+     * @param p_position_az current_position
+     * @param p_position_bx input old_position -> output next_position
+     * @param p_position_by input old_position -> output next_position
+     * @param p_position_bz input old_position -> output next_position
+     */
     virtual void step_1 (const data_type& p_position_ax, const data_type& p_position_ay, const data_type& p_position_az, data_type& p_position_bx, data_type& p_position_by, data_type& p_position_bz) = 0;
     /**
-        * second part of Calculation
-        * a__ -> current
-        * b__ -> next -- modifications inplace!!
-        * _i_ -> particle i
-        * _j_ -> particles j
-        *__x __y __z -> Coordinate-components
-        *
-        * @param p_position_aix current_position of particle i
-        * @param p_position_aiy current_position of particle i
-        * @param p_position_aiz current_position of particle i
-        * @param p_position_bix next_position of particle i
-        * @param p_position_biy next_position of particle i
-        * @param p_position_biz next_position of particle i
-        * @param p_position_ajx current_positions of particles j
-        * @param p_position_ajy current_positions of particles j
-        * @param p_position_ajz current_positions of particles j
-        * @param p_position_bjx next_positions of particles j
-        * @param p_position_bjy next_positions of particles j
-        * @param p_position_bjz next_positions of particles j
-        * @param p_index_j_begin array-bounds for j
-        * @param p_index_j_end array-bounds for j
-        */
+     * second part of Calculation
+     * a__ -> current
+     * b__ -> next -- modifications inplace!!
+     * _i_ -> particle i
+     * _j_ -> particles j
+     *__x __y __z -> Coordinate-components
+     *
+     * @param p_position_aix current_position of particle i
+     * @param p_position_aiy current_position of particle i
+     * @param p_position_aiz current_position of particle i
+     * @param p_position_bix next_position of particle i
+     * @param p_position_biy next_position of particle i
+     * @param p_position_biz next_position of particle i
+     * @param p_position_ajx current_positions of particles j
+     * @param p_position_ajy current_positions of particles j
+     * @param p_position_ajz current_positions of particles j
+     * @param p_position_bjx next_positions of particles j
+     * @param p_position_bjy next_positions of particles j
+     * @param p_position_bjz next_positions of particles j
+     * @param p_index_j_begin array-bounds for j
+     * @param p_index_j_end array-bounds for j
+     */
     virtual void step_2 (const data_type&       p_position_aix,
                          const data_type&       p_position_aiy,
                          const data_type&       p_position_aiz,
@@ -85,34 +85,34 @@ class AlgorithmBase {
                          const unsigned long    p_index_j_begin,
                          const unsigned long    p_index_j_end) = 0;
     /**
-         * second part of  Calculation
-         * a__ -> current
-         * b__ -> next -- modifications inplace!!
-         * _i_ -> particle i
-         * _j_ -> particles j
-         *__x __y __z -> Coordinate-components
-         *
-         * @param p_offset_position_aix offset for particle i to calculate interactions around
-      *borders
-         * @param p_offset_position_aiy offset for particle i to calculate interactions around
-      *borders
-         * @param p_offset_position_aiz offset for particle i to calculate interactions around
-      *borders
-         * @param p_position_aix current_position of particle i
-         * @param p_position_aiy current_position of particle i
-         * @param p_position_aiz current_position of particle i
-         * @param p_position_bix next_position of particle i
-         * @param p_position_biy next_position of particle i
-         * @param p_position_biz next_position of particle i
-         * @param p_position_ajx current_positions of particles j
-         * @param p_position_ajy current_positions of particles j
-         * @param p_position_ajz current_positions of particles j
-         * @param p_position_bjx next_positions of particles j
-         * @param p_position_bjy next_positions of particles j
-         * @param p_position_bjz next_positions of particles j
-         * @param p_index_j_begin array-bounds for j
-         * @param p_index_j_end array-bounds for j
-         */
+     * second part of  Calculation
+     * a__ -> current
+     * b__ -> next -- modifications inplace!!
+     * _i_ -> particle i
+     * _j_ -> particles j
+     *__x __y __z -> Coordinate-components
+     *
+     * @param p_offset_position_aix offset for particle i to calculate interactions around
+     *borders
+     * @param p_offset_position_aiy offset for particle i to calculate interactions around
+     *borders
+     * @param p_offset_position_aiz offset for particle i to calculate interactions around
+     *borders
+     * @param p_position_aix current_position of particle i
+     * @param p_position_aiy current_position of particle i
+     * @param p_position_aiz current_position of particle i
+     * @param p_position_bix next_position of particle i
+     * @param p_position_biy next_position of particle i
+     * @param p_position_biz next_position of particle i
+     * @param p_position_ajx current_positions of particles j
+     * @param p_position_ajy current_positions of particles j
+     * @param p_position_ajz current_positions of particles j
+     * @param p_position_bjx next_positions of particles j
+     * @param p_position_bjy next_positions of particles j
+     * @param p_position_bjz next_positions of particles j
+     * @param p_index_j_begin array-bounds for j
+     * @param p_index_j_end array-bounds for j
+     */
     virtual void step_2_offset (const data_type&       p_offset_position_aix,
                                 const data_type&       p_offset_position_aiy,
                                 const data_type&       p_offset_position_aiz,

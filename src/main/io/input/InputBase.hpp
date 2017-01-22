@@ -12,8 +12,8 @@
 class InputBase {
   protected:
     /**
-        * The option struct generated from the parameters given aut program-launch
-        */
+     * The option struct generated from the parameters given aut program-launch
+     */
     s_options& m_options;
     /**
      * the datastructure in which the data will eb inserted

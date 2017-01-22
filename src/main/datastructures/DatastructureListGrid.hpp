@@ -16,8 +16,8 @@ class DatastructureListGrid : virtual public DatastructureGrid {
 
   public:
     /**
-         * constructor
-         */
+     * constructor
+     */
     DatastructureListGrid (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_particle_writer);
     /**
      * destructor

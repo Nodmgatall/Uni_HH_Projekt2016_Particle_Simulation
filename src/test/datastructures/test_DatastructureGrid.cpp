@@ -524,16 +524,16 @@ BOOST_AUTO_TEST_CASE (test_step_3) {
     BOOST_CHECK_EQUAL (particlesGrid.get_particle_count (), 7);
     particlesGrid.public_step_3_remove_wrong_particles_from_cell (cell);
     /*for (int i = 0; i < particlesGrid.get_size ().x; i++) {
-        for (int j = 0; j < particlesGrid.get_size ().y; j++) {
-            for (int k = 0; k < particlesGrid.get_size ().z; k++) {
-                if (particlesGrid.public_get_cell_at (i, j, k).m_ids.size () > 0) {
-                    BOOST_CHECK_MESSAGE (0, Vec3l (i, j, k));
-                    BOOST_CHECK_MESSAGE (0, particlesGrid.public_get_cell_at (i, j, k).m_ids.size
-    ());
-                }
-            }
-        }
-    }*/
+     for (int j = 0; j < particlesGrid.get_size ().y; j++) {
+     for (int k = 0; k < particlesGrid.get_size ().z; k++) {
+     if (particlesGrid.public_get_cell_at (i, j, k).m_ids.size () > 0) {
+     BOOST_CHECK_MESSAGE (0, Vec3l (i, j, k));
+     BOOST_CHECK_MESSAGE (0, particlesGrid.public_get_cell_at (i, j, k).m_ids.size
+     ());
+     }
+     }
+     }
+     }*/
     BOOST_CHECK_EQUAL (particlesGrid.get_particle_count (), 7);
     BOOST_CHECK_EQUAL (particlesGrid.public_get_cell_at (x, y, z).m_ids.size (), 1);
     BOOST_CHECK_EQUAL (particlesGrid.public_get_cell_at (x - 1, y, z).m_ids.size (), 1);
@@ -586,28 +586,28 @@ BOOST_AUTO_TEST_CASE (test_step_3_wrapparound) {
     particlesGrid.public_step_3_remove_wrong_particles_from_cell (cell);
     BOOST_CHECK_EQUAL (particlesGrid.get_particle_count (), 13);
     /* for (int i = 0; i < particlesGrid.get_size ().x; i++) {
-         for (int j = 0; j < particlesGrid.get_size ().y; j++) {
-             for (int k = 0; k < particlesGrid.get_size ().z; k++) {
-                 if (particlesGrid.public_get_cell_at (i, j, k).m_ids.size () > 0) {
-                     BOOST_CHECK_MESSAGE (0, Vec3l (i, j, k));
-                     BOOST_CHECK_MESSAGE (0, particlesGrid.public_get_cell_at (i, j, k).m_ids.size
+     for (int j = 0; j < particlesGrid.get_size ().y; j++) {
+     for (int k = 0; k < particlesGrid.get_size ().z; k++) {
+     if (particlesGrid.public_get_cell_at (i, j, k).m_ids.size () > 0) {
+     BOOST_CHECK_MESSAGE (0, Vec3l (i, j, k));
+     BOOST_CHECK_MESSAGE (0, particlesGrid.public_get_cell_at (i, j, k).m_ids.size
      ());
-                     for (unsigned int o = 0; o < particlesGrid.public_get_cell_at (i, j,
+     for (unsigned int o = 0; o < particlesGrid.public_get_cell_at (i, j,
      k).m_ids.size (); o++) {
-                         BOOST_CHECK_MESSAGE (
-                             0,
-                             std::to_string (particlesGrid.public_get_cell_at (i, j, k).m_ids[o]) +
+     BOOST_CHECK_MESSAGE (
+     0,
+     std::to_string (particlesGrid.public_get_cell_at (i, j, k).m_ids[o]) +
      " -> " +
-                                 std::to_string (particlesGrid.public_get_cell_at (i, j,
+     std::to_string (particlesGrid.public_get_cell_at (i, j,
      k).m_positions_x[0][o]) + ", " +
-                                 std::to_string (particlesGrid.public_get_cell_at (i, j,
+     std::to_string (particlesGrid.public_get_cell_at (i, j,
      k).m_positions_y[0][o]) + ", " +
-                                 std::to_string (particlesGrid.public_get_cell_at (i, j,
+     std::to_string (particlesGrid.public_get_cell_at (i, j,
      k).m_positions_z[0][o]));
-                     }
-                 }
-             }
-         }
+     }
+     }
+     }
+     }
      }*/
     BOOST_CHECK_EQUAL (particlesGrid.public_get_cell_at (x, y, z).m_ids.size (), 13);
 }

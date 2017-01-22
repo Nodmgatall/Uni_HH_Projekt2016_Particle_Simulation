@@ -1,4 +1,3 @@
-
 /*
  * test_LennardJonesAlgorithm.cpp
  *

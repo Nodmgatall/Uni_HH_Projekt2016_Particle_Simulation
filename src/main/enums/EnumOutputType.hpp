@@ -18,15 +18,15 @@ enum class e_output_type { FILE_CSV = 1, FILE_LAMMPS = 2, FILE_ESPRESSO = 3, FIL
 // CSV::ParaView	how to  -> http://www.paraview.org/Wiki/ParaView/Data_formats
 /* visualisierungs software
  *
-    http://lammps.sandia.gov/viz.html
+ http://lammps.sandia.gov/viz.html
 
-    VMD
-    AtomEye
-    OVITO
-    ParaView
-    PyMol
-    Raster3d
-    RasMol
+ VMD
+ AtomEye
+ OVITO
+ ParaView
+ PyMol
+ Raster3d
+ RasMol
  *
  * */
 std::ostream& operator<< (std::ostream& stream, const e_output_type& p_output_type);

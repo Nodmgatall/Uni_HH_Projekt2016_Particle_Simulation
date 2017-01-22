@@ -1,6 +1,6 @@
-
 #include "ParticleSimulator.hpp"
-ParticleSimulator::ParticleSimulator (s_options& p_options, DatastructureBase* p_datastructure)
+ParticleSimulator::ParticleSimulator (s_options&         p_options,
+                                      DatastructureBase* p_datastructure)
 : m_options (p_options),            //
   m_datastructure (p_datastructure) //
 {

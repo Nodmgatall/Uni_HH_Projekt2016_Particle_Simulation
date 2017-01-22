@@ -36,20 +36,20 @@ class DatastructureBase {
      */
     long m_max_id;
     /**
-         * first step in each iteration. Calculates the new particle position based on
-         * its own speed
-         * @param p_cell the cell contains the particles which are calculated
-         */
+     * first step in each iteration. Calculates the new particle position based on
+     * its own speed
+     * @param p_cell the cell contains the particles which are calculated
+     */
     void step_1_prepare_cell (ParticleGroup& p_cell);
     /**
      * the cells in which the particles are stored
      */
     std::vector<ParticleGroup> m_particle_groups;
     /**
-         * verify that all particles in cell are inside the given bounds, if they are not, they are
-         * moved
-         * @param p_cell
-         */
+     * verify that all particles in cell are inside the given bounds, if they are not, they are
+     * moved
+     * @param p_cell
+     */
     void step_3_fit_into_borders (ParticleGroup& p_cell);
 
   public:

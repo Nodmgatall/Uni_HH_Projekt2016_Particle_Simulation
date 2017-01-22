@@ -23,8 +23,8 @@ class FileWriterCSV : public WriterBase {
      */
     std::ofstream m_file;
     /**
-        * The option struct generated from the parameters given aut program-launch
-        */
+     * The option struct generated from the parameters given aut program-launch
+     */
     s_options& m_options;
 
   public:
