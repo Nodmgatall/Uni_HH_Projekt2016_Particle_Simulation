@@ -14,8 +14,8 @@ GeneratorGridDistribution::~GeneratorGridDistribution () {
 void GeneratorGridDistribution::initialize_datastructure () {
     Vec3f particle_free_Border_size = m_options.m_bounds * 0.001;
     Benchmark::begin ("ParticleGeneratorGridDistribution");
-    data_type temp  = pow (m_options.m_particle_count, 1.0f / 3.0f);
-    Vec3f     delta = (m_options.m_bounds - particle_free_Border_size * 2) / (temp);
+    data_type     temp  = pow (m_options.m_particle_count, 1.0f / 3.0f);
+    Vec3f         delta = (m_options.m_bounds - particle_free_Border_size * 2) / (temp);
     unsigned int  x, y, z;
     unsigned int  tempInt = temp;
     unsigned long count   = 0;

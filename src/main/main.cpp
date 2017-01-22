@@ -8,37 +8,17 @@
 #include "io/output/file/FileWriterCSV.hpp"
 #include "options/OptionHandler.hpp"
 #include "options/OptionHandler.hpp"
-std::string output_folder_name;
-void        createOutputDirectory () {
-    time_t     current_time;
-    struct tm* time_info;
-    time (&current_time);
-    time_info = localtime (&current_time);
-    strftime (log_folder, sizeof (log_folder), "logdata/%Y-%m-%d_%H-%M-%S", time_info);
-    if (mkdir ("logdata", 0700)) {
-        // don't care ... but return value is used
-    }
-    if (mkdir (log_folder, 0700)) {
-        // don't care ... but return value is used
-    }
-    g_log_file.open (std::string (log_folder) + "/log.txt", std::fstream::out);
-    g_log_file << std::fixed << std::setprecision (6) << std::setfill ('0');
-    if (unlink ("logdata/latest")) {
-        // don't care ... but return value is used
-    }
-    output_folder_name = (std::string ("./") + log_folder);
-    if (symlink (output_folder_name.c_str (), "logdata/latest")) {
-        m_error_stream << "symlink @ 'logdata/latest' failed" << std::endl;
-        exit (1);
-    }
-}
+
 int main (int argc, char** argv) {
-    createOutputDirectory ();
+    std::cout << std::fixed << std::setprecision (6) << std::setfill ('0');
     s_options     options;
     OptionHandler option_handler;
     if (int return_value = option_handler.handle_options (argc, argv, options))
         return return_value;
-    WriterBase*        writer        = new FileWriterCSV (options, std::string (log_folder) + "/data");
+    if (mkdir (options.m_out_file_name.c_str (), 0700)) {
+        // don't care ... but return value is used
+    }
+    WriterBase*        writer        = new FileWriterCSV (options, options.m_out_file_name + "/data");
     BorderBase*        border        = new BorderWrapparound (options.m_bounds);
     AlgorithmBase*     algorithm     = AlgorithmFactory::build (options);
     DatastructureBase* datastructure = 0;
@@ -59,27 +39,4 @@ int main (int argc, char** argv) {
     delete border;
     delete algorithm;
     delete datastructure;
-    if (options.m_out_file_name.length () > 0) {
-        if (rename (output_folder_name.c_str (), options.m_out_file_name.c_str ())) {
-            m_error_stream << "moving to " << options.m_out_file_name << " failed" << std::endl;
-        } else {
-            if (unlink ("logdata/latest")) {
-                // don't care ... but return value is used
-            }
-            std::string path_prefix ("");
-            if (options.m_out_file_name.c_str ()[0] == '.') {
-                // relative path to absolute path
-                char cCurrentPath[FILENAME_MAX];
-                if (getcwd (cCurrentPath, sizeof (cCurrentPath))) {
-                    path_prefix = std::string (cCurrentPath) + "/";
-                } else {
-                    // unable to get current directory
-                }
-            }
-            if (symlink ((path_prefix + options.m_out_file_name.c_str ()).c_str (), "logdata/latest")) {
-                m_error_stream << "symlink @ 'logdata/latest' failed" << std::endl;
-                exit (1);
-            }
-        }
-    }
 }

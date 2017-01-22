@@ -11,7 +11,6 @@ std::stack<bool>           Benchmark::m_section_print      = std::stack<bool> ()
 void Benchmark::begin (std::string p_section_name, bool p_print) {
     if (p_print) {
         m_verbose_stream << ">>>" << p_section_name << " :: starting" << std::endl;
-        g_log_file.indent ();
     }
     struct timeval time_now;
     gettimeofday (&time_now, NULL);
@@ -31,8 +30,6 @@ void Benchmark::end () {
     m_section_starttimes.pop ();
     m_section_print.pop ();
     gettimeofday (&time_now, NULL);
-    if (print)
-        g_log_file.unindent ();
     time_diff = ((time_now.tv_sec - time_begin.tv_sec) * 1000000u + time_now.tv_usec - time_begin.tv_usec) / 1.e6;
     if (print) {
         m_verbose_stream << "<<<" << section_name << " :: finished in " << time_diff << "s" << std::endl;

@@ -223,10 +223,10 @@ void OptionHandler::print_choosen_options (s_options& p_options) {
                       << "max_iterations_between_datastructure_rebuild " << p_options.m_max_iterations_between_datastructure_rebuild << std::endl
                       << "write_modes                                  [";
     for (std::set<e_csv_column_type>::iterator csv_column = p_options.m_write_modes.begin (); csv_column != p_options.m_write_modes.end (); ++csv_column) {
-        g_log_file << (first ? "" : ", ") << *csv_column;
+        std::cout << (first ? "" : ", ") << *csv_column;
         first = false;
     }
-    g_log_file << "]" << std::endl;
+    std::cout << "]" << std::endl;
 }
 void OptionHandler::print_header () {
     m_standard_stream //
