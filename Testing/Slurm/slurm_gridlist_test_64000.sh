@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH -J particle-simulation
-#SBATCH -o particle-simulation-grid-test-64000.out
+#SBATCH -o particle-simulation-gridlist-test-64000.out
 #SBATCH -p west
 #SBATCH -c 24
 #SBATCH -N 1-1
@@ -11,7 +11,7 @@ srun ../../particle_simulation.x \
 --algorithm=LENNARD_JONES \
 --data_structure=GRID \
 --input=GENERATOR_GRID_DISTRIBUTION --count=64000 \
---output=FILE_CSV --out_file_name="out_64000_particles_grid" \
+--output=FILE_CSV --out_file_name="out_64000_particles_gridlist" \
 --max_iterations=2000 \
 --write_fequency=1 \
 --cut_off_radius=2.5 \

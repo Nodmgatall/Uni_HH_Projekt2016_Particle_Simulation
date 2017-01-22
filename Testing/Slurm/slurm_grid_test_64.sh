@@ -2,7 +2,7 @@
 #SBATCH -J particle-simulation
 #SBATCH -o particle-simulation-grid-test-64.out
 #SBATCH -p west
-#SBATCH -c 1
+#SBATCH -c 24
 #SBATCH -N 1-1
 #SBATCH -n 1
 rm -rf out_64_particles
