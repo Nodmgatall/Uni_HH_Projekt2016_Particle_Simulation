@@ -13,9 +13,7 @@
 #include "datastructures/DatastructureBase.hpp"
 #include "file/FileReaderCSV.hpp"
 #include "generators/GeneratorGridDistribution.hpp"
-#include "generators/GeneratorMultipleObjects.hpp"
 #include "generators/GeneratorRandom.hpp"
-#include "generators/GeneratorRandomUniform.hpp"
 #include "generators/GeneratorSingleObjectMiddle.hpp"
 #include "options/Options.hpp"
 

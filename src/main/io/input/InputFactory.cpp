@@ -17,10 +17,6 @@ InputBase* InputFactory::build (s_options& p_options, DatastructureBase& p_datas
             return new GeneratorSingleObjectMiddle (p_options, p_datastructure);
         case e_input_type::GENERATOR_GRID_DISTRIBUTION:
             return new GeneratorGridDistribution (p_options, p_datastructure);
-        case e_input_type::GENERATOR_MULTIPLE_OBJECTS:
-            return new GeneratorMultipleObjects (p_options, p_datastructure);
-        case e_input_type::GENERATOR_RANDOM_UNIFORM:
-            return new GeneratorRandomUniform (p_options, p_datastructure);
         default:
             throw InputTypeInvalidException (p_options.m_input_type);
     }

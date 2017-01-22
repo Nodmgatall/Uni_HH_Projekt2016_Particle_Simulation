@@ -264,17 +264,6 @@ BOOST_AUTO_TEST_CASE (test2) {
     BOOST_CHECK_EQUAL (InputFactory::build (options, particles)->get_structure_name (),
                        "GeneratorGridDistribution");
 }
-BOOST_AUTO_TEST_CASE (test3) {
-    s_options options;
-    memset (&options, 0, sizeof (s_options));
-    options.m_input_type = e_input_type::GENERATOR_MULTIPLE_OBJECTS;
-    BoundsCorrection border (options.m_bounds);
-    Algorithm        algorithm (options);
-    ParticleWriter   writer    = ParticleWriter (0);
-    Datastructure    particles = Datastructure (options, border, algorithm, writer);
-    BOOST_CHECK_EQUAL (InputFactory::build (options, particles)->get_structure_name (),
-                       "GeneratorMultipleObjects");
-}
 BOOST_AUTO_TEST_CASE (test4) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
@@ -285,17 +274,6 @@ BOOST_AUTO_TEST_CASE (test4) {
     Datastructure    particles = Datastructure (options, border, algorithm, writer);
     BOOST_CHECK_EQUAL (InputFactory::build (options, particles)->get_structure_name (),
                        "GeneratorRandom");
-}
-BOOST_AUTO_TEST_CASE (test5) {
-    s_options options;
-    memset (&options, 0, sizeof (s_options));
-    options.m_input_type = e_input_type::GENERATOR_RANDOM_UNIFORM;
-    BoundsCorrection border (options.m_bounds);
-    Algorithm        algorithm (options);
-    ParticleWriter   writer    = ParticleWriter (0);
-    Datastructure    particles = Datastructure (options, border, algorithm, writer);
-    BOOST_CHECK_EQUAL (InputFactory::build (options, particles)->get_structure_name (),
-                       "GeneratorRandomUniform");
 }
 BOOST_AUTO_TEST_CASE (test6) {
     s_options options;
