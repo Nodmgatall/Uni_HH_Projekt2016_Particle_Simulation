@@ -8,13 +8,18 @@
 #ifndef SRC_MAIN_AUTOTUNEING_AUTOTUNEING_HPP_
 #define SRC_MAIN_AUTOTUNEING_AUTOTUNEING_HPP_
 
+#include "autotuneing/DatastructureAnalyser.hpp"
 #include "datastructures/DatastructureFactory.hpp"
+#include "io/input/InputBase.hpp"
+#include "io/input/InputFactory.hpp"
 #include "options/Options.hpp"
-#include <autotuneing/DatastructureAnalyser.hpp>
 
 class Autotuneing {
   public:
-    static inline DatastructureBase get_best_datastructure (s_options& p_options) {
+    static inline DatastructureBase* get_best_datastructure (s_options&     p_options,
+                                                             BorderBase&    p_border,
+                                                             AlgorithmBase& p_algorithm,
+                                                             WriterBase&    p_writer) {
         DatastructureAnalyser* analyser = 0;
         switch (p_options.m_input_type) {
             case e_input_type::GENERATOR_RANDOM_UNIFORM:
@@ -37,21 +42,23 @@ class Autotuneing {
             case e_input_type::GENERATOR_RANDOM:
             case e_input_type::FILE_CSV: {
                 // here we need to scan the entire file to decide what to do
-                analyser = new DatastructureAnalyser (p_options,
-                                                      BorderWrapparound (p_options.m_bounds),
-                                                      AlgorithmLennardJones (p_options),
-                                                      FileWriterCSV (p_options, ""));
+                analyser = new DatastructureAnalyser (p_options, p_border, p_algorithm, p_writer);
+                InputBase* input = InputFactory::build (p_options, *analyser);
+                input->initialize_datastructure ();
+                p_options.m_data_structure_type = analyser->analyse ();
                 break;
             }
         }
+        DatastructureBase* result = DatastructureFactory::build (p_options, p_border, p_algorithm, p_writer);
+        if (analyser) {
+            analyser->transfer_particles_to (*result);
+            delete analyser;
+        } else {
+            InputBase* input = InputFactory::build (p_options, *result);
+            input->initialize_datastructure ();
+        }
+        return result;
     }
 };
 
 #endif /* SRC_MAIN_AUTOTUNEING_AUTOTUNEING_HPP_ */
-
-/*
- * TODO data into analyser
- * TODO analyse
- * TODO data to final structure
- *
- */

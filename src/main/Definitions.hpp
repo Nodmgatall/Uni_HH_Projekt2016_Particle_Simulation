@@ -6,6 +6,7 @@
  */
 #ifndef DEFINITIONS_HPP_
 #define DEFINITIONS_HPP_
+#define _USE_MATH_DEFINES
 #ifndef MIN
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 #endif

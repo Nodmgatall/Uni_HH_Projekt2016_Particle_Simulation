@@ -38,14 +38,17 @@ e_datastructure_type DatastructureAnalyser::analyse () {
         // variables for statistics -->>
         std::vector<unsigned long> interaction_count; // each interaction-pair count just once
         unsigned long              sum_interaction_count = 0;
-        unsigned long              avg_interaction_count;
+        unsigned long              avg_interaction_count_by_data;
         float                      avg_place_per_particle;
-        data_type                  xl = m_particle_groups[0].m_positions_x[m_idx_a][0];
-        data_type                  yl = m_particle_groups[0].m_positions_x[m_idx_a][0];
-        data_type                  zl = m_particle_groups[0].m_positions_x[m_idx_a][0];
-        data_type                  xr = xl;
-        data_type                  yr = yl;
-        data_type                  zr = zl;
+        float                      avg_interaction_count_by_cut_off;
+        float                      volume_included_in_cut_off;
+        float cut_off_3 = m_options.m_cut_off_radius * m_options.m_cut_off_radius * m_options.m_cut_off_radius;
+        data_type xl = m_particle_groups[0].m_positions_x[m_idx_a][0];
+        data_type yl = m_particle_groups[0].m_positions_x[m_idx_a][0];
+        data_type zl = m_particle_groups[0].m_positions_x[m_idx_a][0];
+        data_type xr = xl;
+        data_type yr = yl;
+        data_type zr = zl;
         // variables for statistics <<--
         unsigned long i;
         unsigned long j;
@@ -78,8 +81,15 @@ e_datastructure_type DatastructureAnalyser::analyse () {
                 }
             }
         }
-        avg_interaction_count = sum_interaction_count / m_particle_groups[0].m_ids.size ();
+        avg_interaction_count_by_data = sum_interaction_count / m_particle_groups[0].m_ids.size ();
         avg_place_per_particle = ((xr - xl) * (yr - yl) * (zr - zl)) / m_particle_groups[0].m_ids.size ();
+        volume_included_in_cut_off       = 4 / 3 * M_PI * cut_off_3;
+        avg_interaction_count_by_cut_off = volume_included_in_cut_off / avg_place_per_particle;
+        if (avg_interaction_count_by_cut_off < cut_off_3 / avg_place_per_particle) {
+            // echte interactionen sind kleiner als die zu erwartenden bei der grid aufteilung
+            return e_datastructure_type::LISTEDGIRD;
+        }
+        // TODO decision improvements
     } else {
         // error cannot analyse not existing data
     }

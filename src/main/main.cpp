@@ -9,6 +9,7 @@
 #include "io/output/file/FileWriterCSV.hpp"
 
 #include "algorithms/AlgorithmFactory.hpp"
+#include "autotuneing/Autotuneing.hpp"
 #include "datastructures/DatastructureFactory.hpp"
 #include "io/input/InputFactory.hpp"
 
@@ -47,11 +48,16 @@ int main (int argc, char** argv) {
     WriterBase*    writer    = new FileWriterCSV (options, std::string (log_folder) + "/data");
     BorderBase*    border    = new BorderWrapparound (options.m_bounds);
     AlgorithmBase* algorithm = AlgorithmFactory::build (options);
-    DatastructureBase* datastructure = DatastructureFactory::build (options, *border, *algorithm, *writer);
 
-    InputBase* input = InputFactory::build (options, *datastructure);
-
-    input->initialize_datastructure ();
+    DatastructureBase* datastructure = 0;
+    if (options.m_autotuneing) {
+        datastructure = Autotuneing::get_best_datastructure (options, *border, *algorithm, *writer);
+    } else {
+        datastructure    = DatastructureFactory::build (options, *border, *algorithm, *writer);
+        InputBase* input = InputFactory::build (options, *datastructure);
+        input->initialize_datastructure ();
+        delete input;
+    }
 
     ParticleSimulator particle_simulator (options, datastructure);
     Benchmark::begin ("everything", false);
@@ -59,6 +65,11 @@ int main (int argc, char** argv) {
     Benchmark::end ();
 
     writer->finalize ();
+
+    delete writer;
+    delete border;
+    delete algorithm;
+    delete datastructure;
 
     if (options.m_out_file_name.length () > 0) {
         if (rename (output_folder_name.c_str (), options.m_out_file_name.c_str ())) {

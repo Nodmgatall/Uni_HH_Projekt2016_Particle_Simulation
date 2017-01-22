@@ -7,7 +7,6 @@ ParticleSimulator::ParticleSimulator (s_options& p_options, DatastructureBase* p
 {
 }
 ParticleSimulator::~ParticleSimulator () {
-    delete (m_datastructure);
 }
 void ParticleSimulator::simulate () {
     Benchmark::begin ("Simulation");
