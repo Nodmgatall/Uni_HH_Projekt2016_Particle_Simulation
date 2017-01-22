@@ -36,7 +36,7 @@ struct ParticleGroup {
     /**
      * list of neighbors to calculate the interaction with
      */
-    std::vector<std::vector<unsigned long>> m_neighbors;
+    std::vector<std::vector<unsigned long>> m_neighbors[15];
     /**
      * constructor
      */
