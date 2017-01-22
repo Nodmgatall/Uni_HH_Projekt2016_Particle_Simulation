@@ -5,6 +5,7 @@
 #SBATCH -c 1
 #SBATCH -N 1-1
 #SBATCH -n 1
+rm -rf out_64_particles
 srun hostname
 srun ../../particle_simulation.x \
 --algorithm=LENNARD_JONES \
