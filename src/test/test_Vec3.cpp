@@ -138,9 +138,15 @@ BOOST_AUTO_TEST_CASE (print) {
     std::string string = stream.str ();
     BOOST_CHECK_EQUAL (string, std::string ("Vec(2,3,4)"));
 }
-BOOST_AUTO_TEST_CASE (test_read) {
+BOOST_AUTO_TEST_CASE (test_read1) {
     Vec3<data_type>   vec;
     std::stringstream stream ("Vec(2,3,4)");
     stream >> vec;
     BOOST_CHECK_EQUAL (vec, Vec3<data_type> (2, 3, 4));
+}
+BOOST_AUTO_TEST_CASE (test_read2) {
+    Vec3<data_type>   vec;
+    std::stringstream stream ("Vec(25,36,47)");
+    stream >> vec;
+    BOOST_CHECK_EQUAL (vec, Vec3<data_type> (25, 36, 47));
 }

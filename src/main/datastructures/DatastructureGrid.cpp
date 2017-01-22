@@ -147,9 +147,8 @@ void DatastructureGrid::grid_step_3_remove_wrong_particles_from_cell (ParticleGr
     }
 }
 bool DatastructureGrid::grid_step_2 () {
-    unsigned int idx_x, idx_y, idx_z;
-    unsigned int parallel_offset_x, parallel_offset_y, parallel_offset_z;
-    Benchmark::begin ("step 2b", false);
+    unsigned int    idx_x, idx_y, idx_z;
+    unsigned int    parallel_offset_x, parallel_offset_y, parallel_offset_z;
     const long      border_cells_ignored_count = 1; // 0 or 1
     const long      lx                         = border_cells_ignored_count;
     const long      ly                         = border_cells_ignored_count;
@@ -161,10 +160,11 @@ bool DatastructureGrid::grid_step_2 () {
     const data_type oy                         = m_options.m_bounds.y;
     const data_type oz                         = m_options.m_bounds.z;
     { // Cells in the middle of the simulated Volume
+        m_verbose_stream << "grid_step_2::1" << std::endl;
         for (parallel_offset_x = 0; parallel_offset_x < 2; parallel_offset_x++) {
             for (parallel_offset_y = 0; parallel_offset_y < 2; parallel_offset_y++) {
                 for (parallel_offset_z = 0; parallel_offset_z < 2; parallel_offset_z++) {
-#pragma omp parallel for
+#pragma omp parallel for private(idx_x, idx_y, idx_z)
                     for (idx_x = parallel_offset_x + lx; idx_x < rx; idx_x += 2) {
                         for (idx_y = parallel_offset_y + ly; idx_y < ry; idx_y += 2) {
                             for (idx_z = parallel_offset_z + lz; idx_z < rz; idx_z += 2) {
@@ -191,9 +191,10 @@ bool DatastructureGrid::grid_step_2 () {
     if (m_error_happened)
         return m_error_happened;
     { // Wraparound-interaction at the X-Border
+        m_verbose_stream << "grid_step_2::2" << std::endl;
         for (parallel_offset_y = 0; parallel_offset_y < 2; parallel_offset_y++) {
             for (parallel_offset_z = 0; parallel_offset_z < 2; parallel_offset_z++) {
-#pragma omp parallel for
+#pragma omp parallel for private(idx_y, idx_z)
                 for (idx_y = parallel_offset_y + ly; idx_y < ry; idx_y += 2) {
                     for (idx_z = parallel_offset_z + lz; idx_z < rz; idx_z += 2) {
                         grid_step_2b_calculate_between_cells (grid_get_cell_at (rx, idx_y + 1, idx_z + 1), grid_get_cell_at (rx, idx_y + 0, idx_z + 0));
@@ -217,9 +218,10 @@ bool DatastructureGrid::grid_step_2 () {
     if (m_error_happened)
         return m_error_happened;
     { // Wraparound-interaction at the Y-Border
+        m_verbose_stream << "grid_step_2::3" << std::endl;
         for (parallel_offset_x = 0; parallel_offset_x < 2; parallel_offset_x++) {
             for (parallel_offset_z = 0; parallel_offset_z < 2; parallel_offset_z++) {
-#pragma omp parallel for
+#pragma omp parallel for private(idx_x, idx_z)
                 for (idx_x = parallel_offset_x + lx; idx_x < rx; idx_x += 2) {
                     for (idx_z = parallel_offset_z + lz; idx_z < rz; idx_z += 2) {
                         grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ry, idx_z + 1), grid_get_cell_at (idx_x + 0, ry, idx_z + 0));
@@ -243,9 +245,10 @@ bool DatastructureGrid::grid_step_2 () {
     if (m_error_happened)
         return m_error_happened;
     { // Wraparound-interaction at the Z-Border
+        m_verbose_stream << "grid_step_2::4" << std::endl;
         for (parallel_offset_x = 0; parallel_offset_x < 2; parallel_offset_x++) {
             for (parallel_offset_y = 0; parallel_offset_y < 2; parallel_offset_y++) {
-#pragma omp parallel for
+#pragma omp parallel for private(idx_x, idx_y)
                 for (idx_x = parallel_offset_x + lx; idx_x < rx; idx_x += 2) {
                     for (idx_y = parallel_offset_y + ly; idx_y < ry; idx_y += 2) {
                         grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 1, rz), grid_get_cell_at (idx_x + 0, idx_y + 0, rz));
@@ -269,8 +272,9 @@ bool DatastructureGrid::grid_step_2 () {
     if (m_error_happened)
         return m_error_happened;
     { // Wraparound-interaction at the YZ-Border
+        m_verbose_stream << "grid_step_2::5" << std::endl;
         for (parallel_offset_x = 0; parallel_offset_x < 2; parallel_offset_x++) {
-#pragma omp parallel for
+#pragma omp parallel for private(idx_x)
             for (idx_x = parallel_offset_x + lx; idx_x < rx; idx_x += 2) {
                 grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ry, rz), grid_get_cell_at (idx_x + 0, ry, rz));
                 grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ly, lz), grid_get_cell_at (idx_x + 0, ry, rz), 0, oy, oz);
@@ -291,8 +295,9 @@ bool DatastructureGrid::grid_step_2 () {
     if (m_error_happened)
         return m_error_happened;
     { // Wraparound-interaction at the XZ-Border
+        m_verbose_stream << "grid_step_2::6" << std::endl;
         for (parallel_offset_y = 0; parallel_offset_y < 2; parallel_offset_y++) {
-#pragma omp parallel for
+#pragma omp parallel for private(idx_y)
             for (idx_y = parallel_offset_y + ly; idx_y < ry; idx_y += 2) {
                 grid_step_2b_calculate_between_cells (grid_get_cell_at (rx, idx_y + 1, rz), grid_get_cell_at (rx, idx_y + 0, rz));
                 grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 1, lz), grid_get_cell_at (rx, idx_y + 0, rz), ox, 0, oz);
@@ -313,8 +318,9 @@ bool DatastructureGrid::grid_step_2 () {
     if (m_error_happened)
         return m_error_happened;
     { // Wraparound-interaction at the XY-Border
+        m_verbose_stream << "grid_step_2::7" << std::endl;
         for (parallel_offset_z = 0; parallel_offset_z < 2; parallel_offset_z++) {
-#pragma omp parallel for
+#pragma omp parallel for private(idx_z)
             for (idx_z = parallel_offset_z + lz; idx_z < rz; idx_z += 2) {
                 grid_step_2b_calculate_between_cells (grid_get_cell_at (rx, ry, idx_z + 1), grid_get_cell_at (rx, ry, idx_z + 0));
                 grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, ly, idx_z + 1), grid_get_cell_at (rx, ry, idx_z + 0), ox, oy, 0);
@@ -335,6 +341,7 @@ bool DatastructureGrid::grid_step_2 () {
     if (m_error_happened)
         return m_error_happened;
     { // Wraparound-interaction at the XYZ-Corner
+        m_verbose_stream << "grid_step_2::8" << std::endl;
         grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, ly, lz), grid_get_cell_at (rx, ry, rz), ox, oy, oz);
         grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, ly, rz), grid_get_cell_at (rx, ry, rz), ox, oy, 0);
         grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, ly, rz), grid_get_cell_at (rx, ry, lz), ox, oy, -oz);
@@ -349,7 +356,6 @@ bool DatastructureGrid::grid_step_2 () {
         grid_step_2b_calculate_between_cells (grid_get_cell_at (rx, ly, rz), grid_get_cell_at (rx, ry, lz), 0, oy, -oz);
         grid_step_2b_calculate_between_cells (grid_get_cell_at (rx, ry, lz), grid_get_cell_at (rx, ry, rz), 0, 0, oz);
     }
-    Benchmark::end ();
     return false;
 }
 bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_number) {
@@ -359,7 +365,7 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
     m_iterations_until_rearange_particles--;
     unsigned int idx_x, idx_y, idx_z;
     {
-        Benchmark::begin ("step 1+2a", false);
+        m_verbose_stream << "grid_step_1" << std::endl;
         //#pragma omp parallel for
         for (idx_x = 0; idx_x < grid_size.x; idx_x++) {
             for (idx_y = 0; idx_y < grid_size.y; idx_y++) {
@@ -370,10 +376,10 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
                 }
             }
         }
-        Benchmark::end ();
     }
     if (m_error_happened)
         return m_error_happened;
+    m_verbose_stream << "grid_step_2" << std::endl;
     grid_step_2 ();
     if (m_error_happened)
         return m_error_happened;
@@ -381,7 +387,7 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
         return m_error_happened;
     {
         if (m_iterations_until_rearange_particles < 1) {
-            Benchmark::begin ("step 3", false);
+            m_verbose_stream << "grid_step_3" << std::endl;
             for (idx_x = 0; idx_x < grid_size.x; idx_x++) {
                 for (idx_y = 0; idx_y < grid_size.y; idx_y++) {
                     for (idx_z = 0; idx_z < grid_size.z; idx_z++) {
@@ -390,7 +396,7 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
                     }
                 }
             }
-            Benchmark::end ();
+
             if (m_error_happened)
                 return m_error_happened;
             m_iterations_until_rearange_particles = m_options.m_max_iterations_between_datastructure_rebuild;
