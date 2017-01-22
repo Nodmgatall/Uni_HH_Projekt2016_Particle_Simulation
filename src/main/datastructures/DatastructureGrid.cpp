@@ -410,7 +410,7 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
             g_sum_energy += 0.5 * m * v.length () * v.length ();
         }
     }
-    m_verbose_stream << DEBUG_VAR (g_sum_energy) << "J" << std::endl;
+    m_verbose_stream << DEBUG_VAR (g_sum_energy) << " Joule" << std::endl;
     g_sum_energy_valid = true;
 #endif
     return m_error_happened;

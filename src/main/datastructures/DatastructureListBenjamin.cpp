@@ -143,6 +143,22 @@ bool DatastructureListBenjamin::run_simulation_iteration (unsigned long p_iterat
     list_step_2_calculate (m_particle_groups[0], m_particle_groups[0], m_algorithm, m_idx_a, m_idx_b, 0, 0, oz);
     step_3_fit_into_borders (m_particle_groups[0]);
     m_idx_b = !(m_idx_a = m_idx_b);
+#ifdef CALCULATE_ENERGY_CONSERVATION
+    unsigned int i, j;
+    g_sum_energy = 0;
+    for (i = 0; i < m_particle_groups.size (); i++) {
+        ParticleGroup& group = m_particle_groups[i];
+        for (j = 0; j < group.m_ids.size (); j++) {
+            data_type m = 1;
+            Vec3f     v = Vec3f (group.m_positions_x[m_idx_b][j] - group.m_positions_x[m_idx_a][j],
+                             group.m_positions_y[m_idx_b][j] - group.m_positions_y[m_idx_a][j],
+                             group.m_positions_z[m_idx_b][j] - group.m_positions_z[m_idx_a][j]);
+            g_sum_energy += 0.5 * m * v.length () * v.length ();
+        }
+    }
+    m_verbose_stream << DEBUG_VAR (g_sum_energy) << " Joule" << std::endl;
+    g_sum_energy_valid = true;
+#endif
     return false; // NO error
 }
 void DatastructureListBenjamin::list_rebuild (ParticleGroup& p_cell, unsigned int p_idx_a, s_options& p_options) {
