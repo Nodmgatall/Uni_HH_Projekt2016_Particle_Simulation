@@ -11,7 +11,7 @@
 #include <datastructures/DatastructureGrid.hpp>
 #include <datastructures/DatastructureListBenjamin.hpp>
 
-class DatastructureListGrid : virtual public DatastructureGrid, virtual public DatastructureListBenjamin {
+class DatastructureListGrid : virtual public DatastructureGrid {
   protected:
     void grid_step_2a_calculate_inside_cell (ParticleGroup& p_cell) override;
 
@@ -24,9 +24,6 @@ class DatastructureListGrid : virtual public DatastructureGrid, virtual public D
      * destructor
      */
     ~DatastructureListGrid ();
-    bool run_simulation_iteration (unsigned long p_iteration_number = 0) override;
-    void add_particle (Vec3f p_position) override;
-    void add_particle (Vec3f p_current_position, Vec3f p_current_velocity, int p_id = -1) override;
 };
 
 #endif /* SRC_MAIN_DATASTRUCTURES_DATASTRUCTURELISTGRID_HPP_ */
