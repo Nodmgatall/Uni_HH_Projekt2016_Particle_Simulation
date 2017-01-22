@@ -13,6 +13,9 @@
 #ifndef MAX
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 #endif
+#ifndef SGN
+#define SGN(x) (((x) < 0) ? -1 : ((x) > 0))
+#endif
 #ifdef OMP_AVAILABLE
 #include <omp.h>
 #endif

@@ -86,7 +86,7 @@ class DatastructureGrid : virtual public DatastructureBase {
          * @param p_cell1
          * @param p_cell2
          */
-    void grid_step_2b_calculate_between_cells (ParticleGroup& p_cell_i, ParticleGroup& p_cell_j, data_type offset_x, data_type offset_y, data_type offset_z);
+    void grid_step_2b_calculate_between_cells (ParticleGroup& p_cell_i, ParticleGroup& p_cell_j, data_type p_offset_x, data_type p_offset_y, data_type p_offset_z);
     /**
      * verify that all particles in cell are in the correct cell. if there are
      * particles which should be
