@@ -440,7 +440,7 @@ BOOST_AUTO_TEST_CASE (test_print_config) {
                                       "--algorithm=LENNARD_JONES",
                                       "--data_structure=GRID",
                                       "--output=FILE_CSV",
-                                      "--input=GENERATOR_SINGLE_OBJECT_MIDDLE",
+                                      "--input=GENERATOR_GRID_DISTRIBUTION",
                                       "--WRITE_ID",
                                       "--WRITE_VELOCITY",
                                       "--WRITE_POSITION",
@@ -471,8 +471,10 @@ BOOST_AUTO_TEST_CASE (test_invalid_option) {
                                       "--algorithm=LENNARD_JONES",
                                       "--data_structure=GRID",
                                       "--output=FILE_CSV",
-                                      "--input=GENERATOR_SINGLE_OBJECT_MIDDLE",
+                                      "--input=GENERATOR_GRID_DISTRIBUTION",
                                       "--this_option_does_not_exist" };
+    std::cout << "a" << std::endl;
     int res = handler.handle_options ((int) args.size (), const_cast<char**> (args.data ()), options_test);
+    std::cout << "b" << std::endl;
     BOOST_CHECK_EQUAL (res, 1);
 }

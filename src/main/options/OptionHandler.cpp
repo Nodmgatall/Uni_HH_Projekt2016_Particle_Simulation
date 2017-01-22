@@ -12,7 +12,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
     Benchmark::begin ("OptionHandler::handle_options");
     print_header ();
     bool                help_printed = false;
-    int                 argv_index;
+    int                 opt_index;
     bool                should_print_config                                = false;
     std::string         config_name                                        = "";
     float               run_time_limit                                     = -1;
@@ -47,6 +47,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                                       0,
                                       max_iterations_between_datastructure_rebuild_index * 1000 },
                                     { "print_config", no_argument, 0, print_config_index * 1000 } };
+
     for (index = 1; index < (signed) g_csv_column_names.size (); index++) {
         std::string name    = std::string ("WRITE_") + std::string (g_csv_column_names[index]);
         char*       nameptr = new char[name.length () + 1]; // memory-leak here
@@ -58,13 +59,20 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
      * <a href="http://www.informit.com/articles/article.aspx?p=175771&seqNum=3">getoptlong
      * explanation</a>
      * */
-    while ((argv_index = getopt_long (p_argc, p_argv, "a:b:c:f:h::i:l:m:o:r:s:t:v", options.data (), &long_options)) !=
-           -1) {
+    options.push_back ({ 0, 0, 0, 0 }); // important for gnu-g++  - clang does not need this
+    while (true) {
+        opt_index = getopt_long (p_argc, p_argv, "a:b:c:f:h::i:l:m:o:r:s:t:v", options.data (), &long_options);
+        if ((opt_index == '?') || (opt_index == ':')) {
+            return 1;
+        } else if (opt_index == -1) {
+            break;
+        }
+
         std::stringstream line;
         if (optarg) {
             line.str (optarg);
         }
-        switch (argv_index / 1000) {
+        switch (opt_index / 1000) {
             case algorithm_type_index:
                 p_options.m_algorithm_type =
                     static_cast<e_algorithm_type> (indexInArray (g_algorithm_names, optarg));
@@ -80,7 +88,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                 p_options.m_output_type = static_cast<e_output_type> (indexInArray (g_output_names, optarg));
                 break;
             case write_modes_index:
-                p_options.m_write_modes.insert (static_cast<e_csv_column_type> (argv_index % 1000));
+                p_options.m_write_modes.insert (static_cast<e_csv_column_type> (opt_index % 1000));
                 break;
             case max_iterations_between_datastructure_rebuild_index: {
                 line >> p_options.m_max_iterations_between_datastructure_rebuild;
@@ -90,7 +98,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                 should_print_config = true;
                 break;
             default: {
-                switch (argv_index) {
+                switch (opt_index) {
                     case 'a': {
                         p_options.m_autotuneing = true;
                         break;
@@ -190,9 +198,6 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                     case 'v': {
                         p_options.m_verbose = true;
                         break;
-                    }
-                    case '?': {
-                        return 1;
                     }
                 }
             }
