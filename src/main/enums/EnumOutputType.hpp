@@ -13,7 +13,9 @@
 #include <istream>
 #include <ostream>
 #include <vector>
-
+/**
+ * implemented or planned output types for simulation
+ */
 enum class e_output_type {
     FILE_CSV      = 1,
     FILE_LAMMPS   = 2,

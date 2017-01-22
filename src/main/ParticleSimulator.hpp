@@ -8,11 +8,23 @@
 
 class ParticleSimulator {
   private:
-    s_options          m_options;
+    /**
+     * the given options from the program-start
+     */
+    s_options m_options;
+    /**
+     * the datastructure which holds all the data
+     */
     DatastructureBase* m_datastructure;
 
   public:
+    /**
+     * constructor
+     */
     ParticleSimulator (s_options& p_options, DatastructureBase* p_datastructure);
+    /**
+     * destructor
+     */
     ~ParticleSimulator ();
     /**
      * runs the complete simulation with all iteration steps

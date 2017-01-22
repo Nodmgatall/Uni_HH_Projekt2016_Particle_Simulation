@@ -26,6 +26,9 @@ class AlgorithmStoermerVerletLennardJones : public AlgorithmBase {
     void step_1_local (const data_type& p_position_a, data_type& p_position_b);
 
   public:
+    /**
+     * constructor
+     */
     AlgorithmStoermerVerletLennardJones (s_options& p_options);
 
     void step_1 (const data_type& p_position_ax,
@@ -33,7 +36,7 @@ class AlgorithmStoermerVerletLennardJones : public AlgorithmBase {
                  const data_type& p_position_az,
                  data_type&       p_position_bx,
                  data_type&       p_position_by,
-                 data_type&       p_position_bz);
+                 data_type&       p_position_bz) override;
 
     void step_2 (const data_type&       p_position_aix,
                  const data_type&       p_position_aiy,
@@ -48,7 +51,7 @@ class AlgorithmStoermerVerletLennardJones : public AlgorithmBase {
                  data_type* const       p_position_bjy,
                  data_type* const       p_position_bjz,
                  const unsigned long    p_index_j_begin,
-                 const unsigned long    p_index_j_end);
+                 const unsigned long    p_index_j_end) override;
 
     void step_2_offset (const data_type&       p_offset_position_aix,
                         const data_type&       p_offset_position_aiy,
@@ -66,6 +69,6 @@ class AlgorithmStoermerVerletLennardJones : public AlgorithmBase {
                         data_type* const       p_position_bjy,
                         data_type* const       p_position_bjz,
                         const unsigned long    p_index_j_begin,
-                        const unsigned long    p_index_j_end);
+                        const unsigned long    p_index_j_end) override;
 };
 #endif /* SRC_ALGORITHMS_LENNARDJONESALGORITHM_HPP_ */

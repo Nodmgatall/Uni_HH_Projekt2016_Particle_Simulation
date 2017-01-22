@@ -13,7 +13,9 @@
 #include <istream>
 #include <ostream>
 #include <vector>
-
+/**
+ * implemented or plannes datastructures for optimizeing the particle-calculation
+ */
 enum class e_datastructure_type { GRID = 1, LIST = 2, LIST_BENJAMIN = 3, LISTEDGIRD = 4 };
 
 std::ostream& operator<< (std::ostream& stream, const e_datastructure_type& p_datastructure_type);

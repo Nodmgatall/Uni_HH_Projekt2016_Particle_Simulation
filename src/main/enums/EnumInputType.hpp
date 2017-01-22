@@ -13,7 +13,9 @@
 #include <istream>
 #include <ostream>
 #include <vector>
-
+/**
+ * implemented or planned input types for the simulation
+ */
 enum class e_input_type {
     GENERATOR_RANDOM               = 1,
     GENERATOR_RANDOM_UNIFORM       = 2,

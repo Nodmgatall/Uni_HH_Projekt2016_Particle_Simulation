@@ -23,10 +23,19 @@ class AlgorithmBase {
     std::string m_stucture_name;
 
   public:
+    /**
+     * constructor
+     */
     AlgorithmBase (s_options& p_options) : m_options (p_options) {
     }
+    /**
+     * destructor
+     */
     virtual ~AlgorithmBase () {
     }
+    /**
+     * returns the class name for verifying which subclass is used
+     */
     std::string get_structure_name () {
         return m_stucture_name;
     }

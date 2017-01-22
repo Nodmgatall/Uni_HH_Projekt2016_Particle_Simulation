@@ -70,7 +70,7 @@ class DatastructureGrid : virtual public DatastructureBase {
      * cell
      * @param p_cell the cell which contains the particles
      */
-    void grid_step_2a_calculate_inside_cell (ParticleGroup& p_cell);
+    virtual void grid_step_2a_calculate_inside_cell (ParticleGroup& p_cell);
     /**
      * calculates the movement based on forces between particles which are in
      * different cells each particle-pair consists of one particle from each cell given as
@@ -110,8 +110,8 @@ class DatastructureGrid : virtual public DatastructureBase {
      * destructor
      */
     ~DatastructureGrid ();
-    bool run_simulation_iteration (unsigned long p_iteration_number = 0);
-    void add_particle (Vec3f p_position);
-    void add_particle (Vec3f p_current_position, Vec3f p_current_velocity, int p_id = -1);
+    bool run_simulation_iteration (unsigned long p_iteration_number = 0) override;
+    void add_particle (Vec3f p_position) override;
+    void add_particle (Vec3f p_current_position, Vec3f p_current_velocity, int p_id = -1) override;
 };
 #endif

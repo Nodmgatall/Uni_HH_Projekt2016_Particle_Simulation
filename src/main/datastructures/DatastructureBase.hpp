@@ -54,8 +54,14 @@ class DatastructureBase {
     void step_3_fit_into_borders (ParticleGroup& p_cell);
 
   public:
+    /**
+     *destructor
+     */
     virtual ~DatastructureBase () {
     }
+    /**
+     * constructor
+     */
     DatastructureBase (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_writer)
     : m_options (p_options), m_border (p_border), m_algorithm (p_algorithm), m_writer (p_writer),
       m_error_happened (false), m_iterations_until_rearange_particles (0), m_idx_a (0), m_idx_b (1),

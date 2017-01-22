@@ -13,16 +13,36 @@
 
 struct ParticleGroup {
   public:
-    std::vector<data_type>     m_positions_x[2];
-    std::vector<data_type>     m_positions_y[2];
-    std::vector<data_type>     m_positions_z[2];
+    /**
+     * this array hold the x Coordinate part of the Particle-position for current and last position
+     */
+    std::vector<data_type> m_positions_x[2]; /**
+  * this array hold the y Coordinate part of the Particle-position for current and last position
+  */
+    std::vector<data_type> m_positions_y[2]; /**
+  * this array hold the z Coordinate part of the Particle-position for current and last position
+  */
+    std::vector<data_type> m_positions_z[2];
+    /**
+         * this array hold the id for the given particle to be able to trac these particles in the
+     * visualisation
+         */
     std::vector<unsigned long> m_ids;
-    Vec3f                      m_corner000, m_corner111;
-    Vec3l                      m_idx;
+    /**
+     * the boundarys for this cell. important for grid datastructure
+     */
+    Vec3f m_corner000, m_corner111;
+    /**
+     * the index in the cell array. important for grid-datastructure
+     */
+    Vec3l m_idx;
     /**
      * list of neighbors to calculate the interaction with
      */
     std::vector<std::vector<unsigned long>> m_neighbors;
+    /**
+     * constructor
+     */
     ParticleGroup (Vec3l p_idx, Vec3f p_size_per_cell);
     /**
      * adds an particle to this cell

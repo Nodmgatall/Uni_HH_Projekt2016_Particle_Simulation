@@ -12,9 +12,15 @@
 
 class GeneratorRandomUniform : public InputBase {
   public:
+    /**
+     * constructor
+     */
     GeneratorRandomUniform (s_options& p_options, DatastructureBase& p_datastructure);
+    /**
+     * destructor
+     */
     virtual ~GeneratorRandomUniform ();
-    void initialize_datastructure ();
+    void initialize_datastructure () override;
 };
 
 #endif /* SRC_MAIN_GENERATORS_GENERATORRANDOMUNIFORM_HPP_ */

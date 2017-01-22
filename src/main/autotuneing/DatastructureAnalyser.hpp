@@ -31,8 +31,8 @@ class DatastructureAnalyser : public DatastructureBase {
      * analyses the already given particles and returns which datastructure would be the fastest.
      */
     e_datastructure_type analyse ();
-    void add_particle (Vec3f p_position);
-    void add_particle (Vec3f p_position, Vec3f p_velocity, int p_id = -1);
+    void add_particle (Vec3f p_position) override;
+    void add_particle (Vec3f p_position, Vec3f p_velocity, int p_id = -1) override;
 };
 
 #endif /* SRC_MAIN_AUTOTUNEING_DATASTRUCTUREANALYSER_HPP_ */

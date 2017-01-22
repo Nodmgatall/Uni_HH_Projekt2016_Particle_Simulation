@@ -13,7 +13,9 @@
 #include <istream>
 #include <ostream>
 #include <vector>
-
+/**
+ * implemented or plannes columns which could be written to csv output file
+ */
 enum class e_csv_column_type {
     ID            = 1,
     VELOCITY      = 2,

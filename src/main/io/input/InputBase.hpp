@@ -14,14 +14,29 @@
 
 class InputBase {
   protected:
-    s_options&         m_options;
+    /**
+        * The option struct generated from the parameters given aut program-launch
+        */
+    s_options& m_options;
+    /**
+     * the datastructure in which the data will eb inserted
+     */
     DatastructureBase& m_datastructure;
-    std::string        m_stucture_name;
+    /**
+     * the name of this subclass to verify, which subcalss is used
+     */
+    std::string m_stucture_name;
 
   public:
+    /**
+     * constructor
+     */
     InputBase (s_options& p_options, DatastructureBase& p_datastructure)
     : m_options (p_options), m_datastructure (p_datastructure) {
     }
+    /**
+     * destructor
+     */
     virtual ~InputBase () {
     }
     /**

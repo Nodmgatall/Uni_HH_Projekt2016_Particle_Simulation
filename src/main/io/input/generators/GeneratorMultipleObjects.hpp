@@ -12,9 +12,15 @@
 
 class GeneratorMultipleObjects : public InputBase {
   public:
+    /**
+     * constructor
+     */
     GeneratorMultipleObjects (s_options& p_options, DatastructureBase& p_datastructure);
+    /**
+     * destructor
+     */
     virtual ~GeneratorMultipleObjects ();
-    void initialize_datastructure ();
+    void initialize_datastructure () override;
 };
 
 #endif /* SRC_MAIN_GENERATORS_PARTICLEGENERATORMULTIPLEOBJECTS_HPP_ */

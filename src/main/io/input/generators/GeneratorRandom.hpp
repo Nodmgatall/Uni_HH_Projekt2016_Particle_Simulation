@@ -12,9 +12,15 @@
 
 class GeneratorRandom : public InputBase {
   public:
+    /**
+  *constructor
+  */
     GeneratorRandom (s_options& p_options, DatastructureBase& p_datastructure);
+    /**
+     * destructor
+     */
     virtual ~GeneratorRandom ();
-    void initialize_datastructure ();
+    void initialize_datastructure () override;
 };
 
 #endif /* SRC_GENERATORS_GENERATORRANDOM_HPP_ */

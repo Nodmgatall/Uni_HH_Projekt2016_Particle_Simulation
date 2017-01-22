@@ -14,10 +14,18 @@ class BorderBase {
     std::string m_stucture_name;
 
   public:
+    /**
+     * constructor
+     */
     BorderBase (Vec3f& p_bounds) : m_bounds (p_bounds) {
     }
+    /**
+     * destructor
+     */
     virtual ~BorderBase () {
-    }
+    } /**
+      * returns the class name for verifying which subclass is used
+      */
     std::string get_structure_name () {
         return m_stucture_name;
     }

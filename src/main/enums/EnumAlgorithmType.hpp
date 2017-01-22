@@ -13,7 +13,9 @@
 #include <istream>
 #include <ostream>
 #include <vector>
-
+/**
+ * implemented or planned algorithm_types
+ */
 enum class e_algorithm_type {
     LENNARD_JONES                  = 1,
     SMOTHED_PARTICLE_HYDRODYNAMICS = 2,

@@ -1,17 +1,13 @@
 #include "Definitions.hpp"
 #include "ParticleSimulator.hpp"
-#include "options/OptionHandler.hpp"
-#include <unistd.h>
-
-#include "options/OptionHandler.hpp"
-
-#include "borders/BorderWrapparound.hpp"
-#include "io/output/file/FileWriterCSV.hpp"
-
 #include "algorithms/AlgorithmFactory.hpp"
 #include "autotuneing/Autotuneing.hpp"
+#include "borders/BorderWrapparound.hpp"
 #include "datastructures/DatastructureFactory.hpp"
 #include "io/input/InputFactory.hpp"
+#include "io/output/file/FileWriterCSV.hpp"
+#include "options/OptionHandler.hpp"
+#include "options/OptionHandler.hpp"
 
 std::string output_folder_name;
 

@@ -15,12 +15,28 @@
 #include <time.h>
 class Benchmark {
   private:
-    static std::stack<std::string>    m_section_names;
+    /**
+     * stack of current section-names
+     */
+    static std::stack<std::string> m_section_names;
+    /**
+     * times when the corresponding section started
+     */
     static std::stack<struct timeval> m_section_starttimes;
-    static std::stack<bool>           m_section_print;
+    /**
+     * if the section print its time only after the section finishes or if the print statements
+     * between begin and end should be indented
+     */
+    static std::stack<bool> m_section_print;
 
   public:
+    /**
+     * beginns the next section of time-mesurement
+     */
     static void begin (std::string p_section_name, bool p_print = true);
+    /**
+     * ends the current time mesurement section
+     */
     static void end ();
 };
 
