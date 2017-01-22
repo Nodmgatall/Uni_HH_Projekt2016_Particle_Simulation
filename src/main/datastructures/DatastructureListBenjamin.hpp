@@ -32,7 +32,6 @@ class DatastructureListBenjamin : virtual public DatastructureBase {
     static void list_step_2_calculate (ParticleGroup& p_cell_i, ParticleGroup& p_cell_j, AlgorithmBase& p_algorithm, unsigned int p_idx_a, unsigned int p_idx_b);
     static void
         list_step_2_calculate (ParticleGroup& p_cell_i, ParticleGroup& p_cell_j, AlgorithmBase& p_algorithm, unsigned int p_idx_a, unsigned int p_idx_b, data_type p_offset_x, data_type p_offset_y, data_type p_offset_z);
-
     /**
      * rebuilds the neighborlist in the given cell. if there are other cells in the neighborhood,
      * these would be ignored.

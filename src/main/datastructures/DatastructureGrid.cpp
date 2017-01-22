@@ -360,6 +360,7 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
     unsigned int idx_x, idx_y, idx_z;
     {
         Benchmark::begin ("step 1+2a", false);
+        //#pragma omp parallel for
         for (idx_x = 0; idx_x < grid_size.x; idx_x++) {
             for (idx_y = 0; idx_y < grid_size.y; idx_y++) {
                 for (idx_z = 0; idx_z < grid_size.z; idx_z++) {

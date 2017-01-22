@@ -76,7 +76,7 @@ class DatastructureGrid : virtual public DatastructureBase {
      * @param p_cell1
      * @param p_cell2
      */
-    void grid_step_2b_calculate_between_cells (ParticleGroup& p_cell_i, ParticleGroup& p_cell_j);
+    virtual void grid_step_2b_calculate_between_cells (ParticleGroup& p_cell_i, ParticleGroup& p_cell_j);
     /**
          * calculates the movement based on forces between particles which are in
          * different cells each particle-pair consists of one particle from each cell given as
@@ -86,7 +86,7 @@ class DatastructureGrid : virtual public DatastructureBase {
          * @param p_cell1
          * @param p_cell2
          */
-    void grid_step_2b_calculate_between_cells (ParticleGroup& p_cell_i, ParticleGroup& p_cell_j, data_type p_offset_x, data_type p_offset_y, data_type p_offset_z);
+    virtual void grid_step_2b_calculate_between_cells (ParticleGroup& p_cell_i, ParticleGroup& p_cell_j, data_type p_offset_x, data_type p_offset_y, data_type p_offset_z);
     /**
      * verify that all particles in cell are in the correct cell. if there are
      * particles which should be
