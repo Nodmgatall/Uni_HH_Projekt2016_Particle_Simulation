@@ -23,6 +23,7 @@ class InputBase {
      * the name of this subclass to verify, which subcalss is used
      */
     std::string m_stucture_name;
+
   public:
     /**
      * constructor

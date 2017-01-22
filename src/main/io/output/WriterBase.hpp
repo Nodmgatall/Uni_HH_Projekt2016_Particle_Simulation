@@ -14,6 +14,7 @@ class WriterBase {
         * the name of the child-class to verify which subclass is used at runtime
         */
     std::string m_stucture_name;
+
   public:
     /**
      * constructor

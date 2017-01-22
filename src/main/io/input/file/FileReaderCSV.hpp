@@ -22,6 +22,7 @@ class FileReaderCSV : public InputBase {
      * string left trim removes whitespaces etc from the left and the right string side
      */
     static inline void trim (std::string& s);
+
   public:
     /**
      * constructor

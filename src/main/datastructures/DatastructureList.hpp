@@ -11,6 +11,7 @@ class DatastructureList : public DatastructureBase {
     data_type calculate_cnt_average_neighbours ();
     void      calculate_duration_list ();
     void      setup_iteration ();
+
   public:
     unsigned long              m_last_id;
     data_type                  m_cutoff_radius;

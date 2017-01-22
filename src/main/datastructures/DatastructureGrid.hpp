@@ -94,6 +94,7 @@ class DatastructureGrid : virtual public DatastructureBase {
      * @param p_cell
      */
     void grid_step_3_remove_wrong_particles_from_cell (ParticleGroup& p_cell);
+
   public:
     /**
      * constructor

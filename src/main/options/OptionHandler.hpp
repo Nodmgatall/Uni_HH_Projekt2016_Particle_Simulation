@@ -32,6 +32,7 @@ class OptionHandler {
     void print_usage_particle_sim ();
     void print_header ();
     void print_usage_print_config ();
+
   public:
     /**
      * takes the arguments passed to application and parses them into the option struct

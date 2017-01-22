@@ -22,6 +22,7 @@ extern std::vector<bool>        g_algorithm_implemented;
 class AlgorithmTypeInvalidException : public std::exception {
   private:
     char* m_what;
+
   public:
     AlgorithmTypeInvalidException () {
         m_what = (char*) malloc (100);

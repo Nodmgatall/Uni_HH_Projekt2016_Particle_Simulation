@@ -11,6 +11,7 @@
 class DatastructureListGrid : virtual public DatastructureGrid {
   protected:
     void grid_step_2a_calculate_inside_cell (ParticleGroup& p_cell) override;
+
   public:
     /**
          * constructor

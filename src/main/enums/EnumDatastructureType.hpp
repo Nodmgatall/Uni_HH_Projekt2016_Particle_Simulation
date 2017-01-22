@@ -22,6 +22,7 @@ extern std::vector<bool>        g_datastructure_implemented;
 class DatastructureTypeInvalidException : public std::exception {
   private:
     char* m_what;
+
   public:
     DatastructureTypeInvalidException () {
         m_what = (char*) malloc (100);

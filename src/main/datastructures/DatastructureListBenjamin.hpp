@@ -37,6 +37,6 @@ class DatastructureListBenjamin : virtual public DatastructureBase {
     /**
      * returns the index in the neighborhoodlist for the first cell
      */
-    static int get_neighbor_index_for_cells(ParticleGroup& p_cell_i,ParticleGroup& p_cell_j);
+    static int get_neighbor_index_for_cells (ParticleGroup& p_cell_i, ParticleGroup& p_cell_j);
 };
 #endif /* SRC_MAIN_DATASTRUCTURES_DATASTRUCTURELISTBENJAMIN_HPP_ */

@@ -27,6 +27,7 @@ class Benchmark {
      * between begin and end should be indented
      */
     static std::stack<bool> m_section_print;
+
   public:
     /**
      * beginns the next section of time-mesurement

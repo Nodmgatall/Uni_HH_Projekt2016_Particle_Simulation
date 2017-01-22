@@ -11,6 +11,7 @@ class BorderBase {
   protected:
     Vec3f&      m_bounds;
     std::string m_stucture_name;
+
   public:
     /**
      * constructor

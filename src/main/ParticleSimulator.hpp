@@ -13,6 +13,7 @@ class ParticleSimulator {
      * the datastructure which holds all the data
      */
     DatastructureBase* m_datastructure;
+
   public:
     /**
      * constructor

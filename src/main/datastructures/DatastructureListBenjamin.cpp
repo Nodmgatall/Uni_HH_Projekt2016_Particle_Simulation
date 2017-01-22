@@ -68,12 +68,12 @@ void DatastructureListBenjamin::list_rebuild (ParticleGroup& p_cell, unsigned in
         }
     }
 }
-int DatastructureListBenjamin::get_neighbor_index_for_cells(ParticleGroup& p_cell_i,ParticleGroup& p_cell_j){
-return p_cell_i.m_idx.x*6+(p_cell_j.m_idx.y-p_cell_i.m_idx.y+1)*3+(p_cell_j.m_idx.z-p_cell_i.m_idx.z+1);
-/*
- * (yes this order is intended ...)
- * this order matches the one as used ion the grid-optimisation
- * returned values is one off [6,7,8,9,10,11,12,13,14,0,1,2,3 ]
- *
- */
+int DatastructureListBenjamin::get_neighbor_index_for_cells (ParticleGroup& p_cell_i, ParticleGroup& p_cell_j) {
+    return p_cell_i.m_idx.x * 6 + (p_cell_j.m_idx.y - p_cell_i.m_idx.y + 1) * 3 + (p_cell_j.m_idx.z - p_cell_i.m_idx.z + 1);
+    /*
+     * (yes this order is intended ...)
+     * this order matches the one as used ion the grid-optimisation
+     * returned values is one off [6,7,8,9,10,11,12,13,14,0,1,2,3 ]
+     *
+     */
 }

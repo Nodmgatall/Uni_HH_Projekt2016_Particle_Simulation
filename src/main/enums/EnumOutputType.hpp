@@ -36,6 +36,7 @@ extern std::vector<bool>        g_output_implemented;
 class OutputTypeInvalidException : public std::exception {
   private:
     char* m_what;
+
   public:
     OutputTypeInvalidException () {
         m_what = (char*) malloc (100);

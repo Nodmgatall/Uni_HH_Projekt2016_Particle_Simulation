@@ -29,6 +29,7 @@ extern std::vector<bool>        g_input_implemented;
 class InputTypeInvalidException : public std::exception {
   private:
     char* m_what;
+
   public:
     InputTypeInvalidException () {
         m_what = (char*) malloc (100);

@@ -24,6 +24,7 @@ std::pair<e_csv_column_type, int>* get_enum_for_printed_csv_column_name (const c
 class CSVColumnTypeInvalidException : public std::exception {
   private:
     char* m_what;
+
   public:
     CSVColumnTypeInvalidException () {
         m_what = (char*) malloc (100);

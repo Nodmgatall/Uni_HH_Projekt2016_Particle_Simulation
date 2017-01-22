@@ -22,6 +22,7 @@ class AlgorithmStoermerVerletLennardJones : public AlgorithmBase {
     data_type m_i;
     data_type m_j;
     void step_1_local (const data_type& p_position_a, data_type& p_position_b);
+
   public:
     /**
      * constructor

@@ -51,6 +51,7 @@ class DatastructureBase {
          * @param p_cell
          */
     void step_3_fit_into_borders (ParticleGroup& p_cell);
+
   public:
     /**
      *destructor

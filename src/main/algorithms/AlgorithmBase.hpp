@@ -18,6 +18,7 @@ class AlgorithmBase {
      * identifier of subclass name
      */
     std::string m_stucture_name;
+
   public:
     /**
      * constructor
