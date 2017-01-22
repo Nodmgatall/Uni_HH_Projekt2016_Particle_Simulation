@@ -101,12 +101,13 @@ void DatastructureListBenjamin::list_step_2_calculate (ParticleGroup& p_cell_i,
 bool DatastructureListBenjamin::run_simulation_iteration (unsigned long p_iteration_number) {
     (void) p_iteration_number;
     m_iterations_until_rearange_particles--;
+    const data_type ox = m_options.m_bounds.x;
+    const data_type oy = m_options.m_bounds.y;
+    const data_type oz = m_options.m_bounds.z;
     if (m_iterations_until_rearange_particles < 1) {
         m_iterations_until_rearange_particles = m_options.m_max_iterations_between_datastructure_rebuild;
         list_rebuild (m_particle_groups[0], m_idx_a, m_options);
-        const data_type ox = m_options.m_bounds.x;
-        const data_type oy = m_options.m_bounds.y;
-        const data_type oz = m_options.m_bounds.z;
+
         list_rebuild (m_particle_groups[0], m_particle_groups[0], m_idx_a, m_options, ox, oy, oz);
         list_rebuild (m_particle_groups[0], m_particle_groups[0], m_idx_a, m_options, ox, oy, 0);
         list_rebuild (m_particle_groups[0], m_particle_groups[0], m_idx_a, m_options, ox, oy, -oz);
@@ -123,6 +124,21 @@ bool DatastructureListBenjamin::run_simulation_iteration (unsigned long p_iterat
     }
     step_1_prepare_cell (m_particle_groups[0]);
     list_step_2_calculate (m_particle_groups[0], m_algorithm, m_idx_a, m_idx_b);
+
+    list_step_2_calculate (m_particle_groups[0], m_particle_groups[0], m_algorithm, m_idx_a, m_idx_b, ox, oy, oz);
+    list_step_2_calculate (m_particle_groups[0], m_particle_groups[0], m_algorithm, m_idx_a, m_idx_b, ox, oy, 0);
+    list_step_2_calculate (m_particle_groups[0], m_particle_groups[0], m_algorithm, m_idx_a, m_idx_b, ox, oy, -oz);
+    list_step_2_calculate (m_particle_groups[0], m_particle_groups[0], m_algorithm, m_idx_a, m_idx_b, ox, 0, oz);
+    list_step_2_calculate (m_particle_groups[0], m_particle_groups[0], m_algorithm, m_idx_a, m_idx_b, ox, 0, 0);
+    list_step_2_calculate (m_particle_groups[0], m_particle_groups[0], m_algorithm, m_idx_a, m_idx_b, ox, 0, -oz);
+    list_step_2_calculate (m_particle_groups[0], m_particle_groups[0], m_algorithm, m_idx_a, m_idx_b, ox, -oy, oz);
+    list_step_2_calculate (m_particle_groups[0], m_particle_groups[0], m_algorithm, m_idx_a, m_idx_b, ox, -oy, 0);
+    list_step_2_calculate (m_particle_groups[0], m_particle_groups[0], m_algorithm, m_idx_a, m_idx_b, ox, -oy, -oz);
+    list_step_2_calculate (m_particle_groups[0], m_particle_groups[0], m_algorithm, m_idx_a, m_idx_b, 0, oy, oz);
+    list_step_2_calculate (m_particle_groups[0], m_particle_groups[0], m_algorithm, m_idx_a, m_idx_b, 0, oy, 0);
+    list_step_2_calculate (m_particle_groups[0], m_particle_groups[0], m_algorithm, m_idx_a, m_idx_b, 0, oy, -oz);
+    list_step_2_calculate (m_particle_groups[0], m_particle_groups[0], m_algorithm, m_idx_a, m_idx_b, 0, 0, oz);
+
     step_3_fit_into_borders (m_particle_groups[0]);
     m_idx_b = !(m_idx_a = m_idx_b);
     return false; // NO error
