@@ -13,8 +13,8 @@ typedef GeneratorRandom GeneratorUnderTest;
 #define BOOST_TEST_MODULE "GeneratorRandom"
 //<<-- this code is never executed !!
 #endif
-#include "algorithms/AlgorithmLennardJones.hpp"
 #include "borders/BorderWrapparound.hpp"
+#include <algorithms/AlgorithmStoermerVerletLennardJones.hpp>
 #include <boost/test/unit_test.hpp>
 #include <cstring>
 
@@ -79,13 +79,13 @@ class Datastructure : public DatastructureBase {
 BOOST_AUTO_TEST_CASE (test1) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
-    options.m_particle_count         = 10;
-    options.m_bounds                 = Vec3f (10, 10, 10);
-    BorderWrapparound*     border    = new BorderWrapparound (options.m_bounds);
-    AlgorithmLennardJones* algorithm = new AlgorithmLennardJones (options);
-    ParticleWriter*        writer    = new ParticleWriter ();
-    Datastructure*         particles = new Datastructure (options, *border, *algorithm, *writer);
-    GeneratorUnderTest*    generator = new GeneratorUnderTest (options, *particles);
+    options.m_particle_count                       = 10;
+    options.m_bounds                               = Vec3f (10, 10, 10);
+    BorderWrapparound*                   border    = new BorderWrapparound (options.m_bounds);
+    AlgorithmStoermerVerletLennardJones* algorithm = new AlgorithmStoermerVerletLennardJones (options);
+    ParticleWriter*                      writer    = new ParticleWriter ();
+    Datastructure*      particles = new Datastructure (options, *border, *algorithm, *writer);
+    GeneratorUnderTest* generator = new GeneratorUnderTest (options, *particles);
     generator->initialize_datastructure ();
     BOOST_CHECK_EQUAL (particles->get_particle_count (), 10L);
 }

@@ -9,8 +9,8 @@
 #define SRC_MAIN_ALGORITHMS_ALGORITHMFACTORY_HPP_
 
 #include "AlgorithmBase.hpp"
-#include "AlgorithmLennardJones.hpp"
 #include "options/Options.hpp"
+#include <algorithms/AlgorithmStoermerVerletLennardJones.hpp>
 
 class AlgorithmFactory {
   public:

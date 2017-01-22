@@ -1,10 +1,11 @@
+
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "DatastructureList"
 
-#include "algorithms/AlgorithmLennardJones.hpp"
 #include "borders/BorderWrapparound.hpp"
 #include "datastructures/DatastructureList.hpp"
 #include "io/output/file/FileWriterCSV.hpp"
+#include <algorithms/AlgorithmStoermerVerletLennardJones.hpp>
 #include <boost/test/unit_test.hpp>
 
 BOOST_AUTO_TEST_CASE (calculate_distances_squared) {
@@ -22,10 +23,10 @@ BOOST_AUTO_TEST_CASE (calculate_distances_squared) {
     options.m_cut_off_radius      = 1;
     options.m_data_structure_type = e_datastructure_type::GRID;
     options.m_write_modes         = {};
-    BorderWrapparound     border (bounds);
-    AlgorithmLennardJones algorithm (options);
-    FileWriterCSV         writer (options, "");
-    DatastructureList     particle_list (options, border, algorithm, writer);
+    BorderWrapparound                   border (bounds);
+    AlgorithmStoermerVerletLennardJones algorithm (options);
+    FileWriterCSV                       writer (options, "");
+    DatastructureList                   particle_list (options, border, algorithm, writer);
 
     particle_list.m_positions_x_now       = { 1.5, 1.5, 1.5, 0.75 };
     particle_list.m_positions_y_now       = { 1.5, 2.0, 2.5, 0.75 };
@@ -63,10 +64,10 @@ BOOST_AUTO_TEST_CASE (build_lists) {
     options.m_cut_off_radius      = 1;
     options.m_data_structure_type = e_datastructure_type::GRID;
     options.m_write_modes         = {};
-    BorderWrapparound     border (bounds);
-    AlgorithmLennardJones algorithm (options);
-    FileWriterCSV         writer (options, "");
-    DatastructureList     particle_list (options, border, algorithm, writer);
+    BorderWrapparound                   border (bounds);
+    AlgorithmStoermerVerletLennardJones algorithm (options);
+    FileWriterCSV                       writer (options, "");
+    DatastructureList                   particle_list (options, border, algorithm, writer);
 
     particle_list.m_positions_x_now = { 1.5, 1.5, 1.5, 0.75, 1, 1.5 };
     particle_list.m_positions_y_now = { 1.5, 2.0, 2.5, 0.75, 1.5, 3 };

@@ -17,7 +17,7 @@ BOOST_AUTO_TEST_CASE (test1) {
     memset (&options, 0, sizeof (s_options));
     options.m_algorithm_type = e_algorithm_type::LENNARD_JONES;
     BOOST_CHECK_EQUAL (AlgorithmFactory::build (options)->get_structure_name (),
-                       "AlgorithmLennardJones");
+                       "AlgorithmStoermerVerletLennardJones");
 }
 BOOST_AUTO_TEST_CASE (test2) {
     s_options options;

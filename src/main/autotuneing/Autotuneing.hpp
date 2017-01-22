@@ -16,6 +16,9 @@
 
 class Autotuneing {
   public:
+    /**
+     * returns an fully initialized datastructure which should be the fastest for the given input
+     */
     static inline DatastructureBase* get_best_datastructure (s_options&     p_options,
                                                              BorderBase&    p_border,
                                                              AlgorithmBase& p_algorithm,
@@ -51,9 +54,14 @@ class Autotuneing {
         }
         DatastructureBase* result = DatastructureFactory::build (p_options, p_border, p_algorithm, p_writer);
         if (analyser) {
+            // dont load an file again ...
+            // if random is generated again, everything could be different
             analyser->transfer_particles_to (*result);
             delete analyser;
         } else {
+            // the generator generates an distribution which will fit in certain criteria so no
+            // transfer needed. instead particles can be generated directly into the final
+            // datastructure
             InputBase* input = InputFactory::build (p_options, *result);
             input->initialize_datastructure ();
         }
