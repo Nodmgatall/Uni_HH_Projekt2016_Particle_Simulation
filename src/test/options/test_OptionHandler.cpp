@@ -473,8 +473,6 @@ BOOST_AUTO_TEST_CASE (test_invalid_option) {
                                       "--output=FILE_CSV",
                                       "--input=GENERATOR_GRID_DISTRIBUTION",
                                       "--this_option_does_not_exist" };
-    std::cout << "a" << std::endl;
     int res = handler.handle_options ((int) args.size (), const_cast<char**> (args.data ()), options_test);
-    std::cout << "b" << std::endl;
     BOOST_CHECK_EQUAL (res, 1);
 }
