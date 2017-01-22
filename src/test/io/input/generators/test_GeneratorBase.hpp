@@ -51,12 +51,6 @@ class Datastructure : public DatastructureBase {
     }
     ~Datastructure () {
     }
-    void serialize () {
-    }
-    bool run_simulation_iteration (unsigned long p_iteration_number = 0) {
-        (void) p_iteration_number;
-        return true;
-    }
     void add_particle (Vec3f p_current_position) {
         m_particle_count++;
         BOOST_CHECK_GE (p_current_position.x, 0);
@@ -85,13 +79,13 @@ class Datastructure : public DatastructureBase {
 BOOST_AUTO_TEST_CASE (test1) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
-    options.m_particle_count = 10;
-    options.m_bounds         = Vec3f (10, 10, 10);
-    BorderWrapparound     border (options.m_bounds);
-    AlgorithmLennardJones algorithm (options);
-    ParticleWriter        writer    = ParticleWriter ();
-    Datastructure         particles = Datastructure (options, border, algorithm, writer);
-    GeneratorUnderTest    generator (options, particles);
-    generator.initialize_datastructure ();
-    BOOST_CHECK_EQUAL (particles.get_particle_count (), 10L);
+    options.m_particle_count         = 10;
+    options.m_bounds                 = Vec3f (10, 10, 10);
+    BorderWrapparound*     border    = new BorderWrapparound (options.m_bounds);
+    AlgorithmLennardJones* algorithm = new AlgorithmLennardJones (options);
+    ParticleWriter*        writer    = new ParticleWriter ();
+    Datastructure*         particles = new Datastructure (options, *border, *algorithm, *writer);
+    GeneratorUnderTest*    generator = new GeneratorUnderTest (options, *particles);
+    generator->initialize_datastructure ();
+    BOOST_CHECK_EQUAL (particles->get_particle_count (), 10L);
 }

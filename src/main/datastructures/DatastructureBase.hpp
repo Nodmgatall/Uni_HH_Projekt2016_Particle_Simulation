@@ -75,19 +75,19 @@ class DatastructureBase {
      * 		   false if everything is ok with the simulation
      * @param p_iteration_number unused? TODO remove?!?
      */
-    bool run_simulation_iteration (unsigned long p_iteration_number = 0);
+    virtual bool run_simulation_iteration (unsigned long p_iteration_number = 0);
     /**
      * adds an particle to the current simulation
      * @param p_position the position of the new particle
      */
-    void add_particle (Vec3f p_position);
+    virtual void add_particle (Vec3f p_position);
     /**
      *
      * adds an particle to the current simulation
      * @param p_position the position of the new particle
      * @param p_velocity the initial velocity
      */
-    void add_particle (Vec3f p_position, Vec3f p_velocity, int p_id = -1);
+    virtual void add_particle (Vec3f p_position, Vec3f p_velocity, int p_id = -1);
     // TODO delete particle hinzufügen
     /**
      * @return the total number of particles in all cells
