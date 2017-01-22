@@ -124,7 +124,7 @@ test:
 	mkdir ../Testing/Coverage
 	$(MAKE) cmake build 
 	lcov --directory ../CMakeFiles/ --capture --initial --output-file ../Testing/Coverage/coverage_init.info
-	cd .. && $(MAKE) check
+	-cd .. && $(MAKE) check
 	lcov --directory ../CMakeFiles/ --capture --output-file ../Testing/Coverage/coverage_test.info
 	lcov --add-tracefile ../Testing/Coverage/coverage_init.info --add-tracefile ../Testing/Coverage/coverage_test.info --output-file ../Testing/Coverage/coverage_combined.info
 	lcov --extract ../Testing/Coverage/coverage_combined.info "*/src/main/*" --output-file ../Testing/Coverage/coverage.info
