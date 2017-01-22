@@ -20,6 +20,7 @@
 #include <omp.h>
 #endif
 #include "DataType.hpp"
+#include "EnergyConservation.hpp"
 #include "enums/EnumAlgorithmType.hpp"
 #include "enums/EnumCSVColumnType.hpp"
 #include "enums/EnumDatastructureType.hpp"

@@ -397,6 +397,22 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
         }
     }
     m_idx_b = !(m_idx_a = m_idx_b);
+#ifdef CALCULATE_ENERGY_CONSERVATION
+    unsigned int i, j;
+    g_sum_energy = 0;
+    for (i = 0; i < m_particle_groups.size (); i++) {
+        ParticleGroup& group = m_particle_groups[i];
+        for (j = 0; j < group.m_ids.size (); j++) {
+            data_type m = 1;
+            Vec3f     v = Vec3f (group.m_positions_x[m_idx_b][j] - group.m_positions_x[m_idx_a][j],
+                             group.m_positions_y[m_idx_b][j] - group.m_positions_y[m_idx_a][j],
+                             group.m_positions_z[m_idx_b][j] - group.m_positions_z[m_idx_a][j]);
+            g_sum_energy += 0.5 * m * v.length () * v.length ();
+        }
+    }
+    m_verbose_stream << DEBUG_VAR (g_sum_energy) << "J" << std::endl;
+    g_sum_energy_valid = true;
+#endif
     return m_error_happened;
 }
 inline void DatastructureGrid::grid_moveParticle (ParticleGroup& p_cell_from, ParticleGroup& p_cell_to, long p_index_from) {
