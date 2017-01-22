@@ -42,6 +42,8 @@ e_datastructure_type DatastructureAnalyser::analyse () {
         float                      avg_place_per_particle;
         float                      avg_interaction_count_by_cut_off;
         float                      volume_included_in_cut_off;
+        float total_volume = m_options.m_bounds.x * m_options.m_bounds.y * m_options.m_bounds.z;
+        float total_volume_by_data;
         float cut_off_3 = m_options.m_cut_off_radius * m_options.m_cut_off_radius * m_options.m_cut_off_radius;
         data_type xl = m_particle_groups[0].m_positions_x[m_idx_a][0];
         data_type yl = m_particle_groups[0].m_positions_x[m_idx_a][0];
@@ -81,15 +83,23 @@ e_datastructure_type DatastructureAnalyser::analyse () {
                 }
             }
         }
+        total_volume_by_data          = (xr - xl) * (yr - yl) * (zr - zl);
         avg_interaction_count_by_data = sum_interaction_count / m_particle_groups[0].m_ids.size ();
-        avg_place_per_particle = ((xr - xl) * (yr - yl) * (zr - zl)) / m_particle_groups[0].m_ids.size ();
-        volume_included_in_cut_off       = 4 / 3 * M_PI * cut_off_3;
+        avg_place_per_particle        = (total_volume_by_data) / m_particle_groups[0].m_ids.size ();
+        volume_included_in_cut_off    = 4 / 3 * M_PI * cut_off_3;
         avg_interaction_count_by_cut_off = volume_included_in_cut_off / avg_place_per_particle;
-        if (avg_interaction_count_by_cut_off < cut_off_3 / avg_place_per_particle) {
-            // echte interactionen sind kleiner als die zu erwartenden bei der grid aufteilung
+        if (total_volume_by_data < total_volume / 20.0) {
+            // only a small piece of the volume is used by the particles
+            return e_datastructure_type::LIST_BENJAMIN;
+        }
+        if (avg_place_per_particle > volume_included_in_cut_off / 8.0) {
+            // in the average there are less than 8 particles in a cell
+            return e_datastructure_type::GRID;
+        }
+        if (avg_interaction_count_by_data < avg_interaction_count_by_cut_off / 2.0) {
+            // real interactions are much smaller then that what is expected by grid usage
             return e_datastructure_type::LISTEDGIRD;
         }
-        // TODO decision improvements
     } else {
         // error cannot analyse not existing data
     }
