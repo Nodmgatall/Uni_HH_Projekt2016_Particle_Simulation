@@ -39,21 +39,32 @@ run_64_particles: build_release
 			--algorithm=LENNARD_JONES \
 			--data_structure=GRID \
 			--input=GENERATOR_GRID_DISTRIBUTION --count=64 \
-			--output=FILE_CSV \
+			--output=FILE_CSV --out_file_name="out_64_particles"\
 			--max_iterations=2000 \
 			--write_fequency=1 \
 			--cut_off_radius=2.5 \
 			--timestep=0.005 \
 			--bounds=5/5/5 \
 			--verbose
-
+run_343_particles: build_release
+	cd .. && ./particle_simulation.x \
+			--algorithm=LENNARD_JONES \
+			--data_structure=GRID \
+			--input=GENERATOR_GRID_DISTRIBUTION --count=343 \
+			--output=FILE_CSV --out_file_name="out_343_particles"\
+			--max_iterations=7000 \
+			--write_fequency=1 \
+			--cut_off_radius=14 \
+			--timestep=0.025 \
+			--bounds=20.5/20.5/20.5 \
+			--verbose
 run_2_particles: build_release
 	rm -rf ../logdata/2_particles
 	cd .. && ./particle_simulation.x \
 			--algorithm=LENNARD_JONES \
 			--data_structure=GRID \
 			--input=FILE_CSV --in_file_name="./Testing/Resources/2_particles.csv" \
-			--output=FILE_CSV+AVI \
+			--output=FILE_CSV+AVI --out_file_name="out_2_particles"\
 			--max_iterations=7090 \
 			--write_fequency=10 \
 			--cut_off_radius=2.5 \
@@ -88,17 +99,6 @@ run_6_particles: build_release
 			--bounds=5/5/5 \
 			--verbose
 
-run_343_particles: build_release
-	rm -rf ../logdata/6_particles
-	cd .. && ./particle_simulation.x \
-			--count=343 \
-			--data_structure=GRID \
-			--max_iterations=7000 \
-			--cut_off_radius=14 \
-			--bounds=20.5/20.5/20.5 \
-			--output=FILE_CSV+AVI\
-			--timestep=0.025 \
-			--verbose
 
 run_2_particles_list: build_release
 	rm -rf ../logdata/2_particles
