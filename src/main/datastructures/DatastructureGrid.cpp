@@ -29,12 +29,14 @@ DatastructureGrid::DatastructureGrid (s_options& p_options, BorderBase& p_border
         std::cout << "ERROR :: cut-off-radius too small. Increasing from '" << DEBUG_VAR (m_options.m_cut_off_radius) << "' to '1'!" << std::endl;
         m_options.m_cut_off_radius = 1;
     }
-    grid_speed_factor = m_options.m_timestep / (m_options.m_cut_off_radius * (grid_cut_off_factor - 1.0f));
+    grid_speed_factor = (m_options.m_cut_off_radius * (grid_cut_off_factor - 1.0f)) / m_options.m_timestep;
     std::cout << DEBUG_VAR (m_stucture_name) << std::endl;
     std::cout << DEBUG_VAR (m_options.m_cut_off_radius) << std::endl;
     std::cout << DEBUG_VAR (grid_size) << std::endl;
     std::cout << DEBUG_VAR (grid_size_per_cell) << std::endl;
     std::cout << DEBUG_VAR (m_options.m_bounds) << std::endl;
+    std::cout << DEBUG_VAR (m_options.m_timestep) << std::endl;
+    std::cout << DEBUG_VAR (grid_cut_off_factor) << std::endl;
 }
 DatastructureGrid::~DatastructureGrid () {
 }
@@ -412,7 +414,10 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
                         v_max = MAX (v_max, fabs (group.m_positions_z[m_idx_b][j] - group.m_positions_z[m_idx_a][j]));
                     }
                 }
-                m_iterations_until_rearange_particles = MIN (m_options.m_max_iterations_between_datastructure_rebuild, grid_speed_factor * v_max);
+                m_iterations_until_rearange_particles = MIN (m_options.m_max_iterations_between_datastructure_rebuild, grid_speed_factor / v_max);
+                m_standard_stream << DEBUG_VAR (grid_speed_factor) << std::endl;
+                m_standard_stream << DEBUG_VAR (v_max) << std::endl;
+                m_standard_stream << DEBUG_VAR (grid_speed_factor / v_max) << std::endl;
                 m_standard_stream << DEBUG_VAR (m_iterations_until_rearange_particles) << std::endl;
             }
         }
