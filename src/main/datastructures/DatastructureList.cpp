@@ -6,6 +6,30 @@
 #include "Vec3.hpp"
 #include "tools/Debug.hpp"
 #include <math.h>
+#include <stdio.h>
+
+//TEMP POS WILL BE MOVED IF PROTOYPE WORKS
+//
+struct PrototypeParticles
+{
+    std::vector<data_type> m_positions_x_now;
+    std::vector<data_type> m_positions_y_old;
+};
+struct PrototypeCell
+{
+    data_type x_origin;
+    data_type y_origin;
+    data_type z_origin;
+
+    data_type x_size;
+    data_type y_size;
+    data_type z_size;
+    
+    void insert_particle();
+    void remove_particle();
+
+    
+};
 
 DatastructureList::DatastructureList (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_particle_writer)
 : DatastructureBase (p_options, p_border, p_algorithm, p_particle_writer),
@@ -67,6 +91,7 @@ bool DatastructureList::run_simulation_iteration (unsigned long p_iteration_numb
      *
      * endlosschleife !!!!
 
+    */
     Benchmark::begin ("Run sim iter in list", false);
     unsigned long particle_count = m_positions_x_now.size ();
     if (p_iteration_number % 2 == 0) {
@@ -116,14 +141,10 @@ bool DatastructureList::run_simulation_iteration (unsigned long p_iteration_numb
     m_positions_z_now.swap (m_positions_z_old);
     Benchmark::end ();
 
-    */
 }
 
 void DatastructureList::check_boundaries () {
-    /* TODO ‘isnormal’ was not declared in this scope -->> compile error
-     *
-     *
-     *
+
     unsigned long particle_count = get_particle_count ();
     data_type     test;
     bool          b_exit = false;
@@ -175,7 +196,6 @@ void DatastructureList::check_boundaries () {
             exit (EXIT_FAILURE);
         }
     }
-    */
 }
 
 void DatastructureList::build_lists () {
