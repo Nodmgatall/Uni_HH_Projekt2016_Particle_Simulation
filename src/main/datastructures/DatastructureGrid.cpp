@@ -413,7 +413,7 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
                     }
                 }
                 m_iterations_until_rearange_particles = MIN (m_options.m_max_iterations_between_datastructure_rebuild, grid_speed_factor * v_max);
-                m_debug_stream << DEBUG_VAR (m_iterations_until_rearange_particles) << std::endl;
+                m_standard_stream << DEBUG_VAR (m_iterations_until_rearange_particles) << std::endl;
             }
         }
     }
