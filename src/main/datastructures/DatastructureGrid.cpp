@@ -366,7 +366,7 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
     unsigned int idx_x, idx_y, idx_z;
     {
         m_verbose_stream << "grid_step_1" << std::endl;
-        //#pragma omp parallel for
+#pragma omp parallel for private(idx_x, idx_y, idx_z)
         for (idx_x = 0; idx_x < grid_size.x; idx_x++) {
             for (idx_y = 0; idx_y < grid_size.y; idx_y++) {
                 for (idx_z = 0; idx_z < grid_size.z; idx_z++) {
