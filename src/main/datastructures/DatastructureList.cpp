@@ -7,15 +7,13 @@
 #include <stdio.h>
 #include <vector>
 
-//TEMP POS WILL BE MOVED IF PROTOYPE WORKS
+// TEMP POS WILL BE MOVED IF PROTOYPE WORKS
 //
-struct PrototypeParticles
-{
+struct PrototypeParticles {
     std::vector<data_type> m_positions_x_now;
     std::vector<data_type> m_positions_y_old;
 };
-struct PrototypeCell
-{
+struct PrototypeCell {
     data_type x_origin;
     data_type y_origin;
     data_type z_origin;
@@ -23,11 +21,9 @@ struct PrototypeCell
     data_type x_size;
     data_type y_size;
     data_type z_size;
-    
-    void insert_particle();
-    void remove_particle();
 
-    
+    void insert_particle ();
+    void remove_particle ();
 };
 
 DatastructureList::DatastructureList (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_particle_writer)
@@ -102,41 +98,36 @@ bool DatastructureList::run_simulation_iteration (unsigned long p_iteration_numb
                             m_positions_z_old[particle_idx]);
     }
 
-
-     // std::cout << "db: "<< m_neighbour_section_idxs[particle_idx] << " " <<
-     // m_neighbour_section_idxs[particle_idx + 1] << std::endl;
-     for (unsigned long list_idx = m_neighbour_section_idxs[particle_idx];
-     list_idx < m_neighbour_section_idxs[particle_idx + 1];
-     list_idx++) {
-     // std::cout << m_neighbour_idxs_list[list_idx] << std::endl;
-     m_algorithm.step_2 (m_positions_x_now[particle_idx],
-     m_positions_y_now[particle_idx],
-     m_positions_z_now[particle_idx],
-     m_positions_x_old[particle_idx],
-     m_positions_y_old[particle_idx],
-     m_positions_z_old[particle_idx],
-     &m_positions_x_now[m_neighbour_idxs_list[list_idx]],
-     &m_positions_y_now[m_neighbour_idxs_list[list_idx]],
-     &m_positions_z_now[m_neighbour_idxs_list[list_idx]],
-     &m_positions_x_old[m_neighbour_idxs_list[list_idx]],
-     &m_positions_y_old[m_neighbour_idxs_list[list_idx]],
-     &m_positions_z_old[m_neighbour_idxs_list[list_idx]],
-     0,
-     1);
-     }
-     // std::cout << "diff new old = " << m_positions_x_old[particle_idx] -
-     // m_positions_x_now[particle_idx] << std::endl;
-     }
-     check_boundaries ();
-     m_positions_x_now.swap (m_positions_x_old);
-     m_positions_y_now.swap (m_positions_y_old);
-     m_positions_z_now.swap (m_positions_z_old);
-     Benchmark::end ();
-
-
+    // std::cout << "db: "<< m_neighbour_section_idxs[particle_idx] << " " <<
+    // m_neighbour_section_idxs[particle_idx + 1] << std::endl;
+    for (unsigned long particle_idx = 0; particle_idx < particle_count; particle_idx++) {
+        for (unsigned long list_idx = m_neighbour_section_idxs[particle_idx]; list_idx < m_neighbour_section_idxs[particle_idx + 1]; list_idx++) {
+            // std::cout << m_neighbour_idxs_list[list_idx] << std::endl;
+            m_algorithm.step_2 (m_positions_x_now[particle_idx],
+                                m_positions_y_now[particle_idx],
+                                m_positions_z_now[particle_idx],
+                                m_positions_x_old[particle_idx],
+                                m_positions_y_old[particle_idx],
+                                m_positions_z_old[particle_idx],
+                                &m_positions_x_now[m_neighbour_idxs_list[list_idx]],
+                                &m_positions_y_now[m_neighbour_idxs_list[list_idx]],
+                                &m_positions_z_now[m_neighbour_idxs_list[list_idx]],
+                                &m_positions_x_old[m_neighbour_idxs_list[list_idx]],
+                                &m_positions_y_old[m_neighbour_idxs_list[list_idx]],
+                                &m_positions_z_old[m_neighbour_idxs_list[list_idx]],
+                                0,
+                                1);
+        }
+        // std::cout << "diff new old = " << m_positions_x_old[particle_idx] -
+        // m_positions_x_now[particle_idx] << std::endl;
+    }
+    check_boundaries ();
+    m_positions_x_now.swap (m_positions_x_old);
+    m_positions_y_now.swap (m_positions_y_old);
+    m_positions_z_now.swap (m_positions_z_old);
+    Benchmark::end ();
 }
 void DatastructureList::check_boundaries () {
-
     unsigned long particle_count = get_particle_count ();
     data_type     test;
     bool          b_exit = false;
@@ -148,10 +139,8 @@ void DatastructureList::check_boundaries () {
             }
             // std::cout << particle_idx << " x " << m_positions_x_now[particle_idx] << " "
             //        << m_options.m_bounds.x << " " << test;
-            m_positions_x_now[particle_idx] = m_positions_x_now[particle_idx] - m_options.m_bounds.x
-    * test;
-            m_positions_x_old[particle_idx] = m_positions_x_old[particle_idx] - m_options.m_bounds.x
-    * test;
+            m_positions_x_now[particle_idx] = m_positions_x_now[particle_idx] - m_options.m_bounds.x * test;
+            m_positions_x_old[particle_idx] = m_positions_x_old[particle_idx] - m_options.m_bounds.x * test;
             // std::cout << "  result: " << m_positions_x_now[particle_idx];
             // std::cout << "  result: " << m_positions_x_old[particle_idx] << std::endl;
         }
@@ -162,10 +151,8 @@ void DatastructureList::check_boundaries () {
             }
             // std::cout << particle_idx << " y " << m_positions_y_now[particle_idx] << " "
             //        << m_options.m_bounds.y << " " << test;
-            m_positions_y_now[particle_idx] = m_positions_y_now[particle_idx] - m_options.m_bounds.y
-    * test;
-            m_positions_y_old[particle_idx] = m_positions_y_old[particle_idx] - m_options.m_bounds.y
-    * test;
+            m_positions_y_now[particle_idx] = m_positions_y_now[particle_idx] - m_options.m_bounds.y * test;
+            m_positions_y_old[particle_idx] = m_positions_y_old[particle_idx] - m_options.m_bounds.y * test;
             // std::cout << "  result: " << m_positions_x_now[particle_idx];
             // std::cout << "  result: " << m_positions_x_old[particle_idx] << std::endl;
         }
@@ -176,10 +163,8 @@ void DatastructureList::check_boundaries () {
             }
             // std::cout << particle_idx << " z " << m_positions_z_now[particle_idx] << " "
             //        << m_options.m_bounds.z << " " << test;
-            m_positions_z_now[particle_idx] = m_positions_z_now[particle_idx] - m_options.m_bounds.z
-    * test;
-            m_positions_z_old[particle_idx] = m_positions_z_old[particle_idx] - m_options.m_bounds.z
-    * test;
+            m_positions_z_now[particle_idx] = m_positions_z_now[particle_idx] - m_options.m_bounds.z * test;
+            m_positions_z_old[particle_idx] = m_positions_z_old[particle_idx] - m_options.m_bounds.z * test;
             // std::cout << "  result: " << m_positions_x_now[particle_idx];
             // std::cout << "  result: " << m_positions_x_old[particle_idx] << std::endl;
         }
