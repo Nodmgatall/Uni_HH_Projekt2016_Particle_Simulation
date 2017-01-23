@@ -4,16 +4,16 @@
  *  Created on: Dec 10, 2016
  *      Author: benjamin
  */
-
 #ifndef SRC_MAIN_OPTIONS_ENUM_INPUT_TYPE_HPP_
 #define SRC_MAIN_OPTIONS_ENUM_INPUT_TYPE_HPP_
-
 #include <cstring>
 #include <exception>
 #include <istream>
 #include <ostream>
 #include <vector>
-
+/**
+ * implemented or planned input types for the simulation
+ */
 enum class e_input_type {
     GENERATOR_RANDOM               = 1,
     GENERATOR_RANDOM_UNIFORM       = 2,
@@ -22,13 +22,10 @@ enum class e_input_type {
     GENERATOR_MULTIPLE_OBJECTS     = 5,
     FILE_CSV                       = 6,
 };
-
 std::ostream& operator<< (std::ostream& stream, const e_input_type& p_input_type);
 std::istream& operator>> (std::istream& stream, e_input_type& p_input_type);
-
 extern std::vector<const char*> g_input_names;
 extern std::vector<bool>        g_input_implemented;
-
 class InputTypeInvalidException : public std::exception {
   private:
     char* m_what;
@@ -49,5 +46,4 @@ class InputTypeInvalidException : public std::exception {
         return m_what;
     }
 };
-
 #endif /* SRC_MAIN_OPTIONS_ENUMInputType_HPP_ */

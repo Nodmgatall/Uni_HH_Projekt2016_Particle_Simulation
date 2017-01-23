@@ -5,7 +5,5 @@
  *      Author: benjamin
  */
 #include "Debug.hpp"
-
-char                      log_folder[29];
-bool                      g_verbose;
-s_file_and_console_stream g_log_file;
+char log_folder[29];
+bool g_verbose;

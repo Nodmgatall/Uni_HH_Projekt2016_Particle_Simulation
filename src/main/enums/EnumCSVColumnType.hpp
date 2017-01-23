@@ -4,34 +4,23 @@
  *  Created on: Dec 10, 2016
  *      Author: benjamin
  */
-
 #ifndef SRC_MAIN_ENUMS_ENUMCSVCOLUMNTYPE_HPP_
 #define SRC_MAIN_ENUMS_ENUMCSVCOLUMNTYPE_HPP_
-
 #include <cstring>
 #include <exception>
 #include <istream>
 #include <ostream>
 #include <vector>
-
-enum class e_csv_column_type {
-    ID            = 1,
-    VELOCITY      = 2,
-    POSITION      = 3,
-    ACCELERATION  = 4,
-    PARTICLE_TYPE = 5
-};
-
+/**
+ * implemented or plannes columns which could be written to csv output file
+ */
+enum class e_csv_column_type { ID = 1, VELOCITY = 2, POSITION = 3, ACCELERATION = 4, PARTICLE_TYPE = 5 };
 std::ostream& operator<< (std::ostream& stream, const e_csv_column_type p_csv_column_type);
 std::istream& operator>> (std::istream& stream, e_csv_column_type& p_csv_column_type);
-
 extern std::vector<const char*> g_csv_column_names;
 extern std::vector<bool>        g_csv_column_implemented;
-
-extern const char* g_printed_csv_column_names[][3];
-
+extern const char*              g_printed_csv_column_names[][3];
 std::pair<e_csv_column_type, int>* get_enum_for_printed_csv_column_name (const char* string);
-
 class CSVColumnTypeInvalidException : public std::exception {
   private:
     char* m_what;
@@ -52,5 +41,4 @@ class CSVColumnTypeInvalidException : public std::exception {
         return m_what;
     }
 };
-
 #endif /* SRC_MAIN_ENUMS_ENUMCSVCOLUMNTYPE_HPP_ */

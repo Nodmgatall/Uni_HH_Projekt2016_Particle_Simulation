@@ -4,26 +4,18 @@
  *  Created on: Dec 10, 2016
  *      Author: benjamin
  */
-
 #include "FileReaderCSV.hpp"
-
-FileReaderCSV::FileReaderCSV (s_options& p_options, DatastructureBase& p_datastructure)
-: InputBase (p_options, p_datastructure) {
+FileReaderCSV::FileReaderCSV (s_options& p_options, DatastructureBase& p_datastructure) : InputBase (p_options, p_datastructure) {
     m_stucture_name = "FileReaderCSV";
 }
-
 FileReaderCSV::~FileReaderCSV () {
 }
 void FileReaderCSV::ltrim (std::string& s) {
-    s.erase (s.begin (),
-             std::find_if (s.begin (), s.end (), std::not1 (std::ptr_fun<int, int> (std::isspace))));
+    s.erase (s.begin (), std::find_if (s.begin (), s.end (), std::not1 (std::ptr_fun<int, int> (std::isspace))));
 }
 void FileReaderCSV::rtrim (std::string& s) {
-    s.erase (
-        std::find_if (s.rbegin (), s.rend (), std::not1 (std::ptr_fun<int, int> (std::isspace))).base (),
-        s.end ());
+    s.erase (std::find_if (s.rbegin (), s.rend (), std::not1 (std::ptr_fun<int, int> (std::isspace))).base (), s.end ());
 }
-
 void FileReaderCSV::trim (std::string& s) {
     ltrim (s);
     rtrim (s);

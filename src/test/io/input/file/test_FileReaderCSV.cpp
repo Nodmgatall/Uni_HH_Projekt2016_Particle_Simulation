@@ -4,21 +4,16 @@
  *  Created on: Dec 8, 2016
  *      Author: benjamin
  */
-
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "FileReaderCSV"
-#include "algorithms/AlgorithmLennardJones.hpp"
 #include "borders/BorderWrapparound.hpp"
 #include "io/input/file/FileReaderCSV.hpp"
 #include "string"
+#include <algorithms/AlgorithmStoermerVerletLennardJones.hpp>
 #include <boost/test/unit_test.hpp>
-
 class ParticleWriter : public WriterBase {
   public:
-    void saveData (std::vector<data_type>&     p_positions_x,
-                   std::vector<data_type>&     p_positions_y,
-                   std::vector<data_type>&     p_positions_z,
-                   std::vector<unsigned long>& p_ids) {
+    void saveData (std::vector<data_type>& p_positions_x, std::vector<data_type>& p_positions_y, std::vector<data_type>& p_positions_z, std::vector<unsigned long>& p_ids) {
         (void) p_positions_x;
         (void) p_positions_y;
         (void) p_positions_z;
@@ -33,7 +28,6 @@ class ParticleWriter : public WriterBase {
     void finalize () {
     }
 };
-
 class Datastructure : public DatastructureBase {
   public:
     std::vector<data_type>     positions_x;
@@ -44,12 +38,8 @@ class Datastructure : public DatastructureBase {
     std::vector<data_type>     velocities_z;
     std::vector<unsigned long> ids;
     int                        m_particle_count;
-    Datastructure (s_options&     p_options,
-                   BorderBase&    p_particle_bounds_correction,
-                   AlgorithmBase& p_algorithm,
-                   WriterBase&    p_particle_file_writer)
-    : DatastructureBase (p_options, p_particle_bounds_correction, p_algorithm, p_particle_file_writer),
-      m_particle_count (0) {
+    Datastructure (s_options& p_options, BorderBase& p_particle_bounds_correction, AlgorithmBase& p_algorithm, WriterBase& p_particle_file_writer)
+    : DatastructureBase (p_options, p_particle_bounds_correction, p_algorithm, p_particle_file_writer), m_particle_count (0) {
     }
     ~Datastructure () {
     }
@@ -89,11 +79,11 @@ BOOST_AUTO_TEST_CASE (test1) {
     options.m_particle_count = 10;
     options.m_bounds         = Vec3f (10, 10, 10);
     options.m_in_file_name   = "../Resources/test1.csv";
-    BorderWrapparound     border (options.m_bounds);
-    AlgorithmLennardJones algorithm (options);
-    ParticleWriter        writer        = ParticleWriter ();
-    Datastructure         datastructure = Datastructure (options, border, algorithm, writer);
-    FileReaderCSV         reader (options, datastructure);
+    BorderWrapparound                   border (options.m_bounds);
+    AlgorithmStoermerVerletLennardJones algorithm (options);
+    ParticleWriter                      writer        = ParticleWriter ();
+    Datastructure                       datastructure = Datastructure (options, border, algorithm, writer);
+    FileReaderCSV                       reader (options, datastructure);
     reader.initialize_datastructure ();
     BOOST_CHECK_EQUAL (datastructure.get_particle_count (), 0);
 }
@@ -103,11 +93,11 @@ BOOST_AUTO_TEST_CASE (test2) {
     options.m_particle_count = 10;
     options.m_bounds         = Vec3f (10, 10, 10);
     options.m_in_file_name   = "../Resources/test2.csv";
-    BorderWrapparound     border (options.m_bounds);
-    AlgorithmLennardJones algorithm (options);
-    ParticleWriter        writer        = ParticleWriter ();
-    Datastructure         datastructure = Datastructure (options, border, algorithm, writer);
-    FileReaderCSV         reader (options, datastructure);
+    BorderWrapparound                   border (options.m_bounds);
+    AlgorithmStoermerVerletLennardJones algorithm (options);
+    ParticleWriter                      writer        = ParticleWriter ();
+    Datastructure                       datastructure = Datastructure (options, border, algorithm, writer);
+    FileReaderCSV                       reader (options, datastructure);
     reader.initialize_datastructure ();
     BOOST_CHECK_EQUAL (datastructure.get_particle_count (), 10);
     for (int i = 0; i < 40; i += 4) {

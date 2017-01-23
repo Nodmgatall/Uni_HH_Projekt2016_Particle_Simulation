@@ -1,4 +1,3 @@
-
 /*
  * test_DatastructureBaseForGrid.cpp
  *

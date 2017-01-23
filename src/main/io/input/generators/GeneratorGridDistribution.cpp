@@ -4,12 +4,10 @@
  *  Created on: 11.11.2016
  *      Author: benjamin
  */
-
 #include "GeneratorGridDistribution.hpp"
-
-GeneratorGridDistribution::GeneratorGridDistribution (s_options& p_options, DatastructureBase& p_datastructure)
-: InputBase (p_options, p_datastructure) {
+GeneratorGridDistribution::GeneratorGridDistribution (s_options& p_options, DatastructureBase& p_datastructure) : InputBase (p_options, p_datastructure) {
     m_stucture_name = "GeneratorGridDistribution";
+    std::cout << "GeneratorGridDistribution::a" << std::endl;
 }
 GeneratorGridDistribution::~GeneratorGridDistribution () {
 }
@@ -24,8 +22,7 @@ void GeneratorGridDistribution::initialize_datastructure () {
     for (x = 0; x < tempInt; x++) {
         for (y = 0; y < tempInt; y++) {
             for (z = 0; z < tempInt; z++) {
-                m_datastructure.add_particle (particle_free_Border_size + delta * 0.5 + Vec3f (x, y, z) * delta,
-                                              Vec3f ());
+                m_datastructure.add_particle (particle_free_Border_size + delta * 0.5 + Vec3f (x, y, z) * delta, Vec3f ());
                 count++;
             }
         }
@@ -35,9 +32,7 @@ void GeneratorGridDistribution::initialize_datastructure () {
             for (y = 0; y < tempInt; y++) {
                 for (z = 0; z < tempInt; z++) {
                     if (count++ < m_options.m_particle_count) {
-                        m_datastructure.add_particle (particle_free_Border_size + delta * 0.5 +
-                                                          Vec3f (temp / 2.0 + x, y, z) * delta,
-                                                      Vec3f ());
+                        m_datastructure.add_particle (particle_free_Border_size + delta * 0.5 + Vec3f (temp / 2.0 + x, y, z) * delta, Vec3f ());
                     }
                 }
             }

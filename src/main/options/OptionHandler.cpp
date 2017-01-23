@@ -1,5 +1,4 @@
 #include "OptionHandler.hpp"
-
 int OptionHandler::indexInArray (std::vector<const char*> elements, char* element) {
     unsigned int index;
     for (index = 0; index < elements.size (); index++)
@@ -12,7 +11,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
     Benchmark::begin ("OptionHandler::handle_options");
     print_header ();
     bool                help_printed = false;
-    int                 argv_index;
+    int                 opt_index;
     bool                should_print_config                                = false;
     std::string         config_name                                        = "";
     float               run_time_limit                                     = -1;
@@ -25,7 +24,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
     const int           write_modes_index                                  = 5;
     const int           max_iterations_between_datastructure_rebuild_index = 6;
     const int           print_config_index                                 = 9;
-    std::vector<option> options = { { "algorithm", required_argument, 0, algorithm_type_index * 1000 },
+    std::vector<option> options                                            = { { "algorithm", required_argument, 0, algorithm_type_index * 1000 },
                                     { "data_structure", required_argument, 0, datastructure_type_index * 1000 },
                                     { "input", required_argument, 0, input_type_index * 1000 },
                                     { "output", required_argument, 0, output_type_index * 1000 },
@@ -42,10 +41,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                                     { "seed", required_argument, 0, 's' },
                                     { "timestep", required_argument, 0, 't' },
                                     { "verbose", no_argument, 0, 'v' },
-                                    { "max_iterations_between_datastructure_rebuild",
-                                      required_argument,
-                                      0,
-                                      max_iterations_between_datastructure_rebuild_index * 1000 },
+                                    { "max_iterations_between_datastructure_rebuild", required_argument, 0, max_iterations_between_datastructure_rebuild_index * 1000 },
                                     { "print_config", no_argument, 0, print_config_index * 1000 } };
     for (index = 1; index < (signed) g_csv_column_names.size (); index++) {
         std::string name    = std::string ("WRITE_") + std::string (g_csv_column_names[index]);
@@ -58,20 +54,24 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
      * <a href="http://www.informit.com/articles/article.aspx?p=175771&seqNum=3">getoptlong
      * explanation</a>
      * */
-    while ((argv_index = getopt_long (p_argc, p_argv, "a:b:c:f:h::i:l:m:o:r:s:t:v", options.data (), &long_options)) !=
-           -1) {
+    options.push_back ({ 0, 0, 0, 0 }); // important for gnu-g++  - clang does not need this
+    while (true) {
+        opt_index = getopt_long (p_argc, p_argv, "a:b:c:f:h::i:l:m:o:r:s:t:v", options.data (), &long_options);
+        if ((opt_index == '?') || (opt_index == ':')) {
+            return 1;
+        } else if (opt_index == -1) {
+            break;
+        }
         std::stringstream line;
         if (optarg) {
             line.str (optarg);
         }
-        switch (argv_index / 1000) {
+        switch (opt_index / 1000) {
             case algorithm_type_index:
-                p_options.m_algorithm_type =
-                    static_cast<e_algorithm_type> (indexInArray (g_algorithm_names, optarg));
+                p_options.m_algorithm_type = static_cast<e_algorithm_type> (indexInArray (g_algorithm_names, optarg));
                 break;
             case datastructure_type_index:
-                p_options.m_data_structure_type =
-                    static_cast<e_datastructure_type> (indexInArray (g_datastructure_names, optarg));
+                p_options.m_data_structure_type = static_cast<e_datastructure_type> (indexInArray (g_datastructure_names, optarg));
                 break;
             case input_type_index:
                 p_options.m_input_type = static_cast<e_input_type> (indexInArray (g_input_names, optarg));
@@ -80,7 +80,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                 p_options.m_output_type = static_cast<e_output_type> (indexInArray (g_output_names, optarg));
                 break;
             case write_modes_index:
-                p_options.m_write_modes.insert (static_cast<e_csv_column_type> (argv_index % 1000));
+                p_options.m_write_modes.insert (static_cast<e_csv_column_type> (opt_index % 1000));
                 break;
             case max_iterations_between_datastructure_rebuild_index: {
                 line >> p_options.m_max_iterations_between_datastructure_rebuild;
@@ -90,7 +90,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                 should_print_config = true;
                 break;
             default: {
-                switch (argv_index) {
+                switch (opt_index) {
                     case 'a': {
                         p_options.m_autotuneing = true;
                         break;
@@ -142,8 +142,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                                 print_usage_timestep ();
                             } else if (!strcmp (optarg, "verbose")) {
                                 print_usage_verbose ();
-                            } else if (!strcmp (optarg,
-                                                "max_iterations_between_datastructure_rebuild")) {
+                            } else if (!strcmp (optarg, "max_iterations_between_datastructure_rebuild")) {
                                 print_usage_max_iterations_between_datastructure_rebuild ();
                             } else if (!strcmp (optarg, "print_config")) {
                                 print_usage_print_config ();
@@ -174,8 +173,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                     case 'r':
                         line >> p_options.m_cut_off_radius;
                         if (p_options.m_cut_off_radius < 1) {
-                            m_standard_stream
-                                << "cut_off_radius must be greater than or equal to 1";
+                            m_standard_stream << "cut_off_radius must be greater than or equal to 1";
                             return true;
                         }
                         break;
@@ -190,9 +188,6 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                     case 'v': {
                         p_options.m_verbose = true;
                         break;
-                    }
-                    case '?': {
-                        return 1;
                     }
                 }
             }
@@ -210,32 +205,28 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
 }
 void OptionHandler::print_choosen_options (s_options& p_options) {
     bool first = true;
-    m_standard_stream
-        << "algorithm_type                               " << p_options.m_algorithm_type << std::endl
-        << "autotuneing                                  " << p_options.m_autotuneing << std::endl
-        << "output_type                                  " << p_options.m_output_type << std::endl
-        << "in_file_name                                 " << p_options.m_in_file_name << std::endl
-        << "out_file_name                                " << p_options.m_out_file_name << std::endl
-        << "timestep                                     " << p_options.m_timestep << std::endl
-        << "verbose                                      " << p_options.m_verbose << std::endl
-        << "write_fequency                               " << p_options.m_write_fequency << std::endl
-        << "cut_off_radius                               " << p_options.m_cut_off_radius << std::endl
-        << "data_structure                               " << p_options.m_data_structure_type << std::endl
-        << "input_type                                   " << p_options.m_input_type << std::endl
-        << "seed                                         " << p_options.m_seed << std::endl
-        << "count                                        " << p_options.m_particle_count << std::endl
-        << "max_iterations                               " << p_options.m_max_iterations << std::endl
-        << "bounds                                       " << p_options.m_bounds << std::endl
-        << "max_iterations_between_datastructure_rebuild "
-        << p_options.m_max_iterations_between_datastructure_rebuild << std::endl
-        << "write_modes                                  [";
-    for (std::set<e_csv_column_type>::iterator csv_column = p_options.m_write_modes.begin ();
-         csv_column != p_options.m_write_modes.end ();
-         ++csv_column) {
-        g_log_file << (first ? "" : ", ") << *csv_column;
+    m_standard_stream << "algorithm_type                               " << p_options.m_algorithm_type << std::endl
+                      << "autotuneing                                  " << p_options.m_autotuneing << std::endl
+                      << "output_type                                  " << p_options.m_output_type << std::endl
+                      << "in_file_name                                 " << p_options.m_in_file_name << std::endl
+                      << "out_file_name                                " << p_options.m_out_file_name << std::endl
+                      << "timestep                                     " << p_options.m_timestep << std::endl
+                      << "verbose                                      " << p_options.m_verbose << std::endl
+                      << "write_fequency                               " << p_options.m_write_fequency << std::endl
+                      << "cut_off_radius                               " << p_options.m_cut_off_radius << std::endl
+                      << "data_structure                               " << p_options.m_data_structure_type << std::endl
+                      << "input_type                                   " << p_options.m_input_type << std::endl
+                      << "seed                                         " << p_options.m_seed << std::endl
+                      << "count                                        " << p_options.m_particle_count << std::endl
+                      << "max_iterations                               " << p_options.m_max_iterations << std::endl
+                      << "bounds                                       " << p_options.m_bounds << std::endl
+                      << "max_iterations_between_datastructure_rebuild " << p_options.m_max_iterations_between_datastructure_rebuild << std::endl
+                      << "write_modes                                  [";
+    for (std::set<e_csv_column_type>::iterator csv_column = p_options.m_write_modes.begin (); csv_column != p_options.m_write_modes.end (); ++csv_column) {
+        std::cout << (first ? "" : ", ") << *csv_column;
         first = false;
     }
-    g_log_file << "]" << std::endl;
+    std::cout << "]" << std::endl;
 }
 void OptionHandler::print_header () {
     m_standard_stream //
@@ -248,43 +239,24 @@ void OptionHandler::print_header () {
         << "|                               Philipp Neumann                                |" << std::endl
         << "+==============================================================================+" << std::endl;
 }
-
 std::string get_not_implemented (bool implemented) {
     if (implemented)
         return "";
     return " NOT IMPLEMENTED";
 }
-enum ColorCode {
-    FG_RED     = 31,
-    FG_GREEN   = 32,
-    FG_BLUE    = 34,
-    FG_DEFAULT = 39,
-    BG_RED     = 41,
-    BG_GREEN   = 42,
-    BG_BLUE    = 44,
-    BG_DEFAULT = 49
-};
+enum ColorCode { FG_RED = 31, FG_GREEN = 32, FG_BLUE = 34, FG_DEFAULT = 39, BG_RED = 41, BG_GREEN = 42, BG_BLUE = 44, BG_DEFAULT = 49 };
 void print_colored (std::string str, ColorCode color_code) {
     m_standard_stream << "\033[" << color_code << "m" << str << "\033[" << FG_DEFAULT << "m";
 }
-
 void OptionHandler::print_usage_algorithm () {
     int index;
     m_standard_stream //
-        << "| --algorithm=         " << g_algorithm_names[1]
-        << get_not_implemented (g_algorithm_implemented[1])
-        << std::string (56 - strlen (g_algorithm_names[1]) -
-                            get_not_implemented (g_algorithm_implemented[1]).length (),
-                        ' ')
-        << "|" << std::endl;
+        << "| --algorithm=         " << g_algorithm_names[1] << get_not_implemented (g_algorithm_implemented[1])
+        << std::string (56 - strlen (g_algorithm_names[1]) - get_not_implemented (g_algorithm_implemented[1]).length (), ' ') << "|" << std::endl;
     for (index = 2; index < (signed) g_algorithm_names.size (); index++) {
         m_standard_stream //
-            << "|                      " << g_algorithm_names[index]
-            << get_not_implemented (g_algorithm_implemented[index])
-            << std::string (56 - strlen (g_algorithm_names[index]) -
-                                get_not_implemented (g_algorithm_implemented[index]).length (),
-                            ' ')
-            << "|" << std::endl;
+            << "|                      " << g_algorithm_names[index] << get_not_implemented (g_algorithm_implemented[index])
+            << std::string (56 - strlen (g_algorithm_names[index]) - get_not_implemented (g_algorithm_implemented[index]).length (), ' ') << "|" << std::endl;
     }
     m_standard_stream //
         << "|                          This option specifies the method to calculate the   |" << std::endl
@@ -294,20 +266,12 @@ void OptionHandler::print_usage_algorithm () {
 void OptionHandler::print_usage_data_structure () {
     int index;
     m_standard_stream //
-        << "| --data_structure=    " << g_datastructure_names[1]
-        << get_not_implemented (g_datastructure_implemented[1])
-        << std::string (56 - strlen (g_datastructure_names[1]) -
-                            get_not_implemented (g_datastructure_implemented[1]).length (),
-                        ' ')
-        << "|" << std::endl;
+        << "| --data_structure=    " << g_datastructure_names[1] << get_not_implemented (g_datastructure_implemented[1])
+        << std::string (56 - strlen (g_datastructure_names[1]) - get_not_implemented (g_datastructure_implemented[1]).length (), ' ') << "|" << std::endl;
     for (index = 2; index < (signed) g_datastructure_names.size (); index++) {
         m_standard_stream //
-            << "|                      " << g_datastructure_names[index]
-            << get_not_implemented (g_datastructure_implemented[index])
-            << std::string (56 - strlen (g_datastructure_names[index]) -
-                                get_not_implemented (g_datastructure_implemented[index]).length (),
-                            ' ')
-            << "|" << std::endl;
+            << "|                      " << g_datastructure_names[index] << get_not_implemented (g_datastructure_implemented[index])
+            << std::string (56 - strlen (g_datastructure_names[index]) - get_not_implemented (g_datastructure_implemented[index]).length (), ' ') << "|" << std::endl;
     }
     m_standard_stream //
         << "|                          This option specifies the datastructure which       |" << std::endl
@@ -320,18 +284,11 @@ void OptionHandler::print_usage_input () {
     int index;
     m_standard_stream //
         << "| --input=             " << g_input_names[1] << get_not_implemented (g_input_implemented[1])
-        << std::string (56 - strlen (g_input_names[1]) -
-                            get_not_implemented (g_input_implemented[1]).length (),
-                        ' ')
-        << "|" << std::endl;
+        << std::string (56 - strlen (g_input_names[1]) - get_not_implemented (g_input_implemented[1]).length (), ' ') << "|" << std::endl;
     for (index = 2; index < (signed) g_input_names.size (); index++) {
         m_standard_stream //
-            << "|                      " << g_input_names[index]
-            << get_not_implemented (g_input_implemented[index])
-            << std::string (56 - strlen (g_input_names[index]) -
-                                get_not_implemented (g_input_implemented[index]).length (),
-                            ' ')
-            << "|" << std::endl;
+            << "|                      " << g_input_names[index] << get_not_implemented (g_input_implemented[index])
+            << std::string (56 - strlen (g_input_names[index]) - get_not_implemented (g_input_implemented[index]).length (), ' ') << "|" << std::endl;
     }
     m_standard_stream //
         << "|                          This option specifies how the particles are loaded  |" << std::endl
@@ -347,18 +304,11 @@ void OptionHandler::print_usage_output () {
     int index;
     m_standard_stream //
         << "| --output=            " << g_output_names[1] << get_not_implemented (g_output_implemented[1])
-        << std::string (56 - strlen (g_output_names[1]) -
-                            get_not_implemented (g_output_implemented[1]).length (),
-                        ' ')
-        << "|" << std::endl;
+        << std::string (56 - strlen (g_output_names[1]) - get_not_implemented (g_output_implemented[1]).length (), ' ') << "|" << std::endl;
     for (index = 2; index < (signed) g_output_names.size (); index++) {
         m_standard_stream //
-            << "|                      " << g_output_names[index]
-            << get_not_implemented (g_output_implemented[index])
-            << std::string (56 - strlen (g_output_names[index]) -
-                                get_not_implemented (g_output_implemented[index]).length (),
-                            ' ')
-            << "|" << std::endl;
+            << "|                      " << g_output_names[index] << get_not_implemented (g_output_implemented[index])
+            << std::string (56 - strlen (g_output_names[index]) - get_not_implemented (g_output_implemented[index]).length (), ' ') << "|" << std::endl;
     }
     m_standard_stream //
         << "|                          This option specifies how the particles are saved   |" << std::endl
@@ -370,12 +320,8 @@ void OptionHandler::print_usage_write_modes () {
     int index;
     for (index = 1; index < (signed) g_csv_column_names.size (); index++) {
         m_standard_stream //
-            << "| --WRITE_" << g_csv_column_names[index]
-            << get_not_implemented (g_csv_column_implemented[index])
-            << std::string (69 - strlen (g_csv_column_names[index]) -
-                                get_not_implemented (g_csv_column_implemented[index]).length (),
-                            ' ')
-            << "|" << std::endl;
+            << "| --WRITE_" << g_csv_column_names[index] << get_not_implemented (g_csv_column_implemented[index])
+            << std::string (69 - strlen (g_csv_column_names[index]) - get_not_implemented (g_csv_column_implemented[index]).length (), ' ') << "|" << std::endl;
     }
     m_standard_stream //
         << "|                          If 'output' is set to 'FILE_CSV' then this options  |" << std::endl
@@ -489,7 +435,6 @@ void OptionHandler::print_usage_print_config () {
         << "| --print_config                                                               |" << std::endl
         << "|                          Prints the effective options to console/logfile     |" << std::endl;
 }
-
 void OptionHandler::print_usage_particle_sim () {
     m_standard_stream //
         << "+==============================================================================+" << std::endl

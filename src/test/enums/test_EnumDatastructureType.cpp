@@ -9,7 +9,6 @@
 #include "enums/EnumDatastructureType.hpp"
 #include <boost/test/unit_test.hpp>
 #include <sstream>
-
 BOOST_AUTO_TEST_CASE (testException1) {
     DatastructureTypeInvalidException exception (e_datastructure_type::GRID);
     BOOST_CHECK_EQUAL (exception.what (), "datastructure type ( GRID ) is invalid");

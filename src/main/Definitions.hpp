@@ -6,16 +6,21 @@
  */
 #ifndef DEFINITIONS_HPP_
 #define DEFINITIONS_HPP_
+#define _USE_MATH_DEFINES
 #ifndef MIN
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 #endif
 #ifndef MAX
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 #endif
+#ifndef SGN
+#define SGN(x) (((x) < 0) ? -1 : ((x) > 0))
+#endif
 #ifdef OMP_AVAILABLE
 #include <omp.h>
 #endif
 #include "DataType.hpp"
+#include "EnergyConservation.hpp"
 #include "enums/EnumAlgorithmType.hpp"
 #include "enums/EnumCSVColumnType.hpp"
 #include "enums/EnumDatastructureType.hpp"
@@ -40,5 +45,4 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <vector>
-
 #endif /* DEFINITIONS_HPP_ */

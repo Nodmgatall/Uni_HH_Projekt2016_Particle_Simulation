@@ -1,6 +1,3 @@
-[submodule "organization/Projektplan"]
-	path = organization/Projektplan
-	url = https://git.overleaf.com/6868875yrhfvynywgzr
 [submodule "organization/Zwischenbesprechung_12_01_2017/Folien"]
 	path = organization/Zwischenbesprechung_12_01_2017/Folien
 	url = https://git.overleaf.com/7690515vynnjrmjmtvc

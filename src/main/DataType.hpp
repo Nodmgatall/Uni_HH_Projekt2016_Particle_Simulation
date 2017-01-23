@@ -4,7 +4,6 @@
  *  Created on: 08.12.2016
  *      Author: benjamin
  */
-
 #ifndef DATA_TYPE_DEFINED
 #define DATA_TYPE_DEFINED
 /**

@@ -9,7 +9,6 @@
 #include "enums/EnumCSVColumnType.hpp"
 #include <boost/test/unit_test.hpp>
 #include <sstream>
-
 BOOST_AUTO_TEST_CASE (testException1) {
     CSVColumnTypeInvalidException exception (e_csv_column_type::ID);
     BOOST_CHECK_EQUAL (exception.what (), "csv_column type ( ID ) is invalid");
@@ -145,7 +144,6 @@ BOOST_AUTO_TEST_CASE (test_get_enum_for_printed_csv_column_name_11) {
     BOOST_CHECK_EQUAL (val->second, 0);
 }
 BOOST_AUTO_TEST_CASE (test_get_enum_for_printed_csv_column_name_12) {
-    std::pair<e_csv_column_type, int>* val =
-        get_enum_for_printed_csv_column_name ("dieseZeileGibtEsNicht");
+    std::pair<e_csv_column_type, int>* val = get_enum_for_printed_csv_column_name ("dieseZeileGibtEsNicht");
     BOOST_CHECK_EQUAL (val, (void*) 0);
 }

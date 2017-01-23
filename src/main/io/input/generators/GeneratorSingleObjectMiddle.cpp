@@ -4,26 +4,20 @@
  *  Created on: 23.11.2016
  *      Author: benjamin
  */
-
 #include "GeneratorSingleObjectMiddle.hpp"
-
-GeneratorSingleObjectMiddle::GeneratorSingleObjectMiddle (s_options& p_options, DatastructureBase& p_datastructure)
-: InputBase (p_options, p_datastructure) {
+GeneratorSingleObjectMiddle::GeneratorSingleObjectMiddle (s_options& p_options, DatastructureBase& p_datastructure) : InputBase (p_options, p_datastructure) {
     m_stucture_name = "GeneratorSingleObjectMiddle";
 }
-
 GeneratorSingleObjectMiddle::~GeneratorSingleObjectMiddle () {
 }
-
 void GeneratorSingleObjectMiddle::initialize_datastructure () {
     Benchmark::begin (m_stucture_name);
     data_type     temp     = pow (m_options.m_particle_count, 1.0f / 3.0f);
     Vec3f         bounds_2 = m_options.m_bounds / 2;
     unsigned int  tempInt  = temp;
     unsigned int  x, y, z;
-    unsigned long count = 0;
-    data_type     smallest_dimension_2 =
-        MIN (m_options.m_bounds.x, MIN (m_options.m_bounds.z, m_options.m_bounds.y)) / 2.0;
+    unsigned long count                = 0;
+    data_type     smallest_dimension_2 = MIN (m_options.m_bounds.x, MIN (m_options.m_bounds.z, m_options.m_bounds.y)) / 2.0;
     for (x = 0; x < tempInt; x++) {
         for (y = 0; y < tempInt; y++) {
             for (z = 0; z < tempInt; z++) {

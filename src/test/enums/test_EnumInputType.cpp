@@ -9,7 +9,6 @@
 #include "enums/EnumInputType.hpp"
 #include <boost/test/unit_test.hpp>
 #include <sstream>
-
 BOOST_AUTO_TEST_CASE (testException1) {
     InputTypeInvalidException exception (e_input_type::GENERATOR_RANDOM);
     BOOST_CHECK_EQUAL (exception.what (), "input type ( GENERATOR_RANDOM ) is invalid");
@@ -20,8 +19,7 @@ BOOST_AUTO_TEST_CASE (testException2) {
 }
 BOOST_AUTO_TEST_CASE (testException3) {
     InputTypeInvalidException exception (e_input_type::GENERATOR_SINGLE_OBJECT_MIDDLE);
-    BOOST_CHECK_EQUAL (exception.what (),
-                       "input type ( GENERATOR_SINGLE_OBJECT_MIDDLE ) is invalid");
+    BOOST_CHECK_EQUAL (exception.what (), "input type ( GENERATOR_SINGLE_OBJECT_MIDDLE ) is invalid");
 }
 BOOST_AUTO_TEST_CASE (testException4) {
     InputTypeInvalidException exception (e_input_type::GENERATOR_GRID_DISTRIBUTION);

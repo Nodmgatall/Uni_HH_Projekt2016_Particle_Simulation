@@ -12,22 +12,17 @@ typedef DatastructureGrid DatastructureUnderTest;
 #define BOOST_TEST_MODULE "DatastructureBaseGrid"
 //<<-- this code is never executed !!
 #endif
-
 #include "algorithms/AlgorithmBase.hpp"
 #include "borders/BorderBase.hpp"
 #include "io/output/WriterBase.hpp"
 #include <boost/test/unit_test.hpp>
 #include <cstring>
-
 class ParticleWriter : public WriterBase {
   public:
     bool             m_start_called;
     bool             m_end_called;
     std::vector<int> m_ids_saved;
-    void saveData (std::vector<data_type>&     p_positions_x,
-                   std::vector<data_type>&     p_positions_y,
-                   std::vector<data_type>&     p_positions_z,
-                   std::vector<unsigned long>& p_ids) {
+    void saveData (std::vector<data_type>& p_positions_x, std::vector<data_type>& p_positions_y, std::vector<data_type>& p_positions_z, std::vector<unsigned long>& p_ids) {
         (void) p_positions_x;
         (void) p_positions_y;
         (void) p_positions_z;
@@ -62,12 +57,7 @@ class Algorithm : public AlgorithmBase {
     int                           m_count;
     Algorithm (s_options& p_options) : AlgorithmBase (p_options), m_count (0) {
     }
-    void step_1 (const data_type& p_position_ax,
-                 const data_type& p_position_ay,
-                 const data_type& p_position_az,
-                 data_type&       p_position_bx,
-                 data_type&       p_position_by,
-                 data_type&       p_position_bz) {
+    void step_1 (const data_type& p_position_ax, const data_type& p_position_ay, const data_type& p_position_az, data_type& p_position_bx, data_type& p_position_by, data_type& p_position_bz) {
         int idx_i = p_position_bx;
         m_step_1_helper[idx_i]++;
         BOOST_CHECK_EQUAL (m_step_1_helper[idx_i], 1);
@@ -179,14 +169,7 @@ class BoundsCorrection : public BorderBase {
     }
     virtual ~BoundsCorrection () {
     }
-    bool updatePosition (data_type&   m_x,
-                         data_type&   m_y,
-                         data_type&   m_z,
-                         data_type&   m_other_x,
-                         data_type&   m_other_y,
-                         data_type&   m_other_z,
-                         const Vec3f& m_corner000,
-                         const Vec3f& m_corner111) {
+    bool updatePosition (data_type& m_x, data_type& m_y, data_type& m_z, data_type& m_other_x, data_type& m_other_y, data_type& m_other_z, const Vec3f& m_corner000, const Vec3f& m_corner111) {
         (void) m_x;
         (void) m_y;
         (void) m_z;

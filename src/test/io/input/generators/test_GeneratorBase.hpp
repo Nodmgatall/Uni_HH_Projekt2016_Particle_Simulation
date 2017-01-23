@@ -4,7 +4,6 @@
  *  Created on: Dec 8, 2016
  *      Author: benjamin
  */
-
 #ifndef BOOST_TEST_DYN_LINK
 // this code is never executed !! -->>
 #include "io/input/generators/GeneratorRandom.hpp"
@@ -13,17 +12,13 @@ typedef GeneratorRandom GeneratorUnderTest;
 #define BOOST_TEST_MODULE "GeneratorRandom"
 //<<-- this code is never executed !!
 #endif
-#include "algorithms/AlgorithmLennardJones.hpp"
 #include "borders/BorderWrapparound.hpp"
+#include <algorithms/AlgorithmStoermerVerletLennardJones.hpp>
 #include <boost/test/unit_test.hpp>
 #include <cstring>
-
 class ParticleWriter : public WriterBase {
   public:
-    void saveData (std::vector<data_type>&     p_positions_x,
-                   std::vector<data_type>&     p_positions_y,
-                   std::vector<data_type>&     p_positions_z,
-                   std::vector<unsigned long>& p_ids) {
+    void saveData (std::vector<data_type>& p_positions_x, std::vector<data_type>& p_positions_y, std::vector<data_type>& p_positions_z, std::vector<unsigned long>& p_ids) {
         (void) p_positions_x;
         (void) p_positions_y;
         (void) p_positions_z;
@@ -38,24 +33,13 @@ class ParticleWriter : public WriterBase {
     void finalize () {
     }
 };
-
 class Datastructure : public DatastructureBase {
   public:
     int m_particle_count;
-    Datastructure (s_options&     p_options,
-                   BorderBase&    p_particle_bounds_correction,
-                   AlgorithmBase& p_algorithm,
-                   WriterBase&    p_particle_file_writer)
-    : DatastructureBase (p_options, p_particle_bounds_correction, p_algorithm, p_particle_file_writer),
-      m_particle_count (0) {
+    Datastructure (s_options& p_options, BorderBase& p_particle_bounds_correction, AlgorithmBase& p_algorithm, WriterBase& p_particle_file_writer)
+    : DatastructureBase (p_options, p_particle_bounds_correction, p_algorithm, p_particle_file_writer), m_particle_count (0) {
     }
     ~Datastructure () {
-    }
-    void serialize () {
-    }
-    bool run_simulation_iteration (unsigned long p_iteration_number = 0) {
-        (void) p_iteration_number;
-        return true;
     }
     void add_particle (Vec3f p_current_position) {
         m_particle_count++;
@@ -81,17 +65,16 @@ class Datastructure : public DatastructureBase {
         return m_particle_count;
     }
 };
-
 BOOST_AUTO_TEST_CASE (test1) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
-    options.m_particle_count = 10;
-    options.m_bounds         = Vec3f (10, 10, 10);
-    BorderWrapparound     border (options.m_bounds);
-    AlgorithmLennardJones algorithm (options);
-    ParticleWriter        writer    = ParticleWriter ();
-    Datastructure         particles = Datastructure (options, border, algorithm, writer);
-    GeneratorUnderTest    generator (options, particles);
-    generator.initialize_datastructure ();
-    BOOST_CHECK_EQUAL (particles.get_particle_count (), 10L);
+    options.m_particle_count                       = 10;
+    options.m_bounds                               = Vec3f (10, 10, 10);
+    BorderWrapparound*                   border    = new BorderWrapparound (options.m_bounds);
+    AlgorithmStoermerVerletLennardJones* algorithm = new AlgorithmStoermerVerletLennardJones (options);
+    ParticleWriter*                      writer    = new ParticleWriter ();
+    Datastructure*                       particles = new Datastructure (options, *border, *algorithm, *writer);
+    GeneratorUnderTest*                  generator = new GeneratorUnderTest (options, *particles);
+    generator->initialize_datastructure ();
+    BOOST_CHECK_EQUAL (particles->get_particle_count (), 10L);
 }

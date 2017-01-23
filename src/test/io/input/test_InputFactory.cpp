@@ -1,5 +1,3 @@
-
-
 /*
  * test_LennardJonesAlgorithm.cpp
  *
@@ -16,10 +14,7 @@ class ParticleWriter : public WriterBase {
     bool             m_start_called;
     bool             m_end_called;
     std::vector<int> m_ids_saved;
-    void saveData (std::vector<data_type>&     p_positions_x,
-                   std::vector<data_type>&     p_positions_y,
-                   std::vector<data_type>&     p_positions_z,
-                   std::vector<unsigned long>& p_ids) {
+    void saveData (std::vector<data_type>& p_positions_x, std::vector<data_type>& p_positions_y, std::vector<data_type>& p_positions_z, std::vector<unsigned long>& p_ids) {
         (void) p_positions_x;
         (void) p_positions_y;
         (void) p_positions_z;
@@ -54,12 +49,7 @@ class Algorithm : public AlgorithmBase {
     int                           m_count;
     Algorithm (s_options& p_options) : AlgorithmBase (p_options), m_count (0) {
     }
-    void step_1 (const data_type& p_position_ax,
-                 const data_type& p_position_ay,
-                 const data_type& p_position_az,
-                 data_type&       p_position_bx,
-                 data_type&       p_position_by,
-                 data_type&       p_position_bz) {
+    void step_1 (const data_type& p_position_ax, const data_type& p_position_ay, const data_type& p_position_az, data_type& p_position_bx, data_type& p_position_by, data_type& p_position_bz) {
         int idx_i = p_position_bx;
         m_step_1_helper[idx_i]++;
         BOOST_CHECK_EQUAL (m_step_1_helper[idx_i], 1);
@@ -171,14 +161,7 @@ class BoundsCorrection : public BorderBase {
     }
     virtual ~BoundsCorrection () {
     }
-    bool updatePosition (data_type&   m_x,
-                         data_type&   m_y,
-                         data_type&   m_z,
-                         data_type&   m_other_x,
-                         data_type&   m_other_y,
-                         data_type&   m_other_z,
-                         const Vec3f& m_corner000,
-                         const Vec3f& m_corner111) {
+    bool updatePosition (data_type& m_x, data_type& m_y, data_type& m_z, data_type& m_other_x, data_type& m_other_y, data_type& m_other_z, const Vec3f& m_corner000, const Vec3f& m_corner111) {
         (void) m_x;
         (void) m_y;
         (void) m_z;
@@ -203,12 +186,8 @@ class BoundsCorrection : public BorderBase {
 class Datastructure : public DatastructureBase {
   public:
     int m_particle_count;
-    Datastructure (s_options&     p_options,
-                   BorderBase&    p_particle_bounds_correction,
-                   AlgorithmBase& p_algorithm,
-                   WriterBase&    p_particle_file_writer)
-    : DatastructureBase (p_options, p_particle_bounds_correction, p_algorithm, p_particle_file_writer),
-      m_particle_count (0) {
+    Datastructure (s_options& p_options, BorderBase& p_particle_bounds_correction, AlgorithmBase& p_algorithm, WriterBase& p_particle_file_writer)
+    : DatastructureBase (p_options, p_particle_bounds_correction, p_algorithm, p_particle_file_writer), m_particle_count (0) {
     }
     ~Datastructure () {
     }
@@ -250,8 +229,7 @@ BOOST_AUTO_TEST_CASE (test1) {
     Algorithm        algorithm (options);
     ParticleWriter   writer    = ParticleWriter (0);
     Datastructure    particles = Datastructure (options, border, algorithm, writer);
-    BOOST_CHECK_EQUAL (InputFactory::build (options, particles)->get_structure_name (),
-                       "FileReaderCSV");
+    BOOST_CHECK_EQUAL (InputFactory::build (options, particles)->get_structure_name (), "FileReaderCSV");
 }
 BOOST_AUTO_TEST_CASE (test2) {
     s_options options;
@@ -261,19 +239,7 @@ BOOST_AUTO_TEST_CASE (test2) {
     Algorithm        algorithm (options);
     ParticleWriter   writer    = ParticleWriter (0);
     Datastructure    particles = Datastructure (options, border, algorithm, writer);
-    BOOST_CHECK_EQUAL (InputFactory::build (options, particles)->get_structure_name (),
-                       "GeneratorGridDistribution");
-}
-BOOST_AUTO_TEST_CASE (test3) {
-    s_options options;
-    memset (&options, 0, sizeof (s_options));
-    options.m_input_type = e_input_type::GENERATOR_MULTIPLE_OBJECTS;
-    BoundsCorrection border (options.m_bounds);
-    Algorithm        algorithm (options);
-    ParticleWriter   writer    = ParticleWriter (0);
-    Datastructure    particles = Datastructure (options, border, algorithm, writer);
-    BOOST_CHECK_EQUAL (InputFactory::build (options, particles)->get_structure_name (),
-                       "GeneratorMultipleObjects");
+    BOOST_CHECK_EQUAL (InputFactory::build (options, particles)->get_structure_name (), "GeneratorGridDistribution");
 }
 BOOST_AUTO_TEST_CASE (test4) {
     s_options options;
@@ -283,19 +249,7 @@ BOOST_AUTO_TEST_CASE (test4) {
     Algorithm        algorithm (options);
     ParticleWriter   writer    = ParticleWriter (0);
     Datastructure    particles = Datastructure (options, border, algorithm, writer);
-    BOOST_CHECK_EQUAL (InputFactory::build (options, particles)->get_structure_name (),
-                       "GeneratorRandom");
-}
-BOOST_AUTO_TEST_CASE (test5) {
-    s_options options;
-    memset (&options, 0, sizeof (s_options));
-    options.m_input_type = e_input_type::GENERATOR_RANDOM_UNIFORM;
-    BoundsCorrection border (options.m_bounds);
-    Algorithm        algorithm (options);
-    ParticleWriter   writer    = ParticleWriter (0);
-    Datastructure    particles = Datastructure (options, border, algorithm, writer);
-    BOOST_CHECK_EQUAL (InputFactory::build (options, particles)->get_structure_name (),
-                       "GeneratorRandomUniform");
+    BOOST_CHECK_EQUAL (InputFactory::build (options, particles)->get_structure_name (), "GeneratorRandom");
 }
 BOOST_AUTO_TEST_CASE (test6) {
     s_options options;
@@ -305,8 +259,7 @@ BOOST_AUTO_TEST_CASE (test6) {
     Algorithm        algorithm (options);
     ParticleWriter   writer    = ParticleWriter (0);
     Datastructure    particles = Datastructure (options, border, algorithm, writer);
-    BOOST_CHECK_EQUAL (InputFactory::build (options, particles)->get_structure_name (),
-                       "GeneratorSingleObjectMiddle");
+    BOOST_CHECK_EQUAL (InputFactory::build (options, particles)->get_structure_name (), "GeneratorSingleObjectMiddle");
 }
 BOOST_AUTO_TEST_CASE (test7) {
     s_options options;

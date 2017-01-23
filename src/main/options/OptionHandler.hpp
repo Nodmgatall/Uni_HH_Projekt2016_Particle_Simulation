@@ -1,13 +1,14 @@
 #ifndef OPTION_HANDLER_HPP
 #define OPTION_HANDLER_HPP
-
 #include "Definitions.hpp"
 #include "Options.hpp"
 #include <cstring>
 #include <getopt.h>
-
 class OptionHandler {
   protected:
+    /**
+     * dearches an string in an array and resurn the index, where the string is found.
+     */
     int indexInArray (std::vector<const char*> elements, char* element);
     void print_usage_algorithm ();
     void print_usage_data_structure ();
@@ -47,5 +48,4 @@ class OptionHandler {
      */
     void print_choosen_options (s_options& p_options);
 };
-
 #endif
