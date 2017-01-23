@@ -26,17 +26,18 @@ DatastructureGrid::DatastructureGrid (s_options& p_options, BorderBase& p_border
         }
     }
     if (m_options.m_cut_off_radius < 1) {
-        std::cout << "ERROR :: cut-off-radius too small. Increasing from '" << DEBUG_VAR (m_options.m_cut_off_radius) << "' to '1'!" << std::endl;
+        m_standard_stream << "ERROR :: cut-off-radius too small. Increasing from '" << DEBUG_VAR (m_options.m_cut_off_radius) << "' to '1'!" << std::endl;
         m_options.m_cut_off_radius = 1;
     }
     grid_speed_factor = (m_options.m_cut_off_radius * (grid_cut_off_factor - 1.0f)) / m_options.m_timestep;
-    std::cout << DEBUG_VAR (m_stucture_name) << std::endl;
-    std::cout << DEBUG_VAR (m_options.m_cut_off_radius) << std::endl;
-    std::cout << DEBUG_VAR (grid_size) << std::endl;
-    std::cout << DEBUG_VAR (grid_size_per_cell) << std::endl;
-    std::cout << DEBUG_VAR (m_options.m_bounds) << std::endl;
-    std::cout << DEBUG_VAR (m_options.m_timestep) << std::endl;
-    std::cout << DEBUG_VAR (grid_cut_off_factor) << std::endl;
+    m_standard_stream << DEBUG_VAR (m_stucture_name) << std::endl;
+    m_standard_stream << DEBUG_VAR (grid_size) << std::endl;
+    m_standard_stream << DEBUG_VAR (grid_size_per_cell) << std::endl;
+    m_standard_stream << DEBUG_VAR (grid_cut_off_factor) << std::endl;
+    m_standard_stream << DEBUG_VAR (grid_speed_factor) << std::endl;
+    m_standard_stream << DEBUG_VAR (m_options.m_bounds) << std::endl;
+    m_standard_stream << DEBUG_VAR (m_options.m_timestep) << std::endl;
+    m_standard_stream << DEBUG_VAR (m_options.m_cut_off_radius) << std::endl;
 }
 DatastructureGrid::~DatastructureGrid () {
 }
@@ -366,7 +367,7 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
     unsigned int i, j;
     m_error_happened = false;
     (void) p_iteration_number;
-    std::cout << DEBUG_VAR (p_iteration_number) << std::endl;
+    m_standard_stream << DEBUG_VAR (p_iteration_number) << std::endl;
     m_iterations_until_rearange_particles--;
     unsigned int idx_x, idx_y, idx_z;
     {
@@ -415,10 +416,6 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
                     }
                 }
                 m_iterations_until_rearange_particles = MIN (m_options.m_max_iterations_between_datastructure_rebuild, grid_speed_factor / v_max);
-                m_standard_stream << DEBUG_VAR (grid_speed_factor) << std::endl;
-                m_standard_stream << DEBUG_VAR (v_max) << std::endl;
-                m_standard_stream << DEBUG_VAR (grid_speed_factor / v_max) << std::endl;
-                m_standard_stream << DEBUG_VAR (m_iterations_until_rearange_particles) << std::endl;
             }
         }
     }
