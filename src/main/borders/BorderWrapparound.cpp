@@ -56,3 +56,77 @@ bool BorderWrapparound::updatePosition (data_type& m_x, data_type& m_y, data_typ
     }
     return delta.x || delta.y || delta.z;
 }
+bool BorderWrapparound::updatePosition (ParticleGroup& p_cell, int p_idx_a, bool& p_error_happened) {
+    bool flag = false;
+    int  i, j;
+    for (i = p_cell.m_ids.size () - 1; i >= 0; i--) {
+        Vec3l idx;
+        while (p_cell.m_positions_x[p_idx_a][i] < 0) {
+            flag = true;
+            if (!(p_cell.m_positions_x[p_idx_a][i] >= -m_bounds.x * 1000)) { // Comparisons with NaN (except!=)return false
+                m_error_stream << "something went badly wrong" << std::endl << p_cell << std::endl;
+                p_error_happened = true;
+                return true;
+            }
+            for (j = 0; j <= 1; j++) {
+                p_cell.m_positions_x[j][i] += m_bounds.x;
+            }
+        }
+        while (p_cell.m_positions_x[p_idx_a][i] >= m_bounds.x) {
+            flag = true;
+            if (!(p_cell.m_positions_x[p_idx_a][i] <= m_bounds.x * 1000)) {
+                m_error_stream << "something went badly wrong" << std::endl << p_cell << std::endl;
+                p_error_happened = true;
+                return true;
+            }
+            for (j = 0; j <= 1; j++) {
+                p_cell.m_positions_x[j][i] -= m_bounds.x;
+            }
+        }
+        while (p_cell.m_positions_y[p_idx_a][i] < 0) {
+            flag = true;
+            if (!(p_cell.m_positions_y[p_idx_a][i] >= -m_bounds.y * 1000)) {
+                m_error_stream << "something went badly wrong" << std::endl << p_cell << std::endl;
+                p_error_happened = true;
+                return true;
+            }
+            for (j = 0; j <= 1; j++) {
+                p_cell.m_positions_y[j][i] += m_bounds.y;
+            }
+        }
+        while (p_cell.m_positions_y[p_idx_a][i] > m_bounds.y) {
+            flag = true;
+            if (!(p_cell.m_positions_y[p_idx_a][i] <= m_bounds.y * 1000)) {
+                m_error_stream << "something went badly wrong" << std::endl << p_cell << std::endl;
+                p_error_happened = true;
+                return true;
+            }
+            for (j = 0; j <= 1; j++) {
+                p_cell.m_positions_y[j][i] -= m_bounds.y;
+            }
+        }
+        while (p_cell.m_positions_z[p_idx_a][i] < 0) {
+            flag = true;
+            if (!(p_cell.m_positions_z[p_idx_a][i] >= -m_bounds.z * 1000)) {
+                m_error_stream << "something went badly wrong" << std::endl << p_cell << std::endl;
+                p_error_happened = true;
+                return true;
+            }
+            for (j = 0; j <= 1; j++) {
+                p_cell.m_positions_z[j][i] += m_bounds.z;
+            }
+        }
+        while (p_cell.m_positions_z[p_idx_a][i] >= m_bounds.z) {
+            flag = true;
+            if (!(p_cell.m_positions_z[p_idx_a][i] <= m_bounds.z * 1000)) {
+                m_error_stream << "something went badly wrong" << std::endl << p_cell << std::endl;
+                p_error_happened = true;
+                return true;
+            }
+            for (j = 0; j <= 1; j++) {
+                p_cell.m_positions_z[j][i] -= m_bounds.z;
+            }
+        }
+    }
+    return flag;
+}

@@ -182,6 +182,12 @@ class BoundsCorrection : public BorderBase {
         (void) m_other_z;
         return true;
     }
+    bool updatePosition (ParticleGroup& p_cell, int p_idx_a, bool& p_error_happened) {
+        (void) p_cell;
+        (void) p_idx_a;
+        (void) p_error_happened;
+        return true;
+    }
 };
 class Datastructure : public DatastructureBase {
   public:
