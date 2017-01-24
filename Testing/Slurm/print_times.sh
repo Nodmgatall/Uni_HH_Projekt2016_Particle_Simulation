@@ -1,4 +1,4 @@
-echo "datastructure,radius,bounds,initial_speed,total_rebuild_count,GRID_time_1,GRID_time_2,GRID_time_3,LISTEDGRID_time_1,LISTEDGRID_time_2,LISTEDGRID_time_3,LIST_BENJAMIN_time_1,LIST_BENJAMIN_time_2,LIST_BENJAMIN_time_3"
+echo "radius,bounds,initial_speed,total_rebuild_count,GRID_time_1,GRID_time_2,GRID_time_3,LISTEDGRID_time_1,LISTEDGRID_time_2,LISTEDGRID_time_3,LIST_BENJAMIN_time_1,LIST_BENJAMIN_time_2,LIST_BENJAMIN_time_3"
 
 
 for var_radius in 2.5 3.0 5.0;
@@ -32,7 +32,7 @@ done
 fi
 done
 
-echo "${var_datastructure},${var_radius},${var_bounds},${var_initial_speed}${var_line_statistics_total_datastructure_rebuild_count}${var_line_statistics_total_runtime}"
+echo "${var_radius},${var_bounds},${var_initial_speed}${var_line_statistics_total_datastructure_rebuild_count}${var_line_statistics_total_runtime}"
 
 done
 done
