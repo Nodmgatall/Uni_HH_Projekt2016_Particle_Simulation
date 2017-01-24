@@ -33,7 +33,7 @@ srun ../../particle_simulation.x \
 --cut_off_radius=${var_radius} \
 --timestep=0.005 \
 --bounds=${var_bounds}/${var_bounds}/${var_bounds} \
---speed= ${var_initial_speed} \
+--speed=${var_initial_speed} \
 --verbose
 EOF
 chmod +x "job_script_${var_test_name}.sh"
