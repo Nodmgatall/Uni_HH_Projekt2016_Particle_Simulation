@@ -26,7 +26,7 @@ cat > "job_script_${var_test_name}.sh" << EOF
 #SBATCH -n 1
 rm -rf out_64000_particles
 srun hostname
-srun ../../particle_simulation.x \
+srun ../../../particle_simulation.x \
 --algorithm=LENNARD_JONES \
 --data_structure=GRID \
 --input=GENERATOR_GRID_DISTRIBUTION --count=64000 \
