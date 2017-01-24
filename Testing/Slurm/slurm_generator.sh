@@ -29,7 +29,7 @@ srun ../../particle_simulation.x \
 --input=GENERATOR_GRID_DISTRIBUTION --count=64000 \
 --output=FILE_CSV --out_file_name="${var_test_name}.data" \
 --max_iterations=2000 \
---write_fequency=10 \
+--write_fequency=1000 \
 --cut_off_radius=${var_radius} \
 --timestep=0.005 \
 --bounds=${var_bounds}/${var_bounds}/${var_bounds} \
