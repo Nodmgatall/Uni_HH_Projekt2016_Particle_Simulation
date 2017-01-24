@@ -4,7 +4,8 @@ do
 
 for var_radius in 2.5 3.0 5.0;
 do
-var_int_radius=${((var_radius*10))%.*}
+tmp=((var_radius*10))
+var_int_radius=${tmp%.*}
 
 for var_bounds in 40 50 70 120;
 do
@@ -12,7 +13,8 @@ var_int_bounds=${var_bounds%.*}
 
 for var_initial_speed in 0 0.1 0.5 1;
 do
-var_int_initial_speed=${((var_initial_speed*10))%.*}
+tmp=((var_initial_speed*10))
+var_int_initial_speed=${tmp%.*}
 
 var_test_name="simulation_${var_datastructure}_${var_int_radius}_${var_int_bounds}_${var_int_initial_speed}"
 cat > "job_script_${var_test_name}.sh" << EOF
