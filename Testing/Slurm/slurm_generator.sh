@@ -2,16 +2,19 @@
 for var_datastructure in "GRID" "LISTEDGRID" "LIST_BENJAMIN";
 do
 
-for var_radius in 2.5 5.0 10.0 40.0;
+for var_radius in 2.5 3.0 5.0;
 do
 var_int_radius=${var_radius%.*}
 
-for var_bounds in 40 50 70;
+for var_bounds in 40 50 70 120;
 do
 var_int_bounds=${var_bounds%.*}
 
-var_test_name="simulation_${var_datastructure}_${var_int_radius}_${var_int_bounds}"
+for var_initial_speed in 40 50 70 120;
+do
+var_int_initial_speed=${var_initial_speed%.*}
 
+var_test_name="simulation_${var_datastructure}_${var_int_radius}_${var_int_bounds}_${var_int_initial_speed}"
 cat > "job_script_${var_test_name}.sh" << EOF
 #!/bin/bash
 #SBATCH --time=00:30:00
@@ -33,10 +36,12 @@ srun ../../particle_simulation.x \
 --cut_off_radius=${var_radius} \
 --timestep=0.005 \
 --bounds=${var_bounds}/${var_bounds}/${var_bounds} \
+--speed= ${var_initial_speed}\
 --verbose
 EOF
 chmod +x "job_script_${var_test_name}.sh"
 
+done
 done
 done
 done
