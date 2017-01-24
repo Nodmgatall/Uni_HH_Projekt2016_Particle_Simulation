@@ -11,15 +11,33 @@
 #include <vector>
 class DatastructureBase {
   protected:
-    std::string    m_stucture_name;
-    s_options&     m_options;
-    BorderBase&    m_border;
-    AlgorithmBase& m_algorithm;
-    WriterBase&    m_writer;
-    bool           m_error_happened;
     /**
-         * the size the cuttoff is increased to avoid rebuilding the particles too ofthen
-         */
+     * the structure name to verify, which subclass is used
+     */
+    std::string m_stucture_name;
+    /**
+     * the options passed to the program
+     */
+    s_options& m_options;
+    /**
+     * the border-helper-functions
+     */
+    BorderBase& m_border;
+    /**
+     * the algorithm to use to calculate the forces
+     */
+    AlgorithmBase& m_algorithm;
+    /**
+     * how the data should be saved
+     */
+    WriterBase& m_writer;
+    /**
+     * true if an error happened, and the simulation should be stopped
+     */
+    bool m_error_happened;
+    /**
+     * the size the cuttoff is increased to avoid rebuilding the particles too ofthen
+     */
     data_type m_cut_off_factor;
     /**
      * the factor for the current max speed to calculate the iteration count to next rebuild
