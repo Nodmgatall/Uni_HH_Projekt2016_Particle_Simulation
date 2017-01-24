@@ -33,6 +33,14 @@ std::ostream& operator<< (std::ostream& stream, const e_csv_column_type p_csv_co
     else
         throw CSVColumnTypeInvalidException (p_csv_column_type);
 }
+std::ostream& operator<< (std::ostream& stream, const std::set<e_csv_column_type> p_csv_column_type) {
+    stream << "{ ";
+    for (e_csv_column_type csv_column_type : p_csv_column_type) {
+        stream << csv_column_type << ", ";
+    }
+    stream << "}";
+    return stream;
+}
 std::istream& operator>> (std::istream& stream, e_csv_column_type& p_csv_column_type) {
     std::string name;
     stream >> name;

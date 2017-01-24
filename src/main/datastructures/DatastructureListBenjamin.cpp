@@ -109,7 +109,7 @@ bool DatastructureListBenjamin::run_simulation_iteration (unsigned long p_iterat
     const data_type ox = m_options.m_bounds.x;
     const data_type oy = m_options.m_bounds.y;
     const data_type oz = m_options.m_bounds.z;
-    if (m_iterations_until_rearange_particles < 1) {
+    if (m_iterations_until_rearange_particles <= 1) { // compatibility to grid
 #ifdef CALCULATE_STATISTICS
         g_statistics.m_total_datastructure_rebuild_count++;
 #endif

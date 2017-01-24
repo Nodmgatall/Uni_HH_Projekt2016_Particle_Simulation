@@ -24,14 +24,19 @@ struct Statistics {
     /**
      * total runtime in seconds
      */
-    unsigned long m_total_runtime;
-    Statistics () : m_total_datastructure_rebuild_count (0), m_total_runtime (0) {
+    data_type  m_total_runtime;
+    s_options* m_options;
+    Statistics () : m_total_datastructure_rebuild_count (0), m_total_runtime (0), m_options (0) {
     }
-    void print_statistics (s_options p_options) {
-        m_verbose_stream << "total_runtime" << m_total_runtime << std::endl;
-        m_verbose_stream << "total_datastructure_rebuild_count" << m_total_datastructure_rebuild_count << std::endl;
-        m_verbose_stream << "average_time_per_iteration" << (m_total_runtime / p_options.m_max_iterations) << std::endl;
-        m_verbose_stream << "average_iterations_between_rebuild" << (m_total_datastructure_rebuild_count / p_options.m_max_iterations) << std::endl;
+
+    friend std::ostream& operator<< (std::ostream& stream, const Statistics p_statistics) {
+        stream << *p_statistics.m_options;
+        stream << "statistics.total_runtime                                     : " << p_statistics.m_total_runtime << std::endl;
+        stream << "statistics.total_datastructure_rebuild_count                 : " << p_statistics.m_total_datastructure_rebuild_count << std::endl;
+        stream << "statistics.average_time_per_iteration                        : " << (p_statistics.m_total_runtime / p_statistics.m_options->m_max_iterations) << std::endl;
+        stream << "statistics.average_iterations_between_rebuild                : " << (p_statistics.m_total_datastructure_rebuild_count / p_statistics.m_options->m_max_iterations)
+               << std::endl;
+        return stream;
     }
 };
 extern Statistics g_statistics;

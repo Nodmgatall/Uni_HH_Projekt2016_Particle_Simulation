@@ -11,6 +11,9 @@ do
 for var_initial_speed in 0 0.1 0.5 1;
 do
 
+if (( $(echo "!(($var_radius == 5.0) && (var_bounds < 70))" |bc -l) )); then
+
+
 var_test_name="simulation_${var_datastructure}_${var_radius}_${var_bounds}_${var_initial_speed}"
 cat > "job_script_${var_test_name}.sh" << EOF
 #!/bin/bash
@@ -38,6 +41,7 @@ srun ../../particle_simulation.x \
 EOF
 chmod +x "job_script_${var_test_name}.sh"
 
+fi
 done
 done
 done

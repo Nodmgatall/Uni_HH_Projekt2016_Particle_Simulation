@@ -94,5 +94,26 @@ struct s_options {
         strftime (tmp_str, sizeof (log_folder), "logdata/%Y-%m-%d_%H-%M-%S", time_info);
         m_out_file_name = std::string (tmp_str);
     }
+    inline friend std::ostream& operator<< (std::ostream& stream, const s_options& p_options) {
+        stream << "options.algorithm_type                                       : " << p_options.m_algorithm_type << std::endl;
+        stream << "options.autotuneing                                          : " << p_options.m_autotuneing << std::endl;
+        stream << "options.bounds                                               : " << p_options.m_bounds << std::endl;
+        stream << "options.cut_off_radius                                       : " << p_options.m_cut_off_radius << std::endl;
+        stream << "options.data_structure_type                                  : " << p_options.m_data_structure_type << std::endl;
+        stream << "options.input_type                                           : " << p_options.m_input_type << std::endl;
+        stream << "options.in_file_name                                         : " << p_options.m_in_file_name << std::endl;
+        stream << "options.max_iterations                                       : " << p_options.m_max_iterations << std::endl;
+        stream << "options.initial_speed                                        : " << p_options.m_initial_speed << std::endl;
+        stream << "options.max_iterations_between_datastructure_rebuild         : " << p_options.m_max_iterations_between_datastructure_rebuild << std::endl;
+        stream << "options.output_type                                          : " << p_options.m_output_type << std::endl;
+        stream << "options.out_file_name                                        : " << p_options.m_out_file_name << std::endl;
+        stream << "options.particle_count                                       : " << p_options.m_particle_count << std::endl;
+        stream << "options.seed                                                 : " << p_options.m_seed << std::endl;
+        stream << "options.timestep                                             : " << p_options.m_timestep << std::endl;
+        stream << "options.verbose                                              : " << p_options.m_verbose << std::endl;
+        stream << "options.write_fequency                                       : " << p_options.m_write_fequency << std::endl;
+        stream << "options.write_modes                                          : " << p_options.m_write_modes << std::endl;
+        return stream;
+    }
 };
 #endif
