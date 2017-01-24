@@ -23,8 +23,8 @@ file_content=$(cat "${var_run_index}/${var_test_name}.out")
 abborted=$(echo "${file_content}" | grep  "Job step aborted")
 statistics_total_runtime=$(echo "${file_content}" | grep "statistics.total_runtime" | grep -Eo '[+-]?[0-9]+([.][0-9]+)?')
 statistics_total_datastructure_rebuild_count=$(echo "${file_content}" | grep "statistics.total_datastructure_rebuild_count" | grep -Eo '[+-]?[0-9]+([.][0-9]+)?')
-var_line_statistics_total_runtime+=echo ",$statistics_total_runtime"
-var_line_statistics_total_datastructure_rebuild_count=echo "$statistics_total_datastructure_rebuild_count"
+var_line_statistics_total_runtime+= ",$statistics_total_runtime"
+var_line_statistics_total_datastructure_rebuild_count= "$statistics_total_datastructure_rebuild_count"
 
 
 
