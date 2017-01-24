@@ -28,8 +28,8 @@ void DatastructureListBenjamin::list_step_2_calculate (ParticleGroup& p_cell, Al
                                 p_cell.m_positions_x[p_idx_b].data (),
                                 p_cell.m_positions_y[p_idx_b].data (),
                                 p_cell.m_positions_z[p_idx_b].data (),
-                                p_cell.m_neighbors[13][i][j],
-                                p_cell.m_neighbors[13][i][j] + 1);
+                                p_cell.m_neighbors[13][i][j].m_left_index,
+                                p_cell.m_neighbors[13][i][j].m_right_index);
         }
     }
 }
@@ -50,8 +50,8 @@ void DatastructureListBenjamin::list_step_2_calculate (ParticleGroup& p_cell_i, 
                                 p_cell_j.m_positions_x[p_idx_b].data (),
                                 p_cell_j.m_positions_y[p_idx_b].data (),
                                 p_cell_j.m_positions_z[p_idx_b].data (),
-                                p_cell_i.m_neighbors[neighbor_index][i][j],
-                                p_cell_i.m_neighbors[neighbor_index][i][j] + 1);
+                                p_cell_i.m_neighbors[neighbor_index][i][j].m_left_index,
+                                p_cell_i.m_neighbors[neighbor_index][i][j].m_right_index);
         }
     }
 }
@@ -98,8 +98,8 @@ void DatastructureListBenjamin::list_step_2_calculate (ParticleGroup& p_cell_i,
                                        p_cell_j.m_positions_x[p_idx_b].data (),
                                        p_cell_j.m_positions_y[p_idx_b].data (),
                                        p_cell_j.m_positions_z[p_idx_b].data (),
-                                       p_cell_i.m_neighbors[neighbor_index][i][j],
-                                       p_cell_i.m_neighbors[neighbor_index][i][j] + 1);
+                                       p_cell_i.m_neighbors[neighbor_index][i][j].m_left_index,
+                                       p_cell_i.m_neighbors[neighbor_index][i][j].m_right_index);
         }
     }
 }
@@ -177,7 +177,11 @@ void DatastructureListBenjamin::list_rebuild (ParticleGroup& p_cell, unsigned in
             data_type dy = p_cell.m_positions_y[p_idx_a][i] - p_cell.m_positions_y[p_idx_a][j];
             data_type dz = p_cell.m_positions_z[p_idx_a][i] - p_cell.m_positions_z[p_idx_a][j];
             if (cut_off_radius_squared >= (dx * dx + dy * dy + dz * dz)) {
-                p_cell.m_neighbors[13][i].push_back (j);
+                if ((p_cell.m_neighbors[13][i].size () > 0) && (p_cell.m_neighbors[13][i][p_cell.m_neighbors[13][i].size () - 1].m_right_index == j)) {
+                    p_cell.m_neighbors[13][i][p_cell.m_neighbors[13][i].size () - 1].m_right_index = j + 1;
+                } else {
+                    p_cell.m_neighbors[13][i].push_back (ParticleIndexRange (j, j + 1));
+                }
             }
         }
     }
@@ -199,7 +203,11 @@ void DatastructureListBenjamin::list_rebuild (ParticleGroup& p_cell_i, ParticleG
             data_type dy = p_cell_i.m_positions_y[p_idx_a][i] - p_cell_j.m_positions_y[p_idx_a][j];
             data_type dz = p_cell_i.m_positions_z[p_idx_a][i] - p_cell_j.m_positions_z[p_idx_a][j];
             if (cut_off_radius_squared >= (dx * dx + dy * dy + dz * dz)) {
-                p_cell_i.m_neighbors[neighbor_index][i].push_back (j);
+                if ((p_cell_i.m_neighbors[neighbor_index][i].size () > 0) && (p_cell_i.m_neighbors[neighbor_index][i][p_cell_i.m_neighbors[neighbor_index][i].size () - 1].m_right_index == j)) {
+                    p_cell_i.m_neighbors[neighbor_index][i][p_cell_i.m_neighbors[neighbor_index][i].size () - 1].m_right_index = j + 1;
+                } else {
+                    p_cell_i.m_neighbors[neighbor_index][i].push_back (ParticleIndexRange (j, j + 1));
+                }
             }
         }
     }
@@ -237,7 +245,11 @@ void DatastructureListBenjamin::list_rebuild (ParticleGroup& p_cell_i, ParticleG
             data_type dy = p_cell_i.m_positions_y[p_idx_a][i] + p_offset_y - p_cell_j.m_positions_y[p_idx_a][j];
             data_type dz = p_cell_i.m_positions_z[p_idx_a][i] + p_offset_z - p_cell_j.m_positions_z[p_idx_a][j];
             if (cut_off_radius_squared >= (dx * dx + dy * dy + dz * dz)) {
-                p_cell_i.m_neighbors[neighbor_index][i].push_back (j);
+                if ((p_cell_i.m_neighbors[neighbor_index][i].size () > 0) && (p_cell_i.m_neighbors[neighbor_index][i][p_cell_i.m_neighbors[neighbor_index][i].size () - 1].m_right_index == j)) {
+                    p_cell_i.m_neighbors[neighbor_index][i][p_cell_i.m_neighbors[neighbor_index][i].size () - 1].m_right_index = j + 1;
+                } else {
+                    p_cell_i.m_neighbors[neighbor_index][i].push_back (ParticleIndexRange (j, j + 1));
+                }
             }
         }
     }

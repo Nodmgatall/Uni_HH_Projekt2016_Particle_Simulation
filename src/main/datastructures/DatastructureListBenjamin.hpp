@@ -7,9 +7,7 @@
 #ifndef SRC_MAIN_DATASTRUCTURES_DATASTRUCTURELISTBENJAMIN_HPP_
 #define SRC_MAIN_DATASTRUCTURES_DATASTRUCTURELISTBENJAMIN_HPP_
 #include "DatastructureBase.hpp"
-#include "Definitions.hpp"
-#include "Vec3.hpp"
-#include "helper/ParticleGroup.hpp"
+
 class DatastructureListBenjamin : virtual public DatastructureBase {
   protected:
   public:
