@@ -143,6 +143,7 @@ bool DatastructureListBenjamin::run_simulation_iteration (unsigned long p_iterat
     list_step_2_calculate (m_particle_groups[0], m_particle_groups[0], m_algorithm, m_idx_a, m_idx_b, 0, 0, oz);
     step_3_fit_into_borders (m_particle_groups[0]);
     m_idx_b = !(m_idx_a = m_idx_b);
+    calculate_next_datastructure_rebuild ();
 #ifdef CALCULATE_ENERGY_CONSERVATION
     unsigned int i, j;
     g_sum_energy = 0;

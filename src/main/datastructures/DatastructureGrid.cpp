@@ -3,15 +3,11 @@ DatastructureGrid::DatastructureGrid (s_options& p_options, BorderBase& p_border
 : DatastructureBase (p_options, p_border, p_algorithm, p_particle_writer) {
     m_stucture_name = "DatastructureGrid";
     unsigned int idx_x, idx_y, idx_z;
-
-    long max_usefull_size = pow (m_options.m_particle_count, 1.0 / 3.0);
-    m_max_id              = 0;
-    // cut_off_radius*1.2 to allow particles to move before reconstruction of
-    // cells is needed
-    grid_cut_off_factor = 1.2;
-    Vec3l tmp           = m_options.m_bounds / (m_options.m_cut_off_radius * grid_cut_off_factor);
-    grid_size           = Vec3l (ceil (tmp.x), ceil (tmp.y), ceil (tmp.z));
-    grid_size           = Vec3l::min (grid_size, max_usefull_size);
+    long         max_usefull_size = pow (m_options.m_particle_count, 1.0 / 3.0);
+    m_max_id                      = 0;
+    Vec3l tmp                     = m_options.m_bounds / (m_options.m_cut_off_radius * m_cut_off_factor);
+    grid_size                     = Vec3l (ceil (tmp.x), ceil (tmp.y), ceil (tmp.z));
+    grid_size                     = Vec3l::min (grid_size, max_usefull_size);
     // at least 3 cells required because of periodic boundary
     grid_size                  = Vec3l::max (grid_size, Vec3l (3L));
     grid_size_per_cell         = m_options.m_bounds / Vec3f (grid_size);
@@ -29,12 +25,11 @@ DatastructureGrid::DatastructureGrid (s_options& p_options, BorderBase& p_border
         m_standard_stream << "ERROR :: cut-off-radius too small. Increasing from '" << DEBUG_VAR (m_options.m_cut_off_radius) << "' to '1'!" << std::endl;
         m_options.m_cut_off_radius = 1;
     }
-    grid_speed_factor = (m_options.m_cut_off_radius * (grid_cut_off_factor - 1.0f)) / m_options.m_timestep;
     m_standard_stream << DEBUG_VAR (m_stucture_name) << std::endl;
     m_standard_stream << DEBUG_VAR (grid_size) << std::endl;
     m_standard_stream << DEBUG_VAR (grid_size_per_cell) << std::endl;
-    m_standard_stream << DEBUG_VAR (grid_cut_off_factor) << std::endl;
-    m_standard_stream << DEBUG_VAR (grid_speed_factor) << std::endl;
+    m_standard_stream << DEBUG_VAR (m_cut_off_factor) << std::endl;
+    m_standard_stream << DEBUG_VAR (m_speed_factor) << std::endl;
     m_standard_stream << DEBUG_VAR (m_options.m_bounds) << std::endl;
     m_standard_stream << DEBUG_VAR (m_options.m_timestep) << std::endl;
     m_standard_stream << DEBUG_VAR (m_options.m_cut_off_radius) << std::endl;
@@ -405,18 +400,7 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
             }
             if (m_error_happened)
                 return m_error_happened;
-            { // calculate, when the datastructure should be rebuild
-                data_type v_max = 0;
-                for (i = 0; i < m_particle_groups.size (); i++) {
-                    ParticleGroup& group = m_particle_groups[i];
-                    for (j = 0; j < group.m_ids.size (); j++) {
-                        v_max = MAX (v_max, fabs (group.m_positions_x[m_idx_b][j] - group.m_positions_x[m_idx_a][j]));
-                        v_max = MAX (v_max, fabs (group.m_positions_y[m_idx_b][j] - group.m_positions_y[m_idx_a][j]));
-                        v_max = MAX (v_max, fabs (group.m_positions_z[m_idx_b][j] - group.m_positions_z[m_idx_a][j]));
-                    }
-                }
-                m_iterations_until_rearange_particles = MIN (m_options.m_max_iterations_between_datastructure_rebuild, grid_speed_factor / v_max);
-            }
+            calculate_next_datastructure_rebuild ();
         }
     }
     m_idx_b = !(m_idx_a = m_idx_b);

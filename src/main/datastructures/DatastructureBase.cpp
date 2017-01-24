@@ -120,3 +120,16 @@ unsigned long DatastructureBase::get_particle_count () {
     }
     return particle_count;
 }
+void DatastructureBase::calculate_next_datastructure_rebuild () { // calculate, when the datastructure should be rebuild
+    unsigned int i, j;
+    data_type    v_max = 0;
+    for (i = 0; i < m_particle_groups.size (); i++) {
+        ParticleGroup& group = m_particle_groups[i];
+        for (j = 0; j < group.m_ids.size (); j++) {
+            v_max = MAX (v_max, fabs (group.m_positions_x[m_idx_b][j] - group.m_positions_x[m_idx_a][j]));
+            v_max = MAX (v_max, fabs (group.m_positions_y[m_idx_b][j] - group.m_positions_y[m_idx_a][j]));
+            v_max = MAX (v_max, fabs (group.m_positions_z[m_idx_b][j] - group.m_positions_z[m_idx_a][j]));
+        }
+    }
+    m_iterations_until_rearange_particles = MIN (m_options.m_max_iterations_between_datastructure_rebuild, m_speed_factor / v_max);
+}
