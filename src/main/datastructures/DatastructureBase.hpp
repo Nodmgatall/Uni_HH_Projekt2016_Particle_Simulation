@@ -7,6 +7,7 @@
 #include "helper/ParticleGroup.hpp"
 #include "io/output/file/FileWriterCSV.hpp"
 #include "options/Options.hpp"
+#include <Statistics.hpp>
 #include <iostream>
 #include <vector>
 class DatastructureBase {

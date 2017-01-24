@@ -388,6 +388,9 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
         return m_error_happened;
     {
         if (m_iterations_until_rearange_particles == 1) {
+#ifdef CALCULATE_STATISTICS
+            g_statistics.m_total_datastructure_rebuild_count++;
+#endif
             // attention for mixed grid-list
             m_verbose_stream << "grid_step_3" << std::endl;
             // the following loops cannot be parallelized because removed particles can jump to any other cell -> concurrent write in random cells

@@ -8,6 +8,7 @@
 #include "io/output/file/FileWriterCSV.hpp"
 #include "options/OptionHandler.hpp"
 #include "options/OptionHandler.hpp"
+#include <Statistics.hpp>
 
 int main (int argc, char** argv) {
     std::cout << std::fixed << std::setprecision (6) << std::setfill ('0');
@@ -31,9 +32,19 @@ int main (int argc, char** argv) {
         delete input;
     }
     ParticleSimulator particle_simulator (options, datastructure);
+#ifdef CALCULATE_STATISTICS
+    struct timeval time_start;
+    gettimeofday (&time_start, NULL);
+#endif
     Benchmark::begin ("everything", false);
     particle_simulator.simulate ();
     Benchmark::end ();
+#ifdef CALCULATE_STATISTICS
+    struct timeval time_end;
+    gettimeofday (&time_end, NULL);
+    g_statistics.m_total_runtime = time_end.tv_sec - time_start.tv_sec + (time_end.tv_usec - time_start.tv_usec) / 1.e6;
+    g_statistics.print_statistics (options);
+#endif
     writer->finalize ();
     delete writer;
     delete border;

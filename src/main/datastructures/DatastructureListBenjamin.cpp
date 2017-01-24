@@ -110,6 +110,9 @@ bool DatastructureListBenjamin::run_simulation_iteration (unsigned long p_iterat
     const data_type oy = m_options.m_bounds.y;
     const data_type oz = m_options.m_bounds.z;
     if (m_iterations_until_rearange_particles < 1) {
+#ifdef CALCULATE_STATISTICS
+        g_statistics.m_total_datastructure_rebuild_count++;
+#endif
         m_iterations_until_rearange_particles = m_options.m_max_iterations_between_datastructure_rebuild;
         list_rebuild (m_particle_groups[0], m_idx_a, m_options);
         list_rebuild (m_particle_groups[0], m_particle_groups[0], m_idx_a, m_options, ox, oy, oz);
