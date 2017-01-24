@@ -8,7 +8,7 @@ echo "${f} > -"
 else
 if [[ $everything = *[!\ ]* ]]; then
 # time is printed
-echo "${f} -> ${everything}"
+echo "${f} > ${everything}"
 else
 # still running
 echo "${f} > ?"

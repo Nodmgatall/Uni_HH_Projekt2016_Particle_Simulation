@@ -15,7 +15,7 @@ var_test_name="simulation_${var_datastructure}_${var_int_radius}_${var_int_bound
 cat > "job_script_${var_test_name}.sh" << EOF
 #!/bin/bash
 #SBATCH --time=00:30:00
-#SBATCH -J ${var_test_name}
+#SBATCH -J projekt-${var_test_name}
 #SBATCH -o ${var_test_name}.out
 #SBATCH -p west
 #SBATCH -c 24
