@@ -7,16 +7,43 @@
 #include "helper/ParticleGroup.hpp"
 #include "io/output/file/FileWriterCSV.hpp"
 #include "options/Options.hpp"
+#include <Statistics.hpp>
 #include <iostream>
 #include <vector>
 class DatastructureBase {
   protected:
-    std::string    m_stucture_name;
-    s_options&     m_options;
-    BorderBase&    m_border;
+    /**
+     * the structure name to verify, which subclass is used
+     */
+    std::string m_stucture_name;
+    /**
+     * the options passed to the program
+     */
+    s_options& m_options;
+    /**
+     * the border-helper-functions
+     */
+    BorderBase& m_border;
+    /**
+     * the algorithm to use to calculate the forces
+     */
     AlgorithmBase& m_algorithm;
-    WriterBase&    m_writer;
-    bool           m_error_happened;
+    /**
+     * how the data should be saved
+     */
+    WriterBase& m_writer;
+    /**
+     * true if an error happened, and the simulation should be stopped
+     */
+    bool m_error_happened;
+    /**
+     * the size the cuttoff is increased to avoid rebuilding the particles too ofthen
+     */
+    data_type m_cut_off_factor;
+    /**
+     * the factor for the current max speed to calculate the iteration count to next rebuild
+     */
+    data_type m_speed_factor;
     /**
      * the number of iterations until next test that all particles stay within the given bounds
      */
@@ -62,8 +89,9 @@ class DatastructureBase {
      * constructor
      */
     DatastructureBase (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_writer)
-    : m_options (p_options), m_border (p_border), m_algorithm (p_algorithm), m_writer (p_writer), m_error_happened (false), m_iterations_until_rearange_particles (0), m_idx_a (0),
-      m_idx_b (1), m_max_id (0) {
+    : m_options (p_options), m_border (p_border), m_algorithm (p_algorithm), m_writer (p_writer), m_error_happened (false), m_cut_off_factor (1.2),
+      m_iterations_until_rearange_particles (1), m_idx_a (0), m_idx_b (1), m_max_id (0) {
+        m_speed_factor = (m_options.m_cut_off_radius * (m_cut_off_factor - 1.0f)) / m_options.m_timestep;
     }
     /**
      * @return returns a string form of the name of this datastructure. Can be used to verify the
@@ -101,6 +129,10 @@ class DatastructureBase {
      * saves all particles to an file
      */
     void serialize ();
+    /**
+     * calculates, based on particlespeed when the datastructure should berebuild the next time
+     */
+    void calculate_next_datastructure_rebuild ();
 };
 // TODO phillip erinnern geschwindigkeitsinitialisierung
 #endif

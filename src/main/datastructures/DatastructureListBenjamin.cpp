@@ -28,8 +28,8 @@ void DatastructureListBenjamin::list_step_2_calculate (ParticleGroup& p_cell, Al
                                 p_cell.m_positions_x[p_idx_b].data (),
                                 p_cell.m_positions_y[p_idx_b].data (),
                                 p_cell.m_positions_z[p_idx_b].data (),
-                                p_cell.m_neighbors[13][i][j],
-                                p_cell.m_neighbors[13][i][j] + 1);
+                                p_cell.m_neighbors[13][i][j].m_left_index,
+                                p_cell.m_neighbors[13][i][j].m_right_index);
         }
     }
 }
@@ -50,8 +50,8 @@ void DatastructureListBenjamin::list_step_2_calculate (ParticleGroup& p_cell_i, 
                                 p_cell_j.m_positions_x[p_idx_b].data (),
                                 p_cell_j.m_positions_y[p_idx_b].data (),
                                 p_cell_j.m_positions_z[p_idx_b].data (),
-                                p_cell_i.m_neighbors[neighbor_index][i][j],
-                                p_cell_i.m_neighbors[neighbor_index][i][j] + 1);
+                                p_cell_i.m_neighbors[neighbor_index][i][j].m_left_index,
+                                p_cell_i.m_neighbors[neighbor_index][i][j].m_right_index);
         }
     }
 }
@@ -98,8 +98,8 @@ void DatastructureListBenjamin::list_step_2_calculate (ParticleGroup& p_cell_i,
                                        p_cell_j.m_positions_x[p_idx_b].data (),
                                        p_cell_j.m_positions_y[p_idx_b].data (),
                                        p_cell_j.m_positions_z[p_idx_b].data (),
-                                       p_cell_i.m_neighbors[neighbor_index][i][j],
-                                       p_cell_i.m_neighbors[neighbor_index][i][j] + 1);
+                                       p_cell_i.m_neighbors[neighbor_index][i][j].m_left_index,
+                                       p_cell_i.m_neighbors[neighbor_index][i][j].m_right_index);
         }
     }
 }
@@ -109,7 +109,10 @@ bool DatastructureListBenjamin::run_simulation_iteration (unsigned long p_iterat
     const data_type ox = m_options.m_bounds.x;
     const data_type oy = m_options.m_bounds.y;
     const data_type oz = m_options.m_bounds.z;
-    if (m_iterations_until_rearange_particles < 1) {
+    if (m_iterations_until_rearange_particles <= 1) { // compatibility to grid
+#ifdef CALCULATE_STATISTICS
+        g_statistics.m_total_datastructure_rebuild_count++;
+#endif
         m_iterations_until_rearange_particles = m_options.m_max_iterations_between_datastructure_rebuild;
         list_rebuild (m_particle_groups[0], m_idx_a, m_options);
         list_rebuild (m_particle_groups[0], m_particle_groups[0], m_idx_a, m_options, ox, oy, oz);
@@ -143,6 +146,7 @@ bool DatastructureListBenjamin::run_simulation_iteration (unsigned long p_iterat
     list_step_2_calculate (m_particle_groups[0], m_particle_groups[0], m_algorithm, m_idx_a, m_idx_b, 0, 0, oz);
     step_3_fit_into_borders (m_particle_groups[0]);
     m_idx_b = !(m_idx_a = m_idx_b);
+    calculate_next_datastructure_rebuild ();
 #ifdef CALCULATE_ENERGY_CONSERVATION
     unsigned int i, j;
     g_sum_energy = 0;
@@ -177,7 +181,11 @@ void DatastructureListBenjamin::list_rebuild (ParticleGroup& p_cell, unsigned in
             data_type dy = p_cell.m_positions_y[p_idx_a][i] - p_cell.m_positions_y[p_idx_a][j];
             data_type dz = p_cell.m_positions_z[p_idx_a][i] - p_cell.m_positions_z[p_idx_a][j];
             if (cut_off_radius_squared >= (dx * dx + dy * dy + dz * dz)) {
-                p_cell.m_neighbors[13][i].push_back (j);
+                if ((p_cell.m_neighbors[13][i].size () > 0) && (p_cell.m_neighbors[13][i][p_cell.m_neighbors[13][i].size () - 1].m_right_index == j)) {
+                    p_cell.m_neighbors[13][i][p_cell.m_neighbors[13][i].size () - 1].m_right_index = j + 1;
+                } else {
+                    p_cell.m_neighbors[13][i].push_back (ParticleIndexRange (j, j + 1));
+                }
             }
         }
     }
@@ -199,7 +207,11 @@ void DatastructureListBenjamin::list_rebuild (ParticleGroup& p_cell_i, ParticleG
             data_type dy = p_cell_i.m_positions_y[p_idx_a][i] - p_cell_j.m_positions_y[p_idx_a][j];
             data_type dz = p_cell_i.m_positions_z[p_idx_a][i] - p_cell_j.m_positions_z[p_idx_a][j];
             if (cut_off_radius_squared >= (dx * dx + dy * dy + dz * dz)) {
-                p_cell_i.m_neighbors[neighbor_index][i].push_back (j);
+                if ((p_cell_i.m_neighbors[neighbor_index][i].size () > 0) && (p_cell_i.m_neighbors[neighbor_index][i][p_cell_i.m_neighbors[neighbor_index][i].size () - 1].m_right_index == j)) {
+                    p_cell_i.m_neighbors[neighbor_index][i][p_cell_i.m_neighbors[neighbor_index][i].size () - 1].m_right_index = j + 1;
+                } else {
+                    p_cell_i.m_neighbors[neighbor_index][i].push_back (ParticleIndexRange (j, j + 1));
+                }
             }
         }
     }
@@ -237,7 +249,11 @@ void DatastructureListBenjamin::list_rebuild (ParticleGroup& p_cell_i, ParticleG
             data_type dy = p_cell_i.m_positions_y[p_idx_a][i] + p_offset_y - p_cell_j.m_positions_y[p_idx_a][j];
             data_type dz = p_cell_i.m_positions_z[p_idx_a][i] + p_offset_z - p_cell_j.m_positions_z[p_idx_a][j];
             if (cut_off_radius_squared >= (dx * dx + dy * dy + dz * dz)) {
-                p_cell_i.m_neighbors[neighbor_index][i].push_back (j);
+                if ((p_cell_i.m_neighbors[neighbor_index][i].size () > 0) && (p_cell_i.m_neighbors[neighbor_index][i][p_cell_i.m_neighbors[neighbor_index][i].size () - 1].m_right_index == j)) {
+                    p_cell_i.m_neighbors[neighbor_index][i][p_cell_i.m_neighbors[neighbor_index][i].size () - 1].m_right_index = j + 1;
+                } else {
+                    p_cell_i.m_neighbors[neighbor_index][i].push_back (ParticleIndexRange (j, j + 1));
+                }
             }
         }
     }

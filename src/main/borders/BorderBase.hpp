@@ -7,6 +7,7 @@
 #ifndef SRC_ALGORITHMS_PARTICLEBOUNDSCORRECTION_HPP_
 #define SRC_ALGORITHMS_PARTICLEBOUNDSCORRECTION_HPP_
 #include "Vec3.hpp"
+#include "datastructures/helper/ParticleGroup.hpp"
 class BorderBase {
   protected:
     Vec3f&      m_bounds;
@@ -52,5 +53,6 @@ class BorderBase {
      * @return
      */
     virtual bool updatePosition (data_type& m_x, data_type& m_y, data_type& m_z, data_type& m_other_x, data_type& m_other_y, data_type& m_other_z) = 0;
+    virtual bool updatePosition (ParticleGroup& p_cell, int p_idx_a, bool& p_error_happened) = 0;
 };
 #endif /* SRC_ALGORITHMS_PARTICLEBOUNDSCORRECTION_HPP_ */

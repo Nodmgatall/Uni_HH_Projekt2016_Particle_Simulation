@@ -39,10 +39,14 @@ struct s_options {
      */
     unsigned long m_max_iterations;
     /**
+     * speed at program startup if input is an generator type
+     */
+    float m_initial_speed;
+    /**
      * how ofthen sould the datastucture reorganize itself. this is can be given as argument. it is
      * planned, that the datastructure modifys this variable based on current maximum speed
      */
-    int m_max_iterations_between_datastructure_rebuild;
+    unsigned int m_max_iterations_between_datastructure_rebuild;
     /**
      * how the output should be stored
      */
@@ -76,11 +80,12 @@ struct s_options {
      * if output is csv-based, then this defines which columns should be there
      */
     std::set<e_csv_column_type> m_write_modes;
+
     s_options ()
     : m_algorithm_type (e_algorithm_type::LENNARD_JONES), m_autotuneing (false), m_bounds (Vec3f (5.0f, 5.0f, 5.0f)), m_cut_off_radius (0.01),
-      m_data_structure_type (e_datastructure_type::GRID), m_input_type (e_input_type::GENERATOR_GRID_DISTRIBUTION), m_in_file_name (""), m_max_iterations (0),
-      m_max_iterations_between_datastructure_rebuild (1), m_output_type (e_output_type::FILE_CSV), m_out_file_name (""), m_particle_count (0), m_seed (123456789), m_timestep (1),
-      m_verbose (false), m_write_fequency (1), m_write_modes ({ e_csv_column_type::ID, e_csv_column_type::POSITION, e_csv_column_type::VELOCITY }) {
+      m_data_structure_type (e_datastructure_type::GRID), m_input_type (e_input_type::GENERATOR_GRID_DISTRIBUTION), m_in_file_name (""), m_max_iterations (0), m_initial_speed (0),
+      m_max_iterations_between_datastructure_rebuild (-1 /*max-value*/), m_output_type (e_output_type::FILE_CSV), m_out_file_name (""), m_particle_count (0), m_seed (123456789),
+      m_timestep (1), m_verbose (false), m_write_fequency (1), m_write_modes ({ e_csv_column_type::ID, e_csv_column_type::POSITION, e_csv_column_type::VELOCITY }) {
         time_t     current_time;
         struct tm* time_info;
         time (&current_time);
@@ -88,6 +93,27 @@ struct s_options {
         char tmp_str[100];
         strftime (tmp_str, sizeof (log_folder), "logdata/%Y-%m-%d_%H-%M-%S", time_info);
         m_out_file_name = std::string (tmp_str);
+    }
+    inline friend std::ostream& operator<< (std::ostream& stream, const s_options& p_options) {
+        stream << "options.algorithm_type                                       : " << p_options.m_algorithm_type << std::endl;
+        stream << "options.autotuneing                                          : " << p_options.m_autotuneing << std::endl;
+        stream << "options.bounds                                               : " << p_options.m_bounds << std::endl;
+        stream << "options.cut_off_radius                                       : " << p_options.m_cut_off_radius << std::endl;
+        stream << "options.data_structure_type                                  : " << p_options.m_data_structure_type << std::endl;
+        stream << "options.input_type                                           : " << p_options.m_input_type << std::endl;
+        stream << "options.in_file_name                                         : " << p_options.m_in_file_name << std::endl;
+        stream << "options.max_iterations                                       : " << p_options.m_max_iterations << std::endl;
+        stream << "options.initial_speed                                        : " << p_options.m_initial_speed << std::endl;
+        stream << "options.max_iterations_between_datastructure_rebuild         : " << p_options.m_max_iterations_between_datastructure_rebuild << std::endl;
+        stream << "options.output_type                                          : " << p_options.m_output_type << std::endl;
+        stream << "options.out_file_name                                        : " << p_options.m_out_file_name << std::endl;
+        stream << "options.particle_count                                       : " << p_options.m_particle_count << std::endl;
+        stream << "options.seed                                                 : " << p_options.m_seed << std::endl;
+        stream << "options.timestep                                             : " << p_options.m_timestep << std::endl;
+        stream << "options.verbose                                              : " << p_options.m_verbose << std::endl;
+        stream << "options.write_fequency                                       : " << p_options.m_write_fequency << std::endl;
+        stream << "options.write_modes                                          : " << p_options.m_write_modes << std::endl;
+        return stream;
     }
 };
 #endif

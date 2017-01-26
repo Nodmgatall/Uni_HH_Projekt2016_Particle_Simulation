@@ -23,6 +23,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
     const int           output_type_index                                  = 4;
     const int           write_modes_index                                  = 5;
     const int           max_iterations_between_datastructure_rebuild_index = 6;
+    const int           initial_spped_index                                = 7;
     const int           print_config_index                                 = 9;
     std::vector<option> options                                            = { { "algorithm", required_argument, 0, algorithm_type_index * 1000 },
                                     { "data_structure", required_argument, 0, datastructure_type_index * 1000 },
@@ -39,6 +40,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                                     { "out_file_name", required_argument, 0, 'o' },
                                     { "cut_off_radius", required_argument, 0, 'r' },
                                     { "seed", required_argument, 0, 's' },
+                                    { "speed", required_argument, 0, initial_spped_index },
                                     { "timestep", required_argument, 0, 't' },
                                     { "verbose", no_argument, 0, 'v' },
                                     { "max_iterations_between_datastructure_rebuild", required_argument, 0, max_iterations_between_datastructure_rebuild_index * 1000 },
@@ -67,28 +69,38 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
             line.str (optarg);
         }
         switch (opt_index / 1000) {
-            case algorithm_type_index:
+            case algorithm_type_index: {
                 p_options.m_algorithm_type = static_cast<e_algorithm_type> (indexInArray (g_algorithm_names, optarg));
                 break;
-            case datastructure_type_index:
+            }
+            case datastructure_type_index: {
                 p_options.m_data_structure_type = static_cast<e_datastructure_type> (indexInArray (g_datastructure_names, optarg));
                 break;
-            case input_type_index:
+            }
+            case input_type_index: {
                 p_options.m_input_type = static_cast<e_input_type> (indexInArray (g_input_names, optarg));
                 break;
-            case output_type_index:
+            }
+            case output_type_index: {
                 p_options.m_output_type = static_cast<e_output_type> (indexInArray (g_output_names, optarg));
                 break;
-            case write_modes_index:
+            }
+            case write_modes_index: {
                 p_options.m_write_modes.insert (static_cast<e_csv_column_type> (opt_index % 1000));
                 break;
+            }
             case max_iterations_between_datastructure_rebuild_index: {
                 line >> p_options.m_max_iterations_between_datastructure_rebuild;
                 break;
             }
-            case print_config_index:
+            case print_config_index: {
                 should_print_config = true;
                 break;
+            }
+            case initial_spped_index: {
+                line >> p_options.m_initial_speed;
+                break;
+            }
             default: {
                 switch (opt_index) {
                     case 'a': {
@@ -220,6 +232,7 @@ void OptionHandler::print_choosen_options (s_options& p_options) {
                       << "count                                        " << p_options.m_particle_count << std::endl
                       << "max_iterations                               " << p_options.m_max_iterations << std::endl
                       << "bounds                                       " << p_options.m_bounds << std::endl
+                      << "initial_speed                                " << p_options.m_initial_speed << std::endl
                       << "max_iterations_between_datastructure_rebuild " << p_options.m_max_iterations_between_datastructure_rebuild << std::endl
                       << "write_modes                                  [";
     for (std::set<e_csv_column_type>::iterator csv_column = p_options.m_write_modes.begin (); csv_column != p_options.m_write_modes.end (); ++csv_column) {
@@ -344,6 +357,12 @@ void OptionHandler::print_usage_bounds () {
         << "|                          can move. If particles move outside of the given    |" << std::endl
         << "|                          bounds, than the datastructure may move them back   |" << std::endl
         << "|                          into the bounds.                                    |" << std::endl;
+}
+void OptionHandler::print_usage_initial_speed () {
+    m_standard_stream //
+        << "| --speed=(float)                                                              |" << std::endl
+        << "|                          If the input is an an generator-type, than this is  |" << std::endl
+        << "|                          the initial speed of each particle.                 |" << std::endl;
 }
 void OptionHandler::print_usage_write_fequency () {
     m_standard_stream //
@@ -471,6 +490,7 @@ void OptionHandler::print_usage_particle_sim () {
     print_usage_in_file_name ();
     print_usage_particle_count ();
     print_usage_seed ();
+    print_usage_initial_speed ();
     m_standard_stream //
         << "|                                                                              |" << std::endl
         << "+==============================================================================+" << std::endl

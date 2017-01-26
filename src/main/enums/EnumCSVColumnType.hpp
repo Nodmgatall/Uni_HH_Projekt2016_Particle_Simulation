@@ -10,12 +10,14 @@
 #include <exception>
 #include <istream>
 #include <ostream>
+#include <set>
 #include <vector>
 /**
  * implemented or plannes columns which could be written to csv output file
  */
 enum class e_csv_column_type { ID = 1, VELOCITY = 2, POSITION = 3, ACCELERATION = 4, PARTICLE_TYPE = 5 };
 std::ostream& operator<< (std::ostream& stream, const e_csv_column_type p_csv_column_type);
+std::ostream& operator<< (std::ostream& stream, const std::set<e_csv_column_type> p_csv_column_type);
 std::istream& operator>> (std::istream& stream, e_csv_column_type& p_csv_column_type);
 extern std::vector<const char*> g_csv_column_names;
 extern std::vector<bool>        g_csv_column_implemented;

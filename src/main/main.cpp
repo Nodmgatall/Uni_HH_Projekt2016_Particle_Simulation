@@ -8,10 +8,16 @@
 #include "io/output/file/FileWriterCSV.hpp"
 #include "options/OptionHandler.hpp"
 #include "options/OptionHandler.hpp"
+#include <Statistics.hpp>
 
 int main (int argc, char** argv) {
-    std::cout << std::fixed << std::setprecision (6) << std::setfill ('0');
-    s_options     options;
+    std::cout << std::fixed << std::setprecision (6) << std::setfill ('0') << std::boolalpha;
+    s_options options;
+#ifdef CALCULATE_STATISTICS
+    g_statistics.m_options = &options; /*pointer*/
+    struct timeval time_start;
+    gettimeofday (&time_start, NULL);
+#endif
     OptionHandler option_handler;
     if (int return_value = option_handler.handle_options (argc, argv, options))
         return return_value;
@@ -39,4 +45,10 @@ int main (int argc, char** argv) {
     delete border;
     delete algorithm;
     delete datastructure;
+#ifdef CALCULATE_STATISTICS
+    struct timeval time_end;
+    gettimeofday (&time_end, NULL);
+    g_statistics.m_total_runtime = time_end.tv_sec - time_start.tv_sec + (time_end.tv_usec - time_start.tv_usec) / 1.e6;
+    m_verbose_stream << g_statistics;
+#endif
 }

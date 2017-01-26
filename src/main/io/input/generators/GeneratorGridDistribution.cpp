@@ -22,7 +22,7 @@ void GeneratorGridDistribution::initialize_datastructure () {
     for (x = 0; x < tempInt; x++) {
         for (y = 0; y < tempInt; y++) {
             for (z = 0; z < tempInt; z++) {
-                m_datastructure.add_particle (particle_free_Border_size + delta * 0.5 + Vec3f (x, y, z) * delta, Vec3f ());
+                m_datastructure.add_particle (particle_free_Border_size + delta * 0.5 + Vec3f (x, y, z) * delta, Vec3f (m_options.m_initial_speed, 0, 0));
                 count++;
             }
         }
@@ -32,7 +32,7 @@ void GeneratorGridDistribution::initialize_datastructure () {
             for (y = 0; y < tempInt; y++) {
                 for (z = 0; z < tempInt; z++) {
                     if (count++ < m_options.m_particle_count) {
-                        m_datastructure.add_particle (particle_free_Border_size + delta * 0.5 + Vec3f (temp / 2.0 + x, y, z) * delta, Vec3f ());
+                        m_datastructure.add_particle (particle_free_Border_size + delta * 0.5 + Vec3f (temp / 2.0 + x, y, z) * delta, Vec3f (m_options.m_initial_speed, 0, 0));
                     }
                 }
             }

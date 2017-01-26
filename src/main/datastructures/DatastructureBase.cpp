@@ -18,70 +18,7 @@ void DatastructureBase::step_1_prepare_cell (ParticleGroup& p_cell) {
     }
 }
 void DatastructureBase::step_3_fit_into_borders (ParticleGroup& p_cell) {
-    int i, j;
-    for (i = p_cell.m_ids.size () - 1; i >= 0; i--) {
-        Vec3l idx;
-        while (p_cell.m_positions_x[m_idx_a][i] < 0) {
-            if (!(p_cell.m_positions_x[m_idx_a][i] >= -m_options.m_bounds.x * 1000)) { // Comparisons with NaN (except!=)return false
-                m_error_stream << "something went badly wrong" << std::endl << p_cell << std::endl;
-                m_error_happened = true;
-                return;
-            }
-            for (j = 0; j <= 1; j++) {
-                p_cell.m_positions_x[j][i] += m_options.m_bounds.x;
-            }
-        }
-        while (p_cell.m_positions_x[m_idx_a][i] >= m_options.m_bounds.x) {
-            if (!(p_cell.m_positions_x[m_idx_a][i] <= m_options.m_bounds.x * 1000)) {
-                m_error_stream << "something went badly wrong" << std::endl << p_cell << std::endl;
-                m_error_happened = true;
-                return;
-            }
-            for (j = 0; j <= 1; j++) {
-                p_cell.m_positions_x[j][i] -= m_options.m_bounds.x;
-            }
-        }
-        while (p_cell.m_positions_y[m_idx_a][i] < 0) {
-            if (!(p_cell.m_positions_y[m_idx_a][i] >= -m_options.m_bounds.y * 1000)) {
-                m_error_stream << "something went badly wrong" << std::endl << p_cell << std::endl;
-                m_error_happened = true;
-                return;
-            }
-            for (j = 0; j <= 1; j++) {
-                p_cell.m_positions_y[j][i] += m_options.m_bounds.y;
-            }
-        }
-        while (p_cell.m_positions_y[m_idx_a][i] > m_options.m_bounds.y) {
-            if (!(p_cell.m_positions_y[m_idx_a][i] <= m_options.m_bounds.y * 1000)) {
-                m_error_stream << "something went badly wrong" << std::endl << p_cell << std::endl;
-                m_error_happened = true;
-                return;
-            }
-            for (j = 0; j <= 1; j++) {
-                p_cell.m_positions_y[j][i] -= m_options.m_bounds.y;
-            }
-        }
-        while (p_cell.m_positions_z[m_idx_a][i] < 0) {
-            if (!(p_cell.m_positions_z[m_idx_a][i] >= -m_options.m_bounds.z * 1000)) {
-                m_error_stream << "something went badly wrong" << std::endl << p_cell << std::endl;
-                m_error_happened = true;
-                return;
-            }
-            for (j = 0; j <= 1; j++) {
-                p_cell.m_positions_z[j][i] += m_options.m_bounds.z;
-            }
-        }
-        while (p_cell.m_positions_z[m_idx_a][i] >= m_options.m_bounds.z) {
-            if (!(p_cell.m_positions_z[m_idx_a][i] <= m_options.m_bounds.z * 1000)) {
-                m_error_stream << "something went badly wrong" << std::endl << p_cell << std::endl;
-                m_error_happened = true;
-                return;
-            }
-            for (j = 0; j <= 1; j++) {
-                p_cell.m_positions_z[j][i] -= m_options.m_bounds.z;
-            }
-        }
-    }
+    m_border.updatePosition (p_cell, m_idx_a, m_error_happened);
 }
 void DatastructureBase::serialize () {
     Benchmark::begin ("saving the data", false);
@@ -119,4 +56,17 @@ unsigned long DatastructureBase::get_particle_count () {
         particle_count += cell.m_ids.size ();
     }
     return particle_count;
+}
+void DatastructureBase::calculate_next_datastructure_rebuild () { // calculate, when the datastructure should be rebuild
+    unsigned int i, j;
+    data_type    v_max = 0;
+    for (i = 0; i < m_particle_groups.size (); i++) {
+        ParticleGroup& group = m_particle_groups[i];
+        for (j = 0; j < group.m_ids.size (); j++) {
+            v_max = MAX (v_max, fabs (group.m_positions_x[m_idx_b][j] - group.m_positions_x[m_idx_a][j]));
+            v_max = MAX (v_max, fabs (group.m_positions_y[m_idx_b][j] - group.m_positions_y[m_idx_a][j]));
+            v_max = MAX (v_max, fabs (group.m_positions_z[m_idx_b][j] - group.m_positions_z[m_idx_a][j]));
+        }
+    }
+    m_iterations_until_rearange_particles = MIN (m_options.m_max_iterations_between_datastructure_rebuild, m_speed_factor / v_max);
 }

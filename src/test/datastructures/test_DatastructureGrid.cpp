@@ -202,6 +202,12 @@ class BoundsCorrection : public BorderBase {
         }
         return true;
     }
+    bool updatePosition (ParticleGroup& p_cell, int p_idx_a, bool& p_error_happened) {
+        (void) p_cell;
+        (void) p_idx_a;
+        (void) p_error_happened;
+        return true;
+    }
 };
 class DatastructureGridTestClass : public DatastructureGrid {
   public:
@@ -549,65 +555,4 @@ BOOST_AUTO_TEST_CASE (test_step_3) {
     BOOST_CHECK_EQUAL (particlesGrid.public_get_cell_at (x + 1, y, z).m_ids[0], 4);
     BOOST_CHECK_EQUAL (particlesGrid.public_get_cell_at (x, y + 1, z).m_ids[0], 5);
     BOOST_CHECK_EQUAL (particlesGrid.public_get_cell_at (x, y, z + 1).m_ids[0], 6);
-}
-BOOST_AUTO_TEST_CASE (test_step_3_wrapparound) {
-    s_options options;
-    memset (&options, 0, sizeof (s_options));
-    options.m_bounds         = Vec3f (5, 5, 5);
-    options.m_particle_count = 999999999;
-    options.m_cut_off_radius = 1;
-    BoundsCorrection           border (options.m_bounds);
-    Algorithm                  algorithm (options);
-    ParticleWriter             writer = ParticleWriter ();
-    DatastructureGridTestClass particlesGrid (options, border, algorithm, writer);
-    int                        x = 2, y = 2, z = 2;
-    ParticleGroup&             cell    = particlesGrid.public_get_cell_at (x, y, z);
-    float                      x1      = 0.0;
-    float                      y1      = 0.0;
-    float                      z1      = 0.0;
-    float                      x2      = 0.0 + options.m_bounds.x * 2;
-    float                      y2      = 0.0 + options.m_bounds.y * 2;
-    float                      z2      = 0.0 + options.m_bounds.z * 2;
-    Vec3f                      vec00_1 = cell.m_corner000 + Vec3f (0.01);
-    cell.add_particle (vec00_1 + Vec3f (x1, y1, z1), vec00_1 + Vec3f (x1, y1, z1), 0, 0);
-    cell.add_particle (vec00_1 + Vec3f (x2, y1, z1), vec00_1 + Vec3f (x2, y1, z1), 0, 1);
-    cell.add_particle (vec00_1 + Vec3f (x1, y2, z1), vec00_1 + Vec3f (x1, y2, z1), 0, 2);
-    cell.add_particle (vec00_1 + Vec3f (x1, y1, z2), vec00_1 + Vec3f (x1, y1, z2), 0, 3);
-    cell.add_particle (vec00_1 + Vec3f (x2, y2, z1), vec00_1 + Vec3f (x2, y2, z1), 0, 4);
-    cell.add_particle (vec00_1 + Vec3f (x2, y1, z2), vec00_1 + Vec3f (x2, y1, z2), 0, 5);
-    cell.add_particle (vec00_1 + Vec3f (x1, y2, z2), vec00_1 + Vec3f (x1, y2, z2), 0, 6);
-    cell.add_particle (vec00_1 - Vec3f (x2, y1, z1), vec00_1 - Vec3f (x2, y1, z1), 0, 7);
-    cell.add_particle (vec00_1 - Vec3f (x1, y2, z1), vec00_1 - Vec3f (x1, y2, z1), 0, 8);
-    cell.add_particle (vec00_1 - Vec3f (x1, y1, z2), vec00_1 - Vec3f (x1, y1, z2), 0, 9);
-    cell.add_particle (vec00_1 - Vec3f (x2, y2, z1), vec00_1 - Vec3f (x2, y2, z1), 0, 10);
-    cell.add_particle (vec00_1 - Vec3f (x2, y1, z2), vec00_1 - Vec3f (x2, y1, z2), 0, 11);
-    cell.add_particle (vec00_1 - Vec3f (x1, y2, z2), vec00_1 - Vec3f (x1, y2, z2), 0, 12);
-    BOOST_CHECK_EQUAL (particlesGrid.get_particle_count (), 13);
-    particlesGrid.public_step_3_remove_wrong_particles_from_cell (cell);
-    BOOST_CHECK_EQUAL (particlesGrid.get_particle_count (), 13);
-    /* for (int i = 0; i < particlesGrid.get_size ().x; i++) {
-     for (int j = 0; j < particlesGrid.get_size ().y; j++) {
-     for (int k = 0; k < particlesGrid.get_size ().z; k++) {
-     if (particlesGrid.public_get_cell_at (i, j, k).m_ids.size () > 0) {
-     BOOST_CHECK_MESSAGE (0, Vec3l (i, j, k));
-     BOOST_CHECK_MESSAGE (0, particlesGrid.public_get_cell_at (i, j, k).m_ids.size
-     ());
-     for (unsigned int o = 0; o < particlesGrid.public_get_cell_at (i, j,
-     k).m_ids.size (); o++) {
-     BOOST_CHECK_MESSAGE (
-     0,
-     std::to_string (particlesGrid.public_get_cell_at (i, j, k).m_ids[o]) +
-     " -> " +
-     std::to_string (particlesGrid.public_get_cell_at (i, j,
-     k).m_positions_x[0][o]) + ", " +
-     std::to_string (particlesGrid.public_get_cell_at (i, j,
-     k).m_positions_y[0][o]) + ", " +
-     std::to_string (particlesGrid.public_get_cell_at (i, j,
-     k).m_positions_z[0][o]));
-     }
-     }
-     }
-     }
-     }*/
-    BOOST_CHECK_EQUAL (particlesGrid.public_get_cell_at (x, y, z).m_ids.size (), 13);
 }

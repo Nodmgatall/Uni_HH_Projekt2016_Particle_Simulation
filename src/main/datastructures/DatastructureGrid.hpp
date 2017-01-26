@@ -6,14 +6,6 @@
 class DatastructureGrid : virtual public DatastructureBase {
   protected:
     /**
-     * the size the cuttoff is increased to avoid rebuilding the particles too ofthen
-     */
-    data_type grid_cut_off_factor;
-    /**
-     * the factor for the current max speed to calculate the iteration count to next rebuild
-     */
-    data_type grid_speed_factor;
-    /**
      * the count of cells in 3 dimensions
      * refer to m_cells
      */

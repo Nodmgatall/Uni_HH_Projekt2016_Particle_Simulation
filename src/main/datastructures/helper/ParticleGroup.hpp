@@ -7,6 +7,7 @@
 #ifndef SRC_MAIN_DATASTRUCTURES_HELPER_PARTICLEGROUP_HPP_
 #define SRC_MAIN_DATASTRUCTURES_HELPER_PARTICLEGROUP_HPP_
 #include "Definitions.hpp"
+#include "ParticleIndexRange.hpp"
 #include "Vec3.hpp"
 struct ParticleGroup {
   public:
@@ -38,7 +39,7 @@ struct ParticleGroup {
     /**
      * list of neighbors to calculate the interaction with
      */
-    std::vector<std::vector<unsigned long>> m_neighbors[27];
+    std::vector<std::vector<ParticleIndexRange>> m_neighbors[27];
     /**
      * constructor
      */
