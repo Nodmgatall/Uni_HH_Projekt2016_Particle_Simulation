@@ -1,7 +1,7 @@
 #ifndef OPTIONS_SIMULATION_HPP
 #define OPTIONS_SIMULATION_HPP
-#include "Definitions.hpp"
-#include "Vec3.hpp"
+#include "../Definitions.hpp"
+#include "../Vec3.hpp"
 #include <map>
 #include <vector>
 struct s_options {

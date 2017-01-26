@@ -6,8 +6,8 @@
  */
 #ifndef DEBUG_HPP_
 #define DEBUG_HPP_
-#include "Definitions.hpp"
-#include "Vec3.hpp"
+#include "../Definitions.hpp"
+#include "../Vec3.hpp"
 #include <fstream>
 #include <iostream>
 template <typename T>
