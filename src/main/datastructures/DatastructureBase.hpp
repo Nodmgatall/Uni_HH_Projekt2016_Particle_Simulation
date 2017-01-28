@@ -96,7 +96,7 @@ class DatastructureBase {
     DatastructureBase (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_writer)
     : m_options (p_options), m_border (p_border), m_algorithm (p_algorithm), m_writer (p_writer), m_error_happened (false), m_cut_off_factor (1.2),
       m_iterations_until_rearange_particles (1), m_idx_a (0), m_idx_b (1), m_max_id (0), m_datastructure_rebuild_last_iteration_flag (true /*list MUST rebuild in first iteration*/) {
-        m_speed_factor = (m_options.m_cut_off_radius * (m_cut_off_factor - 1.0f)) / m_options.m_timestep;
+        m_speed_factor = (m_options.m_cut_off_radius * (m_cut_off_factor - 1.0f));
     }
     /**
      * @return returns a string form of the name of this datastructure. Can be used to verify the
