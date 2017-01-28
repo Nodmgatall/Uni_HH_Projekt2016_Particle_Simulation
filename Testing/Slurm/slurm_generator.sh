@@ -6,7 +6,7 @@ var_bounds=$3
 var_initial_speed=$4
 var_radius_extra=$5
 
-var_test_name="simulation_${var_datastructure}_${var_radius}_${var_bounds}_${var_initial_speed}"
+var_test_name="simulation_${var_datastructure}_${var_radius}_${var_bounds}_${var_initial_speed}_${var_radius_extra}"
 cat > "job_script_${var_test_name}.sh" << EOF
 #!/bin/bash
 #SBATCH --time=01:00:00
