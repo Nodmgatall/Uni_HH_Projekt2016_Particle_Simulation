@@ -23,7 +23,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
     const int           output_type_index                                  = 4;
     const int           write_modes_index                                  = 5;
     const int           max_iterations_between_datastructure_rebuild_index = 6;
-    const int           initial_spped_index                                = 7;
+    const int           initial_speed_index                                = 7;
     const int           cut_off_extra_radius_index                         = 8;
     const int           print_config_index                                 = 9;
     std::vector<option> options                                            = { { "algorithm", required_argument, 0, algorithm_type_index * 1000 },
@@ -42,7 +42,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                                     { "cut_off_radius", required_argument, 0, 'r' },
                                     { "cut_off_extra_factor", required_argument, 0, cut_off_extra_radius_index * 1000 },
                                     { "seed", required_argument, 0, 's' },
-                                    { "speed", required_argument, 0, initial_spped_index * 1000 },
+                                    { "speed", required_argument, 0, initial_speed_index * 1000 },
                                     { "timestep", required_argument, 0, 't' },
                                     { "verbose", no_argument, 0, 'v' },
                                     { "max_iterations_between_datastructure_rebuild", required_argument, 0, max_iterations_between_datastructure_rebuild_index * 1000 },
@@ -99,7 +99,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                 should_print_config = true;
                 break;
             }
-            case initial_spped_index: {
+            case initial_speed_index: {
                 line >> p_options.m_initial_speed;
                 break;
             }
