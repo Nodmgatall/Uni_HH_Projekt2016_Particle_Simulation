@@ -63,9 +63,10 @@ bool BorderWrapparound::updatePosition (ParticleGroup& p_cell, int p_idx_a, bool
         Vec3l idx;
         while (p_cell.m_positions_x[p_idx_a][i] < 0) {
             flag = true;
-            if (!(p_cell.m_positions_x[p_idx_a][i] >= -m_bounds.x * 1000)) { // Comparisons with NaN (except!=)return false
+            if (!(p_cell.m_positions_x[p_idx_a][i] >= -m_bounds.x * 10)) { // Comparisons with NaN (except!=)return false
                 m_error_stream << "something went badly wrong" << std::endl << p_cell << std::endl;
                 p_error_happened = true;
+                m_error_stream << "a" << std::endl;
                 return true;
             }
             for (j = 0; j <= 1; j++) {
@@ -74,7 +75,7 @@ bool BorderWrapparound::updatePosition (ParticleGroup& p_cell, int p_idx_a, bool
         }
         while (p_cell.m_positions_x[p_idx_a][i] >= m_bounds.x) {
             flag = true;
-            if (!(p_cell.m_positions_x[p_idx_a][i] <= m_bounds.x * 1000)) {
+            if (!(p_cell.m_positions_x[p_idx_a][i] <= m_bounds.x * 10)) {
                 m_error_stream << "something went badly wrong" << std::endl << p_cell << std::endl;
                 p_error_happened = true;
                 return true;
@@ -85,7 +86,7 @@ bool BorderWrapparound::updatePosition (ParticleGroup& p_cell, int p_idx_a, bool
         }
         while (p_cell.m_positions_y[p_idx_a][i] < 0) {
             flag = true;
-            if (!(p_cell.m_positions_y[p_idx_a][i] >= -m_bounds.y * 1000)) {
+            if (!(p_cell.m_positions_y[p_idx_a][i] >= -m_bounds.y * 10)) {
                 m_error_stream << "something went badly wrong" << std::endl << p_cell << std::endl;
                 p_error_happened = true;
                 return true;
@@ -96,7 +97,7 @@ bool BorderWrapparound::updatePosition (ParticleGroup& p_cell, int p_idx_a, bool
         }
         while (p_cell.m_positions_y[p_idx_a][i] > m_bounds.y) {
             flag = true;
-            if (!(p_cell.m_positions_y[p_idx_a][i] <= m_bounds.y * 1000)) {
+            if (!(p_cell.m_positions_y[p_idx_a][i] <= m_bounds.y * 10)) {
                 m_error_stream << "something went badly wrong" << std::endl << p_cell << std::endl;
                 p_error_happened = true;
                 return true;
@@ -107,7 +108,7 @@ bool BorderWrapparound::updatePosition (ParticleGroup& p_cell, int p_idx_a, bool
         }
         while (p_cell.m_positions_z[p_idx_a][i] < 0) {
             flag = true;
-            if (!(p_cell.m_positions_z[p_idx_a][i] >= -m_bounds.z * 1000)) {
+            if (!(p_cell.m_positions_z[p_idx_a][i] >= -m_bounds.z * 10)) {
                 m_error_stream << "something went badly wrong" << std::endl << p_cell << std::endl;
                 p_error_happened = true;
                 return true;
@@ -118,7 +119,7 @@ bool BorderWrapparound::updatePosition (ParticleGroup& p_cell, int p_idx_a, bool
         }
         while (p_cell.m_positions_z[p_idx_a][i] >= m_bounds.z) {
             flag = true;
-            if (!(p_cell.m_positions_z[p_idx_a][i] <= m_bounds.z * 1000)) {
+            if (!(p_cell.m_positions_z[p_idx_a][i] <= m_bounds.z * 10)) {
                 m_error_stream << "something went badly wrong" << std::endl << p_cell << std::endl;
                 p_error_happened = true;
                 return true;

@@ -45,6 +45,7 @@ run_64_particles: build_release
 			--cut_off_radius=2.5 \
 			--timestep=0.005 \
 			--bounds=5/5/5 \
+			--speed=1 \
 			--verbose
 run_64000_particles: build_release
 	cd .. && ./particle_simulation.x \

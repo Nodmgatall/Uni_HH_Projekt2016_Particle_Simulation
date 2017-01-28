@@ -40,7 +40,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                                     { "out_file_name", required_argument, 0, 'o' },
                                     { "cut_off_radius", required_argument, 0, 'r' },
                                     { "seed", required_argument, 0, 's' },
-                                    { "speed", required_argument, 0, initial_spped_index },
+                                    { "speed", required_argument, 0, initial_spped_index * 1000 },
                                     { "timestep", required_argument, 0, 't' },
                                     { "verbose", no_argument, 0, 'v' },
                                     { "max_iterations_between_datastructure_rebuild", required_argument, 0, max_iterations_between_datastructure_rebuild_index * 1000 },

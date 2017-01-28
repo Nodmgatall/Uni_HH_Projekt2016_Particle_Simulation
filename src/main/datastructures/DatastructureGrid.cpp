@@ -146,12 +146,14 @@ void DatastructureGrid::grid_step_2b_calculate_between_cells (ParticleGroup& p_c
 }
 void DatastructureGrid::grid_step_3_remove_wrong_particles_from_cell (ParticleGroup& p_cell) {
     step_3_fit_into_borders (p_cell);
-    int i;
-    for (i = p_cell.m_ids.size () - 1; i >= 0; i--) {
-        Vec3l idx = grid_get_cell_index_for_particle (p_cell.m_positions_x[m_idx_a][i], p_cell.m_positions_y[m_idx_a][i], p_cell.m_positions_z[m_idx_a][i]);
-        if (idx != p_cell.m_idx) {
-            ParticleGroup& other_cell = grid_get_cell_at (idx.x, idx.y, idx.z);
-            grid_moveParticle (p_cell, other_cell, i);
+    if (!m_error_happened) {
+        int i;
+        for (i = p_cell.m_ids.size () - 1; i >= 0; i--) {
+            Vec3l idx = grid_get_cell_index_for_particle (p_cell.m_positions_x[m_idx_a][i], p_cell.m_positions_y[m_idx_a][i], p_cell.m_positions_z[m_idx_a][i]);
+            if (idx != p_cell.m_idx) {
+                ParticleGroup& other_cell = grid_get_cell_at (idx.x, idx.y, idx.z);
+                grid_moveParticle (p_cell, other_cell, i);
+            }
         }
     }
 }
@@ -406,8 +408,6 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
     grid_step_2 ();
     if (m_error_happened)
         return m_error_happened;
-    if (m_error_happened)
-        return m_error_happened;
     {
         if ((m_datastructure_rebuild_last_iteration_flag = (m_iterations_until_rearange_particles < 1))) {
 #ifdef CALCULATE_STATISTICS
@@ -421,11 +421,12 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
                     for (idx_z = 0; idx_z < grid_size.z; idx_z++) {
                         ParticleGroup& cell = grid_get_cell_at (idx_x, idx_y, idx_z);
                         grid_step_3_remove_wrong_particles_from_cell (cell);
+                        if (m_error_happened) {
+                            return m_error_happened;
+                        }
                     }
                 }
             }
-            if (m_error_happened)
-                return m_error_happened;
             calculate_next_datastructure_rebuild ();
         }
     }
