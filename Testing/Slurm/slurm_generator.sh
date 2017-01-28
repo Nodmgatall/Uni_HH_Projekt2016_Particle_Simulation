@@ -36,12 +36,16 @@ chmod +x "job_script_${var_test_name}.sh"
 for var_datastructure in "GRID" "GRID_LIST";
 do
 
+add_job $var_datastructure 2.5 40 0
 add_job $var_datastructure 2.5 80 0
 add_job $var_datastructure 2.5 120 0
+add_job $var_datastructure 5 40 0
 add_job $var_datastructure 5 80 0
 add_job $var_datastructure 5 120 0
+add_job $var_datastructure 2.5 40 1
 add_job $var_datastructure 2.5 80 1
 add_job $var_datastructure 2.5 120 1
+add_job $var_datastructure 5 40 1
 add_job $var_datastructure 5 80 1
 add_job $var_datastructure 5 120 1
 
