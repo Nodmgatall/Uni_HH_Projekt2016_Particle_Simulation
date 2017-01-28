@@ -148,6 +148,7 @@ void DatastructureGrid::grid_step_3_remove_wrong_particles_from_cell (ParticleGr
 }
 bool DatastructureGrid::grid_step_2 () {
     unsigned int    idx_x, idx_y, idx_z;
+    unsigned int    idx_x_2, idx_y_2, idx_z_2;
     unsigned int    parallel_offset_x, parallel_offset_y, parallel_offset_z;
     const long      border_cells_ignored_count = 1; // 0 or 1
     const long      lx                         = border_cells_ignored_count;
@@ -164,10 +165,13 @@ bool DatastructureGrid::grid_step_2 () {
         for (parallel_offset_x = 0; parallel_offset_x < 2; parallel_offset_x++) {
             for (parallel_offset_y = 0; parallel_offset_y < 2; parallel_offset_y++) {
                 for (parallel_offset_z = 0; parallel_offset_z < 2; parallel_offset_z++) {
-#pragma omp parallel for private(idx_x, idx_y, idx_z)
-                    for (idx_x = parallel_offset_x + lx; idx_x < rx; idx_x += 2) {
-                        for (idx_y = parallel_offset_y + ly; idx_y < ry; idx_y += 2) {
-                            for (idx_z = parallel_offset_z + lz; idx_z < rz; idx_z += 2) {
+#pragma omp parallel for private(idx_x, idx_y, idx_z, idx_x_2, idx_y_2, idx_z_2)
+                    for (idx_x_2 = parallel_offset_x + lx; idx_x_2 < rx; idx_x_2 += 2) {
+                        for (idx_y_2 = parallel_offset_y + ly; idx_y_2 < ry; idx_y_2 += 2) {
+                            for (idx_z_2 = parallel_offset_z + lz; idx_z_2 < rz; idx_z_2 += 2) {
+                                idx_x = idx_x_2;
+                                idx_y = idx_y_2;
+                                idx_z = idx_z_2;
                                 grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 1, idx_z + 1), grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
                                 grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 1, idx_z + 0), grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
                                 grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 1, idx_z + 0), grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 1));
