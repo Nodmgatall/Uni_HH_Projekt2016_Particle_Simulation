@@ -21,7 +21,7 @@ statistics_total_datastructure_rebuild_count=$(echo "${file_content}" | grep "st
 aborted=$(echo "${file_content}" | grep "something went badly wrong")
 
 if [[ $aborted = *[!\ ]* ]]; then
-var_line_statistics_total_datastructure_rebuild_count="$statistics_total_datastructure_rebuild_count,999999999"
+var_line_statistics_total_datastructure_rebuild_count="$var_line_statistics_total_datastructure_rebuild_count,999999999"
 var_line_statistics_total_runtime="$var_line_statistics_total_runtime,999999999"
 else
 var_line_statistics_total_datastructure_rebuild_count="$var_line_statistics_total_datastructure_rebuild_count,$statistics_total_datastructure_rebuild_count"
@@ -31,7 +31,7 @@ fi
 
 done
 done
-echo "${var_radius},${var_bounds},${var_initial_speed},${var_radius_extra},${var_line_statistics_total_datastructure_rebuild_count}${var_line_statistics_total_runtime}"
+echo "${var_radius},${var_bounds},${var_initial_speed},${var_radius_extra},${var_line_statistics_total_datastructure_rebuild_count},${var_line_statistics_total_runtime}"
 
 }
 
