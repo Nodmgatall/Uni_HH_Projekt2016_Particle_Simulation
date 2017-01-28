@@ -390,7 +390,7 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
     m_iterations_until_rearange_particles--;
     unsigned int idx_x, idx_y, idx_z;
     {
-        m_verbose_stream << "grid_step_1" << std::endl;
+        m_verbose_stream << "grid_step_1>" << p_iteration_number << std::endl;
 #pragma omp parallel for private(idx_x, idx_y, idx_z)
         for (idx_x = 0; idx_x < grid_size.x; idx_x++) {
             for (idx_y = 0; idx_y < grid_size.y; idx_y++) {
@@ -404,7 +404,7 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
     }
     if (m_error_happened)
         return m_error_happened;
-    m_verbose_stream << "grid_step_2" << std::endl;
+    m_verbose_stream << "grid_step_2>" << p_iteration_number << std::endl;
     grid_step_2 ();
     if (m_error_happened)
         return m_error_happened;
@@ -414,7 +414,7 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
             g_statistics.m_total_datastructure_rebuild_count++;
 #endif
             // attention for mixed grid-list
-            m_verbose_stream << "grid_step_3" << std::endl;
+            m_verbose_stream << "grid_step_3>" << p_iteration_number << std::endl;
             // the following loops cannot be parallelized because removed particles can jump to any other cell -> concurrent write in random cells
             for (idx_x = 0; idx_x < grid_size.x; idx_x++) {
                 for (idx_y = 0; idx_y < grid_size.y; idx_y++) {
