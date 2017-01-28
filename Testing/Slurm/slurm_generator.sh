@@ -33,7 +33,7 @@ EOF
 chmod +x "job_script_${var_test_name}.sh"
 }
 
-for var_datastructure in "GRID" "LISTEDGRID";
+for var_datastructure in "GRID" "GRID_LIST";
 do
 
 add_job $var_datastructure 2.5 80 0

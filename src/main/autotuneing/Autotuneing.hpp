@@ -28,7 +28,7 @@ class Autotuneing {
             case e_input_type::GENERATOR_MULTIPLE_OBJECTS: {
                 // the particles are in different cells, but inside the cells list structure may
                 // improve the calculations
-                p_options.m_data_structure_type = e_datastructure_type::LISTEDGIRD;
+                p_options.m_data_structure_type = e_datastructure_type::GRID_LIST;
                 break;
             }
             case e_input_type::GENERATOR_SINGLE_OBJECT_MIDDLE: {

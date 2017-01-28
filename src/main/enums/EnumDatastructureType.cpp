@@ -5,7 +5,7 @@
  *      Author: benjamin
  */
 #include "enums/EnumDatastructureType.hpp"
-std::vector<const char*> g_datastructure_names       = { "UNDEFINED", "GRID", "LIST", "LIST_BENJAMIN", "LISTEDGIRD" };
+std::vector<const char*> g_datastructure_names       = { "UNDEFINED", "GRID", "LIST", "LIST_BENJAMIN", "GRID_LIST" };
 std::vector<bool>        g_datastructure_implemented = { false, true, true, true, true };
 std::ostream& operator<< (std::ostream& stream, const e_datastructure_type& p_datastructure_type) {
     int index = static_cast<int> (p_datastructure_type);

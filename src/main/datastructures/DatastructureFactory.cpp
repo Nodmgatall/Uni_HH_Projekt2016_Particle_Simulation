@@ -13,7 +13,7 @@ DatastructureBase* DatastructureFactory::build (s_options& p_options, BorderBase
             return new DatastructureList (p_options, p_border, p_algorithm, p_writer);
         case e_datastructure_type::LIST_BENJAMIN:
             return new DatastructureListBenjamin (p_options, p_border, p_algorithm, p_writer);
-        case e_datastructure_type::LISTEDGIRD:
+        case e_datastructure_type::GRID_LIST:
             return new DatastructureListGrid (p_options, p_border, p_algorithm, p_writer);
         default:
             throw DatastructureTypeInvalidException (p_options.m_data_structure_type);

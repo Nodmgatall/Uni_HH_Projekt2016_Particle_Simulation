@@ -75,7 +75,7 @@ BOOST_AUTO_TEST_CASE (test_datastructureLISTEDGIRD) {
     memset (&options_test, 0, sizeof (s_options));
     s_options options_compare;
     memset (&options_compare, 0, sizeof (s_options));
-    options_compare.m_data_structure_type = e_datastructure_type::LISTEDGIRD;
+    options_compare.m_data_structure_type = e_datastructure_type::GRID_LIST;
     std::vector<const char*> args         = { "./particle_simulation.x", "--data_structure=LISTEDGIRD" };
     int                      res          = handler.handle_options ((int) args.size (), const_cast<char**> (args.data ()), options_test);
     BOOST_CHECK_EQUAL (memcmp (&options_test, &options_compare, sizeof (s_options)), 0);

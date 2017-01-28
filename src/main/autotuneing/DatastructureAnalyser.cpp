@@ -84,7 +84,7 @@ e_datastructure_type DatastructureAnalyser::analyse () {
         }
         if (avg_interaction_count_by_data < avg_interaction_count_by_cut_off / 2.0) {
             // real interactions are much smaller then that what is expected by grid usage
-            return e_datastructure_type::LISTEDGIRD;
+            return e_datastructure_type::GRID_LIST;
         }
     } else {
         // error cannot analyse not existing data

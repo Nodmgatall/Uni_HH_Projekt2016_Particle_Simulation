@@ -1,4 +1,4 @@
-echo "radius,bounds,initial_speed,total_rebuild_count,GRID_time_1,GRID_time_2,GRID_time_3,LISTEDGRID_time_1,LISTEDGRID_time_2,LISTEDGRID_time_3"
+echo "radius,bounds,initial_speed,total_rebuild_count,GRID_time_1,GRID_time_2,GRID_time_3,GRID_LIST_time_1,GRID_LIST_time_2,GRID_LIST_time_3"
 
 add_job(){
 var_trash=$1
@@ -11,7 +11,7 @@ var_line_statistics_total_runtime="";
 var_line_statistics_total_datastructure_rebuild_count="";
 for var_run_index in 1 2 3;
 do
-for var_datastructure in "GRID" "LISTEDGRID";
+for var_datastructure in "GRID" "GRID_LIST";
 do
 var_test_name="simulation_${var_datastructure}_${var_radius}_${var_bounds}_${var_initial_speed}"
 file_content=$(cat "${var_run_index}/${var_test_name}.out")
@@ -34,12 +34,17 @@ echo "${var_radius},${var_bounds},${var_initial_speed},${var_line_statistics_tot
 
 }
 
+var_datastructure="GRID"
 
-add_job "" 2.5 80 0
-add_job "" 2.5 120 0
-add_job "" 5 80 0
-add_job "" 5 120 0
-add_job "" 2.5 80 1
-add_job "" 2.5 120 1
-add_job "" 5 80 1
-add_job "" 5 120 1
+add_job $var_datastructure 2.5 40 0
+add_job $var_datastructure 2.5 80 0
+add_job $var_datastructure 2.5 120 0
+add_job $var_datastructure 5 40 0
+add_job $var_datastructure 5 80 0
+add_job $var_datastructure 5 120 0
+add_job $var_datastructure 2.5 40 1
+add_job $var_datastructure 2.5 80 1
+add_job $var_datastructure 2.5 120 1
+add_job $var_datastructure 5 40 1
+add_job $var_datastructure 5 80 1
+add_job $var_datastructure 5 120 1
