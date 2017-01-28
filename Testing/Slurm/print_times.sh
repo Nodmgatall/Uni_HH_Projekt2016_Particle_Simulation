@@ -35,11 +35,11 @@ echo "${var_radius},${var_bounds},${var_initial_speed},${var_line_statistics_tot
 }
 
 
-add_job $var_datastructure 2.5 80 0
-add_job $var_datastructure 2.5 120 0
-add_job $var_datastructure 5 80 0
-add_job $var_datastructure 5 120 0
-add_job $var_datastructure 2.5 80 1
-add_job $var_datastructure 2.5 120 1
-add_job $var_datastructure 5 80 1
-add_job $var_datastructure 5 120 1
+add_job "" 2.5 80 0
+add_job "" 2.5 120 0
+add_job "" 5 80 0
+add_job "" 5 120 0
+add_job "" 2.5 80 1
+add_job "" 2.5 120 1
+add_job "" 5 80 1
+add_job "" 5 120 1

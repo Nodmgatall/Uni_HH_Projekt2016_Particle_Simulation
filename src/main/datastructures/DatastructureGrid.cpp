@@ -5,7 +5,7 @@ DatastructureGrid::DatastructureGrid (s_options& p_options, BorderBase& p_border
     unsigned int idx_x, idx_y, idx_z;
     long         max_usefull_size = pow (m_options.m_particle_count, 1.0 / 3.0);
     m_max_id                      = 0;
-    Vec3f tmp                     = m_options.m_bounds / (m_options.m_cut_off_radius * m_cut_off_factor);
+    Vec3f tmp                     = m_options.m_bounds / (m_options.m_cut_off_radius * p_options.m_cut_off_factor);
     grid_size                     = Vec3l (ceil (tmp.x), ceil (tmp.y), ceil (tmp.z));
     grid_size                     = Vec3l::min (grid_size, max_usefull_size);
 
@@ -37,7 +37,6 @@ DatastructureGrid::DatastructureGrid (s_options& p_options, BorderBase& p_border
     m_standard_stream << DEBUG_VAR (m_stucture_name) << std::endl;
     m_standard_stream << DEBUG_VAR (grid_size) << std::endl;
     m_standard_stream << DEBUG_VAR (grid_size_per_cell) << std::endl;
-    m_standard_stream << DEBUG_VAR (m_cut_off_factor) << std::endl;
     m_standard_stream << DEBUG_VAR (m_speed_factor) << std::endl;
     m_standard_stream << DEBUG_VAR (m_options.m_bounds) << std::endl;
     m_standard_stream << DEBUG_VAR (m_options.m_timestep) << std::endl;
@@ -385,7 +384,6 @@ bool DatastructureGrid::grid_step_2 () {
 bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_number) {
     unsigned int i, j;
     m_error_happened = false;
-    (void) p_iteration_number;
     m_standard_stream << DEBUG_VAR (p_iteration_number) << std::endl;
     m_iterations_until_rearange_particles--;
     unsigned int idx_x, idx_y, idx_z;
@@ -409,7 +407,7 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
     if (m_error_happened)
         return m_error_happened;
     {
-        if ((m_datastructure_rebuild_last_iteration_flag = (m_iterations_until_rearange_particles < 1))) {
+        if ((p_iteration_number <= 0) || (m_datastructure_rebuild_last_iteration_flag = (m_iterations_until_rearange_particles < 1))) {
 #ifdef CALCULATE_STATISTICS
             g_statistics.m_total_datastructure_rebuild_count++;
 #endif

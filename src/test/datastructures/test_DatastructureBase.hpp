@@ -205,6 +205,7 @@ BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_1) {
     options.m_bounds         = Vec3f (3, 3, 3);
     options.m_cut_off_radius = 1;
     options.m_timestep       = 1;
+    options.m_cut_off_factor = 1.2;
     BoundsCorrection       border (options.m_bounds);
     Algorithm              algorithm (options);
     ParticleWriter         writer = ParticleWriter (0);
@@ -271,6 +272,7 @@ BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_2) {
     options.m_bounds         = Vec3f (size, size, size);
     options.m_cut_off_radius = 1;
     options.m_timestep       = 1;
+    options.m_cut_off_factor = 1.2;
     BoundsCorrection       border (options.m_bounds);
     Algorithm              algorithm (options);
     ParticleWriter         writer = ParticleWriter (0);
@@ -341,6 +343,7 @@ BOOST_AUTO_TEST_CASE (test_serialize) {
     options.m_bounds         = Vec3f (size, size, size);
     options.m_cut_off_radius = 1;
     options.m_timestep       = 1;
+    options.m_cut_off_factor = 1.2;
     BoundsCorrection       border (options.m_bounds);
     Algorithm              algorithm (options);
     ParticleWriter         writer = ParticleWriter (count_3 * count_3 * count_3);

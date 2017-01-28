@@ -104,12 +104,11 @@ void DatastructureListBenjamin::list_step_2_calculate (ParticleGroup& p_cell_i,
     }
 }
 bool DatastructureListBenjamin::run_simulation_iteration (unsigned long p_iteration_number) {
-    (void) p_iteration_number;
     m_iterations_until_rearange_particles--;
     const data_type ox = m_options.m_bounds.x;
     const data_type oy = m_options.m_bounds.y;
     const data_type oz = m_options.m_bounds.z;
-    if ((m_datastructure_rebuild_last_iteration_flag = (m_iterations_until_rearange_particles < 1))) {
+    if ((p_iteration_number <= 0) || (m_datastructure_rebuild_last_iteration_flag = (m_iterations_until_rearange_particles < 1))) {
 #ifdef CALCULATE_STATISTICS
         g_statistics.m_total_datastructure_rebuild_count++;
 #endif
@@ -171,7 +170,7 @@ void DatastructureListBenjamin::list_rebuild (ParticleGroup& p_cell, unsigned in
     p_cell.m_neighbors[13].resize (p_cell.m_ids.size ());
     // cut_off_radius*1.2 to allow particles to move before reconstruction of
     // lists is needed
-    data_type cut_off_radius_squared = p_options.m_cut_off_radius * p_options.m_cut_off_radius * 1.2f;
+    data_type cut_off_radius_squared = p_options.m_cut_off_radius * p_options.m_cut_off_radius * p_options.m_cut_off_factor;
     for (i = 0; i < p_cell.m_neighbors[13].size (); i++) {
         p_cell.m_neighbors[13][i].clear ();
     }
@@ -197,7 +196,7 @@ void DatastructureListBenjamin::list_rebuild (ParticleGroup& p_cell_i, ParticleG
     p_cell_i.m_neighbors[neighbor_index].resize (p_cell_i.m_ids.size ());
     // cut_off_radius*1.2 to allow particles to move before reconstruction of
     // lists is needed
-    data_type cut_off_radius_squared = p_options.m_cut_off_radius * p_options.m_cut_off_radius * 1.2f;
+    data_type cut_off_radius_squared = p_options.m_cut_off_radius * p_options.m_cut_off_radius * p_options.m_cut_off_factor;
     for (i = 0; i < p_cell_i.m_ids.size (); i++) {
         p_cell_i.m_neighbors[neighbor_index][i].clear ();
     }
@@ -239,7 +238,7 @@ void DatastructureListBenjamin::list_rebuild (ParticleGroup& p_cell_i, ParticleG
     p_cell_i.m_neighbors[neighbor_index].resize (p_cell_i.m_ids.size ());
     // cut_off_radius*1.2 to allow particles to move before reconstruction of
     // lists is needed
-    data_type cut_off_radius_squared = p_options.m_cut_off_radius * p_options.m_cut_off_radius * 1.2f;
+    data_type cut_off_radius_squared = p_options.m_cut_off_radius * p_options.m_cut_off_radius * p_options.m_cut_off_factor;
     for (i = 0; i < p_cell_i.m_ids.size (); i++) {
         p_cell_i.m_neighbors[neighbor_index][i].clear ();
     }

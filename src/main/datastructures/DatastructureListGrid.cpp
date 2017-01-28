@@ -7,8 +7,7 @@
 #include <datastructures/DatastructureListGrid.hpp>
 DatastructureListGrid::DatastructureListGrid (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_particle_writer)
 : DatastructureBase (p_options, p_border, p_algorithm, p_particle_writer), DatastructureGrid (p_options, p_border, p_algorithm, p_particle_writer) {
-    m_stucture_name                       = "DatastructureListGrid";
-    m_iterations_until_rearange_particles = 0;
+    m_stucture_name = "DatastructureListGrid";
 }
 DatastructureListGrid::~DatastructureListGrid () {
 }
