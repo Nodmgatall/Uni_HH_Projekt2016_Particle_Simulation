@@ -9,9 +9,9 @@ var_radius_extra=$5
 
 var_line_statistics_total_runtime="";
 var_line_statistics_total_datastructure_rebuild_count="";
-for var_run_index in 1 2 3;
-do
 for var_datastructure in "GRID" "GRID_LIST";
+do
+for var_run_index in 1 2 3;
 do
 var_test_name="simulation_${var_datastructure}_${var_radius}_${var_bounds}_${var_initial_speed}_${var_radius_extra}"
 file_content=$(cat "${var_run_index}/${var_test_name}.out")
