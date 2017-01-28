@@ -2,13 +2,13 @@
 for var_datastructure in "GRID" "LISTEDGRID";
 do
 
-for var_radius in 2.5 3.0 5.0;
+for var_radius in 2.5 5.0 20.0;
 do
 
-for var_bounds in 40 50 70 120;
+for var_bounds in 40 80 120;
 do
 
-for var_initial_speed in 0 0.5 1 5;
+for var_initial_speed in 0 5 10;
 do
 
 if (( $(echo "(($var_radius < 5.0) || ($var_bounds >= 70))" |bc -l) )); then
@@ -17,7 +17,7 @@ if (( $(echo "(($var_radius < 5.0) || ($var_bounds >= 70))" |bc -l) )); then
 var_test_name="simulation_${var_datastructure}_${var_radius}_${var_bounds}_${var_initial_speed}"
 cat > "job_script_${var_test_name}.sh" << EOF
 #!/bin/bash
-#SBATCH --time=00:30:00
+#SBATCH --time=01:00:00
 #SBATCH -J projekt-${var_test_name}
 #SBATCH -o ${var_test_name}.out
 #SBATCH -p west

@@ -163,6 +163,24 @@ struct Vec3 {
         }
         return stream;
     }
+    /**
+     * rotates this vector around the x axis by the given angle in radians
+     */
+    inline Vec3<T> rotateX (T alpha) {
+        return Vec3<T> (x, y * cos (alpha) - z * sin (alpha), y * sin (alpha) + z * cos (alpha));
+    }
+    /**
+     * rotates this vector around the y axis by the given angle in radians
+     */
+    inline Vec3<T> rotateY (T alpha) {
+        return Vec3<T> (x * cos (alpha) + z * sin (alpha), y, -x * sin (alpha) + z * cos (alpha));
+    }
+    /**
+     * rotates this vector around the z axis by the given angle in radians
+     */
+    inline Vec3<T> rotateZ (T alpha) {
+        return Vec3<T> (x * cos (alpha) - y * sin (alpha), x * sin (alpha) + y * cos (alpha), z);
+    }
 };
 /**
  * an vector with the data_type defined in the 'DataType-header
@@ -173,11 +191,11 @@ typedef Vec3<data_type> Vec3f;
  */
 typedef Vec3<long> Vec3l;
 /**
- * an global vector containing only 0 for all thre components
+ * an global vector containing only 0 for all three components
  */
 extern const Vec3f g_vec3f_0;
 /**
- * an global vector containing only 0 for all thre components
+ * an global vector containing only 0 for all three components
  */
 extern const Vec3l g_vec3l_0;
 #endif /* SRC_Vec3_HPP_ */

@@ -1,10 +1,10 @@
 echo "radius,bounds,initial_speed,total_rebuild_count,GRID_time_1,GRID_time_2,GRID_time_3,LISTEDGRID_time_1,LISTEDGRID_time_2,LISTEDGRID_time_3"
-for var_radius in 2.5 3.0 5.0;
+for var_radius in 2.5 5.0 20.0;
 do
-for var_bounds in 40 50 70 120;
+for var_bounds in 40 80 120;
 do
 if (( $(echo "(($var_radius < 5.0) || ($var_bounds >= 70))" |bc -l) )); then
-for var_initial_speed in 0 0.5 1 5;
+for var_initial_speed in 0 5 10;
 do
 var_line_statistics_total_runtime="";
 var_line_statistics_total_datastructure_rebuild_count="";
