@@ -40,7 +40,7 @@ run_64_particles: build_release
 			--data_structure=GRID \
 			--input=GENERATOR_GRID_DISTRIBUTION --count=64 \
 			--output=FILE_CSV --out_file_name="logdata/out_64_particles"\
-			--max_iterations=2000 \
+			--max_iterations=8000 \
 			--write_fequency=1 \
 			--cut_off_radius=2.5 \
 			--timestep=0.005 \

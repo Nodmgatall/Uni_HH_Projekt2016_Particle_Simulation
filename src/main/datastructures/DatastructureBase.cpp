@@ -68,5 +68,7 @@ void DatastructureBase::calculate_next_datastructure_rebuild () { // calculate, 
             v_max = MAX (v_max, fabs (group.m_positions_z[m_idx_b][j] - group.m_positions_z[m_idx_a][j]));
         }
     }
-    m_iterations_until_rearange_particles = MIN (m_options.m_max_iterations_between_datastructure_rebuild, m_speed_factor / v_max);
+
+    m_iterations_until_rearange_particles = MAX (MIN (m_options.m_max_iterations_between_datastructure_rebuild, m_speed_factor / v_max), 2); // 2 == immediately
+    m_verbose_stream << "m_iterations_until_rearange_particles " << m_iterations_until_rearange_particles << std::endl;
 }

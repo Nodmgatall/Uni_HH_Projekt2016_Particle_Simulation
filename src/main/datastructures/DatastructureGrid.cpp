@@ -409,7 +409,7 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
     if (m_error_happened)
         return m_error_happened;
     {
-        if (m_iterations_until_rearange_particles == 1) {
+        if ((m_datastructure_rebuild_last_iteration_flag = (m_iterations_until_rearange_particles < 1))) {
 #ifdef CALCULATE_STATISTICS
             g_statistics.m_total_datastructure_rebuild_count++;
 #endif
@@ -426,7 +426,6 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
             }
             if (m_error_happened)
                 return m_error_happened;
-        } else if (m_iterations_until_rearange_particles < 1) {
             calculate_next_datastructure_rebuild ();
         }
     }
