@@ -38,6 +38,7 @@
 #include <map>
 #include <math.h>
 #include <memory>
+#include <omp.h>
 #include <set>
 #include <sstream>
 #include <string>
