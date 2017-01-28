@@ -31,7 +31,7 @@ fi
 
 done
 done
-echo "${var_radius},${var_bounds},${var_initial_speed},${var_radius_extra},${var_line_statistics_total_datastructure_rebuild_count},${var_line_statistics_total_runtime}"
+echo "${var_radius},${var_bounds},${var_initial_speed},${var_radius_extra}${var_line_statistics_total_datastructure_rebuild_count}${var_line_statistics_total_runtime}"
 
 }
 
