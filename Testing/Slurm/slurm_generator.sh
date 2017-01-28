@@ -4,6 +4,7 @@ var_datastructure=$1
 var_radius=$2
 var_bounds=$3
 var_initial_speed=$4
+var_radius_extra=$5
 
 var_test_name="simulation_${var_datastructure}_${var_radius}_${var_bounds}_${var_initial_speed}"
 cat > "job_script_${var_test_name}.sh" << EOF
@@ -28,6 +29,7 @@ srun ../../../particle_simulation.x \
 --timestep=0.005 \
 --bounds=${var_bounds}/${var_bounds}/${var_bounds} \
 --speed=${var_initial_speed} \
+--cut_off_extra_factor=${var_radius_extra} \
 --verbose
 EOF
 chmod +x "job_script_${var_test_name}.sh"
@@ -36,18 +38,24 @@ chmod +x "job_script_${var_test_name}.sh"
 for var_datastructure in "GRID" "GRID_LIST";
 do
 
-add_job $var_datastructure 2.5 40 0
-add_job $var_datastructure 2.5 80 0
-add_job $var_datastructure 2.5 120 0
-add_job $var_datastructure 5 40 0
-add_job $var_datastructure 5 80 0
-add_job $var_datastructure 5 120 0
-add_job $var_datastructure 2.5 40 1
-add_job $var_datastructure 2.5 80 1
-add_job $var_datastructure 2.5 120 1
-add_job $var_datastructure 5 40 1
-add_job $var_datastructure 5 80 1
-add_job $var_datastructure 5 120 1
+add_job $var_datastructure 2.5 40 0 1.2
+add_job $var_datastructure 2.5 80 0 1.2
+add_job $var_datastructure 2.5 120 0 1.2
+add_job $var_datastructure 2.5 40 1 1.2
+add_job $var_datastructure 2.5 80 1 1.2
+add_job $var_datastructure 2.5 120 1 1.2
+add_job $var_datastructure 8 40 0 1.2
+add_job $var_datastructure 8 80 0 1.2
+add_job $var_datastructure 8 120 0 1.2
+add_job $var_datastructure 8 40 0 1.2
+add_job $var_datastructure 8 80 0 1.2
+add_job $var_datastructure 8 120 0 1.2
+add_job $var_datastructure 8 40 0 1
+add_job $var_datastructure 8 80 0 1
+add_job $var_datastructure 8 120 0 1
+add_job $var_datastructure 8 40 0 1
+add_job $var_datastructure 8 80 0 1
+add_job $var_datastructure 8 120 0 1
 
 done
 
