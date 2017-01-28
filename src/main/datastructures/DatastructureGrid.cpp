@@ -188,7 +188,7 @@ bool DatastructureGrid::grid_step_2 () {
                     for (idx = 0; idx < uxyz; idx++) {
                         idx_z_2 = idx % uz;
                         idx_y_2 = (idx / uz) % uy;
-                        idx_x_2 = ((idx / uz) / uy);
+                        idx_x_2 = (idx / uz) / uy;
                         idx_x   = lx + idx_x_2 * 2 + parallel_offset_x;
                         idx_y   = ly + idx_y_2 * 2 + parallel_offset_y;
                         idx_z   = lz + idx_z_2 * 2 + parallel_offset_z;
