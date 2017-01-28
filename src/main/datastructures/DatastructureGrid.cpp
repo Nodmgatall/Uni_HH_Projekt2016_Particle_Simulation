@@ -11,13 +11,13 @@ DatastructureGrid::DatastructureGrid (s_options& p_options, BorderBase& p_border
 
     // at least 3 cells required because of periodic boundary
     grid_size = Vec3l::max (grid_size, Vec3l (3L));
-    {//force odd count off cells in each direction
-    if (grid_size.x % 2 == 0)
-        grid_size.x--;
-    if (grid_size.y % 2 == 0)
-        grid_size.y--;
-    if (grid_size.z % 2 == 0)
-        grid_size.z--;
+    { // force odd count off cells in each direction
+        if (grid_size.x % 2 == 0)
+            grid_size.x--;
+        if (grid_size.y % 2 == 0)
+            grid_size.y--;
+        if (grid_size.z % 2 == 0)
+            grid_size.z--;
     }
     grid_size_per_cell         = m_options.m_bounds / Vec3f (grid_size);
     m_options.m_cut_off_radius = MIN (grid_size_per_cell.x, MIN (grid_size_per_cell.y, grid_size_per_cell.z));
@@ -172,16 +172,15 @@ bool DatastructureGrid::grid_step_2 () {
     const long      ux                         = (rx - lx) / 2;
     const long      uy                         = (ry - ly) / 2;
     const long      uz                         = (rz - lz) / 2;
-    std::cout << "l:" << lx << "," << ly << "," << lz << std::endl;
-    std::cout << "r:" << rx << "," << ry << "," << rz << std::endl;
-    std::cout << "u:" << ux << "," << uy << "," << uz << std::endl;
+    m_verbose_stream << "l:" << lx << "," << ly << "," << lz << std::endl;
+    m_verbose_stream << "r:" << rx << "," << ry << "," << rz << std::endl;
+    m_verbose_stream << "u:" << ux << "," << uy << "," << uz << std::endl;
     omp_set_num_threads (1);
     { // Cells in the middle of the simulated Volume
         m_verbose_stream << "grid_step_2::1" << std::endl;
         for (parallel_offset_x = 0; parallel_offset_x < 2; parallel_offset_x++) {
             for (parallel_offset_y = 0; parallel_offset_y < 2; parallel_offset_y++) {
                 for (parallel_offset_z = 0; parallel_offset_z < 2; parallel_offset_z++) {
-                    std::cout << "next-phase" << std::endl;
 #pragma omp parallel for private(idx_x, idx_y, idx_z, idx_x_2, idx_y_2, idx_z_2)
                     for (idx_x_2 = 0; idx_x_2 < ux; idx_x_2++) {
                         for (idx_y_2 = 0; idx_y_2 < uy; idx_y_2++) {
@@ -189,29 +188,19 @@ bool DatastructureGrid::grid_step_2 () {
                                 idx_x = lx + idx_x_2 * 2 + parallel_offset_x;
                                 idx_y = ly + idx_y_2 * 2 + parallel_offset_y;
                                 idx_z = lz + idx_z_2 * 2 + parallel_offset_z;
-                                std::cout << "calculateing (" << idx_x << "," << idx_y << "," << idx_z << ")" << std::endl;
-                                if (idx_x < rx) {
-                                    if (idx_y < ry) {
-                                        if (idx_z < rz) {
-                                            grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 1, idx_z + 1), grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
-                                            grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 1, idx_z + 0), grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
-                                            grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 1, idx_z + 0), grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 1));
-                                            grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, idx_z + 1), grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
-                                            grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, idx_z + 0), grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
-                                            grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, idx_z + 0), grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 1));
-                                            grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, idx_z + 1), grid_get_cell_at (idx_x + 0, idx_y + 1, idx_z + 0));
-                                            grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, idx_z + 0), grid_get_cell_at (idx_x + 0, idx_y + 1, idx_z + 0));
-                                            grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, idx_z + 0), grid_get_cell_at (idx_x + 0, idx_y + 1, idx_z + 1));
-                                            grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, idx_y + 1, idx_z + 1), grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
-                                            grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, idx_y + 1, idx_z + 0), grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
-                                            grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, idx_y + 1, idx_z + 0), grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 1));
-                                            grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 1), grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
-                                        }
-                                    }
-                                } else {
-                                    std::cout << "error" << this->grid_size << std::endl;
-                                    exit (1);
-                                }
+                                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 1, idx_z + 1), grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
+                                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 1, idx_z + 0), grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
+                                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 1, idx_z + 0), grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 1));
+                                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, idx_z + 1), grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
+                                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, idx_z + 0), grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
+                                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, idx_z + 0), grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 1));
+                                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, idx_z + 1), grid_get_cell_at (idx_x + 0, idx_y + 1, idx_z + 0));
+                                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, idx_z + 0), grid_get_cell_at (idx_x + 0, idx_y + 1, idx_z + 0));
+                                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, idx_z + 0), grid_get_cell_at (idx_x + 0, idx_y + 1, idx_z + 1));
+                                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, idx_y + 1, idx_z + 1), grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
+                                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, idx_y + 1, idx_z + 0), grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
+                                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, idx_y + 1, idx_z + 0), grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 1));
+                                grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 1), grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
                             }
                         }
                     }
