@@ -47,15 +47,15 @@ add_job $var_datastructure 2.5 120 1 1.2
 add_job $var_datastructure 8 40 0 1.2
 add_job $var_datastructure 8 80 0 1.2
 add_job $var_datastructure 8 120 0 1.2
-add_job $var_datastructure 8 40 0 1.2
-add_job $var_datastructure 8 80 0 1.2
-add_job $var_datastructure 8 120 0 1.2
+add_job $var_datastructure 8 40 1 1.2
+add_job $var_datastructure 8 80 1 1.2
+add_job $var_datastructure 8 120 1 1.2
 add_job $var_datastructure 8 40 0 1
 add_job $var_datastructure 8 80 0 1
 add_job $var_datastructure 8 120 0 1
-add_job $var_datastructure 8 40 0 1
-add_job $var_datastructure 8 80 0 1
-add_job $var_datastructure 8 120 0 1
+add_job $var_datastructure 8 40 1 1
+add_job $var_datastructure 8 80 1 1
+add_job $var_datastructure 8 120 1 1
 
 done
 
