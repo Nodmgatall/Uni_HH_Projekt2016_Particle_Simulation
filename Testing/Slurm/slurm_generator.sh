@@ -1,5 +1,5 @@
 
-for var_datastructure in "GRID" "LISTEDGRID" "LIST_BENJAMIN";
+for var_datastructure in "GRID" "LISTEDGRID";
 do
 
 for var_radius in 2.5 3.0 5.0;
@@ -8,7 +8,7 @@ do
 for var_bounds in 40 50 70 120;
 do
 
-for var_initial_speed in 0 0.1 0.5 1;
+for var_initial_speed in 0 0.5 1 5;
 do
 
 if (( $(echo "(($var_radius < 5.0) || ($var_bounds >= 70))" |bc -l) )); then
