@@ -24,6 +24,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
     const int           write_modes_index                                  = 5;
     const int           max_iterations_between_datastructure_rebuild_index = 6;
     const int           initial_spped_index                                = 7;
+    const int           cut_off_extra_radius_index                         = 8;
     const int           print_config_index                                 = 9;
     std::vector<option> options                                            = { { "algorithm", required_argument, 0, algorithm_type_index * 1000 },
                                     { "data_structure", required_argument, 0, datastructure_type_index * 1000 },
@@ -39,6 +40,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                                     { "max_iterations", required_argument, 0, 'm' },
                                     { "out_file_name", required_argument, 0, 'o' },
                                     { "cut_off_radius", required_argument, 0, 'r' },
+                                    { "cut_off_extra_factor", required_argument, 0, cut_off_extra_radius_index * 1000 },
                                     { "seed", required_argument, 0, 's' },
                                     { "speed", required_argument, 0, initial_spped_index * 1000 },
                                     { "timestep", required_argument, 0, 't' },
@@ -101,6 +103,10 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                 line >> p_options.m_initial_speed;
                 break;
             }
+            case cut_off_extra_radius_index: {
+                line >> p_options.m_cut_off_factor;
+                break;
+            }
             default: {
                 switch (opt_index) {
                     case 'a': {
@@ -158,6 +164,10 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                                 print_usage_max_iterations_between_datastructure_rebuild ();
                             } else if (!strcmp (optarg, "print_config")) {
                                 print_usage_print_config ();
+                            } else if (!strcmp (optarg, "cut_off_extra_factor")) {
+                                print_usage_cut_off_extra_factor ();
+                            } else if (!strcmp (optarg, "speed")) {
+                                print_usage_initial_speed ();
                             } else {
                                 print_usage_particle_sim ();
                             }
@@ -424,6 +434,13 @@ void OptionHandler::print_usage_cut_off_radius () {
         << "|                          than this defined distance from each other, then no |" << std::endl
         << "|                          interaction will be calculated.                     |" << std::endl;
 }
+void OptionHandler::print_usage_cut_off_extra_factor () {
+    m_standard_stream //
+        << "| --cut_off_extra_factor=(float)                                               |" << std::endl
+        << "|                          The factor to be multiplied with the                |" << std::endl
+        << "|                          cutt_off_radius to reduce the count of              |" << std::endl
+        << "|                          data-structure-rebuilds.                            |" << std::endl;
+} /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void OptionHandler::print_usage_seed () {
     m_standard_stream //
         << "| --seed=(integer)                                                             |" << std::endl
@@ -470,6 +487,7 @@ void OptionHandler::print_usage_particle_sim () {
         << "|                                                                              |" << std::endl;
     print_usage_algorithm ();
     print_usage_cut_off_radius ();
+    print_usage_cut_off_extra_factor ();
     print_usage_timestep ();
     m_standard_stream //
         << "|                                                                              |" << std::endl

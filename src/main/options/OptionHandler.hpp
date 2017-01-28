@@ -33,6 +33,7 @@ class OptionHandler {
     void print_usage_particle_sim ();
     void print_header ();
     void print_usage_print_config ();
+    void print_usage_cut_off_extra_factor ();
 
   public:
     /**
