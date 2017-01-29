@@ -59,4 +59,9 @@ add_job $var_datastructure 8 120 1 1
 
 done
 
+rm -rf 1 2 3
+mkdir 1 2 3
+cp ./*.sh 1
+cp ./*.sh 2
+cp ./*.sh 3
 
