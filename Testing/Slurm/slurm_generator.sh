@@ -26,7 +26,7 @@ srun ../../../particle_simulation.x \
 --max_iterations=2000 \
 --write_fequency=1000 \
 --cut_off_radius=${var_radius} \
---timestep=0.005 \
+--timestep=0.0005 \
 --bounds=${var_bounds}/${var_bounds}/${var_bounds} \
 --speed=${var_initial_speed} \
 --cut_off_extra_factor=${var_radius_extra} \

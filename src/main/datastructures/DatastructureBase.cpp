@@ -70,7 +70,7 @@ void DatastructureBase::calculate_next_datastructure_rebuild () { // calculate, 
     }
     // always decreasing value
     m_iterations_until_rearange_particles =
-        MAX (MIN (m_iterations_since_rearange_particles, MIN (m_options.m_max_iterations_between_datastructure_rebuild, log (m_speed_factor / v_max))), 1); // 1 == immediately
+        MAX (MIN (m_iterations_since_rearange_particles, MIN (m_options.m_max_iterations_between_datastructure_rebuild, (m_speed_factor / v_max))), 1); // 1 == immediately
     m_verbose_stream << "m_iterations_until_rearange_particles " << (m_iterations_until_rearange_particles) << " - "                                        //
                      << (m_speed_factor) << " - "                                                                                                           //
                      << (v_max) << " - "                                                                                                                    //
