@@ -41,14 +41,20 @@ int main (int argc, char** argv) {
     particle_simulator.simulate ();
     Benchmark::end ();
     writer->finalize ();
+    m_verbose_stream<<"delete writer;"<<std::endl;
     delete writer;
+    m_verbose_stream<<"delete border;"<<std::endl;
     delete border;
+    m_verbose_stream<<"delete algorithm;"<<std::endl;
     delete algorithm;
+    m_verbose_stream<<"delete datastructure;"<<std::endl;
     delete datastructure;
 #ifdef CALCULATE_STATISTICS
+    m_verbose_stream<<"calculate statistics"<<std::endl;
     struct timeval time_end;
     gettimeofday (&time_end, NULL);
     g_statistics.m_total_runtime = time_end.tv_sec - time_start.tv_sec + (time_end.tv_usec - time_start.tv_usec) / 1.e6;
+    m_verbose_stream<<"print statistics"<<std::endl;
     m_verbose_stream << g_statistics;
 #endif
 }
