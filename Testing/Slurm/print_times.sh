@@ -37,22 +37,20 @@ echo "${var_radius},${var_bounds},${var_initial_speed},${var_radius_extra}${var_
 
 var_datastructure="GRID"
 
-add_job $var_datastructure 2.5 40 0 1.2
-add_job $var_datastructure 2.5 80 0 1.2
-add_job $var_datastructure 2.5 120 0 1.2
-add_job $var_datastructure 2.5 40 1 1.2
-add_job $var_datastructure 2.5 80 1 1.2
-add_job $var_datastructure 2.5 120 1 1.2
-add_job $var_datastructure 8 40 0 1.2
+add_job $var_datastructure 6 60 0 1.2
 add_job $var_datastructure 8 80 0 1.2
-add_job $var_datastructure 8 120 0 1.2
-add_job $var_datastructure 8 40 1 1.2
+add_job $var_datastructure 12 120 0 1.2
+add_job $var_datastructure 24 240 0 1.2
+add_job $var_datastructure 6 60 1 1.2
 add_job $var_datastructure 8 80 1 1.2
-add_job $var_datastructure 8 120 1 1.2
-add_job $var_datastructure 8 40 0 1
+add_job $var_datastructure 12 120 1 1.2
+add_job $var_datastructure 24 240 1 1.2
+add_job $var_datastructure 6 60 0 1
 add_job $var_datastructure 8 80 0 1
-add_job $var_datastructure 8 120 0 1
-add_job $var_datastructure 8 40 1 1
+add_job $var_datastructure 12 120 0 1
+add_job $var_datastructure 24 240 0 1
+add_job $var_datastructure 6 60 1 1
 add_job $var_datastructure 8 80 1 1
-add_job $var_datastructure 8 120 1 1
+add_job $var_datastructure 12 120 1 1
+add_job $var_datastructure 24 240 1 1
 
