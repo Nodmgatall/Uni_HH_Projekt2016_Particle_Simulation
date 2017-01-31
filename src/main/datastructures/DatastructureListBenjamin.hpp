@@ -8,7 +8,7 @@
 #define SRC_MAIN_DATASTRUCTURES_DATASTRUCTURELISTBENJAMIN_HPP_
 #include "DatastructureBase.hpp"
 
-class DatastructureListBenjamin : virtual public DatastructureBase {
+class DatastructureListBenjamin : public DatastructureBase {
   protected:
   public:
     /**
@@ -18,7 +18,7 @@ class DatastructureListBenjamin : virtual public DatastructureBase {
     /**
      * destructor
      */
-    ~DatastructureListBenjamin ();
+    virtual ~DatastructureListBenjamin ();
     bool run_simulation_iteration (unsigned long p_iteration_number = 0) override;
     /**
      * calculates the movement of particles based on the forces between every
