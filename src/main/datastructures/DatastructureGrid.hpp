@@ -3,7 +3,7 @@
 #include "DatastructureBase.hpp"
 #include "Definitions.hpp"
 #include "Vec3.hpp"
-class DatastructureGrid : virtual public DatastructureBase {
+class DatastructureGrid : public DatastructureBase {
   protected:
     /**
      * the count of cells in 3 dimensions
