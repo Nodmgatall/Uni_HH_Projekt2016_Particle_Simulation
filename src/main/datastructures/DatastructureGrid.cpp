@@ -145,19 +145,13 @@ void DatastructureGrid::grid_step_2b_calculate_between_cells (ParticleGroup& p_c
 }
 void DatastructureGrid::grid_step_3_remove_wrong_particles_from_cell (ParticleGroup& p_cell) {
     step_3_fit_into_borders (p_cell);
-    m_verbose_stream << __FILE__ << ":" << __LINE__ << std::endl;
     if (!m_error_happened) {
-        m_verbose_stream << __FILE__ << ":" << __LINE__ << std::endl;
         int i;
         for (i = p_cell.m_ids.size () - 1; i >= 0; i--) {
-            m_verbose_stream << __FILE__ << ":" << __LINE__ << ":" << i << ":" << p_cell.m_ids.size () << std::endl;
             Vec3l idx = grid_get_cell_index_for_particle (p_cell.m_positions_x[m_idx_a][i], p_cell.m_positions_y[m_idx_a][i], p_cell.m_positions_z[m_idx_a][i]);
             if (idx != p_cell.m_idx) {
-                m_verbose_stream << __FILE__ << ":" << __LINE__ << std::endl;
                 ParticleGroup& other_cell = grid_get_cell_at (idx.x, idx.y, idx.z);
-                m_verbose_stream << __FILE__ << ":" << __LINE__ << std::endl;
                 grid_moveParticle (p_cell, other_cell, i);
-                m_verbose_stream << __FILE__ << ":" << __LINE__ << std::endl;
             }
         }
     }
@@ -453,26 +447,16 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
     return m_error_happened;
 }
 inline void DatastructureGrid::grid_moveParticle (ParticleGroup& p_cell_from, ParticleGroup& p_cell_to, long p_index_from) {
-    m_verbose_stream << __FILE__ << ":" << __LINE__ << std::endl;
     unsigned int j;
     p_cell_to.m_ids.push_back (p_cell_from.m_ids[p_index_from]);
-    m_verbose_stream << __FILE__ << ":" << __LINE__ << std::endl;
     p_cell_from.m_ids.erase (p_cell_from.m_ids.begin () + p_index_from);
-    m_verbose_stream << __FILE__ << ":" << __LINE__ << std::endl;
     for (j = 0; j <= 1; j++) {
-        m_verbose_stream << __FILE__ << ":" << __LINE__ << ":" << j << std::endl;
         p_cell_to.m_positions_x[j].push_back (p_cell_from.m_positions_x[j][p_index_from]);
-        m_verbose_stream << __FILE__ << ":" << __LINE__ << ":" << j << std::endl;
         p_cell_to.m_positions_y[j].push_back (p_cell_from.m_positions_y[j][p_index_from]);
-        m_verbose_stream << __FILE__ << ":" << __LINE__ << ":" << j << std::endl;
         p_cell_to.m_positions_z[j].push_back (p_cell_from.m_positions_z[j][p_index_from]);
-        m_verbose_stream << __FILE__ << ":" << __LINE__ << ":" << j << std::endl;
         p_cell_from.m_positions_x[j].erase (p_cell_from.m_positions_x[j].begin () + p_index_from);
-        m_verbose_stream << __FILE__ << ":" << __LINE__ << ":" << j << std::endl;
         p_cell_from.m_positions_y[j].erase (p_cell_from.m_positions_y[j].begin () + p_index_from);
-        m_verbose_stream << __FILE__ << ":" << __LINE__ << ":" << j << std::endl;
         p_cell_from.m_positions_z[j].erase (p_cell_from.m_positions_z[j].begin () + p_index_from);
-        m_verbose_stream << __FILE__ << ":" << __LINE__ << ":" << j << std::endl;
     }
 }
 void DatastructureGrid::add_particle (Vec3f p_position) {
