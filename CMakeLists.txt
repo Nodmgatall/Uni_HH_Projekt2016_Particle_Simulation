@@ -75,23 +75,7 @@ include_directories(${Boost_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/src/test)
                  --cut_off_radius=1
                  --timestep=0.005
                  --bounds=10/10/10)
-                 
-    add_test(NAME particle_simulation3.x 
-                 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Testing/Binary   
-                 COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/particle_simulation.x 
-                 --algorithm=LENNARD_JONES 
-                 --data_structure=GRID 
-                 --input=GENERATOR_GRID_DISTRIBUTION 
-                 --count=64000 
-                 --output=FILE_CSV 
-                 --max_iterations=2000 
-                 --write_fequency=1000 
-                 --cut_off_radius=6 
-                 --timestep=0.0005 
-                 --bounds=60/60/60 
-                 --speed=1 
-                 --cut_off_extra_factor=1.2 
-                 --verbose)
+               
                  
 	if(APPLE)
 		set_target_properties(particle_simulation_test_lib PROPERTIES LINK_FLAGS "--coverage")
