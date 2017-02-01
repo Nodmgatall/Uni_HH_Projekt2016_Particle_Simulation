@@ -45,7 +45,7 @@ DatastructureGrid::DatastructureGrid (s_options& p_options, BorderBase& p_border
 DatastructureGrid::~DatastructureGrid () {
 }
 unsigned long DatastructureGrid::grid_get_cell_index (long x, long y, long z) {
-    return x + grid_size.x * (y + grid_size.y * z);
+    return z + grid_size.z * (y + grid_size.y * x);
 }
 ParticleGroup& DatastructureGrid::grid_get_cell_at (long x, long y, long z) {
     return m_particle_groups[grid_get_cell_index (x, y, z)];
@@ -179,7 +179,7 @@ bool DatastructureGrid::grid_step_2 () {
     m_verbose_stream << "l:" << lx << "," << ly << "," << lz << std::endl;
     m_verbose_stream << "r:" << rx << "," << ry << "," << rz << std::endl;
     m_verbose_stream << "u:" << ux << "," << uy << "," << uz << std::endl;
-    // omp_set_num_threads (1);
+    //omp_set_num_threads (1);
     { // Cells in the middle of the simulated Volume
         m_verbose_stream << "grid_step_2::1" << std::endl;
         for (parallel_offset_x = 0; parallel_offset_x < 2; parallel_offset_x++) {
@@ -447,6 +447,7 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
     return m_error_happened;
 }
 inline void DatastructureGrid::grid_moveParticle (ParticleGroup& p_cell_from, ParticleGroup& p_cell_to, long p_index_from) {
+    // the last element overrides the element to be deleted, then the last element gets removed
     unsigned int j;
     p_cell_to.m_ids.push_back (p_cell_from.m_ids[p_index_from]);
     p_cell_from.m_ids[p_index_from] = p_cell_from.m_ids.back ();
@@ -455,7 +456,6 @@ inline void DatastructureGrid::grid_moveParticle (ParticleGroup& p_cell_from, Pa
         p_cell_to.m_positions_x[j].push_back (p_cell_from.m_positions_x[j][p_index_from]);
         p_cell_to.m_positions_y[j].push_back (p_cell_from.m_positions_y[j][p_index_from]);
         p_cell_to.m_positions_z[j].push_back (p_cell_from.m_positions_z[j][p_index_from]);
-
         p_cell_from.m_positions_x[j][p_index_from] = p_cell_from.m_positions_x[j].back ();
         p_cell_from.m_positions_x[j].pop_back ();
         p_cell_from.m_positions_y[j][p_index_from] = p_cell_from.m_positions_y[j].back ();

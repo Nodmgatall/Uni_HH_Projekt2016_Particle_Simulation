@@ -68,5 +68,9 @@ struct ParticleGroup {
         stream << DEBUG_VAR (group.m_positions_z) << std::endl;
         return stream;
     }
+    std::vector<int>   testing;
+    std::vector<float> testingx;
+    std::vector<float> testingy;
+    std::vector<float> testingz;
 };
 #endif /* SRC_MAIN_DATASTRUCTURES_HELPER_PARTICLEGROUP_HPP_ */
