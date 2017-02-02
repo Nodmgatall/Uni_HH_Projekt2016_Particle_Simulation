@@ -59,7 +59,7 @@ var_speedup_grid=$(echo "scale=8; ${var_speedup_grid_0} / ${var_average_times_gr
 var_speedup_grid_list=$(echo "scale=8; ${var_speedup_grid_list_0} / ${var_average_times_grid_list}" | bc -l)
 
 echo "${var_row},${var_radius},${var_bounds},${var_initial_speed},${var_radius_extra},${var_threads}${var_line_statistics_total_datastructure_rebuild_count}${var_line_statistics_total_runtime},$var_average_times_grid,$var_average_times_grid_list,$var_speedup_grid,$var_speedup_grid_list"
-var_row=$((var_row+1))
+var_row=$((var_row + 1))
 }
 
 var_datastructure="GRID"
