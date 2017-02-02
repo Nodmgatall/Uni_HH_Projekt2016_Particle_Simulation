@@ -1,5 +1,5 @@
 echo "row,radius,bounds,initial_speed,extra_radius,threads,GRID_rebuild_count_1,GRID_rebuild_count_2,GRID_rebuild_count_3,GRID_LIST_rebuild_count_1,GRID_LIST_rebuild_count_2,GRID_LIST_rebuild_count_3,GRID_time_1,GRID_time_2,GRID_time_3,GRID_LIST_time_1,GRID_LIST_time_2,GRID_LIST_time_3,GRID_average_time,GRID_LIST_average_time"
-
+var_row=1
 add_job(){
 var_trash=$1
 var_radius=$2
