@@ -23,7 +23,7 @@ class Autotuneing {
             case e_input_type::GENERATOR_GRID_DISTRIBUTION: {
                 // the particles are evenly distributed
                 // useing the same function as in DatastructureBase::calculate_next_datastructure_rebuild to calculate iteration-count to rebuild
-                if (1.0 < ((p_options.m_cut_off_radius * (p_options.m_cut_off_factor - 1.0) - 1.0) * 0.5) / p_options.m_initial_speed) {
+                if (2.0 * p_options.m_initial_speed < (p_options.m_cut_off_radius * (p_options.m_cut_off_factor - 1.0) - 1.0)) {
                     p_options.m_data_structure_type = e_datastructure_type::GRID_LIST;
                     // PROVED by tests
                 } else {
