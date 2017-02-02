@@ -26,6 +26,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
     const int           initial_speed_index                                = 7;
     const int           cut_off_extra_radius_index                         = 8;
     const int           print_config_index                                 = 9;
+    const int           threads_index                                      = 10;
     std::vector<option> options                                            = { { "algorithm", required_argument, 0, algorithm_type_index * 1000 },
                                     { "data_structure", required_argument, 0, datastructure_type_index * 1000 },
                                     { "input", required_argument, 0, input_type_index * 1000 },
@@ -44,6 +45,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                                     { "seed", required_argument, 0, 's' },
                                     { "speed", required_argument, 0, initial_speed_index * 1000 },
                                     { "timestep", required_argument, 0, 't' },
+                                    { "threads", required_argument, 0, threads_index * 1000 },
                                     { "verbose", no_argument, 0, 'v' },
                                     { "max_iterations_between_datastructure_rebuild", required_argument, 0, max_iterations_between_datastructure_rebuild_index * 1000 },
                                     { "print_config", no_argument, 0, print_config_index * 1000 } };
@@ -107,6 +109,12 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                 line >> p_options.m_cut_off_factor;
                 break;
             }
+            case threads_index: {
+                int threads;
+                line >> threads;
+                omp_set_num_threads (threads);
+                break;
+            }
             default: {
                 switch (opt_index) {
                     case 'a': {
@@ -158,6 +166,8 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                                 print_usage_seed ();
                             } else if (!strcmp (optarg, "timestep")) {
                                 print_usage_timestep ();
+                            } else if (!strcmp (optarg, "threads")) {
+                                print_usage_threads ();
                             } else if (!strcmp (optarg, "verbose")) {
                                 print_usage_verbose ();
                             } else if (!strcmp (optarg, "max_iterations_between_datastructure_rebuild")) {
@@ -374,6 +384,11 @@ void OptionHandler::print_usage_initial_speed () {
         << "|                          If the input is an an generator-type, than this is  |" << std::endl
         << "|                          the initial speed of each particle.                 |" << std::endl;
 }
+void OptionHandler::print_usage_threads () {
+    m_standard_stream //
+        << "| --threads=(integer)                                                          |" << std::endl
+        << "|                          The number of Threads uses by openmp.               |" << std::endl;
+}
 void OptionHandler::print_usage_write_fequency () {
     m_standard_stream //
         << "| --write_fequency=(integer)                                                   |" << std::endl
@@ -534,6 +549,7 @@ void OptionHandler::print_usage_particle_sim () {
         << "|                                other  options                                |" << std::endl
         << "|                                                                              |" << std::endl;
     print_usage_bounds ();
+    print_usage_threads ();
     m_standard_stream //
         << "|                                                                              |" << std::endl
         << "+==============================================================================+" << std::endl
