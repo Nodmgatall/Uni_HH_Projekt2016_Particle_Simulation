@@ -39,11 +39,11 @@ chmod +x "job_script_${var_test_name}.sh"
 
 for var_datastructure in "GRID" "GRID_LIST";
 do
+for var_cut_off in 1 1.2
+do
 for var_threads in 1 2 4 8 12 16 20 24
 do
-
-add_job $var_datastructure 8 80 0 1.2 $var_threads
-add_job $var_datastructure 8 80 0 1 $var_threads
-
+add_job $var_datastructure 8 80 0 $var_cut_off $var_threads
+done
 done
 done
