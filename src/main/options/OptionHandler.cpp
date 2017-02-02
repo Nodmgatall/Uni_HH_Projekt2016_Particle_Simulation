@@ -318,7 +318,7 @@ void OptionHandler::print_usage_input () {
     m_standard_stream //
         << "| --input=             " << g_input_names[1] << get_not_implemented (g_input_implemented[1])
         << std::string (56 - strlen (g_input_names[1]) - get_not_implemented (g_input_implemented[1]).length (), ' ') << "|" << std::endl;
-    for (index = 2; index < (signed) g_input_names.size (); index++) {
+    for (index = 2; index < (signed) g_input_names.size () - g_input_type_autotuneing_enums_count; index++) {
         m_standard_stream //
             << "|                      " << g_input_names[index] << get_not_implemented (g_input_implemented[index])
             << std::string (56 - strlen (g_input_names[index]) - get_not_implemented (g_input_implemented[index]).length (), ' ') << "|" << std::endl;

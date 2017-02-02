@@ -18,41 +18,48 @@ class Autotuneing {
      */
     static inline DatastructureBase* get_best_datastructure (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_writer) {
         DatastructureAnalyser* analyser = 0;
-        switch (p_options.m_input_type) {
-            case e_input_type::GENERATOR_RANDOM_UNIFORM:
-            case e_input_type::GENERATOR_GRID_DISTRIBUTION: {
-                // the particles are evenly distributed
-                // useing the same function as in DatastructureBase::calculate_next_datastructure_rebuild to calculate iteration-count to rebuild
-                if (2.0 * p_options.m_initial_speed < (p_options.m_cut_off_radius * (p_options.m_cut_off_factor - 1.0) - 1.0)) {
-                    p_options.m_data_structure_type = e_datastructure_type::GRID_LIST;
-                    // PROVED by tests
-                } else {
+        if ((p_options.m_input_type == e_input_type::GENERATOR_RANDOM) || (p_options.m_input_type == e_input_type::FILE_CSV)) {
+            // TODO unknown
+            analyser         = new DatastructureAnalyser (p_options, p_border, p_algorithm, p_writer);
+            InputBase* input = InputFactory::build (p_options, *analyser);
+            input->initialize_datastructure ();
+            analyser->analyse ();
+        }
+        if (2.0 * p_options.m_initial_speed < (p_options.m_cut_off_radius * (p_options.m_cut_off_factor - 1.0) - 1.0)) {
+            // slow particles do not need rebuild of datastructure and could use the advantages of mixed datastructure
+            p_options.m_data_structure_type = e_datastructure_type::GRID_LIST;
+        } else {
+            // particles moves too fast to just use the mixed datastructure.
+            // other criteria could be more important, so the mixed datastructure may still be used here
+            switch (p_options.m_input_type) {
+                case e_input_type::GENERATOR_RANDOM_UNIFORM:
+                case e_input_type::GENERATOR_GRID_DISTRIBUTION:
+                case e_input_type::AUTOTUNEING_REGULAR_DISTRIBUTION:
+                    // the particles are regular distributed, and too fast for the mixed datastructure to be efficient
                     p_options.m_data_structure_type = e_datastructure_type::GRID;
-                    // PROVED by tests
+                    break;
+                case e_input_type::GENERATOR_MULTIPLE_OBJECTS:
+                case e_input_type::GENERATOR_SINGLE_OBJECT_MIDDLE:
+                case e_input_type::AUTOTUNEING_IRREGULAR_DISTRIBUTION:
+                    // distribution of particles is irregular
+                    // lot of cells are unused, most interactions are within a few cells. list would improve the runtime
+                    // simulation should be for short-distance-interactions. if nearly all particles are in range, this would be long-distance-interactions, which are not
+                    // the target
+                    p_options.m_data_structure_type = e_datastructure_type::GRID_LIST;
+                    break;
+                case e_input_type::AUTOTUNEING_ERROR:
+                    // this happens if input is empty or *corrupt*
+                    return 0;
+                case e_input_type::GENERATOR_RANDOM:
+                case e_input_type::FILE_CSV: {
+                    // this NEVER happens
+                    return 0;
                 }
-                break;
-            }
-            case e_input_type::GENERATOR_MULTIPLE_OBJECTS:
-            case e_input_type::GENERATOR_SINGLE_OBJECT_MIDDLE: {
-                // TODO unknown
-                // particles are distributed at a single point. grid wont help here
-                p_options.m_data_structure_type = e_datastructure_type::LIST_BENJAMIN;
-                break;
-            }
-            case e_input_type::GENERATOR_RANDOM:
-            case e_input_type::FILE_CSV: {
-                // here we need to scan the entire file to decide what to do
-                // TODO unknown
-                analyser         = new DatastructureAnalyser (p_options, p_border, p_algorithm, p_writer);
-                InputBase* input = InputFactory::build (p_options, *analyser);
-                input->initialize_datastructure ();
-                p_options.m_data_structure_type = analyser->analyse ();
-                break;
             }
         }
         DatastructureBase* result = DatastructureFactory::build (p_options, p_border, p_algorithm, p_writer);
         if (analyser) {
-            // dont load an file again ...
+            // do not load an file again ...
             // if random is generated again, everything could be different
             analyser->transfer_particles_to (*result);
             delete analyser;
@@ -62,6 +69,7 @@ class Autotuneing {
             // datastructure
             InputBase* input = InputFactory::build (p_options, *result);
             input->initialize_datastructure ();
+            delete input;
         }
         return result;
     }
