@@ -65,7 +65,7 @@ var_datastructure="GRID"
 
 for var_cut_off in 1 1.2
 do
-for var_threads in 1 2 4 8 12 16 20 24
+for var_threads in `seq 1 24`
 do
 add_job $var_datastructure 8 80 0 $var_cut_off $var_threads
 done
