@@ -51,7 +51,7 @@ done
 var_average_times_grid=$(echo "scale=8; sqrt( ${var_sum_square_times_grid} / 3)" | bc -l)
 var_average_times_grid_list=$(echo "scale=8; sqrt( ${var_sum_square_times_grid_list} / 3)" | bc -l)
 
-if [ $var_threads == 1]; then
+if [ ${var_threads} == 1 ]; then
 var_speedup_grid_0=$var_average_times_grid
 var_speedup_grid_list_0=$var_average_times_grid_list
 fi
