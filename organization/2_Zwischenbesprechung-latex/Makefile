@@ -1,0 +1,2 @@
+default:
+	pdflatex -shell-escape main.tex

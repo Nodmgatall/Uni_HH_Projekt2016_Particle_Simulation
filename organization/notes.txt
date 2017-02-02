@@ -1,11 +1,5 @@
 Url:
-    Overleaf Web:       https://www.overleaf.com/6868875yrhfvynywgzr
-    Overleaf Git:       https://git.overleaf.com/6868875yrhfvynywgzr
-
-    
-    https://www.overleaf.com/7690515vynnjrmjmtvc
-    https://git.overleaf.com/7690515vynnjrmjmtvc
-    
+   siehe jeweilige tex-datei im header
     
 %was wir machen
 %meilensteine

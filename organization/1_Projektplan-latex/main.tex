@@ -1,0 +1,117 @@
+%url = https://www.overleaf.com/6868875yrhfvynywgzr
+%url = https://git.overleaf.com/6868875yrhfvynywgzr
+
+
+\documentclass[a4paper]{article}
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+
+%% Sets page size and margins
+\usepackage[a4paper,top=3cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+
+\title{Universität Hamburg Projekt 2016 Particle Simulation}
+\author{Olliver Heidmann Benjamin Warnke}
+
+\begin{document}
+\maketitle
+
+\section{Projektplan}
+\begin{enumerate}
+\item startparameter (Oliver)
+    \begin{itemize}
+        	\item verbose
+            \item algorithmus
+            \item autotuneing on/off
+            \item timestep größe
+            \item abstand der datei speicherung
+            \item optimierungsmethode festlegen (nur ohne autotuneing)
+            \item seed für random
+        \end{itemize}
+\item prototypen/interface für Optimierte Datenstrukturen(Oliver)
+	\begin{itemize}
+        \item  insert(Particle):void
+        \item  next():Particle
+        \item  neighbours(Particle):Particlelist
+        \item  zusätzliche? weniger?
+        \item  dies würde die austauschbarkeit enorm vereinfachen ... autotuneing müsste nur noch eine variable ändern
+        \item  gemeinsam treffen, nachdem die vorherigen aufgaben abgeschlossen sind.
+    \end{itemize}
+\item Debug+Benchmark funktionen (Benjamin)
+\item importieren/generieren der Startdaten (Benjamin)
+	\begin{itemize}
+        \item aus Datei (Optional)
+        \item  generieren nach bestimmten verteilungen für tests, welches verfahren wann am besten ist
+        \begin{itemize}
+        	\item  kugel in der mitte
+        	\item  verteilte kugeln jeweils gleichmäßig gefüllt
+        	\item  gleichmäßig
+        	\item  pseudorandom
+        	\item  wenige partikel
+        	\item  viele partikel
+        	\item  weit auseinander
+        	\item  eng zusammen
+        	\item  generieren nach mustern
+        \end{itemize}
+    \end{itemize}
+\item implementierung der Lennard-Jones-Simulation (Oliver)
+	\begin{itemize}
+        \item lesen im kapitel des buches?!?
+        \item was für daten werden benötigt?
+        \begin{itemize}
+        	\item distanz zum anderen
+        \end{itemize}
+    \end{itemize}
+\item ausgabe der Daten (Benjamin)
+	\begin{enumerate}
+		\item 
+        \begin{itemize}
+        	\item eigenes txt format für tests
+            \item exportieren in bekannte Dateiformate (mindestens 1)
+			\begin{itemize}
+	            \item LAMMPS
+	            \item ESPRESSO
+	            \item GROMACS
+	            \item VMD
+	            \item ParaView/vtk
+	        \end{itemize}
+        \end{itemize}
+		\item
+        \begin{itemize}
+        	\item OpenGl (optioal)
+        \end{itemize}
+    \end{enumerate}
+\item autotuneing + analyse
+	\begin{itemize}
+        \item als Grid (Benjamin)
+        \item mit Listen der Nachbarn (Oliver)
+        \item gruppen zusammenfassen und nur den Schwerpunkt berechnen
+        \item welches verfahren sollte "gelöscht" werden -> wiso?
+        \item welches verfahren ist am besten -> wiso? abhängig von der eingabe??
+        \item kriterien für analyse?
+        \item eingaben kategorisieren um analysieren zu können
+    \end{itemize}
+\item optimierung
+	\begin{itemize}
+        \item funtions Verfahren
+		\item openmp
+        \item Intel TBB (optioal)
+        \item cuda (optional) 
+        \item opencl (optional)
+        \item mpi (optional)
+    \end{itemize}
+\item andere Simulationsverfahren
+	\begin{itemize}
+        \item Smoothed Particle Hydrodynamics
+        \item Dissipative Particle Dynamics
+    \end{itemize}
+\end{enumerate}
+
+\end{document}

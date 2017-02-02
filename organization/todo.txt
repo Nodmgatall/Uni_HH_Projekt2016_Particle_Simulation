@@ -1,6 +1,2 @@
 generator mindestabstand verifizieren
-zweite listen-version von oliver
-mehr slurm scripts zum vergleichen von laufzeiten
-autotuneing verbessern, wenn andere datenstrukturen mit dem grid mithalten können
 remove particles
-vectorisieren von lennard-jones
