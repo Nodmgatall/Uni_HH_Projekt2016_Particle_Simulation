@@ -76,7 +76,39 @@
 	\frametitle{Gliederung (Agenda)}
 	\tableofcontents
 \end{frame}
-    
+\section{Parallelisierung}
+\subsection{Open MP}
+\begin{frame}[t]
+	\frametitle{Laufzeitmessungen}
+	\begin{figure}
+		\begin{center}
+			\begin{tikzpicture}
+			\begin{axis}[
+			xmin = 0,
+			xmax = 25,
+			xtick = {1,2,4,6,...,24},
+			ymin = 0.5,
+			ymax = 8,
+			legend pos=south east,
+			xmajorgrids=true,
+			ymajorgrids=true,
+			grid style=dashed,
+			ytick = {1,1.5,...,7.5},
+			xlabel = $Threads$, 
+			ylabel = $Speedup$]
+			\addplot table [domain=1:16, samples=1000,x=threads, y=GRID_speedup, col sep=comma] {times_openmp_skalierung_1.csv};
+			\addlegendentry{$GRID-1$}
+			\addplot table [domain=1:16, samples=1000,x=threads, y=GRID_speedup, col sep=comma] {times_openmp_skalierung_1_2.csv};
+			\addlegendentry{$GRID-1.2$}
+			\addplot table [domain=1:16, samples=1000,x=threads, y=GRID_LIST_speedup, col sep=comma] {times_openmp_skalierung_1.csv};
+			\addlegendentry{$GRID-LIST-1$}
+			\addplot table [domain=1:16, samples=1000,x=threads, y=GRID_LIST_speedup, col sep=comma] {times_openmp_skalierung_1_2.csv};
+			\addlegendentry{$GRID-LIST-1.2$}
+			\end{axis}
+			\end{tikzpicture}
+		\end{center}
+	\end{figure}
+\end{frame}
 \section{Autotuneing}
 \subsection{Gleichverteilte Eingabe}
 \begin{frame}[t]
@@ -86,19 +118,19 @@
 			\begin{tikzpicture}
 			\begin{axis}[
 				xmin = 0,
-				xmax = 17,
-				xtick = {1,2,...,16},
-				ymin = 120,
+				xmax = 25,
+				xtick = {1,2,...,24},
+				ymin = 100,
 				ymax = 320,
 				legend pos=north west,
 				ymajorgrids=true,
 				grid style=dashed,
-				ytick = {120,140,...,320},
+				ytick = {100,120,...,320},
 				xlabel = $Parameter-Kombination$, 
 				ylabel = $Sekunden$]
-				\addplot table [domain=1:16, only marks, samples=1000,x=row, y=GRID_average_time, col sep=comma] {times_gleichverteilung.csv};
+				\addplot table [domain=1:24, only marks, samples=1000,x=row, y=GRID_average_time, col sep=comma] {times_gleichverteilung.csv};
 				\addlegendentry{$GRID$}
-				\addplot table [domain=1:16, only marks, samples=1000,x=row, y=GRID_LIST_average_time, col sep=comma] {times_gleichverteilung.csv};
+				\addplot table [domain=1:24, only marks, samples=1000,x=row, y=GRID_LIST_average_time, col sep=comma] {times_gleichverteilung.csv};
 				\addlegendentry{$GRID-LIST$}
 			\end{axis}
 			\end{tikzpicture}
@@ -120,7 +152,7 @@
 		\item \textbf{false} $\rightarrow$ GRID
 	\end{itemize}
 \end{frame}
-\subsection{Nicht gleichverteilte Eingabe}
+\subsection{Nicht Gleichverteilte Eingabe}
 \begin{frame}[t]
 	TODO
 \end{frame}	
