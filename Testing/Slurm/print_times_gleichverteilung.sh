@@ -60,6 +60,14 @@ add_job $var_datastructure 6 60 1 1.2 $var_threads
 add_job $var_datastructure 8 80 1 1.2 $var_threads
 add_job $var_datastructure 12 120 1 1.2 $var_threads
 add_job $var_datastructure 24 240 1 1.2 $var_threads
+add_job $var_datastructure 6 60 0 1.1 $var_threads
+add_job $var_datastructure 8 80 0 1.1 $var_threads
+add_job $var_datastructure 12 120 0 1.1 $var_threads
+add_job $var_datastructure 24 240 0 1.1 $var_threads
+add_job $var_datastructure 6 60 1 1.1 $var_threads
+add_job $var_datastructure 8 80 1 1.1 $var_threads
+add_job $var_datastructure 12 120 1 1.1 $var_threads
+add_job $var_datastructure 24 240 1 1.1 $var_threads
 add_job $var_datastructure 6 60 0 1 $var_threads
 add_job $var_datastructure 8 80 0 1 $var_threads
 add_job $var_datastructure 12 120 0 1 $var_threads
@@ -68,4 +76,3 @@ add_job $var_datastructure 6 60 1 1 $var_threads
 add_job $var_datastructure 8 80 1 1 $var_threads
 add_job $var_datastructure 12 120 1 1 $var_threads
 add_job $var_datastructure 24 240 1 1 $var_threads
-
