@@ -35,7 +35,7 @@ if (OPENMP_FOUND)
 endif()
 
 add_executable(particle_simulation.x src/main/main.cpp ${sources})
-set_target_properties(particle_simulation.x PROPERTIES COMPILE_FLAGS "-Ofast")
+set_target_properties(particle_simulation.x PROPERTIES COMPILE_FLAGS "-O3")
 
 if(Boost_FOUND)
 	target_link_libraries(particle_simulation.x ${Boost_LIBRARIES})
@@ -75,8 +75,6 @@ include_directories(${Boost_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/src/test)
                  --cut_off_radius=1
                  --timestep=0.005
                  --bounds=10/10/10)
-                 
-
                  
 	if(APPLE)
 		set_target_properties(particle_simulation_test_lib PROPERTIES LINK_FLAGS "--coverage")
