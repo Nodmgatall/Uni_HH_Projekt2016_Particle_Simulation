@@ -22,16 +22,19 @@ class Autotuneing {
             case e_input_type::GENERATOR_RANDOM_UNIFORM:
             case e_input_type::GENERATOR_GRID_DISTRIBUTION: {
                 // the particles are evenly distributed
-                p_options.m_data_structure_type = e_datastructure_type::GRID;
+                // useing the same function as in DatastructureBase::calculate_next_datastructure_rebuild to calculate iteration-count to rebuild
+                if (1.0 < ((p_options.m_cut_off_radius * (p_options.m_cut_off_factor - 1.0) - 1.0) * 0.5) / p_options.m_initial_speed) {
+                    p_options.m_data_structure_type = e_datastructure_type::GRID_LIST;
+                    // PROVED by tests
+                } else {
+                    p_options.m_data_structure_type = e_datastructure_type::GRID;
+                    // PROVED by tests
+                }
                 break;
             }
-            case e_input_type::GENERATOR_MULTIPLE_OBJECTS: {
-                // the particles are in different cells, but inside the cells list structure may
-                // improve the calculations
-                p_options.m_data_structure_type = e_datastructure_type::GRID_LIST;
-                break;
-            }
+            case e_input_type::GENERATOR_MULTIPLE_OBJECTS:
             case e_input_type::GENERATOR_SINGLE_OBJECT_MIDDLE: {
+                // TODO unknown
                 // particles are distributed at a single point. grid wont help here
                 p_options.m_data_structure_type = e_datastructure_type::LIST_BENJAMIN;
                 break;
@@ -39,6 +42,7 @@ class Autotuneing {
             case e_input_type::GENERATOR_RANDOM:
             case e_input_type::FILE_CSV: {
                 // here we need to scan the entire file to decide what to do
+                // TODO unknown
                 analyser         = new DatastructureAnalyser (p_options, p_border, p_algorithm, p_writer);
                 InputBase* input = InputFactory::build (p_options, *analyser);
                 input->initialize_datastructure ();
