@@ -1,4 +1,4 @@
-echo "radius,bounds,initial_speed,extra_radius,threads,GRID_rebuild_count_1,GRID_rebuild_count_2,GRID_rebuild_count_3,GRID_LIST_rebuild_count_1,GRID_LIST_rebuild_count_2,GRID_LIST_rebuild_count_3,GRID_time_1,GRID_time_2,GRID_time_3,GRID_LIST_time_1,GRID_LIST_time_2,GRID_LIST_time_3,GRID_average_time,GRID_LIST_average_time"
+echo "row,radius,bounds,initial_speed,extra_radius,threads,GRID_rebuild_count_1,GRID_rebuild_count_2,GRID_rebuild_count_3,GRID_LIST_rebuild_count_1,GRID_LIST_rebuild_count_2,GRID_LIST_rebuild_count_3,GRID_time_1,GRID_time_2,GRID_time_3,GRID_LIST_time_1,GRID_LIST_time_2,GRID_LIST_time_3,GRID_average_time,GRID_LIST_average_time"
 
 add_job(){
 var_trash=$1
@@ -46,7 +46,8 @@ done
 done
 var_average_times_grid=$(echo "scale=8; sqrt( ${var_sum_square_times_grid} / 3)" | bc -l)
 var_average_times_grid_list=$(echo "scale=8; sqrt( ${var_sum_square_times_grid_list} / 3)" | bc -l)
-echo "${var_radius},${var_bounds},${var_initial_speed},${var_radius_extra},${var_threads}${var_line_statistics_total_datastructure_rebuild_count}${var_line_statistics_total_runtime},$var_average_times_grid,$var_average_times_grid_list"
+echo "${var_row},${var_radius},${var_bounds},${var_initial_speed},${var_radius_extra},${var_threads}${var_line_statistics_total_datastructure_rebuild_count}${var_line_statistics_total_runtime},$var_average_times_grid,$var_average_times_grid_list"
+var_row+=1
 }
 
 var_threads=24
