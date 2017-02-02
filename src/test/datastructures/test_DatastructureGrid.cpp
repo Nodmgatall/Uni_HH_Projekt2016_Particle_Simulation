@@ -332,9 +332,9 @@ BOOST_AUTO_TEST_CASE (test_get_cell_index) {
     ParticleWriter             writer = ParticleWriter ();
     DatastructureGridTestClass particlesGrid (options, border, algorithm, writer);
     int                        counter = 0;
-    for (idx_z = 0; idx_z < particlesGrid.get_size ().z; idx_z++) {
+    for (idx_x = 0; idx_x < particlesGrid.get_size ().x; idx_x++) {
         for (idx_y = 0; idx_y < particlesGrid.get_size ().y; idx_y++) {
-            for (idx_x = 0; idx_x < particlesGrid.get_size ().x; idx_x++) {
+            for (idx_z = 0; idx_z < particlesGrid.get_size ().z; idx_z++) {
                 BOOST_CHECK_EQUAL (particlesGrid.public_get_cell_index (idx_x, idx_y, idx_z), counter++);
             }
         }
@@ -351,9 +351,9 @@ BOOST_AUTO_TEST_CASE (test_get_cell_at) {
     ParticleWriter             writer = ParticleWriter ();
     DatastructureGridTestClass particlesGrid (options, border, algorithm, writer);
     int                        counter = 0;
-    for (idx_z = 0; idx_z < particlesGrid.get_size ().z; idx_z++) {
+    for (idx_x = 0; idx_x < particlesGrid.get_size ().x; idx_x++) {
         for (idx_y = 0; idx_y < particlesGrid.get_size ().y; idx_y++) {
-            for (idx_x = 0; idx_x < particlesGrid.get_size ().x; idx_x++) {
+            for (idx_z = 0; idx_z < particlesGrid.get_size ().z; idx_z++) {
                 ParticleGroup& cell = particlesGrid.public_get_cell_at (idx_x, idx_y, idx_z);
                 BOOST_CHECK_EQUAL (&cell, &particlesGrid.get_cells ()[counter++]);
             }

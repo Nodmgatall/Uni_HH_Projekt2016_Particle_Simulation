@@ -179,7 +179,7 @@ bool DatastructureGrid::grid_step_2 () {
     m_verbose_stream << "l:" << lx << "," << ly << "," << lz << std::endl;
     m_verbose_stream << "r:" << rx << "," << ry << "," << rz << std::endl;
     m_verbose_stream << "u:" << ux << "," << uy << "," << uz << std::endl;
-    //omp_set_num_threads (1);
+    // omp_set_num_threads (1);
     { // Cells in the middle of the simulated Volume
         m_verbose_stream << "grid_step_2::1" << std::endl;
         for (parallel_offset_x = 0; parallel_offset_x < 2; parallel_offset_x++) {
