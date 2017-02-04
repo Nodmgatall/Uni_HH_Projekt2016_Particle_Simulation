@@ -97,13 +97,13 @@
 			xlabel = $Threads$, 
 			ylabel = $Speedup$]
 			\addplot table [domain=1:16, samples=1000,x=threads, y=GRID_speedup, col sep=comma] {times_openmp_skalierung_1.csv};
-			\addlegendentry{$GRID-1$}
+			\addlegendentry{$linked-cells-1$}
 			\addplot table [domain=1:16, samples=1000,x=threads, y=GRID_speedup, col sep=comma] {times_openmp_skalierung_1_2.csv};
-			\addlegendentry{$GRID-1.2$}
+			\addlegendentry{$linked-cells-1.2$}
 			\addplot table [domain=1:16, samples=1000,x=threads, y=GRID_LIST_speedup, col sep=comma] {times_openmp_skalierung_1.csv};
-			\addlegendentry{$GRID-LIST-1$}
+			\addlegendentry{$linked-cells+verlet-list-1$}
 			\addplot table [domain=1:16, samples=1000,x=threads, y=GRID_LIST_speedup, col sep=comma] {times_openmp_skalierung_1_2.csv};
-			\addlegendentry{$GRID-LIST-1.2$}
+			\addlegendentry{$linked-cells+verlet-list-1.2$}
 			\end{axis}
 			\end{tikzpicture}
 		\end{center}
@@ -112,19 +112,20 @@
 \section{Laufzeitverhalten}
 \subsection{}
 \begin{frame}
-	\frametitle{Nachbarschafts-Listen}
+	\frametitle{Nachbar-Listen}
 	\begin{columns}
 		\column{0.6\linewidth}
 		\centering
 			\includegraphics[width=1\textwidth]{List_Zoom_1.png}
 		\column{0.4\linewidth}
 		\begin{itemize}
-			\item Aufbau \\ $O(p^2)$
-			\item Iteration \\$O(p\cdot n)$
+			\item Aufbau\\ $\Theta(p^2)$
+			\item Iteration \\$O(p^2\cdot \frac{\frac{4}{3}\pi\cdot r^3}{v})$
 		\end{itemize}
 	\end{columns} 
-p $\rightarrow$ Partikel\\
-n $\rightarrow$ nahe Partikel
+p $\rightarrow$ alle Partikel\\
+r $\rightarrow$ cut-off-radius \\
+v $\rightarrow$ gesamt Volumen
 \end{frame}
 \begin{frame}
 	\frametitle{Linked-Cells}
@@ -134,29 +135,42 @@ n $\rightarrow$ nahe Partikel
 		\includegraphics[width=1\textwidth]{Grid_Zoom_1.png}
 		\column{0.4\linewidth}
 		\begin{itemize}
-			\item Aufbau \\ $O(p)$
-			\item Iteration \\$O(\frac{p^2}{z})$
+			\item Aufbau\\ $\Theta(p)$
+			\item Iteration \\$O(p^2\cdot \frac{27 \cdot r^3}{v})$
 		\end{itemize}
 	\end{columns} 
-p $\rightarrow$ Partikel\\
-z $\rightarrow$ Zellen
+p $\rightarrow$ alle Partikel\\
+r $\rightarrow$ cut-off-radius \\
+v $\rightarrow$ gesamt Volumen
 \end{frame}
 \begin{frame}
-	\frametitle{Linked-Cells + Nachbarschafts-Listen}
+	\frametitle{Linked-Cells + Nachbar-Listen}
 	\begin{columns}
 		\column{0.6\linewidth}
 		\centering
 		\includegraphics[width=1\textwidth]{Grid_List_Zoom_1.png}
 		\column{0.4\linewidth}
 		\begin{itemize}
-			\item Aufbau (global) \\ $O(p)$
-			\item Aufbau (lokal) \\ $O(\frac{p^2}{z})$
-			\item Iteration \\$O(p\cdot n)$
+			\item 1.Aufbau (Linked-Cells) \\ $\Theta(p)$
+			\item 2.Aufbau (Nachbar-Listen) \\$O(p^2\cdot \frac{27 \cdot r^3}{v})$
+			\item Iteration \\$O(p^2\cdot \frac{\frac{4}{3}\pi\cdot r^3}{v})$
 		\end{itemize}
 	\end{columns} 
-p $\rightarrow$ Partikel\\
-n $\rightarrow$ nahe Partikel\\
-z $\rightarrow$ Zellen
+p $\rightarrow$ alle Partikel\\
+r $\rightarrow$ cut-off-radius \\
+v $\rightarrow$ gesamt Volumen
+\end{frame}
+\begin{frame}
+	\frametitle{Gegenüberstellung}
+	\begin{tabular}{c|l|l|l}
+		\#& Nachbar-Listen & Linked-Cells & Kombination \\
+		\hline
+		\begin{tabular}{@{}c@{}}Aufbau \\ (Linked-Cells)\end{tabular} & $\Theta(1)$ & $\Theta(p)$& $\Theta(p)$\\
+		\hline
+		\begin{tabular}{@{}c@{}}Aufbau \\ (Nachbar-Listen)\end{tabular}& $\Theta(p^2)$ & $\Theta(1)$ & $O(p^2\cdot \frac{27 \cdot r^3}{v})$ \\
+		\hline
+		Iteration&$O(p^2\cdot \frac{\frac{4}{3}\pi\cdot r^3}{v})$ &$O(p^2\cdot \frac{27 \cdot r^3}{v})$ & $O(p^2\cdot \frac{\frac{4}{3}\pi\cdot r^3}{v})$ \\
+	\end{tabular}
 \end{frame}
 \section{Autotuneing}
 \subsection{Gleichverteilte Eingabe}
@@ -178,9 +192,9 @@ z $\rightarrow$ Zellen
 				xlabel = $Parameter-Kombination$, 
 				ylabel = $Sekunden$]
 				\addplot table [domain=1:24, only marks, samples=1000,x=row, y=GRID_average_time, col sep=comma] {times_gleichverteilung.csv};
-				\addlegendentry{$GRID$}
+				\addlegendentry{$linked-cells$}
 				\addplot table [domain=1:24, only marks, samples=1000,x=row, y=GRID_LIST_average_time, col sep=comma] {times_gleichverteilung.csv};
-				\addlegendentry{$GRID-LIST$}
+				\addlegendentry{$linked-cells+verlet-list$}
 			\end{axis}
 			\end{tikzpicture}
 		\end{center}
@@ -197,8 +211,8 @@ z $\rightarrow$ Zellen
 		2\cdot s < c \cdot (f - 1) - 1
 	\end{align*}
 	\begin{itemize}
-		\item \textbf{true} $\rightarrow$ GRID-LIST
-		\item \textbf{false} $\rightarrow$ GRID
+		\item \textbf{true} $\rightarrow$ linked-cells+verlet-list
+		\item \textbf{false} $\rightarrow$ linked-cells
 	\end{itemize}
 \end{frame}
 \subsection{Nicht Gleichverteilte Eingabe}
