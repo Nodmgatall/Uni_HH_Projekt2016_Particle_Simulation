@@ -13,7 +13,7 @@ AlgorithmStoermerVerletLennardJones::AlgorithmStoermerVerletLennardJones (s_opti
     m_j               = 1;
     m_cut_off_squared = p_options.m_cut_off_radius * p_options.m_cut_off_radius;
 }
- void AlgorithmStoermerVerletLennardJones::step_1_local (const data_type& p_position_a, data_type& p_position_b) {
+void AlgorithmStoermerVerletLennardJones::step_1_local (const data_type& p_position_a, data_type& p_position_b) {
     p_position_b = p_position_a * 2 - p_position_b;
 }
 void AlgorithmStoermerVerletLennardJones::step_1 (const data_type& p_position_ax,
@@ -82,14 +82,14 @@ void AlgorithmStoermerVerletLennardJones::step_2 (const data_type& __restrict__ 
                                                   data_type* const __restrict__ p_position_bjz,
                                                   const unsigned long p_index_j_begin,
                                                   const unsigned long p_index_j_end) {
-    unsigned long num_of_calculations = p_index_j_end - p_index_j_begin;
-   std::vector<data_type> change_x (num_of_calculations);
-   std::vector<data_type> change_y (num_of_calculations);
-   std::vector<data_type> change_z (num_of_calculations);
-   
-    //data_type change_x;
-    //data_type change_y;
-    //data_type change_z;
+    unsigned long          num_of_calculations = p_index_j_end - p_index_j_begin;
+    std::vector<data_type> change_x (num_of_calculations);
+    std::vector<data_type> change_y (num_of_calculations);
+    std::vector<data_type> change_z (num_of_calculations);
+
+    // data_type change_x;
+    // data_type change_y;
+    // data_type change_z;
 
     const data_type* const __restrict__ x_pos_other_a = p_position_ajx + p_index_j_begin;
     const data_type* const __restrict__ y_pos_other_a = p_position_ajy + p_index_j_begin;
@@ -119,12 +119,12 @@ void AlgorithmStoermerVerletLennardJones::step_2 (const data_type& __restrict__ 
         const data_type r_ij_14 = r_ij_6 * r_ij_6 * r_ij_2;
 
         s_ij *= (A_ij - B_ij * r_ij_6) / (r_ij_14);
-        change_x[j] =( s_ij * d_x) / m_i;
-        change_y[j] =( s_ij * d_y) / m_i;
-        change_z[j] =( s_ij * d_z) / m_i;
-        x_pos_other_b[j] +=  change_x[j];
-        y_pos_other_b[j] +=  change_y[j];
-        z_pos_other_b[j] +=  change_z[j];
+        change_x[j] = (s_ij * d_x) / m_i;
+        change_y[j] = (s_ij * d_y) / m_i;
+        change_z[j] = (s_ij * d_z) / m_i;
+        x_pos_other_b[j] += change_x[j];
+        y_pos_other_b[j] += change_y[j];
+        z_pos_other_b[j] += change_z[j];
         p_position_bix -= change_x[j];
         p_position_biy -= change_y[j];
         p_position_biz -= change_z[j];
