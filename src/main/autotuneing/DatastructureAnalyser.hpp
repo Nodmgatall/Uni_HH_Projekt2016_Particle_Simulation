@@ -9,6 +9,7 @@
 #include "borders/BorderWrapparound.hpp"
 #include "io/output/file/FileWriterCSV.hpp"
 #include <algorithms/AlgorithmStoermerVerletLennardJones.hpp>
+#include <cstring>
 #include <datastructures/DatastructureBase.hpp>
 class DatastructureAnalyser : public DatastructureBase {
   public:
@@ -26,8 +27,9 @@ class DatastructureAnalyser : public DatastructureBase {
     void transfer_particles_to (DatastructureBase& p_datastructure);
     /**
      * analyses the already given particles and returns which datastructure would be the fastest.
+     * this function modifies p_options.m_initial_speed and p_options.m_input_type
      */
-    e_datastructure_type analyse ();
+    void analyse ();
     void add_particle (Vec3f p_position) override;
     void add_particle (Vec3f p_position, Vec3f p_velocity, int p_id = -1) override;
 };

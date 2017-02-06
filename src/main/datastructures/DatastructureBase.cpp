@@ -59,22 +59,27 @@ unsigned long DatastructureBase::get_particle_count () {
 }
 void DatastructureBase::calculate_next_datastructure_rebuild () { // calculate, when the datastructure should be rebuild
     unsigned int i, j;
-    data_type    v_max = 0.00001; // do not devide through 0
+    data_type    v_max_x = 0.00001; // do not devide through 0
+    data_type    v_max_y = 0.00001; // do not devide through 0
+    data_type    v_max_z = 0.00001; // do not devide through 0
+    data_type    v_max   = 0.00001; // do not devide through 0
     for (i = 0; i < m_particle_groups.size (); i++) {
         ParticleGroup& group = m_particle_groups[i];
         for (j = 0; j < group.m_ids.size (); j++) {
-            v_max = MAX (v_max, fabs (group.m_positions_x[m_idx_b][j] - group.m_positions_x[m_idx_a][j]));
-            v_max = MAX (v_max, fabs (group.m_positions_y[m_idx_b][j] - group.m_positions_y[m_idx_a][j]));
-            v_max = MAX (v_max, fabs (group.m_positions_z[m_idx_b][j] - group.m_positions_z[m_idx_a][j]));
+            v_max_x = MAX (v_max_x, fabs (group.m_positions_x[m_idx_b][j] - group.m_positions_x[m_idx_a][j]));
+            v_max_y = MAX (v_max_y, fabs (group.m_positions_y[m_idx_b][j] - group.m_positions_y[m_idx_a][j]));
+            v_max_z = MAX (v_max_z, fabs (group.m_positions_z[m_idx_b][j] - group.m_positions_z[m_idx_a][j]));
         }
     }
+    //*2 -> (*4 inside sqrt) because particles might speed up
+    v_max = sqrt (v_max_x * v_max_x * 4 + v_max_y * v_max_y * 4 + v_max_z * v_max_z * 4);
     // always decreasing value
     m_iterations_until_rearange_particles =
-        MAX (MIN (m_iterations_since_rearange_particles, MIN (m_options.m_max_iterations_between_datastructure_rebuild, log (m_speed_factor / v_max))), 1); // 1 == immediately
-    m_verbose_stream << "m_iterations_until_rearange_particles " << (m_iterations_until_rearange_particles) << " - "                                        //
-                     << (m_speed_factor) << " - "                                                                                                           //
-                     << (v_max) << " - "                                                                                                                    //
-                     << (m_speed_factor / v_max) << " - "                                                                                                   //
+        MAX (MIN (m_iterations_since_rearange_particles, MIN (m_options.m_max_iterations_between_datastructure_rebuild, (m_speed_factor / v_max))), 1); // 1 == immediately
+    m_verbose_stream << "m_iterations_until_rearange_particles " << (m_iterations_until_rearange_particles) << " - "                                    //
+                     << (m_speed_factor) << " - "                                                                                                       //
+                     << (v_max) << " - "                                                                                                                //
+                     << (m_speed_factor / v_max) << " - "                                                                                               //
                      << (log (m_speed_factor / v_max)) << std::endl;
     m_iterations_since_rearange_particles = m_iterations_until_rearange_particles;
 }

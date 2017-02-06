@@ -1,6 +1,41 @@
-generator mindestabstand verifizieren
-zweite listen-version von oliver
-mehr slurm scripts zum vergleichen von laufzeiten
-autotuneing verbessern, wenn andere datenstrukturen mit dem grid mithalten können
-remove particles
-vectorisieren von lennard-jones
+		
+		remove particles
+
+done	randomisierte startrichtung der geschwindigkeit
+		verschiedene geschwindigkeiten der partikeln -> randn für normalverteilung
+		1000 iterationen zum einpendeln -> speichern und dann testen
+done	zellgrößen-aufschlag variabel(0 vs 1.2) schlechter bei größerem aufschlag
+done	bei verletlisten genau andersrum besser mit größerem aufschlag
+
+
+		inhomogene startpartikel
+done	variable  dichte/temperatur/cuttofradius/aufschlag_auf_cuttofradius
+
+
+
+done	default-listen weglassen für laufzeittest
+
+done	schleifen sortieren gemäß zugriff
+		datei mit anzahl partikel im header
+
+done	cuttof auch im grid genau beachten
+err		->abstand zwischen partikeln abspeichern
+done	->vectorisierung mit bitmask
+
+done	vektorisierung-ausschlussbedingunen genau prüfen
+
+		TODO:::
+		autotuneing ->2 start der berechnung auswählen
+		iteratives-tuneing ->1
+done	skalierungstests für openmp ->0
+
+
+
+mit oliver besprochen::
+
+iteratives autoruneing
+zufällige startwerte generieren (Oliver)
+ - generator mindestabstand verifizieren (Oliver)
+visualisierung von list-grid(Oliver)
+mehr dataiformate(Oliver)
+gprof(Oliver)

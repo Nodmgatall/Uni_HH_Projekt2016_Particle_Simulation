@@ -45,7 +45,7 @@ DatastructureGrid::DatastructureGrid (s_options& p_options, BorderBase& p_border
 DatastructureGrid::~DatastructureGrid () {
 }
 unsigned long DatastructureGrid::grid_get_cell_index (long x, long y, long z) {
-    return x + grid_size.x * (y + grid_size.y * z);
+    return z + grid_size.z * (y + grid_size.y * x);
 }
 ParticleGroup& DatastructureGrid::grid_get_cell_at (long x, long y, long z) {
     return m_particle_groups[grid_get_cell_index (x, y, z)];
@@ -447,16 +447,21 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
     return m_error_happened;
 }
 inline void DatastructureGrid::grid_moveParticle (ParticleGroup& p_cell_from, ParticleGroup& p_cell_to, long p_index_from) {
+    // the last element overrides the element to be deleted, then the last element gets removed
     unsigned int j;
     p_cell_to.m_ids.push_back (p_cell_from.m_ids[p_index_from]);
-    p_cell_from.m_ids.erase (p_cell_from.m_ids.begin () + p_index_from);
+    p_cell_from.m_ids[p_index_from] = p_cell_from.m_ids.back ();
+    p_cell_from.m_ids.pop_back ();
     for (j = 0; j <= 1; j++) {
         p_cell_to.m_positions_x[j].push_back (p_cell_from.m_positions_x[j][p_index_from]);
         p_cell_to.m_positions_y[j].push_back (p_cell_from.m_positions_y[j][p_index_from]);
         p_cell_to.m_positions_z[j].push_back (p_cell_from.m_positions_z[j][p_index_from]);
-        p_cell_from.m_positions_x[j].erase (p_cell_from.m_positions_x[j].begin () + p_index_from);
-        p_cell_from.m_positions_y[j].erase (p_cell_from.m_positions_y[j].begin () + p_index_from);
-        p_cell_from.m_positions_z[j].erase (p_cell_from.m_positions_z[j].begin () + p_index_from);
+        p_cell_from.m_positions_x[j][p_index_from] = p_cell_from.m_positions_x[j].back ();
+        p_cell_from.m_positions_x[j].pop_back ();
+        p_cell_from.m_positions_y[j][p_index_from] = p_cell_from.m_positions_y[j].back ();
+        p_cell_from.m_positions_y[j].pop_back ();
+        p_cell_from.m_positions_z[j][p_index_from] = p_cell_from.m_positions_z[j].back ();
+        p_cell_from.m_positions_z[j].pop_back ();
     }
 }
 void DatastructureGrid::add_particle (Vec3f p_position) {

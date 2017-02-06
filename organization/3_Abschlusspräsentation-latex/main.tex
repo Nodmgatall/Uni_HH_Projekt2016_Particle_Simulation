@@ -1,0 +1,232 @@
+%url = https://www.overleaf.com/7690515vynnjrmjmtvc
+%url = https://git.overleaf.com/7690515vynnjrmjmtvc
+
+
+\documentclass[compress]{beamer}
+
+\usetheme{Hamburg}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage{lmodern}
+\usepackage{svg}
+
+%\usepackage[english]{babel}
+\usepackage[ngerman]{babel}
+
+\usepackage{eurosym}
+\usepackage{listings}
+\usepackage{microtype}
+\usepackage{units}
+\usepackage{minted}
+
+\usepackage{lineno}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{caption}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{pxfonts}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\usepackage{filecontents}
+
+\lstset{
+	basicstyle=\ttfamily\footnotesize,
+	frame=single,
+	numbers=left,
+	language=C,
+	breaklines=true,
+	breakatwhitespace=true,
+	postbreak=\hbox{$\hookrightarrow$ },
+	showstringspaces=false,
+	tabsize=4,
+	captionpos=b,
+	morekeywords={gboolean,gpointer,gconstpointer,gchar,guchar,gint,guint,gshort,gushort,glong,gulong,gint8,guint8,gint16,guint16,gint32,guint32,gint64,guint64,gfloat,gdouble,gsize,gssize,goffset,gintptr,guintptr,int8_t,uint8_t,int16_t,uint16_t,int32_t,uint32_t,int64_t,uint64_t,size_t,ssize_t,off_t,intptr_t,uintptr_t,mode_t}
+}
+\pgfplotsset{tick label style={font=\tiny\bfseries},
+	label style={font=\small},
+	legend style={font=\tiny}
+}
+\pgfplotsset{compat=1.13}
+\AtBeginSection[]
+{
+\begin{frame}
+\frametitle{Gliederung (Agenda)}
+\tableofcontents[currentsection]
+\end{frame}
+}
+
+\title{Partikelsimulation}
+\author{Oliver Heidmann \& Benjamin Warnke}
+\institute{Arbeitsbereich Wissenschaftliches Rechnen\\Fachbereich Informatik\\Fakultät für Mathematik, Informatik und Naturwissenschaften\\Universität Hamburg}
+\date{2017-01-12}
+
+\titlegraphic{\includegraphics[width=0.75\textwidth]{logo}}
+
+\begin{document}
+
+\begin{frame}
+	\titlepage
+\end{frame}
+
+\begin{frame}
+	\frametitle{Gliederung (Agenda)}
+	\tableofcontents
+\end{frame}
+\section{Parallelisierung(Linked-Cells)}
+\subsection{Open MP}
+\begin{frame}[t]
+	\frametitle{Laufzeitmessungen}
+	\begin{figure}
+		\begin{center}
+			\begin{tikzpicture}
+			\begin{axis}[
+			xmin = 0,
+			xmax = 26,
+			xtick = {2,4,6,...,24},
+			ymin = 0.5,
+			ymax = 8,
+			legend pos=south east,
+			xmajorgrids=true,
+			ymajorgrids=true,
+			grid style=dashed,
+			ytick = {1,1.5,...,7.5},
+			xlabel = $Threads$, 
+			ylabel = $Speedup$]
+			\addplot table [domain=1:16, samples=1000,x=threads, y=GRID_speedup, col sep=comma] {times_openmp_skalierung_1.csv};
+			\addlegendentry{$linked-cells-1$}
+			\addplot table [domain=1:16, samples=1000,x=threads, y=GRID_speedup, col sep=comma] {times_openmp_skalierung_1_2.csv};
+			\addlegendentry{$linked-cells-1.2$}
+			\addplot table [domain=1:16, samples=1000,x=threads, y=GRID_LIST_speedup, col sep=comma] {times_openmp_skalierung_1.csv};
+			\addlegendentry{$linked-cells+verlet-list-1$}
+			\addplot table [domain=1:16, samples=1000,x=threads, y=GRID_LIST_speedup, col sep=comma] {times_openmp_skalierung_1_2.csv};
+			\addlegendentry{$linked-cells+verlet-list-1.2$}
+			\end{axis}
+			\end{tikzpicture}
+		\end{center}
+	\end{figure}
+\end{frame}
+\section{Laufzeitverhalten}
+\subsection{}
+\begin{frame}
+	\frametitle{Nachbar-Listen}
+	\begin{columns}
+		\column{0.6\linewidth}
+		\centering
+			\includegraphics[width=1\textwidth]{List_Zoom_1.png}
+		\column{0.4\linewidth}
+		\begin{itemize}
+			\item Aufbau\\ $\Theta(p^2)$
+			\item Iteration \\$O(p^2\cdot \frac{\frac{4}{3}\pi\cdot r^3}{v})$
+		\end{itemize}
+	\end{columns} 
+p $\rightarrow$ alle Partikel\\
+r $\rightarrow$ cut-off-radius \\
+v $\rightarrow$ gesamt Volumen
+\end{frame}
+\begin{frame}
+	\frametitle{Linked-Cells}
+	\begin{columns}
+		\column{0.6\linewidth}
+		\centering
+		\includegraphics[width=1\textwidth]{Grid_Zoom_1.png}
+		\column{0.4\linewidth}
+		\begin{itemize}
+			\item Aufbau\\ $\Theta(p)$
+			\item Iteration \\$O(p^2\cdot \frac{27 \cdot r^3}{v})$
+		\end{itemize}
+	\end{columns} 
+p $\rightarrow$ alle Partikel\\
+r $\rightarrow$ cut-off-radius \\
+v $\rightarrow$ gesamt Volumen
+\end{frame}
+\begin{frame}
+	\frametitle{Linked-Cells + Nachbar-Listen}
+	\begin{columns}
+		\column{0.6\linewidth}
+		\centering
+		\includegraphics[width=1\textwidth]{Grid_List_Zoom_1.png}
+		\column{0.4\linewidth}
+		\begin{itemize}
+			\item 1.Aufbau (Linked-Cells) \\ $\Theta(p)$
+			\item 2.Aufbau (Nachbar-Listen) \\$O(p^2\cdot \frac{27 \cdot r^3}{v})$
+			\item Iteration \\$O(p^2\cdot \frac{\frac{4}{3}\pi\cdot r^3}{v})$
+		\end{itemize}
+	\end{columns} 
+p $\rightarrow$ alle Partikel\\
+r $\rightarrow$ cut-off-radius \\
+v $\rightarrow$ gesamt Volumen
+\end{frame}
+\begin{frame}
+	\frametitle{Gegenüberstellung}
+	\begin{tabular}{c|l|l|l}
+		\#& Nachbar-Listen & Linked-Cells & Kombination \\
+		\hline
+		\begin{tabular}{@{}c@{}}Aufbau \\ (Linked-Cells)\end{tabular} & $\Theta(1)$ & $\Theta(p)$& $\Theta(p)$\\
+		\hline
+		\begin{tabular}{@{}c@{}}Aufbau \\ (Nachbar-Listen)\end{tabular}& $\Theta(p^2)$ & $\Theta(1)$ & $O(p^2\cdot \frac{27 \cdot r^3}{v})$ \\
+		\hline
+		Iteration&$O(p^2\cdot \frac{\frac{4}{3}\pi\cdot r^3}{v})$ &$O(p^2\cdot \frac{27 \cdot r^3}{v})$ & $O(p^2\cdot \frac{\frac{4}{3}\pi\cdot r^3}{v})$ \\
+	\end{tabular}
+\end{frame}
+\section{Autotuneing}
+\subsection{Gleichverteilte Eingabe}
+\begin{frame}[t]
+	\frametitle{Laufzeitmessungen}
+	\begin{figure}
+		\begin{center}
+			\begin{tikzpicture}
+			\begin{axis}[
+				xmin = 0,
+				xmax = 25,
+				xtick = {1,...,24},
+				ymin = 100,
+				ymax = 320,
+				legend pos=north west,
+				ymajorgrids=true,
+				grid style=dashed,
+				ytick = {100,120,...,320},
+				xlabel = $Parameter-Kombination$, 
+				ylabel = $Sekunden$]
+				\addplot table [domain=1:24, only marks, samples=1000,x=row, y=GRID_average_time, col sep=comma] {times_gleichverteilung.csv};
+				\addlegendentry{$linked-cells$}
+				\addplot table [domain=1:24, only marks, samples=1000,x=row, y=GRID_LIST_average_time, col sep=comma] {times_gleichverteilung.csv};
+				\addlegendentry{$linked-cells+verlet-list$}
+			\end{axis}
+			\end{tikzpicture}
+		\end{center}
+	\end{figure}
+\end{frame}
+\begin{frame}[t]
+	\frametitle{Resultierende Entscheidung}
+	\begin{itemize}
+		\item \textbf{c} $\rightarrow$ cut-off-radius
+		\item \textbf{f} $\rightarrow$ cut-off-radius-factor
+		\item \textbf{s} $\rightarrow$ start-speed
+	\end{itemize}
+	\begin{align*}
+		2\cdot s < c \cdot (f - 1) - 1
+	\end{align*}
+	\begin{itemize}
+		\item \textbf{true} $\rightarrow$ linked-cells+verlet-list
+		\item \textbf{false} $\rightarrow$ linked-cells
+	\end{itemize}
+\end{frame}
+\subsection{Nicht Gleichverteilte Eingabe}
+\begin{frame}[t]
+	TODO
+\end{frame}	
+\section{Literatur}
+\subsection{}
+\begin{frame}
+	\frametitle{Literatur}
+	\begin{itemize}
+        \item M-Griebel, S. Knapek, G. Zumbuschm, A. Caglar: Numerische Simulation in der Moleküldynamic. Springer, 2003
+		\item D.C Rapaport: The Art of Molecular Dynamics Simulation - 2nd edition, Cambridge University Press, 2004
+	\end{itemize}
+\end{frame}
+
+\end{document}

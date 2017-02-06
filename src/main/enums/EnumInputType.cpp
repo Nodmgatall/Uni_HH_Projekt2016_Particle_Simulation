@@ -5,9 +5,17 @@
  *      Author: benjamin
  */
 #include "enums/EnumInputType.hpp"
-std::vector<const char*> g_input_names =
-    { "UNDEFINED", "GENERATOR_RANDOM", "GENERATOR_RANDOM_UNIFORM", "GENERATOR_SINGLE_OBJECT_MIDDLE", "GENERATOR_GRID_DISTRIBUTION", "GENERATOR_MULTIPLE_OBJECTS", "FILE_CSV" };
-std::vector<bool> g_input_implemented = { false, true, false, true, true, false, true };
+std::vector<const char*> g_input_names = { "UNDEFINED",
+                                           "GENERATOR_RANDOM",
+                                           "GENERATOR_RANDOM_UNIFORM",
+                                           "GENERATOR_SINGLE_OBJECT_MIDDLE",
+                                           "GENERATOR_GRID_DISTRIBUTION",
+                                           "GENERATOR_MULTIPLE_OBJECTS",
+                                           "FILE_CSV",
+                                           "AUTOTUNEING_REGULAR_DISTRIBUTION",
+                                           "AUTOTUNEING_IRREGULAR_DISTRIBUTION",
+                                           "AUTOTUNEING_ERROR" };
+std::vector<bool> g_input_implemented = { false, true, false, true, true, false, true, true, true };
 std::ostream& operator<< (std::ostream& stream, const e_input_type& p_input_type) {
     int index = static_cast<int> (p_input_type);
     if ((index < (signed) g_input_names.size ()) && (index > 0))

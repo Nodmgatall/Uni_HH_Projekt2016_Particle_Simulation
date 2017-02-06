@@ -27,6 +27,7 @@ class OptionHandler {
     void print_usage_particle_count ();
     void print_usage_cut_off_radius ();
     void print_usage_seed ();
+    void print_usage_threads ();
     void print_usage_timestep ();
     void print_usage_verbose ();
     void print_usage_max_iterations_between_datastructure_rebuild ();

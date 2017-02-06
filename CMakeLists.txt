@@ -42,6 +42,7 @@ endif()
     add_executable(${EXECUTABLE_NAME} src/main/main.cpp)
     set_target_properties(${EXECUTABLE_NAME} PROPERTIES COMPILE_FLAGS "-Ofast")
 
+
 if(GPROF EQUAL 1)
     set(CMAKE_EXE_LINKER_FLAGS ${CMAKE_EXE_LINKER_FLAGS} "-pg")
     message("compiler flags for gprof set")
@@ -71,7 +72,7 @@ include_directories(${Boost_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/src/test)
                  --cut_off_radius=2.5
                  --timestep=0.005
                  --bounds=5/5/5)
-   add_test(NAME particle_simulation2.x 
+    add_test(NAME particle_simulation2.x 
                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Testing/Binary 
                  COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/${EXECUTABLE_NAME}
                  --algorithm=LENNARD_JONES
