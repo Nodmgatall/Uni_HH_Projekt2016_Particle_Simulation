@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
 
-set(EXECUTABLE_NAME "particle_simulation.x")
-
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -17,6 +15,7 @@ list(REMOVE_ITEM sources ${CMAKE_CURRENT_SOURCE_DIR}/src/main/main.cpp)
 add_definitions("-Wall -Wextra -Werror -W -Wshadow -Wunused-variable \
  -Wunused-parameter -Wunused-function -Wunused -Wno-system-headers \
  -Wno-deprecated -Woverloaded-virtual -Wwrite-strings -pedantic")
+
 include_directories(${Boost_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/src/main)
 
 find_package(Boost 1.62 COMPONENTS system serialization unit_test_framework)
@@ -35,33 +34,24 @@ if (OPENMP_FOUND)
 	message("compiling with the -DOMP_AVAILABLE flag")
 endif()
 
-if(OPTIMIZED EQUAL 1)
-    message("using optimized functions")
-    set(EXECUTABLE_NAME "particle_sim_opti.x")
-endif()
-    add_executable(${EXECUTABLE_NAME} src/main/main.cpp)
-    set_target_properties(${EXECUTABLE_NAME} PROPERTIES COMPILE_FLAGS "-Ofast")
+add_executable(particle_simulation.x src/main/main.cpp ${sources})
+set_target_properties(particle_simulation.x PROPERTIES COMPILE_FLAGS "-O3")
 
-
-if(GPROF EQUAL 1)
-    set(CMAKE_EXE_LINKER_FLAGS ${CMAKE_EXE_LINKER_FLAGS} "-pg")
-    message("compiler flags for gprof set")
-endif()
 if(Boost_FOUND)
-	target_link_libraries(${EXECUTABLE_NAME}  ${Boost_LIBRARIES})
+	target_link_libraries(particle_simulation.x ${Boost_LIBRARIES})
 endif()
 
 if(Boost_FOUND)
 	enable_testing ()
 	set(ENV{CTEST_OUTPUT_ON_FAILURE} TRUE)
-
+	
 include_directories(${Boost_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/src/test)
 
 	add_library(particle_simulation_test_lib STATIC ${sources} )
 	
 	add_test(NAME particle_simulation1.x 
                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Testing/Binary 
-                 COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/${EXECUTABLE_NAME}
+                 COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/particle_simulation.x
                  --algorithm=LENNARD_JONES
                  --data_structure=GRID
                  --input=GENERATOR_GRID_DISTRIBUTION
@@ -74,7 +64,7 @@ include_directories(${Boost_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/src/test)
                  --bounds=5/5/5)
     add_test(NAME particle_simulation2.x 
                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Testing/Binary 
-                 COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/${EXECUTABLE_NAME}
+                 COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/particle_simulation.x
                  --algorithm=LENNARD_JONES
                  --data_structure=GRID
                  --input=GENERATOR_GRID_DISTRIBUTION
@@ -115,14 +105,3 @@ include_directories(${Boost_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/src/test)
 	--verbose
 	)
 endif()
-
-
-message(STATUS "exe linker flags: " ${CMAKE_EXE_LINKER_FLAGS})
-message(STATUS "cxx flags: " ${CMAKE_CXX_FLAGS})
-message(STATUS "c flags: "${CMAKE_C_FLAGS})
-message(STATUS "CDEF: " ${COMPILE_DEFINITIONS})
-message(STATUS "COMPILE_FLAGS: " ${COMPILE_FLAGS})
-message("")
-
-set(OPTIMIZED OFF CACHE BOOL "compile_optimized functions" FORCE)
-set(GPROF OFF CACHE BOOL "compile with gprof support functions" FORCE)
