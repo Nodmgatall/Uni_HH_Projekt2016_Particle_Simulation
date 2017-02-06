@@ -120,12 +120,12 @@
 		\column{0.4\linewidth}
 		\begin{itemize}
 			\item Aufbau\\ $\Theta\left(p^2\right)$
-			\item Iteration \\$O\left(p^2\cdot \frac{\frac{4}{3}\pi\cdot r^3}{v}\right)$
+			\item Iteration \\$O\left(p^2\cdot \frac{\frac{4}{3}\pi\cdot r^3}{V}\right)$
 		\end{itemize}
 	\end{columns} 
 p $\rightarrow$ alle Partikel\\
 r $\rightarrow$ cut-off-radius \\
-v $\rightarrow$ gesamt Volumen
+V $\rightarrow$ gesamt Volumen
 \end{frame}
 \begin{frame}
 	\frametitle{Linked-Cells}
@@ -136,12 +136,12 @@ v $\rightarrow$ gesamt Volumen
 		\column{0.4\linewidth}
 		\begin{itemize}
 			\item Aufbau\\ $\Theta\left(p\right)$
-			\item Iteration \\$O\left(p^2\cdot \frac{27 \cdot r^3}{v}\right)$
+			\item Iteration \\$O\left(p^2\cdot \frac{27 \cdot r^3}{V}\right)$
 		\end{itemize}
 	\end{columns} 
 p $\rightarrow$ alle Partikel\\
 r $\rightarrow$ cut-off-radius \\
-v $\rightarrow$ gesamt Volumen
+V $\rightarrow$ gesamt Volumen
 \end{frame}
 \begin{frame}
 	\frametitle{Linked-Cells + Nachbar-Listen}
@@ -152,19 +152,19 @@ v $\rightarrow$ gesamt Volumen
 		\column{0.4\linewidth}
 		\begin{itemize}
 			\item 1.Aufbau (Linked-Cells) \\ $\Theta\left(p\right)$
-			\item 2.Aufbau (Nachbar-Listen) \\$O\left(p^2\cdot \frac{27 \cdot r^3}{v}\right)$
-			\item Iteration \\$O\left(p^2\cdot \frac{\frac{4}{3}\pi\cdot r^3}{v}\right)$
+			\item 2.Aufbau (Nachbar-Listen) \\$O\left(p^2\cdot \frac{27 \cdot r^3}{V}\right)$
+			\item Iteration \\$O\left(p^2\cdot \frac{\frac{4}{3}\pi\cdot r^3}{V}\right)$
 		\end{itemize}
 	\end{columns} 
 p $\rightarrow$ alle Partikel\\
 r $\rightarrow$ cut-off-radius \\
-v $\rightarrow$ gesamt Volumen
+V $\rightarrow$ gesamt Volumen
 \end{frame}
 \begin{frame}
 	\frametitle{Gegenüberstellung(1)}
 	\begin{itemize}
 		\item Simulation für \textbf{Langreichweitige} Interaktionen \\
-		$\rightarrow p\cdot\frac{r^3}{v}\sim p$
+		$\rightarrow p\cdot\frac{r^3}{V}\sim p$
 		%der zu betrachende raum pro partikel ist relativ groß
 	\end{itemize}
 	\begin{tabular}{c|l|l|l}
@@ -172,16 +172,16 @@ v $\rightarrow$ gesamt Volumen
 		\hline
 		\begin{tabular}{@{}c@{}}Aufbau \\ (Linked-Cells)\end{tabular} & - & $\Theta\left(p\right)$& $\Theta\left(p\right)$\\
 		\hline
-		\begin{tabular}{@{}c@{}}Aufbau \\ (Nachbar-Listen)\end{tabular}& $\Theta\left(p^2\right)$ & - & $O\left(p^2\cdot \frac{27 \cdot r^3}{v}\right)$ \\
+		\begin{tabular}{@{}c@{}}Aufbau \\ (Nachbar-Listen)\end{tabular}& $\Theta\left(p^2\right)$ & - & $O\left(p^2\cdot \frac{27 \cdot r^3}{V}\right)$ \\
 		\hline
-		Iteration&$O\left(p^2\cdot \frac{\frac{4}{3}\pi\cdot r^3}{v}\right)$ &$O\left(p^2\cdot \frac{27 \cdot r^3}{v}\right)$ & $O\left(p^2\cdot \frac{\frac{4}{3}\pi\cdot r^3}{v}\right)$ \\
+		Iteration&$O\left(p^2\cdot \frac{\frac{4}{3}\pi\cdot r^3}{V}\right)$ &$O\left(p^2\cdot \frac{27 \cdot r^3}{V}\right)$ & $O\left(p^2\cdot \frac{\frac{4}{3}\pi\cdot r^3}{V}\right)$ \\
 	\end{tabular}
 \end{frame}
 \begin{frame}
 	\frametitle{Gegenüberstellung(2)}
 	\begin{itemize}
 		\item Simulation für \textbf{Kurzreichweitige} Interaktionen \\
-		$\rightarrow p\cdot\frac{r^3}{v}\sim 1$
+		$\rightarrow p\cdot\frac{r^3}{V}\sim 1$
 		%der zu betrachtede raum pro partikel ist relativ klein
 	\end{itemize}
 	\begin{tabular}{c|l|l|l}
