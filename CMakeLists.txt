@@ -10,7 +10,6 @@ endif()
 project(particle_simulation CXX)
 
 file(GLOB_RECURSE sources src/main/*.cpp src/main/*.hpp)
-list(REMOVE_ITEM sources ${CMAKE_CURRENT_SOURCE_DIR}/src/main/main.cpp)
 
 add_definitions("-Wall -Wextra -Werror -W -Wshadow -Wunused-variable \
  -Wunused-parameter -Wunused-function -Wunused -Wno-system-headers \

@@ -384,7 +384,7 @@ bool DatastructureGrid::grid_step_2 () {
 bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_number) {
     unsigned int i, j;
     m_error_happened = false;
-    m_standard_stream << DEBUG_VAR (p_iteration_number) << std::endl;
+    // m_standard_stream << DEBUG_VAR (p_iteration_number) << std::endl;
     m_iterations_until_rearange_particles--;
     unsigned int idx_x, idx_y, idx_z;
     {
