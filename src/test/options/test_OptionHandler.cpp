@@ -225,14 +225,14 @@ BOOST_AUTO_TEST_CASE (test_outputFILE_VTK) {
     BOOST_CHECK_EQUAL (memcmp (&options_test, &options_compare, sizeof (s_options)), 0);
     BOOST_CHECK_EQUAL (res, 0);
 }
-BOOST_AUTO_TEST_CASE (test_autotuneing) {
+BOOST_AUTO_TEST_CASE (test_autotuning) {
     OptionHandler handler;
     s_options     options_test;
     memset (&options_test, 0, sizeof (s_options));
     s_options options_compare;
     memset (&options_compare, 0, sizeof (s_options));
-    options_compare.m_autotuneing = true;
-    std::vector<const char*> args = { "./particle_simulation.x", "--autotuneing" };
+    options_compare.m_autotuning  = true;
+    std::vector<const char*> args = { "./particle_simulation.x", "--autotuning" };
     int                      res  = handler.handle_options ((int) args.size (), const_cast<char**> (args.data ()), options_test);
     BOOST_CHECK_EQUAL (memcmp (&options_test, &options_compare, sizeof (s_options)), 0);
     BOOST_CHECK_EQUAL (res, 0);
@@ -399,7 +399,7 @@ BOOST_AUTO_TEST_CASE (test_help2) {
                                       "--help=data_structure",
                                       "--help=input",
                                       "--help=output",
-                                      "--help=autotuneing",
+                                      "--help=autotuning",
                                       "--help=bounds",
                                       "--help=count",
                                       "--help=write_fequency",

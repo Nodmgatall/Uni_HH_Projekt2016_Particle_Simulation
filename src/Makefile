@@ -33,7 +33,18 @@ build: format
 
 rmlog: format
 	rm -rf ../logdata
-
+run_343_auto: build_release
+	cd .. && ./particle_simulation.x \
+			--algorithm=LENNARD_JONES \
+			--autotuning \
+			--input=GENERATOR_GRID_DISTRIBUTION --count=343 \
+			--output=FILE_CSV --out_file_name="logdata/out_343_particles"\
+			--max_iterations=7000 \
+			--write_fequency=1 \
+			--cut_off_radius=14 \
+			--timestep=0.025 \
+			--bounds=20.5/20.5/20.5 \
+			--verbose
 run_64_particles: build_release
 	cd .. && ./particle_simulation.x \
 			--algorithm=LENNARD_JONES \

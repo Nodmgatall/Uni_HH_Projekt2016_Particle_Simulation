@@ -1,7 +1,6 @@
 #include "Definitions.hpp"
 #include "ParticleSimulator.hpp"
 #include "algorithms/AlgorithmFactory.hpp"
-#include "autotuneing/Autotuneing.hpp"
 #include "borders/BorderWrapparound.hpp"
 #include "datastructures/DatastructureFactory.hpp"
 #include "io/input/InputFactory.hpp"
@@ -9,6 +8,7 @@
 #include "options/OptionHandler.hpp"
 #include "options/OptionHandler.hpp"
 #include <Statistics.hpp>
+#include <autotuning/Autotuning.hpp>
 
 int main (int argc, char** argv) {
     std::cout << std::fixed << std::setprecision (6) << std::setfill ('0') << std::boolalpha;
@@ -28,8 +28,8 @@ int main (int argc, char** argv) {
     BorderBase*        border        = new BorderWrapparound (options.m_bounds);
     AlgorithmBase*     algorithm     = AlgorithmFactory::build (options);
     DatastructureBase* datastructure = 0;
-    if (options.m_autotuneing) {
-        datastructure = Autotuneing::get_best_datastructure (options, *border, *algorithm, *writer);
+    if (options.m_autotuning) {
+        datastructure = Autotuning::get_best_datastructure (options, *border, *algorithm, *writer);
     } else {
         datastructure    = DatastructureFactory::build (options, *border, *algorithm, *writer);
         InputBase* input = InputFactory::build (options, *datastructure);
