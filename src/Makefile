@@ -40,7 +40,7 @@ run_343_auto: build_release
 			--input=GENERATOR_GRID_DISTRIBUTION --count=343 \
 			--output=FILE_CSV --out_file_name="logdata/out_343_particles"\
 			--max_iterations=7000 \
-			--write_fequency=1 \
+			--write_fequency=10 \
 			--cut_off_radius=14 \
 			--timestep=0.025 \
 			--bounds=20.5/20.5/20.5 \

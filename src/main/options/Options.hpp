@@ -99,7 +99,7 @@ struct s_options {
     }
     inline friend std::ostream& operator<< (std::ostream& stream, const s_options& p_options) {
         stream << "options.algorithm_type                                       : " << p_options.m_algorithm_type << std::endl;
-        stream << "options.autotuning                                          : " << p_options.m_autotuning << std::endl;
+        stream << "options.autotuning                                           : " << p_options.m_autotuning << std::endl;
         stream << "options.bounds                                               : " << p_options.m_bounds << std::endl;
         stream << "options.cut_off_radius                                       : " << p_options.m_cut_off_radius << std::endl;
         stream << "options.data_structure_type                                  : " << p_options.m_data_structure_type << std::endl;
