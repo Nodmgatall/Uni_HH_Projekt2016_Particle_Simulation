@@ -45,6 +45,31 @@ run_343_auto: build_release
 			--timestep=0.025 \
 			--bounds=20.5/20.5/20.5 \
 			--verbose
+run_64_auto: build_release
+	cd .. && ./particle_simulation.x \
+			--algorithm=LENNARD_JONES \
+			--autotuning \
+			--input=GENERATOR_GRID_DISTRIBUTION --count=64 \
+			--output=FILE_CSV --out_file_name="logdata/out_64_particles"\
+			--max_iterations=8000 \
+			--write_fequency=1 \
+			--cut_off_radius=2.5 \
+			--timestep=0.005 \
+			--bounds=5/5/5 \
+			--speed=1 \
+			--verbose
+run_64_auto2: build_release
+	cd .. && ./particle_simulation.x \
+			--algorithm=LENNARD_JONES \
+			--autotuning \
+			--input=GENERATOR_GRID_DISTRIBUTION --count=64 \
+			--output=FILE_CSV --out_file_name="logdata/out_64_particles"\
+			--max_iterations=8000 \
+			--write_fequency=1 \
+			--cut_off_radius=2.5 \
+			--timestep=0.005 \
+			--bounds=5/5/5 \
+			--verbose
 run_64_particles: build_release
 	cd .. && ./particle_simulation.x \
 			--algorithm=LENNARD_JONES \
