@@ -15,19 +15,24 @@ message(STATUS ${source_dir})
 
 file(GLOB_RECURSE sources ../src/main/*.cpp ../src/main/*.hpp)
 
+message(STATUS ${CMAKE_EXE_LINKER_FLAGS})
 message(STATUS ${sources})
 if(OPTIMIZED EQUAL 1)
     message("using optimized functions")
     set(exec_name "particle_sim_opti.x")
+    add_definitions("-DOPTIMIZED")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DOPTIMIZED=1")
 endif()
 if(GPROF EQUAL 1)
-    set(CMAKE_EXE_LINKER_FLAGS ${CMAKE_EXE_LINKER_FLAGS} "-pg")
+    set(CMAKE_EXE_LINKER_FLAGS " ${CMAKE_EXE_LINKER_FLAGS} -pg")
+    add_definitions("-pg")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -save-temps -pg")
     message("compiler flags for gprof set")
 endif()
 
 add_definitions(" -Wall -Wextra -Werror -W -Wshadow -Wunused-variable \
  -Wunused-parameter -Wunused-function -Wunused -Wno-system-headers \
- -Wno-deprecated -Woverloaded-virtual -Wwrite-strings -pedantic -pg -g ")
+ -Wno-deprecated -Woverloaded-virtual -Wwrite-strings -pedantic -g ")
 
  include_directories(${Boost_INCLUDE_DIRS} ${source_dir})
 
