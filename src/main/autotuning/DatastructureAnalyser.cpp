@@ -4,7 +4,7 @@
  *  Created on: 21.01.2017
  *      Author: benjamin
  */
-#include <autotuneing/DatastructureAnalyser.hpp>
+#include <autotuning/DatastructureAnalyser.hpp>
 /*m_idx_a -> position*/
 /*m_idx_a -> velocity*/
 DatastructureAnalyser::DatastructureAnalyser (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_writer)
@@ -24,7 +24,7 @@ void DatastructureAnalyser::transfer_particles_to (DatastructureBase& p_datastru
 }
 void DatastructureAnalyser::analyse () {
     m_options.m_initial_speed = 0;
-    m_options.m_input_type    = e_input_type::AUTOTUNEING_ERROR;
+    m_options.m_input_type    = e_input_type::AUTOTUNING_ERROR;
     if (m_particle_groups[0].m_ids.size () > 0) {
         // variables for statistics -->>
         std::vector<unsigned long> interaction_count; // each interaction-pair count just once
@@ -105,9 +105,9 @@ void DatastructureAnalyser::analyse () {
             }
         }
         if (cells_with_nearly_none_particle > 300) {
-            m_options.m_input_type = e_input_type::AUTOTUNEING_IRREGULAR_DISTRIBUTION;
+            m_options.m_input_type = e_input_type::AUTOTUNING_IRREGULAR_DISTRIBUTION;
         } else {
-            m_options.m_input_type = e_input_type::AUTOTUNEING_REGULAR_DISTRIBUTION;
+            m_options.m_input_type = e_input_type::AUTOTUNING_REGULAR_DISTRIBUTION;
         }
         m_options.m_initial_speed = sqrt (v_max_x * v_max_x + v_max_y * v_max_y + v_max_z * v_max_z);
         m_verbose_stream << DEBUG_VAR (total_volume_by_data) << std::endl;

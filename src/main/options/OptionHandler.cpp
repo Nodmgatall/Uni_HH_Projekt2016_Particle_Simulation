@@ -31,7 +31,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                                     { "data_structure", required_argument, 0, datastructure_type_index * 1000 },
                                     { "input", required_argument, 0, input_type_index * 1000 },
                                     { "output", required_argument, 0, output_type_index * 1000 },
-                                    { "autotuneing", no_argument, 0, 'a' },
+                                    { "autotuning", no_argument, 0, 'a' },
                                     { "bounds", required_argument, 0, 'b' },
                                     { "count", required_argument, 0, 'c' },
                                     { "write_fequency", required_argument, 0, 'f' },
@@ -118,7 +118,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
             default: {
                 switch (opt_index) {
                     case 'a': {
-                        p_options.m_autotuneing = true;
+                        p_options.m_autotuning = true;
                         break;
                     }
                     case 'b': {
@@ -144,8 +144,8 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                                 print_usage_input ();
                             } else if (!strcmp (optarg, "output")) {
                                 print_usage_output ();
-                            } else if (!strcmp (optarg, "autotuneing")) {
-                                print_usage_autotuneing ();
+                            } else if (!strcmp (optarg, "autotuning")) {
+                                print_usage_autotuning ();
                             } else if (!strcmp (optarg, "bounds")) {
                                 print_usage_bounds ();
                             } else if (!strcmp (optarg, "count")) {
@@ -238,7 +238,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
 void OptionHandler::print_choosen_options (s_options& p_options) {
     bool first = true;
     m_standard_stream << "algorithm_type                               " << p_options.m_algorithm_type << std::endl
-                      << "autotuneing                                  " << p_options.m_autotuneing << std::endl
+                      << "autotuning                                  " << p_options.m_autotuning << std::endl
                       << "output_type                                  " << p_options.m_output_type << std::endl
                       << "in_file_name                                 " << p_options.m_in_file_name << std::endl
                       << "out_file_name                                " << p_options.m_out_file_name << std::endl
@@ -311,14 +311,14 @@ void OptionHandler::print_usage_data_structure () {
         << "|                          stores the particles. The different datastructures  |" << std::endl
         << "|                          have different advantages based on the              |" << std::endl
         << "|                          particle-placement. This option must not be used    |" << std::endl
-        << "|                          together with 'autotuneing'.                        |" << std::endl;
+        << "|                          together with 'autotuning'.                         |" << std::endl;
 }
 void OptionHandler::print_usage_input () {
     int index;
     m_standard_stream //
         << "| --input=             " << g_input_names[1] << get_not_implemented (g_input_implemented[1])
         << std::string (56 - strlen (g_input_names[1]) - get_not_implemented (g_input_implemented[1]).length (), ' ') << "|" << std::endl;
-    for (index = 2; index < (signed) g_input_names.size () - g_input_type_autotuneing_enums_count; index++) {
+    for (index = 2; index < (signed) g_input_names.size () - g_input_type_autotuning_enums_count; index++) {
         m_standard_stream //
             << "|                      " << g_input_names[index] << get_not_implemented (g_input_implemented[index])
             << std::string (56 - strlen (g_input_names[index]) - get_not_implemented (g_input_implemented[index]).length (), ' ') << "|" << std::endl;
@@ -362,10 +362,10 @@ void OptionHandler::print_usage_write_modes () {
         << "|                          should be stored on disk. If 'output' is set to     |" << std::endl
         << "|                          something else, than this option must not be used.  |" << std::endl;
 }
-void OptionHandler::print_usage_autotuneing () {
+void OptionHandler::print_usage_autotuning () {
     m_standard_stream //
-        << "| --autotuneing                                                                |" << std::endl
-        << "|  -a                      If 'autotuneing' is enabled, then the program will  |" << std::endl
+        << "| --autotuning                                                                 |" << std::endl
+        << "|  -a                      If 'autotuning' is enabled, then the program will   |" << std::endl
         << "|                          choose the best datastructure based on the given    |" << std::endl
         << "|                          particles. This option must not be used together    |" << std::endl
         << "|                          with the 'datastructure' option.                    |" << std::endl;
@@ -511,7 +511,7 @@ void OptionHandler::print_usage_particle_sim () {
         << "|                        options for  the datastructure                        |" << std::endl
         << "|                                                                              |" << std::endl;
     print_usage_data_structure ();
-    print_usage_autotuneing ();
+    print_usage_autotuning ();
     print_usage_max_iterations_between_datastructure_rebuild ();
     m_standard_stream //
         << "|                                                                              |" << std::endl

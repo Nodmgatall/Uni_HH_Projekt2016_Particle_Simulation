@@ -9,7 +9,7 @@ BOOST_AUTO_TEST_CASE (calculate_distances_squared) {
     Vec3f     bounds (3, 3, 3);
     s_options options;
     options.m_algorithm_type      = e_algorithm_type::LENNARD_JONES;
-    options.m_autotuneing         = false;
+    options.m_autotuning          = false;
     options.m_output_type         = e_output_type::FILE_CSV;
     options.m_in_file_name        = "";
     options.m_out_file_name       = "";
@@ -43,7 +43,7 @@ BOOST_AUTO_TEST_CASE (build_lists) {
     Vec3f     bounds (3, 3, 3);
     s_options options;
     options.m_algorithm_type      = e_algorithm_type::LENNARD_JONES;
-    options.m_autotuneing         = false;
+    options.m_autotuning          = false;
     options.m_output_type         = e_output_type::FILE_CSV;
     options.m_in_file_name        = "";
     options.m_out_file_name       = "";

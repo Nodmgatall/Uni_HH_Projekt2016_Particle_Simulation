@@ -15,7 +15,7 @@ class OptionHandler {
     void print_usage_input ();
     void print_usage_output ();
     void print_usage_write_modes ();
-    void print_usage_autotuneing ();
+    void print_usage_autotuning ();
     void print_usage_bounds ();
     void print_usage_initial_speed ();
     void print_usage_write_fequency ();

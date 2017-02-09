@@ -1,17 +1,17 @@
 /*
- * Autotuneing.hpp
+ * Autotuning.hpp
  *
  *  Created on: Jan 21, 2017
  *      Author: benjamin
  */
-#ifndef SRC_MAIN_AUTOTUNEING_AUTOTUNEING_HPP_
-#define SRC_MAIN_AUTOTUNEING_AUTOTUNEING_HPP_
-#include "autotuneing/DatastructureAnalyser.hpp"
+#ifndef SRC_MAIN_AUTOTUNING_AUTOTUNING_HPP_
+#define SRC_MAIN_AUTOTUNING_AUTOTUNING_HPP_
 #include "datastructures/DatastructureFactory.hpp"
 #include "io/input/InputBase.hpp"
 #include "io/input/InputFactory.hpp"
 #include "options/Options.hpp"
-class Autotuneing {
+#include <autotuning/DatastructureAnalyser.hpp>
+class Autotuning {
   public:
     /**
      * returns an fully initialized datastructure which should be the fastest for the given input
@@ -34,20 +34,20 @@ class Autotuneing {
             switch (p_options.m_input_type) {
                 case e_input_type::GENERATOR_RANDOM_UNIFORM:
                 case e_input_type::GENERATOR_GRID_DISTRIBUTION:
-                case e_input_type::AUTOTUNEING_REGULAR_DISTRIBUTION:
+                case e_input_type::AUTOTUNING_REGULAR_DISTRIBUTION:
                     // the particles are regular distributed, and too fast for the mixed datastructure to be efficient
                     p_options.m_data_structure_type = e_datastructure_type::GRID;
                     break;
                 case e_input_type::GENERATOR_MULTIPLE_OBJECTS:
                 case e_input_type::GENERATOR_SINGLE_OBJECT_MIDDLE:
-                case e_input_type::AUTOTUNEING_IRREGULAR_DISTRIBUTION:
+                case e_input_type::AUTOTUNING_IRREGULAR_DISTRIBUTION:
                     // distribution of particles is irregular
                     // lot of cells are unused, most interactions are within a few cells. list would improve the runtime
                     // simulation should be for short-distance-interactions. if nearly all particles are in range, this would be long-distance-interactions, which are not
                     // the target
                     p_options.m_data_structure_type = e_datastructure_type::GRID_LIST;
                     break;
-                case e_input_type::AUTOTUNEING_ERROR:
+                case e_input_type::AUTOTUNING_ERROR:
                     // this happens if input is empty or *corrupt*
                     return 0;
                 case e_input_type::GENERATOR_RANDOM:
@@ -74,4 +74,4 @@ class Autotuneing {
         return result;
     }
 };
-#endif /* SRC_MAIN_AUTOTUNEING_AUTOTUNEING_HPP_ */
+#endif /* SRC_MAIN_AUTOTUNING_AUTOTUNING_HPP_ */
