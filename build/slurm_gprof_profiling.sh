@@ -71,6 +71,8 @@ echo "Error: $1 is no executable"
 usage
 fi
 
+rm -rf ${result_folder}
+mkdir ${result_folder}
 echo "Setup: "
 echo " -- time limit: ${time}"
 echo " -- number of nodes: ${num_nodes}"
@@ -81,28 +83,32 @@ echo " -- save iteration output: ${save_each_iteration}"
 echo " -- number of runs: ${number_of_runs}"
 echo " -- dryrun: ${dryrun}"
 echo " -- srun -N ${num_nodes} -n ${num_tasks} $1 $2 "
-cat > "${script_name}" << EOF
+cat > "${result_folder}/${script_name}" << EOF
 #!/bin/bash
 #SBATCH --time=${time}
-#SBATCH -N ${num_nodes} 
-#SBATCH --error=opti.err --output=opti.out
-#SBATCH --partition="${partition}"
-mv gmon.out ${result_folder}/gmon_sum_opti.out
-mkdir ${result_folder}
+#SBATCH --error=eerr.out --output=cout.out
+#SBATCH -N ${num_nodes}-${num_nodes}
+#SBATCH -n ${num_tasks}
+#SBATCH --partition=${partition}
+srun ../$1 $2 
+gprof ../$1 > ${single_result_name}_0.out
+mv gmon.out gmon.sum
 for ((i = 1; i <= ${number_of_runs}; i++))
 do
-	srun -N 1 -n 1 $1 $2 
+	srun ../$1 $2 
 	if [[ ${save_each_iteration} == 1 ]]
 	then
-	gprof particle_sim_opti.x > ${result_folder}/${single_result_name}_\${i}.out
+		gprof ../$1 > ${single_result_name}_\${i}.out
 	fi
-	gprof -s particle_sim_opti.x gmon.out ${result_folder}/gmon_sum_opti.out
+	gprof -s ../$1 gmon.out gmon.sum
 done	
-gprof particle_sim_opti.x gmon_sum_opti.out > results/profile_opti.out
+gprof ../$1 gmon.sum > summation_gprof.txt
 EOF
 
-chmod +x run_gprof.sh
+chmod +x ${result_folder}/${script_name}
 if [ ${dryrun} == 0 ]
 then 
-sbatch ${script_name}
+	cd ${result_folder}
+	sbatch ${script_name}
+	cd ..
 fi
