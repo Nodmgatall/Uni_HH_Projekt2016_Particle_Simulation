@@ -125,25 +125,24 @@ void AlgorithmStoermerVerletLennardJones::step_2 (const data_type& __restrict__ 
         x_pos_other_b[j] += change_x[j];
         y_pos_other_b[j] += change_y[j];
         z_pos_other_b[j] += change_z[j];
-               /*
-        change_x[j] =( s_ij * d_x) / m_i;
-        change_y[j] =( s_ij * d_y) / m_i;
-        change_z[j] =( s_ij * d_z) / m_i;
-        x_pos_other_b[j] +=  change_x[j];
-        y_pos_other_b[j] +=  change_y[j];
-        z_pos_other_b[j] +=  change_z[j];
+        /*
+         change_x[j] =( s_ij * d_x) / m_i;
+         change_y[j] =( s_ij * d_y) / m_i;
+         change_z[j] =( s_ij * d_z) / m_i;
+         x_pos_other_b[j] +=  change_x[j];
+         y_pos_other_b[j] +=  change_y[j];
+         z_pos_other_b[j] +=  change_z[j];
+         p_position_bix -= change_x[j];
+         p_position_biy -= change_y[j];
+         p_position_biz -= change_z[j];
+
+         */
+    }
+    for (j = 0; j < num_of_calculations; j++) {
         p_position_bix -= change_x[j];
         p_position_biy -= change_y[j];
         p_position_biz -= change_z[j];
-
-        */
     }
-    for (j = 0; j < num_of_calculations; j++) {
-            p_position_bix -= change_x[j];
-            p_position_biy -= change_y[j];
-            p_position_biz -= change_z[j];
-        }
-
 }
 #endif
 void AlgorithmStoermerVerletLennardJones::step_2_offset (const data_type&       p_offset_position_aix,
