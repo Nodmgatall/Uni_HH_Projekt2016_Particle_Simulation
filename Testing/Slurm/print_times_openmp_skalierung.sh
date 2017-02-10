@@ -19,7 +19,7 @@ LINKED_CELLS+NEIGHBOR_LIST_time_3,\
 LINKED_CELLS_average_time,\
 LINKED_CELLS+NEIGHBOR_LIST_average_time,\
 LINKED_CELLS_speedup,\
-LINKED_CELLS_+NEIGHBOR_LIST_speedup"
+LINKED_CELLS+NEIGHBOR_LIST_speedup"
 
 var_speedup_grid_0=1;
 var_speedup_grid_list_0=1;
