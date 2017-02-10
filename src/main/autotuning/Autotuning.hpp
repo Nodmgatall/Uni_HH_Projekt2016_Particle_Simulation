@@ -26,7 +26,11 @@ class Autotuning {
             input->initialize_datastructure ();
             analyser->analyse ();
         }
-        if (2.0 * p_options.m_initial_speed < (p_options.m_cut_off_radius * (p_options.m_cut_off_factor - 1.0) - 1.0)) {
+        Vec3l tmp = DatastructureLinkedCells::getSize (p_options);
+        if (36 < p_options.m_particle_count / (tmp.x * tmp.y * tmp.z)) {
+            // the additional cost for list construction are more expensive than the actual calculation
+            p_options.m_data_structure_type = e_datastructure_type::LINKED_CELLS;
+        } else if (2.0 * p_options.m_initial_speed < (p_options.m_cut_off_radius * (p_options.m_cut_off_factor - 1.0) - 1.0)) {
             // slow particles do not need rebuild of datastructure and could use the advantages of mixed datastructure
             p_options.m_data_structure_type = e_datastructure_type::LINKED_CELLS_NEIGHBOR_LIST;
         } else {

@@ -17,7 +17,7 @@ cat > "job_script_${var_test_name}.sh" << EOF
 #SBATCH -c ${var_threads}
 #SBATCH -N 1-1
 #SBATCH -n 1
-rm -rf out_64000_particles
+rm -rf out_6400_particles
 srun hostname
 srun ../../../particle_simulation.x \
 --algorithm=LENNARD_JONES \
@@ -42,17 +42,21 @@ var_threads=11
 for var_datastructure in "LINKED_CELLS" "LINKED_CELLS+NEIGHBOR_LIST";
 do
 
-for var_initial_speed in 1;
+for var_initial_speed in 0.5;
+do
+
+for var_radius in 2 5;
 do
 
 for var_radius_extra in 1.2;
 do
 
-for var_bounds in {80..100};
+for var_bounds in 15 20 25 30 35 40 45 50 55 60;
 do
 
-add_job $var_datastructure 6 $var_bounds $var_initial_speed $var_radius_extra $var_threads
+add_job $var_datastructure $var_radius $var_bounds $var_initial_speed $var_radius_extra $var_threads
 
+done
 done
 done
 done

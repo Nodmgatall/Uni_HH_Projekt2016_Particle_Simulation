@@ -114,5 +114,6 @@ class DatastructureLinkedCells : public DatastructureBase {
     virtual bool run_simulation_iteration (unsigned long p_iteration_number = 0) override;
     void add_particle (Vec3f p_position) override;
     void add_particle (Vec3f p_current_position, Vec3f p_current_velocity, int p_id = -1) override;
+    static Vec3l getSize (s_options& p_options);
 };
 #endif
