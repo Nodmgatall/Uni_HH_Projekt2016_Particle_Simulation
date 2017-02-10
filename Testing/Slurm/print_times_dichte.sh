@@ -84,7 +84,7 @@ do
 for var_radius_extra in 1.2;
 do
 
-for var_bounds in 30 40 45 47 50 60 80 100 120;
+for var_bounds in {80..100};
 do
 
 add_job $var_datastructure 6 $var_bounds $var_initial_speed $var_radius_extra $var_threads
