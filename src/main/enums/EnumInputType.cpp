@@ -16,7 +16,7 @@ std::vector<const char*> g_input_names = { "UNDEFINED",
                                            "AUTOTUNING_REGULAR_DISTRIBUTION",
                                            "AUTOTUNING_IRREGULAR_DISTRIBUTION",
                                            "AUTOTUNING_ERROR" };
-std::vector<bool> g_input_implemented = { false, true, false, true, true, false, true, true, true };
+std::vector<bool> g_input_implemented = { false, true, false, false, true, false, true, true, true };
 std::ostream& operator<< (std::ostream& stream, const e_input_type& p_input_type) {
     int index = static_cast<int> (p_input_type);
     if ((index < (signed) g_input_names.size ()) && (index > 0))
