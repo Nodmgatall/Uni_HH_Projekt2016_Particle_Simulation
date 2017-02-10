@@ -5,8 +5,8 @@
  *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
  *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
-#ifndef SRC_GENERATOR_O_FACTORY_HPP_
-#define SRC_GENERATOR_O_FACTORY_HPP_
+#ifndef SRC_MAIN_IO_OUTPUT_OUTPUTFACTORY_HPP_
+#define SRC_MAIN_IO_OUTPUT_OUTPUTFACTORY_HPP_
 #include "Definitions.hpp"
 #include "OutputBase.hpp"
 #include "io/output/VoidWriter.hpp"

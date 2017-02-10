@@ -5,8 +5,8 @@
  *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
  *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
-#ifndef SRC_VEC3_HPP_
-#define SRC_VEC3_HPP_
+#ifndef SRC_MAIN_VEC3_HPP_
+#define SRC_MAIN_VEC3_HPP_
 #include "DataType.hpp"
 #include "tools/Debug.hpp"
 #include <iostream>

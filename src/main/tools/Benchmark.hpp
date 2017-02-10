@@ -5,8 +5,8 @@
  *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
  *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
-#ifndef SRC_TOOLS_BENCHMARK_HPP_
-#define SRC_TOOLS_BENCHMARK_HPP_
+#ifndef SRC_MAIN_TOOLS_BENCHMARK_HPP_
+#define SRC_MAIN_TOOLS_BENCHMARK_HPP_
 #include "Debug.hpp"
 #include <iomanip>
 #include <stack>

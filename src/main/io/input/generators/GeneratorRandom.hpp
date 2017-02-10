@@ -5,8 +5,8 @@
  *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
  *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
-#ifndef SRC_GENERATORS_GENERATORRANDOM_HPP_
-#define SRC_GENERATORS_GENERATORRANDOM_HPP_
+#ifndef SRC_MAIN_IO_INPUT_GENERATORS_GENERATORRANDOM_HPP_
+#define SRC_MAIN_IO_INPUT_GENERATORS_GENERATORRANDOM_HPP_
 #include "io/input/InputBase.hpp"
 class GeneratorRandom : public InputBase {
   public:

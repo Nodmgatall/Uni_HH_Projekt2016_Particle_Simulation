@@ -5,8 +5,8 @@
  *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
  *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
-#ifndef OPTION_HANDLER_HPP
-#define OPTION_HANDLER_HPP
+#ifndef SRC_MAIN_OPTIONS_OPTIONHANDLER_HPP_
+#define SRC_MAIN_OPTIONS_OPTIONHANDLER_HPP_
 #include "Definitions.hpp"
 #include "Options.hpp"
 #include <cstring>

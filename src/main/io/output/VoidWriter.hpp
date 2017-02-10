@@ -5,8 +5,8 @@
  *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
  *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
-#ifndef SRC_PARTICLEFILE_WRITER_HPP_
-#define SRC_PARTICLEFILE_WRITER_HPP_
+#ifndef SRC_MAIN_IO_OUTPUT_VOIDWRITER_HPP_
+#define SRC_MAIN_IO_OUTPUT_VOIDWRITER_HPP_
 #include <io/output/OutputBase.hpp>
 /**
  * This class does not write any Output

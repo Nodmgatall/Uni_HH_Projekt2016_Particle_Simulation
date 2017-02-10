@@ -5,8 +5,8 @@
  *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
  *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
-#ifndef PARTICLESGRID_HPP
-#define PARTICLESGRID_HPP
+#ifndef SRC_MAIN_DATASTRUCTURES_DATASTRUCTURELINKEDCELLS_HPP_
+#define SRC_MAIN_DATASTRUCTURES_DATASTRUCTURELINKEDCELLS_HPP_
 #include "DatastructureBase.hpp"
 #include "Definitions.hpp"
 #include "Vec3.hpp"

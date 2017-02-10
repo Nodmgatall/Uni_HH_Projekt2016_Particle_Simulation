@@ -5,8 +5,8 @@
  *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
  *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
-#ifndef PARTICLE_SIMULATOR_HPP
-#define PARTICLE_SIMULATOR_HPP
+#ifndef SRC_MAIN_PARTICLESIMULATOR_HPP_
+#define SRC_MAIN_PARTICLESIMULATOR_HPP_
 #include "Definitions.hpp"
 #include "datastructures/DatastructureBase.hpp"
 #include "options/Options.hpp"

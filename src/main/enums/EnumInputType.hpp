@@ -5,8 +5,8 @@
  *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
  *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
-#ifndef SRC_MAIN_OPTIONS_ENUM_INPUT_TYPE_HPP_
-#define SRC_MAIN_OPTIONS_ENUM_INPUT_TYPE_HPP_
+#ifndef SRC_MAIN_ENUMS_ENUMINPUTTYPE_HPP_
+#define SRC_MAIN_ENUMS_ENUMINPUTTYPE_HPP_
 #include <cstring>
 #include <exception>
 #include <istream>

@@ -5,8 +5,8 @@
  *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
  *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
-#ifndef SRC_GENERATORS_PARTICLEGENERATORBASE_HPP_
-#define SRC_GENERATORS_PARTICLEGENERATORBASE_HPP_
+#ifndef SRC_MAIN_IO_INPUT_INPUTBASE_HPP_
+#define SRC_MAIN_IO_INPUT_INPUTBASE_HPP_
 #include "Definitions.hpp"
 #include "datastructures/DatastructureBase.hpp"
 #include "options/Options.hpp"

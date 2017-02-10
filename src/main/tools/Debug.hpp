@@ -5,8 +5,8 @@
  *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
  *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
-#ifndef DEBUG_HPP_
-#define DEBUG_HPP_
+#ifndef SRC_MAIN_TOOLS_DEBUG_HPP_
+#define SRC_MAIN_TOOLS_DEBUG_HPP_
 #include "../Definitions.hpp"
 #include "../Vec3.hpp"
 #include <fstream>

@@ -5,8 +5,8 @@
  *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
  *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
-#ifndef ENERGY_CONSERVATION_DEFINED
-#define ENERGY_CONSERVATION_DEFINED
+#ifndef SRC_MAIN_ENERGYCONSERVATION_HPP_
+#define SRC_MAIN_ENERGYCONSERVATION_HPP_
 #include "DataType.hpp"
 
 /**

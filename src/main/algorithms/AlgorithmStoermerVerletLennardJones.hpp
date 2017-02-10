@@ -5,8 +5,8 @@
  *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
  *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
-#ifndef SRC_ALGORITHMS_LENNARDJONESALGORITHM_HPP_
-#define SRC_ALGORITHMS_LENNARDJONESALGORITHM_HPP_
+#ifndef SRC_MAIN_ALGORITHMS_ALGORITHMSTOERMERVERLETLENNARDJONES_HPP_
+#define SRC_MAIN_ALGORITHMS_ALGORITHMSTOERMERVERLETLENNARDJONES_HPP_
 #include "AlgorithmBase.hpp"
 /*
  * definitions are in the latex-document with the same name as this class

@@ -5,8 +5,8 @@
  *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
  *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
-#ifndef PARTICLE_HPP
-#define PARTICLE_HPP
+#ifndef SRC_MAIN_DATASTRUCTURES_DATASTRUCTUREBASE_HPP_
+#define SRC_MAIN_DATASTRUCTURES_DATASTRUCTUREBASE_HPP_
 #include "Definitions.hpp"
 #include "Vec3.hpp"
 #include "algorithms/AlgorithmBase.hpp"

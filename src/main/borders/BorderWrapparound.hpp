@@ -5,8 +5,8 @@
  *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
  *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
-#ifndef SRC_ALGORITHMS_PARTICLEBOUNDSCORRECTIONWRAPAROUND_HPP_
-#define SRC_ALGORITHMS_PARTICLEBOUNDSCORRECTIONWRAPAROUND_HPP_
+#ifndef SRC_MAIN_BORDERS_BORDERWRAPPAROUND_HPP_
+#define SRC_MAIN_BORDERS_BORDERWRAPPAROUND_HPP_
 #include "BorderBase.hpp"
 class BorderWrapparound : public BorderBase {
   public:
