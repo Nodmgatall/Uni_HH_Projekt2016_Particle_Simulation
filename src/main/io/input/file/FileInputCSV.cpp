@@ -108,4 +108,5 @@ void FileInputCSV::initialize_datastructure () {
         }
     }
     file.close ();
+    m_options.m_particle_count = m_datastructure.get_particle_count ();
 }

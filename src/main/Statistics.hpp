@@ -36,6 +36,9 @@ struct Statistics {
         stream << "statistics.average_time_per_iteration                        : " << (p_statistics.m_total_runtime / p_statistics.m_options->m_max_iterations) << std::endl;
         stream << "statistics.average_iterations_between_rebuild                : " << (p_statistics.m_total_datastructure_rebuild_count / p_statistics.m_options->m_max_iterations)
                << std::endl;
+        data_type volumen = p_statistics.m_options->m_bounds.x * p_statistics.m_options->m_bounds.y * p_statistics.m_options->m_bounds.z;
+        stream << "statistics.volumen                                           : " << volumen << std::endl;
+        stream << "statistics.partikeldichte                                    : " << (volumen / p_statistics.m_options->m_particle_count) << std::endl;
         return stream;
     }
 };
