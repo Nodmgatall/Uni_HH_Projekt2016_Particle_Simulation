@@ -1,3 +1,10 @@
+/*
+ * OptionHandler.cpp
+ *
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
+ */
 #include "OptionHandler.hpp"
 int OptionHandler::indexInArray (std::vector<const char*> elements, char* element) {
     unsigned int index;

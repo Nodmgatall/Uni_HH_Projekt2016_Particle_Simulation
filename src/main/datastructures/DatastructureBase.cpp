@@ -1,8 +1,9 @@
 /*
  * DatastructureBase.cpp
  *
- *  Created on: Jan 20, 2017
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
 #include <datastructures/DatastructureNeighborList.hpp>
 void DatastructureBase::step_1_prepare_cell (ParticleGroup& p_cell) {
@@ -74,12 +75,12 @@ void DatastructureBase::calculate_next_datastructure_rebuild () { // calculate, 
     //*2 -> (*4 inside sqrt) because particles might speed up
     v_max = sqrt (v_max_x * v_max_x * 4 + v_max_y * v_max_y * 4 + v_max_z * v_max_z * 4);
     // always decreasing value
-    m_iterations_until_rearange_particles =
-        MAX (MIN (m_iterations_since_rearange_particles, MIN (m_options.m_max_iterations_between_datastructure_rebuild, (m_speed_factor / v_max))), 1); // 1 == immediately
-    m_verbose_stream << "m_iterations_until_rearange_particles " << (m_iterations_until_rearange_particles) << " - "                                    //
-                     << (m_speed_factor) << " - "                                                                                                       //
-                     << (v_max) << " - "                                                                                                                //
-                     << (m_speed_factor / v_max) << " - "                                                                                               //
+    m_iterations_until_rearange_particles = MAX (MIN (m_iterations_since_rearange_particles, MIN (m_options.m_max_iterations_between_datastructure_rebuild, (m_speed_factor / v_max))),
+                                                 1);                                                                 // 1 == immediately
+    m_verbose_stream << "m_iterations_until_rearange_particles " << (m_iterations_until_rearange_particles) << " - " //
+                     << (m_speed_factor) << " - "                                                                    //
+                     << (v_max) << " - "                                                                             //
+                     << (m_speed_factor / v_max) << " - "                                                            //
                      << (log (m_speed_factor / v_max)) << std::endl;
     m_iterations_since_rearange_particles = m_iterations_until_rearange_particles;
 }

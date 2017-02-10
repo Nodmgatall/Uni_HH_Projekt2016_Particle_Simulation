@@ -1,8 +1,9 @@
 /*
  * EnumDatastructureType.cpp
  *
- *  Created on: Dec 10, 2016
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
 #include "enums/EnumDatastructureType.hpp"
 std::vector<const char*> g_datastructure_names       = { "UNDEFINED", "LINKED_CELLS", "NEIGHBOR_LIST", "LINKED_CELLS+NEIGHBOR_LIST" };

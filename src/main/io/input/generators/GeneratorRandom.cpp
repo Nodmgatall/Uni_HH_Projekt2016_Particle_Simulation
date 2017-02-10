@@ -1,8 +1,9 @@
 /*
- * ParticleGeneratorRandom2.cpp
+ * GeneratorRandom.cpp
  *
- *  Created on: 11.11.2016
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
 #include "GeneratorRandom.hpp"
 #include "../../../datastructures/DatastructureBase.hpp"
@@ -14,15 +15,15 @@ GeneratorRandom::GeneratorRandom (s_options& p_options, DatastructureBase& p_dat
 GeneratorRandom::~GeneratorRandom () {
 }
 /*
-void GeneratorRandom::initialize_datastructure () {
-    Benchmark::begin ("ParticleGeneratorRandom");
-    std::srand (m_options.m_seed);
-    for (unsigned long id = 0; id < m_options.m_particle_count; id++) {
-        m_datastructure.add_particle (Vec3f ((data_type) std::rand (), (data_type) std::rand (), (data_type) std::rand ()) / (data_type) RAND_MAX * m_options.m_bounds, Vec3f ());
-    }
-    Benchmark::end ();
-}
-*/
+ void GeneratorRandom::initialize_datastructure () {
+ Benchmark::begin ("ParticleGeneratorRandom");
+ std::srand (m_options.m_seed);
+ for (unsigned long id = 0; id < m_options.m_particle_count; id++) {
+ m_datastructure.add_particle (Vec3f ((data_type) std::rand (), (data_type) std::rand (), (data_type) std::rand ()) / (data_type) RAND_MAX * m_options.m_bounds, Vec3f ());
+ }
+ Benchmark::end ();
+ }
+ */
 void GeneratorRandom::initialize_datastructure () {
     unsigned long tmp = std::pow (m_options.m_particle_count, 1.f / 3.f);
     while (tmp * tmp * tmp < m_options.m_particle_count) {

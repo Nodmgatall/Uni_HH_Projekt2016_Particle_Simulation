@@ -1,8 +1,9 @@
 /*
  * AlgorithmBase.hpp
  *
- *  Created on: Dec 9, 2016
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
 #ifndef SRC_MAIN_ALGORITHMS_ALGORITHMBASE_HPP_
 #define SRC_MAIN_ALGORITHMS_ALGORITHMBASE_HPP_

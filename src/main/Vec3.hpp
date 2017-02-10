@@ -1,8 +1,9 @@
 /*
  * Vec3.hpp
  *
- *  Created on: Nov 16, 2016
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
 #ifndef SRC_VEC3_HPP_
 #define SRC_VEC3_HPP_

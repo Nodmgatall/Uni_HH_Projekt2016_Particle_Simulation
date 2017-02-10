@@ -1,8 +1,9 @@
 /*
  * EnumOutputType.cpp
  *
- *  Created on: Dec 10, 2016
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
 #include "enums/EnumOutputType.hpp"
 std::vector<const char*> g_output_names       = { "UNDEFINED", "FILE_CSV", "FILE_LAMMPS", "FILE_ESPRESSO", "FILE_GROMACS", "FILE_VMD", "FILE_VTK", "FILE_CSV+AVI" };

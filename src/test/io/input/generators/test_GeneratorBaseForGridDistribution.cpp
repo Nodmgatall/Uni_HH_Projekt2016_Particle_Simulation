@@ -1,8 +1,8 @@
 /*
- * test_DatastructureBaseForGrid.cpp
+ * test_GeneratorBaseForGridDistribution.cpp
  *
- *  Created on: Dec 10, 2016
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
 #ifndef BOOST_TEST_DYN_LINK
 #include "io/input/generators/GeneratorGridDistribution.hpp"

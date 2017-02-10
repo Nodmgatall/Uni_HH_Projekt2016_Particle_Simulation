@@ -1,8 +1,9 @@
 /*
- * DatastructureListBenjamin.cpp
+ * DatastructureNeighborList.cpp
  *
- *  Created on: Jan 20, 2017
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
 #include <datastructures/DatastructureNeighborList.hpp>
 DatastructureNeighborList::DatastructureNeighborList (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_particle_writer)

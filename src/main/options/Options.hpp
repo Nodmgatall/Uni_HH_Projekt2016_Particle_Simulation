@@ -1,3 +1,10 @@
+/*
+ * Options.hpp
+ *
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
+ */
 #ifndef OPTIONS_SIMULATION_HPP
 #define OPTIONS_SIMULATION_HPP
 #include "../Definitions.hpp"

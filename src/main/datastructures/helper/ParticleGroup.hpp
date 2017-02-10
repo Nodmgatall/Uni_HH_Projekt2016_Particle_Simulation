@@ -1,8 +1,9 @@
 /*
  * ParticleGroup.hpp
  *
- *  Created on: Jan 20, 2017
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
 #ifndef SRC_MAIN_DATASTRUCTURES_HELPER_PARTICLEGROUP_HPP_
 #define SRC_MAIN_DATASTRUCTURES_HELPER_PARTICLEGROUP_HPP_

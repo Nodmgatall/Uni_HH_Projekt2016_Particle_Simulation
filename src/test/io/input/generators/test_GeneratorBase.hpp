@@ -1,8 +1,8 @@
 /*
- * test_ParticleGeneratorRandom.cpp
+ * test_GeneratorBase.hpp
  *
- *  Created on: Dec 8, 2016
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
 #ifndef BOOST_TEST_DYN_LINK
 // this code is never executed !! -->>

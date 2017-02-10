@@ -1,3 +1,10 @@
+/*
+ * main.cpp
+ *
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
+ */
 #include "Definitions.hpp"
 #include "ParticleSimulator.hpp"
 #include "algorithms/AlgorithmFactory.hpp"

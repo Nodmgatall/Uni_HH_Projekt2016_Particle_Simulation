@@ -1,8 +1,9 @@
 /*
- * LennardJonesAlgorithm.cpp
+ * AlgorithmStoermerVerletLennardJones.cpp
  *
- *  Created on: Nov 18, 2016
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
 #include "AlgorithmStoermerVerletLennardJones.hpp"
 AlgorithmStoermerVerletLennardJones::AlgorithmStoermerVerletLennardJones (s_options& p_options) : AlgorithmBase (p_options) {

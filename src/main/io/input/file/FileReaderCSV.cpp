@@ -1,8 +1,9 @@
 /*
  * FileReaderCSV.cpp
  *
- *  Created on: Dec 10, 2016
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
 #include "FileReaderCSV.hpp"
 FileReaderCSV::FileReaderCSV (s_options& p_options, DatastructureBase& p_datastructure) : InputBase (p_options, p_datastructure) {
