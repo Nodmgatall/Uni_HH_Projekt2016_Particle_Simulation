@@ -4,15 +4,15 @@
  *  Created on: Jan 20, 2017
  *      Author: benjamin
  */
-#include <datastructures/DatastructureListBenjamin.hpp>
-DatastructureListBenjamin::DatastructureListBenjamin (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_particle_writer)
+#include <datastructures/DatastructureNeighborList.hpp>
+DatastructureNeighborList::DatastructureNeighborList (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_particle_writer)
 : DatastructureBase (p_options, p_border, p_algorithm, p_particle_writer) {
-    m_stucture_name = "DatastructureListGrid";
+    m_stucture_name = "DatastructureNeighborList";
     m_particle_groups.push_back (ParticleGroup (Vec3l (), m_options.m_bounds));
 }
-DatastructureListBenjamin::~DatastructureListBenjamin () {
+DatastructureNeighborList::~DatastructureNeighborList () {
 }
-void DatastructureListBenjamin::list_step_2_calculate (ParticleGroup& p_cell, AlgorithmBase& p_algorithm, unsigned int p_idx_a, unsigned int p_idx_b) {
+void DatastructureNeighborList::list_step_2_calculate (ParticleGroup& p_cell, AlgorithmBase& p_algorithm, unsigned int p_idx_a, unsigned int p_idx_b) {
     unsigned long                                 i, j;
     std::vector<std::vector<ParticleIndexRange>>& current_neighbors = p_cell.m_neighbors[13];
     for (i = 0; i < current_neighbors.size (); i++) {
@@ -34,7 +34,7 @@ void DatastructureListBenjamin::list_step_2_calculate (ParticleGroup& p_cell, Al
         }
     }
 }
-void DatastructureListBenjamin::list_step_2_calculate (ParticleGroup& p_cell_i, ParticleGroup& p_cell_j, AlgorithmBase& p_algorithm, unsigned int p_idx_a, unsigned int p_idx_b) {
+void DatastructureNeighborList::list_step_2_calculate (ParticleGroup& p_cell_i, ParticleGroup& p_cell_j, AlgorithmBase& p_algorithm, unsigned int p_idx_a, unsigned int p_idx_b) {
     unsigned long                                 i, j;
     unsigned int                                  neighbor_index    = get_neighbor_index_for_cells (p_cell_i.m_idx, p_cell_j.m_idx);
     std::vector<std::vector<ParticleIndexRange>>& current_neighbors = p_cell_i.m_neighbors[neighbor_index];
@@ -57,7 +57,7 @@ void DatastructureListBenjamin::list_step_2_calculate (ParticleGroup& p_cell_i, 
         }
     }
 }
-void DatastructureListBenjamin::list_step_2_calculate (ParticleGroup& p_cell_i,
+void DatastructureNeighborList::list_step_2_calculate (ParticleGroup& p_cell_i,
                                                        ParticleGroup& p_cell_j,
                                                        AlgorithmBase& p_algorithm,
                                                        unsigned int   p_idx_a,
@@ -106,7 +106,7 @@ void DatastructureListBenjamin::list_step_2_calculate (ParticleGroup& p_cell_i,
         }
     }
 }
-bool DatastructureListBenjamin::run_simulation_iteration (unsigned long p_iteration_number) {
+bool DatastructureNeighborList::run_simulation_iteration (unsigned long p_iteration_number) {
     m_iterations_until_rearange_particles--;
     const data_type ox = m_options.m_bounds.x;
     const data_type oy = m_options.m_bounds.y;
@@ -167,7 +167,7 @@ bool DatastructureListBenjamin::run_simulation_iteration (unsigned long p_iterat
 #endif
     return false; // NO error
 }
-void DatastructureListBenjamin::list_rebuild (ParticleGroup& p_cell, unsigned int p_idx_a, s_options& p_options) {
+void DatastructureNeighborList::list_rebuild (ParticleGroup& p_cell, unsigned int p_idx_a, s_options& p_options) {
     unsigned long                                 i;
     unsigned long                                 j;
     std::vector<std::vector<ParticleIndexRange>>& current_neighbors = p_cell.m_neighbors[13];
@@ -197,7 +197,7 @@ void DatastructureListBenjamin::list_rebuild (ParticleGroup& p_cell, unsigned in
     p_cell.testingy.push_back (0);
     p_cell.testingz.push_back (0);
 }
-void DatastructureListBenjamin::list_rebuild (ParticleGroup& p_cell_i, ParticleGroup& p_cell_j, unsigned int p_idx_a, s_options& p_options) {
+void DatastructureNeighborList::list_rebuild (ParticleGroup& p_cell_i, ParticleGroup& p_cell_j, unsigned int p_idx_a, s_options& p_options) {
     unsigned long                                 i;
     unsigned long                                 j;
     unsigned int                                  neighbor_index    = get_neighbor_index_for_cells (p_cell_i.m_idx, p_cell_j.m_idx);
@@ -228,7 +228,7 @@ void DatastructureListBenjamin::list_rebuild (ParticleGroup& p_cell_i, ParticleG
     p_cell_i.testingy.push_back (0);
     p_cell_i.testingz.push_back (0);
 }
-void DatastructureListBenjamin::list_rebuild (ParticleGroup& p_cell_i, ParticleGroup& p_cell_j, unsigned int p_idx_a, s_options& p_options, data_type p_offset_x, data_type p_offset_y, data_type p_offset_z) {
+void DatastructureNeighborList::list_rebuild (ParticleGroup& p_cell_i, ParticleGroup& p_cell_j, unsigned int p_idx_a, s_options& p_options, data_type p_offset_x, data_type p_offset_y, data_type p_offset_z) {
     unsigned long i;
     unsigned long j;
     Vec3l         b = Vec3l (p_cell_j.m_idx);
@@ -275,6 +275,6 @@ void DatastructureListBenjamin::list_rebuild (ParticleGroup& p_cell_i, ParticleG
     p_cell_i.testingy.push_back (p_offset_y * 1000 + p_cell_j.m_idx.y);
     p_cell_i.testingz.push_back (p_offset_z * 1000 + p_cell_j.m_idx.z);
 }
-int DatastructureListBenjamin::get_neighbor_index_for_cells (Vec3l& p_idx_i, Vec3l& p_idx_j) {
+int DatastructureNeighborList::get_neighbor_index_for_cells (Vec3l& p_idx_i, Vec3l& p_idx_j) {
     return (p_idx_j.x - p_idx_i.x + 1) * 9 + (p_idx_j.y - p_idx_i.y + 1) * 3 + (p_idx_j.z - p_idx_i.z + 1);
 }

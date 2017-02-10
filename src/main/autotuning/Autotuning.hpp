@@ -27,7 +27,7 @@ class Autotuning {
         }
         if (2.0 * p_options.m_initial_speed < (p_options.m_cut_off_radius * (p_options.m_cut_off_factor - 1.0) - 1.0)) {
             // slow particles do not need rebuild of datastructure and could use the advantages of mixed datastructure
-            p_options.m_data_structure_type = e_datastructure_type::GRID_LIST;
+            p_options.m_data_structure_type = e_datastructure_type::LINKED_CELLS_NEIGHBOR_LIST;
         } else {
             // particles moves too fast to just use the mixed datastructure.
             // other criteria could be more important, so the mixed datastructure may still be used here
@@ -36,7 +36,7 @@ class Autotuning {
                 case e_input_type::GENERATOR_GRID_DISTRIBUTION:
                 case e_input_type::AUTOTUNING_REGULAR_DISTRIBUTION:
                     // the particles are regular distributed, and too fast for the mixed datastructure to be efficient
-                    p_options.m_data_structure_type = e_datastructure_type::GRID;
+                    p_options.m_data_structure_type = e_datastructure_type::LINKED_CELLS;
                     break;
                 case e_input_type::GENERATOR_MULTIPLE_OBJECTS:
                 case e_input_type::GENERATOR_SINGLE_OBJECT_MIDDLE:
@@ -45,7 +45,7 @@ class Autotuning {
                     // lot of cells are unused, most interactions are within a few cells. list would improve the runtime
                     // simulation should be for short-distance-interactions. if nearly all particles are in range, this would be long-distance-interactions, which are not
                     // the target
-                    p_options.m_data_structure_type = e_datastructure_type::GRID_LIST;
+                    p_options.m_data_structure_type = e_datastructure_type::LINKED_CELLS_NEIGHBOR_LIST;
                     break;
                 case e_input_type::AUTOTUNING_ERROR:
                     // this happens if input is empty or *corrupt*

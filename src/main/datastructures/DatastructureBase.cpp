@@ -4,7 +4,7 @@
  *  Created on: Jan 20, 2017
  *      Author: benjamin
  */
-#include "DatastructureListBenjamin.hpp"
+#include <datastructures/DatastructureNeighborList.hpp>
 void DatastructureBase::step_1_prepare_cell (ParticleGroup& p_cell) {
     unsigned int       i;
     const unsigned int max = p_cell.m_ids.size ();

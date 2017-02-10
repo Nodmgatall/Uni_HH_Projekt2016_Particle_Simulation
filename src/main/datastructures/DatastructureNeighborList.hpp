@@ -4,21 +4,21 @@
  *  Created on: Jan 20, 2017
  *      Author: benjamin
  */
-#ifndef SRC_MAIN_DATASTRUCTURES_DATASTRUCTURELISTBENJAMIN_HPP_
-#define SRC_MAIN_DATASTRUCTURES_DATASTRUCTURELISTBENJAMIN_HPP_
+#ifndef SRC_MAIN_DATASTRUCTURES_DATASTRUCTURENEIGHBORLIST_HPP_
+#define SRC_MAIN_DATASTRUCTURES_DATASTRUCTURENEIGHBORLIST_HPP_
 #include "DatastructureBase.hpp"
 
-class DatastructureListBenjamin : public DatastructureBase {
+class DatastructureNeighborList : public DatastructureBase {
   protected:
   public:
     /**
      * constructor
      */
-    DatastructureListBenjamin (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_particle_writer);
+    DatastructureNeighborList (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_particle_writer);
     /**
      * destructor
      */
-    virtual ~DatastructureListBenjamin ();
+    virtual ~DatastructureNeighborList ();
     bool run_simulation_iteration (unsigned long p_iteration_number = 0) override;
     /**
      * calculates the movement of particles based on the forces between every
@@ -42,4 +42,4 @@ class DatastructureListBenjamin : public DatastructureBase {
      */
     static int get_neighbor_index_for_cells (Vec3l& p_idx_i, Vec3l& p_idx_j);
 };
-#endif /* SRC_MAIN_DATASTRUCTURES_DATASTRUCTURELISTBENJAMIN_HPP_ */
+#endif /* SRC_MAIN_DATASTRUCTURES_DATASTRUCTURENEIGHBORLIST_HPP_ */

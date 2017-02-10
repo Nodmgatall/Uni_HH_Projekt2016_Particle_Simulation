@@ -63,7 +63,7 @@ class DatastructureBase {
      */
     long m_max_id;
     /**
-     * flag indicates if the datastructure was rebuild in the last iteration. used for grid-list combination
+     * flag indicates if the datastructure was rebuild in the last iteration. used for linked cells and neighbor list combination
      */
     bool m_datastructure_rebuild_last_iteration_flag;
     /**

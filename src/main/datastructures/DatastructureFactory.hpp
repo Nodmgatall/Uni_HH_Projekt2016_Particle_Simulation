@@ -7,15 +7,15 @@
 #ifndef SRC_MAIN_DATASTRUCTURES_DATASTRUCTUREFACTORY_HPP_
 #define SRC_MAIN_DATASTRUCTURES_DATASTRUCTUREFACTORY_HPP_
 #include "DatastructureBase.hpp"
-#include "DatastructureGrid.hpp"
-#include "DatastructureList.hpp"
-#include "DatastructureListBenjamin.hpp"
-#include "DatastructureListGrid.hpp"
 #include "algorithms/AlgorithmBase.hpp"
 #include "borders/BorderBase.hpp"
 #include "io/output/WriterBase.hpp"
 #include "options/Options.hpp"
 #include "tools/Debug.hpp"
+#include <datastructures/DatastructureLinkedCells.hpp>
+#include <datastructures/DatastructureLinkedCellsNeighborList.hpp>
+#include <datastructures/DatastructureNeighborList.hpp>
+#include <datastructures/DatastructureNeighborList.hpp>
 class DatastructureFactory {
   public:
     /**

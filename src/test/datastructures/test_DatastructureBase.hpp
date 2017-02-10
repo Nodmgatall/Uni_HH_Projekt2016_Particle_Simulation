@@ -7,7 +7,7 @@
 #ifndef BOOST_TEST_DYN_LINK
 // this code is never executed !! -->>
 #include "datastructures/DatastructureGrid.hpp"
-typedef DatastructureGrid DatastructureUnderTest;
+typedef DatastructureLinkedCells DatastructureUnderTest;
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "DatastructureBaseGrid"
 //<<-- this code is never executed !!

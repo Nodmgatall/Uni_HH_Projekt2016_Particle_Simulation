@@ -3,7 +3,7 @@
 #include "DatastructureBase.hpp"
 #include "Definitions.hpp"
 #include "Vec3.hpp"
-class DatastructureGrid : public DatastructureBase {
+class DatastructureLinkedCells : public DatastructureBase {
   protected:
     /**
      * the count of cells in 3 dimensions
@@ -99,11 +99,11 @@ class DatastructureGrid : public DatastructureBase {
     /**
      * constructor
      */
-    DatastructureGrid (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_particle_writer);
+    DatastructureLinkedCells (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_particle_writer);
     /**
      * destructor
      */
-    virtual ~DatastructureGrid ();
+    virtual ~DatastructureLinkedCells ();
     virtual bool run_simulation_iteration (unsigned long p_iteration_number = 0) override;
     void add_particle (Vec3f p_position) override;
     void add_particle (Vec3f p_current_position, Vec3f p_current_velocity, int p_id = -1) override;

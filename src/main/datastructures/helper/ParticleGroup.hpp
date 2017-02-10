@@ -29,11 +29,11 @@ struct ParticleGroup {
      */
     std::vector<unsigned long> m_ids;
     /**
-     * the boundarys for this cell. important for grid datastructure
+     * the boundarys for this cell. important for linked-cells datastructure
      */
     Vec3f m_corner000, m_corner111;
     /**
-     * the index in the cell array. important for grid-datastructure
+     * the index in the cell array. important for linked-cells-datastructure
      */
     Vec3l m_idx;
     /**

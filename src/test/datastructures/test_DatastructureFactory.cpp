@@ -195,22 +195,31 @@ class BoundsCorrection : public BorderBase {
 BOOST_AUTO_TEST_CASE (test1) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
-    options.m_data_structure_type = e_datastructure_type::GRID;
+    options.m_data_structure_type = e_datastructure_type::LINKED_CELLS;
     BoundsCorrection border (options.m_bounds);
     Algorithm        algorithm (options);
     ParticleWriter   writer = ParticleWriter (0);
-    BOOST_CHECK_EQUAL (DatastructureFactory::build (options, border, algorithm, writer)->get_structure_name (), "DatastructureGrid");
+    BOOST_CHECK_EQUAL (DatastructureFactory::build (options, border, algorithm, writer)->get_structure_name (), "DatastructureLinkedCells");
 }
 BOOST_AUTO_TEST_CASE (test2) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
-    options.m_data_structure_type = e_datastructure_type::LIST;
+    options.m_data_structure_type = e_datastructure_type::NEIGHBOR_LIST;
     BoundsCorrection border (options.m_bounds);
     Algorithm        algorithm (options);
     ParticleWriter   writer = ParticleWriter (0);
-    BOOST_CHECK_EQUAL (DatastructureFactory::build (options, border, algorithm, writer)->get_structure_name (), "DatastructureList");
+    BOOST_CHECK_EQUAL (DatastructureFactory::build (options, border, algorithm, writer)->get_structure_name (), "DatastructureNeighborList");
 }
 BOOST_AUTO_TEST_CASE (test3) {
+    s_options options;
+    memset (&options, 0, sizeof (s_options));
+    options.m_data_structure_type = e_datastructure_type::LINKED_CELLS_NEIGHBOR_LIST;
+    BoundsCorrection border (options.m_bounds);
+    Algorithm        algorithm (options);
+    ParticleWriter   writer = ParticleWriter (0);
+    BOOST_CHECK_EQUAL (DatastructureFactory::build (options, border, algorithm, writer)->get_structure_name (), "DatastructureLinkedCellsNeighborList");
+}
+BOOST_AUTO_TEST_CASE (test4) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
     BoundsCorrection border (options.m_bounds);

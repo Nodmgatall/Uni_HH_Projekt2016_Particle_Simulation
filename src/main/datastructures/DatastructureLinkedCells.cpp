@@ -1,7 +1,7 @@
-#include "DatastructureGrid.hpp"
-DatastructureGrid::DatastructureGrid (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_particle_writer)
+#include <datastructures/DatastructureLinkedCells.hpp>
+DatastructureLinkedCells::DatastructureLinkedCells (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_particle_writer)
 : DatastructureBase (p_options, p_border, p_algorithm, p_particle_writer) {
-    m_stucture_name = "DatastructureGrid";
+    m_stucture_name = "DatastructureLinkedCells";
     unsigned int idx_x, idx_y, idx_z;
     long         max_usefull_size = pow (m_options.m_particle_count, 1.0 / 3.0);
     m_max_id                      = 0;
@@ -42,25 +42,25 @@ DatastructureGrid::DatastructureGrid (s_options& p_options, BorderBase& p_border
     m_standard_stream << DEBUG_VAR (m_options.m_timestep) << std::endl;
     m_standard_stream << DEBUG_VAR (m_options.m_cut_off_radius) << std::endl;
 }
-DatastructureGrid::~DatastructureGrid () {
+DatastructureLinkedCells::~DatastructureLinkedCells () {
 }
-unsigned long DatastructureGrid::grid_get_cell_index (long x, long y, long z) {
+unsigned long DatastructureLinkedCells::grid_get_cell_index (long x, long y, long z) {
     return z + grid_size.z * (y + grid_size.y * x);
 }
-ParticleGroup& DatastructureGrid::grid_get_cell_at (long x, long y, long z) {
+ParticleGroup& DatastructureLinkedCells::grid_get_cell_at (long x, long y, long z) {
     return m_particle_groups[grid_get_cell_index (x, y, z)];
 }
-ParticleGroup& DatastructureGrid::grid_get_cell_for_particle (data_type x, data_type y, data_type z) {
+ParticleGroup& DatastructureLinkedCells::grid_get_cell_for_particle (data_type x, data_type y, data_type z) {
     Vec3l idx = grid_get_cell_index_for_particle (x, y, z);
     return m_particle_groups[grid_get_cell_index (idx.x, idx.y, idx.z)];
 }
-Vec3l DatastructureGrid::grid_get_cell_index_for_particle (data_type x, data_type y, data_type z) {
+Vec3l DatastructureLinkedCells::grid_get_cell_index_for_particle (data_type x, data_type y, data_type z) {
     return Vec3l ((long) (x / grid_size_per_cell.x) + 1, (long) (y / grid_size_per_cell.y) + 1, (long) (z / grid_size_per_cell.z) + 1);
 }
-ParticleGroup& DatastructureGrid::grid_get_cell_for_particle (Vec3f m_position) {
+ParticleGroup& DatastructureLinkedCells::grid_get_cell_for_particle (Vec3f m_position) {
     return grid_get_cell_for_particle (m_position.x, m_position.y, m_position.z);
 }
-void DatastructureGrid::add_particle (Vec3f p_current_position, Vec3f p_current_velocity, int p_id) {
+void DatastructureLinkedCells::add_particle (Vec3f p_current_position, Vec3f p_current_velocity, int p_id) {
     long id = 0;
     if (p_id >= 0) {
         id       = p_id;
@@ -73,7 +73,7 @@ void DatastructureGrid::add_particle (Vec3f p_current_position, Vec3f p_current_
     ParticleGroup& cell = grid_get_cell_for_particle (p_current_position);
     cell.add_particle (p_current_position, old_position, m_idx_a, id);
 }
-void DatastructureGrid::grid_step_2a_calculate_inside_cell (ParticleGroup& p_cell) {
+void DatastructureLinkedCells::grid_step_2a_calculate_inside_cell (ParticleGroup& p_cell) {
     unsigned long      i;
     const unsigned int max   = p_cell.m_ids.size ();
     const unsigned int max_1 = max - 1;
@@ -96,7 +96,7 @@ void DatastructureGrid::grid_step_2a_calculate_inside_cell (ParticleGroup& p_cel
         }
     }
 }
-void DatastructureGrid::grid_step_2b_calculate_between_cells (ParticleGroup& p_cell_i, ParticleGroup& p_cell_j) {
+void DatastructureLinkedCells::grid_step_2b_calculate_between_cells (ParticleGroup& p_cell_i, ParticleGroup& p_cell_j) {
     unsigned int       i;
     const unsigned int max = p_cell_i.m_ids.size ();
     if (p_cell_j.m_ids.size () > 0) {
@@ -118,7 +118,7 @@ void DatastructureGrid::grid_step_2b_calculate_between_cells (ParticleGroup& p_c
         }
     }
 }
-void DatastructureGrid::grid_step_2b_calculate_between_cells (ParticleGroup& p_cell_i, ParticleGroup& p_cell_j, data_type offset_x, data_type offset_y, data_type offset_z) {
+void DatastructureLinkedCells::grid_step_2b_calculate_between_cells (ParticleGroup& p_cell_i, ParticleGroup& p_cell_j, data_type offset_x, data_type offset_y, data_type offset_z) {
     unsigned int       i;
     const unsigned int max = p_cell_i.m_ids.size ();
     if (p_cell_j.m_ids.size () > 0) {
@@ -143,7 +143,7 @@ void DatastructureGrid::grid_step_2b_calculate_between_cells (ParticleGroup& p_c
         }
     }
 }
-void DatastructureGrid::grid_step_3_remove_wrong_particles_from_cell (ParticleGroup& p_cell) {
+void DatastructureLinkedCells::grid_step_3_remove_wrong_particles_from_cell (ParticleGroup& p_cell) {
     step_3_fit_into_borders (p_cell);
     if (!m_error_happened) {
         int i;
@@ -156,7 +156,7 @@ void DatastructureGrid::grid_step_3_remove_wrong_particles_from_cell (ParticleGr
         }
     }
 }
-bool DatastructureGrid::grid_step_2 () {
+bool DatastructureLinkedCells::grid_step_2 () {
     unsigned int    idx;
     unsigned int    idx_x, idx_y, idx_z;
     unsigned int    idx_x_2, idx_y_2, idx_z_2;
@@ -381,7 +381,7 @@ bool DatastructureGrid::grid_step_2 () {
     }
     return false;
 }
-bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_number) {
+bool DatastructureLinkedCells::run_simulation_iteration (unsigned long p_iteration_number) {
     unsigned int i, j;
     m_error_happened = false;
     m_verbose_stream << DEBUG_VAR (p_iteration_number) << std::endl;
@@ -446,7 +446,7 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
 #endif
     return m_error_happened;
 }
-inline void DatastructureGrid::grid_moveParticle (ParticleGroup& p_cell_from, ParticleGroup& p_cell_to, long p_index_from) {
+inline void DatastructureLinkedCells::grid_moveParticle (ParticleGroup& p_cell_from, ParticleGroup& p_cell_to, long p_index_from) {
     // the last element overrides the element to be deleted, then the last element gets removed
     unsigned int j;
     p_cell_to.m_ids.push_back (p_cell_from.m_ids[p_index_from]);
@@ -464,6 +464,6 @@ inline void DatastructureGrid::grid_moveParticle (ParticleGroup& p_cell_from, Pa
         p_cell_from.m_positions_z[j].pop_back ();
     }
 }
-void DatastructureGrid::add_particle (Vec3f p_position) {
+void DatastructureLinkedCells::add_particle (Vec3f p_position) {
     add_particle (p_position, Vec3f (0));
 }

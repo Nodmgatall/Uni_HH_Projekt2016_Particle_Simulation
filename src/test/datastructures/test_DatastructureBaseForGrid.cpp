@@ -1,3 +1,4 @@
+
 /*
  * test_DatastructureBaseForGrid.cpp
  *
@@ -5,8 +6,8 @@
  *      Author: benjamin
  */
 #ifndef BOOST_TEST_DYN_LINK
-#include "datastructures/DatastructureGrid.hpp"
-typedef DatastructureGrid DatastructureUnderTest;
+#include <datastructures/DatastructureLinkedCells.hpp>
+typedef DatastructureLinkedCells DatastructureUnderTest;
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "DatastructureBaseGrid"
 #include "test_DatastructureBase.hpp"
