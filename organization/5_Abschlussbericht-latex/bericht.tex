@@ -92,63 +92,20 @@
 
 \thispagestyle{empty}
 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-At vero eos et accusam et justo duo dolores et ea rebum.
-Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-At vero eos et accusam et justo duo dolores et ea rebum.
-Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+%TODO text
+Ziel des dieses Projektes ist die Implementierung einer Partikel-Simulation für kurzreichweitige Partikel-Interaktionen mit Autotuning.
 
 \tableofcontents
 
 \chapter{Einleitung}
 \label{Einleitung}
 
-\textit{%
-In this chapter, ...
-}
+Bei Partikel Simulationen müssen normalerweise die Wechselwirkungen zwischen jedem möglichen Partikelpaar berechnet werden. Die Laufzeit des Programms steigt quadratisch zur Anzahl der Partikel. Dies ist besonders bei hohen Anzahlen von Partikeln kritisch für die Laufzeit. Die in diesem Projekt implementierte Partikel-Simulation ist für kurzreichweitige Interaktionen optimiert. Dadurch lassen sich die Interaktionen zwischen weit auseinanderliegenden Partikeln vernachlässigen, wodurch die Laufzeit kürzer werden kann. Es gibt verschiedene Möglichkeiten, die Interaktionen auf die kurzreichweitige Interaktion zu beschränken um das Programm zu beschleunigen. Das Problem bei diesen verschiedenen Möglichkeiten der Beschleunigung besteht darin, dass je nach Eingabe eine andere Art der Vereinfachung eine bessere Programm-Laufzeit ermöglicht. Die Besonderheit dieser Partikel Simulation liegt darin, dass das Programm zu beginn selbst entscheiden kann, welche Optimierungsstrategie für die gegebene Eingabe am sinnvollsten ist. Hieraus resultiert der Vorteil gegenüber anderen Programmen, dass die Laufzeit für jede beliebige Eingabe besonders schnell ist, und nicht nur wenn die Eingabe passend ist. Dies ist besonders dann spannend, wenn man selbst nicht sicher ist, welches verfahren für die Eingabe am besten geeignet ist, ohne selbst vorher alle Möglichkeiten einmal auszuprobieren.
 
-\bigskip
+\chapter{Realisierung}
+\label{Realisierung}
 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-At vero eos et accusam et justo duo dolores et ea rebum.
-Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-At vero eos et accusam et justo duo dolores et ea rebum.
-Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.\footnote{I am a footnote.}
-
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-At vero eos et accusam et justo duo dolores et ea rebum.
-Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet:
-
-\begin{itemize}
-	\item Lorem
-	\item Ipsum
-\end{itemize}
-
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-At vero eos et accusam et justo duo dolores et ea rebum.
-“Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.”~\cite{Quelle2012}
-
-\medskip
-
-Reference example: For more information, see
-\begin{itemize}
-	\item Chapter~\ref{Assignment},
-	\item \cref{Assignment},
-	\item \vref{Assignment}.
-\end{itemize}
-
-\chapter{Ziele}
-\label{Ziele}
-
-%TODO Text 
-Ziele
-notwendigkeit
-warum spannend
-
-\chapter{Vorgehen}
-\label{Vorgehen}
+\section{Vorgehen}
 
 %TODO Text 
 planung
@@ -156,33 +113,85 @@ aufteilung + zeitplan -> realität
 zeiteinschätzung vs reale zeit
 unerwartete schwierigkeiten
 
-\chapter{Design}
-\label{Design}
+\section{Design}
 
 %TODO Text 
 klassendiagramm
 welche klasse tut was
 für spätere programierer erklären
-benutzte drittquellen(z.b.boost)
 
-\chapter{Korrektheit}
-\label{Korrektheit}
-
-%TODO Text 
-unit-tests
-energieerhaltung
-visuell
-verschiedene testparameter(dichte,volumen,anzahl,cuttoff,bonusgröße,startspeed,anordnung)
-
-\chapter{Ergebnis}
-\label{Ergebnis}
+\section{Implementierung}
 
 %TODO Text 
 beschreiben der benutzung(parameter)
+
+\section{Analyse}
+\subsection{Korrektheit}
+Um sicherzustellen, dass das Programm korrekte Ausgaben liefert, wurden verschiedene Arten von Test durchgeführt. Zum einen wurden einzelne Komponenten getestet, zum anderen wurde auch das Gesamtverhalten des Programms überprüft.
+\begin{itemize}
+	\item \textbf{unit-Tests} Um die Korrektheit von den einzelnen Komponenten des Programms zu gewährleisten wurden unit-Tests eingesetzt. Schon beim schreiben der unit-tests wurden viele Fehler gefunden und behoben. Bei späteren Refactoring-Maßnahmen wurden durch diese Testfälle viele neue Fehler verhindert.
+	\item \textbf{Energieerhaltung} Aus dem Physikalischen Gesetz 'Aktion gleich Reaktion' ergibt sich, dass die Energie in einem geschlossenen System immer erhalten belieben muss. Eingebaute Funktionen im Programm ermöglichen die Ausgabe der aktuellen Energie im System, sodass leicht überprüft werden kann, ob die Energie in einem Akzeptablen Rahmen beleibt. Durch Rechenungenauigkeiten ist es sehr unwahrscheinlich, dass die Energie exakt gleich beleibt.
+	\item \textbf{Visualisierung} Durch Visualisieren der Ausgabedaten wurde auch das fertige Ergebnis stichprobenartig überprüft. Bei den getesteten Parametern verhielt sich das Programm wie erwartet.
+\end{itemize}
+
+\subsection{Laufzeit}
+Der Fokus dieses Projektes liegt auf dem auto-tuning, wodurch auch das Laufzeitverhalten des Programms genau analysiert werden muss. Die Laufzeit des Programms, und somit die Wahl der besten Internen Datenrepräsentation hängt von verschiedenen Parametern ab.
+\begin{itemize}
+	\item \textbf{Dichte}
+	\item \textbf{Volumen}
+	\item \textbf{Anzahl}
+	\item \textbf{cut-off}
+	\item \textbf{cut-off-factor}
+	\item \textbf{Startgeschwindigkeit}
+	\item \textbf{Startanordnung}
+\end{itemize}
 
 \chapter{Zusammenfassung}
 \label{Zusammenfassung}
 
 %TODO Text 
+
+\chapter{Literatur}
+\label{Literatur}
+
+%TODO Text 
+
+\chapter{Anhang}
+\label{Anhang}
+
+Verwendete Bibliotheken und Programme zum ausführen des Programms
+\begin{itemize}
+	\item Boost
+	\begin{itemize}
+		\item unit-tests
+	\end{itemize}
+	\item CMake 
+	\item Make
+	\item clang-format
+	\item paraview
+	\begin{itemize}
+		\item Visualisierung der Ausgabe
+	\end{itemize}
+	\item lcov
+	\begin{itemize}
+		\item Testabdeckung ermitteln und visualisieren
+	\end{itemize}
+	\item slurm
+	\begin{itemize}
+		\item Messtabellen berechnen
+	\end{itemize}
+	\item doxygen
+	\begin{itemize}
+		\item Dokumentation des Quelltextes
+	\end{itemize}
+	\item latex
+	\begin{itemize}
+		\item dieses Dokument
+		\item Präsentationen
+	\end{itemize}
+\end{itemize}
+
+
+
 
 \end{document}
