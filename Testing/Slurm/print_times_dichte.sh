@@ -1,5 +1,6 @@
 echo "row,\
 dichte,\
+particles_per_cell,\
 radius,\
 bounds,\
 initial_speed,\
@@ -69,7 +70,8 @@ var_average_times_grid=$(echo "scale=8; sqrt( ${var_sum_square_times_grid} / 3)"
 var_average_times_grid_list=$(echo "scale=8; sqrt( ${var_sum_square_times_grid_list} / 3)" | bc -l)
 
 var_dichte=$(echo "scale=8; 64000/(${var_bounds}*${var_bounds}*${var_bounds})" | bc -l)
-echo "${var_row},${var_dichte},${var_radius},${var_bounds},${var_initial_speed},${var_radius_extra},${var_threads}${var_line_statistics_total_datastructure_rebuild_count}${var_line_statistics_total_runtime},$var_average_times_grid,$var_average_times_grid_list"
+var_particles_per_Cell=$(echo "scale=8; 64000*(${var_radius}*${var_radius}*${var_radius}*${var_radius_extra}*${var_radius_extra}*${var_radius_extra})/(${var_bounds}*${var_bounds}*${var_bounds})" | bc -l)
+echo "${var_row},${var_dichte},${var_particles_per_Cell},${var_radius},${var_bounds},${var_initial_speed},${var_radius_extra},${var_threads}${var_line_statistics_total_datastructure_rebuild_count}${var_line_statistics_total_runtime},$var_average_times_grid,$var_average_times_grid_list"
 var_row=$((var_row + 1))
 }
 
