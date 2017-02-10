@@ -28,6 +28,7 @@
 \usepackage{graphicx}
 \usepackage[htt]{hyphenat}
 \usepackage{listings}
+\usepackage{amsmath}
 \usepackage{microtype}
 \usepackage[list=true,hypcap=true]{subcaption}
 \usepackage{units}
@@ -104,7 +105,6 @@ Bei Partikel Simulationen müssen normalerweise die Wechselwirkungen zwischen je
 
 \chapter{Realisierung}
 \label{Realisierung}
-
 \section{Vorgehen}
 
 %TODO 
@@ -113,10 +113,15 @@ aufteilung + zeitplan -> realität
 zeiteinschätzung vs reale zeit
 unerwartete schwierigkeiten
 
+\newpage
 \section{Design}
-
+\begin{figure}[h]
+	\centering
+	\includegraphics[height=0.6\textheight]{ClassDiagram.png}
+	\caption{Klassendiagramm}
+	\label{figure:Klassendiagramm}
+\end{figure}
 %TODO 
-klassendiagramm
 welche klasse tut was
 für spätere programierer erklären
 
@@ -153,7 +158,6 @@ Die Laufzeit des Programmes hängt von der Anzahl der zu simulierenden Partikel 
 Je nachdem, welches Verfahren gewählt wird, ist die Laufzeit unterschiedlich. Bei der Variante bei der nur Nachbar-Listen verwendet werden ist der Aufwand diese Listen aufzubauen Quadratisch zur Anzahl der Partikel. Dies ist so ungünstig, dass es nicht empfehlenswert ist, diese Variante zu Benutzen. Die Linked-Cells-Variante benötigt wenig Zeit um die Datenstruktur aufzubauen, dafür aber wird pro Iteration viel Zeit benötigt. Die Kombinierte Variante benötigt mittelmäßig viel Zeit für den Aufbau der Datenstruktur kosten, und nur Minimale Zeit pro Iteration.
 
 Damit das Auto-tuning entscheiden kann, welche Variante verwendet werden soll, muss das Programm abschätzen können, wie oft die Datenstruktur neu gebaut werden muss. Es gibt mehrere Faktoren, die einen Einfluss auf die Häufigkeit des Neubauen der Datenstruktur haben.
-%TODO
 \begin{itemize}
 	\item \textbf{Dichte} Wenn die Partikel dichter aneinander liegen, dann werden durch die nur Zellen-basierte Optimierung zu wenig Partikel frühzeitig für die Berechnung eliminiert, was zu einer stärkeren Laufzeiterhöhung führt, als wenn die Kombinierte Variante verwendet werden würde.
 	%\item \textbf{Volumen} wie Dichte ?!?
@@ -163,7 +167,22 @@ Damit das Auto-tuning entscheiden kann, welche Variante verwendet werden soll, m
 	\item \textbf{Startgeschwindigkeit} Je schneller sich die Partikel sich bewegen, desto schneller wird der cut-off Bereich verlassen. Hieraus folgt, dass die Datenstruktur besonders oft neu aufgebaut werden muss. Hier ist die nur Zellen basierte im Vorteil.
 	\item \textbf{Startanordnung} Je nachdem wie die Partikel bei Programmstart angeordnet sind ergeben sich andere Effekte. Zum Beispiel wäre es möglich, dass sich zu beginn alle Partikel in einem kleinem Bereich des zu simulierenden Raum aufhalten. Hieraus folgt, dass einige Zellen sehr viel mehr Partikel enthalten als andere. Für die gemischte Variante würde dies Bedeuten, dass die zweite Aufbauphase in einigen Zellen sehr viel Laufzeit benötigt.
 \end{itemize}
+\subsection{Auto-tuning}
+%TODO 
+\begin{itemize}
+	\item \textbf{c} $\rightarrow$ cut-off-radius
+	\item \textbf{f} $\rightarrow$ cut-off-radius-factor
+	\item \textbf{s} $\rightarrow$ start-speed
+\end{itemize}
 
+\begin{align*}
+2\cdot s < c \cdot (f - 1) - 1
+\end{align*}
+
+\begin{itemize}
+	\item \textbf{true} $\rightarrow$ linked-cells+verlet-list
+	\item \textbf{false} $\rightarrow$ linked-cells
+\end{itemize}
 \chapter{Zusammenfassung}
 \label{Zusammenfassung}
 
