@@ -58,12 +58,12 @@
 
 \begin{titlepage}
 	\begin{center}
-		{\titlefont\huge Titel der Arbeit\par}
+		{\titlefont\huge Programmieren einer Partikelsimulation für kurzreichweitige Interaktionen\par}
 
 		\bigskip
 		\bigskip
 
-		{\Large Art der Arbeit\par}
+		{\Large Projektbericht\par}
 
 		\bigskip
 		\bigskip
@@ -77,16 +77,14 @@
 	\vfill
 
 	{\large\begin{tabular}{ll}
-		Vorgelegt von:  & Vorname Nachname \\
-		E-Mail-Adresse: & \href{mailto:adresse@email.de}{adresse@email.de} \\
-		Matrikelnummer: & 1234567 \\
-		Studiengang:    & Informatik \\
+		Vorgelegt von:  & \begin{tabular}{@{}l@{}}Oliver Heidmann, \\ Benjamin Warnke\end{tabular} \\
+		E-Mail-Adresse: & \begin{tabular}{@{}l@{}}\href{mailto:adresse@email.de}{adresse@email.de},\\ \href{mailto:4bwarnke@informatik.uni-hamburg.de}{4bwarnke@informatik.uni-hamburg.de}\end{tabular}\\
+		Matrikelnummer: & \begin{tabular}{@{}l@{}}1234567,\\6676867\end{tabular} \\
+		Studiengang:    & Informatik\\
 		\\
-		Erstgutachter:  & Name des Erstgutachters \\
-		Zweitgutachter: & Name des Zweitgutachters\\ \\
-		Betreuer:       & Name des Betreuers \\
+		Betreuer:       & Philipp Neumann \\
 		\\
-		Hamburg, den 01.01.2015
+		Hamburg, den 09.03.2017
 	\end{tabular}\par}
 \end{titlepage}
 
@@ -103,8 +101,8 @@ Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit ame
 
 \tableofcontents
 
-\chapter{Introduction}
-\label{Introduction}
+\chapter{Einleitung}
+\label{Einleitung}
 
 \textit{%
 In this chapter, ...
@@ -141,126 +139,50 @@ Reference example: For more information, see
 	\item \vref{Assignment}.
 \end{itemize}
 
-\chapter{Assignment}
-\label{Assignment}
+\chapter{Ziele}
+\label{Ziele}
 
-\textit{%
-In this chapter, ...
-}
+%TODO Text 
+Ziele
+notwendigkeit
+warum spannend
 
-\bigskip
+\chapter{Vorgehen}
+\label{Vorgehen}
 
-\section{Section}
-
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-At vero eos et accusam et justo duo dolores et ea rebum.
-Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-At vero eos et accusam et justo duo dolores et ea rebum.
-Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet (see \cref{fig:logo}).
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[height=0.2\textheight]{logo.jpg}
-	\caption{Example figure}
-	\label{fig:logo}
-\end{figure}
-
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-At vero eos et accusam et justo duo dolores et ea rebum.
-Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua (see \cref{table:table}).
-
-\begin{table}
-	\centering
-	\begin{tabular}{|c|c|c|}\hline
-		Column 1 & Column 2 & Column 3 \\
-		\hline
-		Row 1    &   -      & -        \\
-		Row 2    &  Row 2   & -        \\
-		Row 3    &  Row 3   & Row 3    \\
-		\hline
-	\end{tabular}
-	\caption{Example table}
-	\label{table:table}
-\end{table}
+%TODO Text 
+planung
+aufteilung + zeitplan -> realität
+zeiteinschätzung vs reale zeit
+unerwartete schwierigkeiten
 
 \chapter{Design}
 \label{Design}
 
-\textit{%
-In this chapter, ...
-}
+%TODO Text 
+klassendiagramm
+welche klasse tut was
+für spätere programierer erklären
+benutzte drittquellen(z.b.boost)
 
-\bigskip
+\chapter{Korrektheit}
+\label{Korrektheit}
 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-At vero eos et accusam et justo duo dolores et ea rebum.
-Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet (see \cref{lst:listing}).
+%TODO Text 
+unit-tests
+energieerhaltung
+visuell
+verschiedene testparameter(dichte,volumen,anzahl,cuttoff,bonusgröße,startspeed,anordnung)
 
-\begin{lstlisting}[caption=Example listing, label={lst:listing}]
-void print (void)
-{
-	int i;
+\chapter{Ergebnis}
+\label{Ergebnis}
 
-	for (i = 0; i < 10; i++)
-	{
-		printf("Hello World!\n");
-	}
-}
-\end{lstlisting}
+%TODO Text 
+beschreiben der benutzung(parameter)
 
-\chapter{Conclusion}
-\label{Conclusion}
+\chapter{Zusammenfassung}
+\label{Zusammenfassung}
 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-At vero eos et accusam et justo duo dolores et ea rebum.
-Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-
-\bibliographystyle{alpha}
-\bibliography{literatur}
-
-\appendix
-\appendixpage
-
-\chapter{Chapter}
-
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-At vero eos et accusam et justo duo dolores et ea rebum.
-Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-
-\listoffigures
-
-\lstlistoflistings
-
-\listoftables
-
-\chapter*{}
-
-\thispagestyle{empty}
-
-\section*{Eidesstattliche Versicherung}
-
-\begin{otherlanguage}{ngerman}
-Hiermit versichere ich an Eides statt, dass ich die vorliegende Arbeit im Studiengang XXX selbstständig verfasst und keine anderen als die angegebenen Hilfsmittel -- insbesondere keine im Quellenverzeichnis nicht benannten Internet-Quellen -- benutzt habe.
-Alle Stellen, die wörtlich oder sinngemäß aus Veröffentlichungen entnommen wurden, sind als solche kenntlich gemacht.
-Ich versichere weiterhin, dass ich die Arbeit vorher nicht in einem anderen Prüfungsverfahren eingereicht habe und die eingereichte schriftliche Fassung der auf dem elektronischen Speichermedium entspricht.
-
-\bigskip
-
-\noindent
-Ich bin damit einverstanden, dass meine Abschlussarbeit in den Bestand der Fachbereichsbibliothek eingestellt wird.
-\end{otherlanguage}
-
-\bigskip
-\bigskip
-\bigskip
-
-\begin{center}
-\begin{tabular}{ll}
-	\rule{0.35\textwidth}{0.4pt} & \rule{0.55\textwidth}{0.4pt} \\
-	Ort, Datum & Unterschrift
-\end{tabular}
-\end{center}
+%TODO Text 
 
 \end{document}
