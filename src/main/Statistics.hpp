@@ -38,7 +38,7 @@ struct Statistics {
                << std::endl;
         data_type volumen = p_statistics.m_options->m_bounds.x * p_statistics.m_options->m_bounds.y * p_statistics.m_options->m_bounds.z;
         stream << "statistics.volumen                                           : " << volumen << std::endl;
-        stream << "statistics.partikeldichte                                    : " << (volumen / p_statistics.m_options->m_particle_count) << std::endl;
+        stream << "statistics.partikeldichte                                    : " << (p_statistics.m_options->m_particle_count / volumen) << std::endl;
         return stream;
     }
 };
