@@ -92,7 +92,7 @@
 
 \thispagestyle{empty}
 
-%TODO text
+%TODO 
 Ziel des dieses Projektes ist die Implementierung einer Partikel-Simulation für kurzreichweitige Partikel-Interaktionen mit Autotuning.
 
 \tableofcontents
@@ -107,7 +107,7 @@ Bei Partikel Simulationen müssen normalerweise die Wechselwirkungen zwischen je
 
 \section{Vorgehen}
 
-%TODO Text 
+%TODO 
 planung
 aufteilung + zeitplan -> realität
 zeiteinschätzung vs reale zeit
@@ -115,14 +115,14 @@ unerwartete schwierigkeiten
 
 \section{Design}
 
-%TODO Text 
+%TODO 
 klassendiagramm
 welche klasse tut was
 für spätere programierer erklären
 
 \section{Implementierung}
 
-%TODO Text 
+%TODO 
 beschreiben der benutzung(parameter)
 
 \section{Analyse}
@@ -135,26 +135,44 @@ Um sicherzustellen, dass das Programm korrekte Ausgaben liefert, wurden verschie
 \end{itemize}
 
 \subsection{Laufzeit}
-Der Fokus dieses Projektes liegt auf dem auto-tuning, wodurch auch das Laufzeitverhalten des Programms genau analysiert werden muss. Die Laufzeit des Programms, und somit die Wahl der besten Internen Datenrepräsentation hängt von verschiedenen Parametern ab.
+Die Laufzeit des Programmes hängt von der Anzahl der zu simulierenden Partikel ab. Bei kurzreichweitigen Interaktionen kann man die Laufzeitabschätzung mit $p\cdot\frac{r^3}{V}\sim O\left(1\right)$ vereinfachen (siehe Tabelle \ref{table:Laufzeitvergleich}).\\
+\begin{table}[h]
+	\centering
+	\begin{tabular}{c|l|l|l|l}
+		&Basic& Nachbar-Listen & Linked-Cells & Kombination \\
+		\hline
+		\begin{tabular}{@{}c@{}}Aufbau \\ (Linked-Cells)\end{tabular} &-& - & $\Theta\left(p\right)$& $\Theta\left(p\right)$\\
+		\hline
+		\begin{tabular}{@{}c@{}}Aufbau \\ (Nachbar-Listen)\end{tabular}&-& $\Theta\left(p^2\right)$ & - & \begin{tabular}{@{}l@{}}$O\left(p^2\cdot \frac{27 \cdot r^3}{V}\right)$ \\ $\sim O\left(p\cdot 27\right)$\end{tabular} \\
+		\hline
+		Iteration& $\Theta\left(p^2\right)$&\begin{tabular}{@{}l@{}}$O\left(p^2\cdot \frac{\frac{4}{3}\pi\cdot r^3}{V}\right)$\\$\sim O\left(p\cdot \frac{4}{3}\pi\right)$\end{tabular} &\begin{tabular}{@{}l@{}}$O\left(p^2\cdot \frac{27 \cdot r^3}{V}\right)$\\$\sim O\left(p\cdot 27\right)$ \end{tabular}& \begin{tabular}{@{}l@{}}$O\left(p^2\cdot \frac{\frac{4}{3}\pi\cdot r^3}{V}\right)$\\$\sim O\left(p\cdot \frac{4}{3}\pi\right)$ \end{tabular}\\
+	\end{tabular}
+	\caption{Laufzeitvergleich der Datenstrukturen}
+	\label{table:Laufzeitvergleich}
+\end{table}\\
+Je nachdem, welches Verfahren gewählt wird, ist die Laufzeit unterschiedlich. Bei der Variante bei der nur Nachbar-Listen verwendet werden ist der Aufwand diese Listen aufzubauen Quadratisch zur Anzahl der Partikel. Dies ist so ungünstig, dass es nicht empfehlenswert ist, diese Variante zu Benutzen. Die Linked-Cells-Variante benötigt wenig Zeit um die Datenstruktur aufzubauen, dafür aber wird pro Iteration viel Zeit benötigt. Die Kombinierte Variante benötigt mittelmäßig viel Zeit für den Aufbau der Datenstruktur kosten, und nur Minimale Zeit pro Iteration.
+
+Damit das Auto-tuning entscheiden kann, welche Variante verwendet werden soll, muss das Programm abschätzen können, wie oft die Datenstruktur neu gebaut werden muss. Es gibt mehrere Faktoren, die einen Einfluss auf die Häufigkeit des Neubauen der Datenstruktur haben.
+%TODO
 \begin{itemize}
-	\item \textbf{Dichte}
-	\item \textbf{Volumen}
-	\item \textbf{Anzahl}
-	\item \textbf{cut-off}
-	\item \textbf{cut-off-factor}
-	\item \textbf{Startgeschwindigkeit}
-	\item \textbf{Startanordnung}
+	\item \textbf{Dichte} Wenn die Partikel dichter aneinander liegen, dann werden durch die nur Zellen-basierte Optimierung zu wenig Partikel frühzeitig für die Berechnung eliminiert, was zu einer stärkeren Laufzeiterhöhung führt, als wenn die Kombinierte Variante verwendet werden würde.
+	%\item \textbf{Volumen} wie Dichte ?!?
+	\item \textbf{Anzahl} Wenn die Anzahl sehr gering ist, dann ist die Laufzeit des naiven Algorithmus ohne Optimierung kürzer, als eine der Optimierten Varianten, da der Naive Algorithmus nur sehr kleine Konstanten hat.
+	\item \textbf{cut-off} Je größer der cut-off Radius gewählt wird, desto mehr Partikel befinden sich in der Nachbarschaft. Die Zellen werden hierdurch größer. Wenn der cut-off Radius relativ groß ist, dann ist der Listenaufbau auch in der Kombinierten Variante Laufzeit-intensiv, wodurch die nur Zellen basierte Variante im Vorteil ist. Da dieses Programm sich auf kurzreichweitige Interaktionen fokussiert, werden keine sehr großen cut-off-Radien auftreten.
+	\item \textbf{cut-off Faktor} Je mehr Spielraum auf den cut-off hinzugefügt wird, desto seltener müssen die Datenstrukturen neu aufgebaut werden. Dies geht allerdings auch sehr zulasten der Laufzeit, die in den Iterationen gebraucht wird.
+	\item \textbf{Startgeschwindigkeit} Je schneller sich die Partikel sich bewegen, desto schneller wird der cut-off Bereich verlassen. Hieraus folgt, dass die Datenstruktur besonders oft neu aufgebaut werden muss. Hier ist die nur Zellen basierte im Vorteil.
+	\item \textbf{Startanordnung} Je nachdem wie die Partikel bei Programmstart angeordnet sind ergeben sich andere Effekte. Zum Beispiel wäre es möglich, dass sich zu beginn alle Partikel in einem kleinem Bereich des zu simulierenden Raum aufhalten. Hieraus folgt, dass einige Zellen sehr viel mehr Partikel enthalten als andere. Für die gemischte Variante würde dies Bedeuten, dass die zweite Aufbauphase in einigen Zellen sehr viel Laufzeit benötigt.
 \end{itemize}
 
 \chapter{Zusammenfassung}
 \label{Zusammenfassung}
 
-%TODO Text 
+%TODO 
 
 \chapter{Literatur}
 \label{Literatur}
 
-%TODO Text 
+%TODO 
 
 \chapter{Anhang}
 \label{Anhang}
