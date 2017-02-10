@@ -19,7 +19,7 @@ class DatastructureLinkedCellsNeighborList : public DatastructureLinkedCells {
     /**
      * constructor
      */
-    DatastructureLinkedCellsNeighborList (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_particle_writer);
+    DatastructureLinkedCellsNeighborList (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, OutputBase& p_particle_writer);
     /**
      * destructor
      */

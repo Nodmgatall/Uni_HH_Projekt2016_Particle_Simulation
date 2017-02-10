@@ -6,7 +6,7 @@
  *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
 #include <datastructures/DatastructureNeighborList.hpp>
-DatastructureNeighborList::DatastructureNeighborList (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_particle_writer)
+DatastructureNeighborList::DatastructureNeighborList (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, OutputBase& p_particle_writer)
 : DatastructureBase (p_options, p_border, p_algorithm, p_particle_writer) {
     m_stucture_name = "DatastructureNeighborList";
     m_particle_groups.push_back (ParticleGroup (Vec3l (), m_options.m_bounds));

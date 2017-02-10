@@ -17,7 +17,7 @@ class Autotuning {
     /**
      * returns an fully initialized datastructure which should be the fastest for the given input
      */
-    static inline DatastructureBase* get_best_datastructure (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_writer) {
+    static inline DatastructureBase* get_best_datastructure (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, OutputBase& p_writer) {
         DatastructureAnalyser* analyser = 0;
         if ((p_options.m_input_type == e_input_type::GENERATOR_RANDOM) || (p_options.m_input_type == e_input_type::FILE_CSV)) {
             // TODO unknown

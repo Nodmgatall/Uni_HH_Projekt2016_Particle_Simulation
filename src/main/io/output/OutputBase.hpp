@@ -9,7 +9,7 @@
 #define SRC_MAIN_IO_PARTICLEWRITERBASE_HPP_
 #include "Definitions.hpp"
 #include "options/Options.hpp"
-class WriterBase {
+class OutputBase {
   protected:
     /**
      * the name of the child-class to verify which subclass is used at runtime
@@ -20,12 +20,12 @@ class WriterBase {
     /**
      * constructor
      */
-    WriterBase () {
+    OutputBase () {
     }
     /**
      * destructor
      */
-    virtual ~WriterBase () {
+    virtual ~OutputBase () {
     }
     /**
      *

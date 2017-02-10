@@ -8,16 +8,16 @@
 #ifndef SRC_MAIN_AUTOTUNING_DATASTRUCTUREANALYSER_HPP_
 #define SRC_MAIN_AUTOTUNING_DATASTRUCTUREANALYSER_HPP_
 #include "borders/BorderWrapparound.hpp"
-#include "io/output/file/FileWriterCSV.hpp"
 #include <algorithms/AlgorithmStoermerVerletLennardJones.hpp>
 #include <cstring>
 #include <datastructures/DatastructureBase.hpp>
+#include <io/output/file/FileOutputCSV.hpp>
 class DatastructureAnalyser : public DatastructureBase {
   public:
     /**
      * constructor
      */
-    DatastructureAnalyser (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_writer);
+    DatastructureAnalyser (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, OutputBase& p_writer);
     /**
      * destructor
      */

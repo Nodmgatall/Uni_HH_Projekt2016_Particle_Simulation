@@ -6,7 +6,7 @@
  *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
 #include <datastructures/DatastructureLinkedCells.hpp>
-DatastructureLinkedCells::DatastructureLinkedCells (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_particle_writer)
+DatastructureLinkedCells::DatastructureLinkedCells (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, OutputBase& p_particle_writer)
 : DatastructureBase (p_options, p_border, p_algorithm, p_particle_writer) {
     m_stucture_name = "DatastructureLinkedCells";
     unsigned int idx_x, idx_y, idx_z;

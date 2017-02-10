@@ -1,3 +1,4 @@
+
 /*
  * test_DatastructureBase.hpp
  *
@@ -14,10 +15,10 @@ typedef DatastructureLinkedCells DatastructureUnderTest;
 #endif
 #include "algorithms/AlgorithmBase.hpp"
 #include "borders/BorderBase.hpp"
-#include "io/output/WriterBase.hpp"
 #include <boost/test/unit_test.hpp>
 #include <cstring>
-class ParticleWriter : public WriterBase {
+#include <io/output/OutputBase.hpp>
+class ParticleWriter : public OutputBase {
   public:
     bool             m_start_called;
     bool             m_end_called;

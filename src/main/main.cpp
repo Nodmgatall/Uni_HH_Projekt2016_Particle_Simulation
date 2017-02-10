@@ -11,11 +11,11 @@
 #include "borders/BorderWrapparound.hpp"
 #include "datastructures/DatastructureFactory.hpp"
 #include "io/input/InputFactory.hpp"
-#include "io/output/file/FileWriterCSV.hpp"
 #include "options/OptionHandler.hpp"
 #include "options/OptionHandler.hpp"
 #include <Statistics.hpp>
 #include <autotuning/Autotuning.hpp>
+#include <io/output/OutputFactory.hpp>
 
 int main (int argc, char** argv) {
     std::cout << std::fixed << std::setprecision (6) << std::setfill ('0') << std::boolalpha;
@@ -31,14 +31,14 @@ int main (int argc, char** argv) {
     if (mkdir (options.m_out_file_name.c_str (), 0700)) {
         // don't care ... but return value is used
     }
-    WriterBase*        writer        = new FileWriterCSV (options, options.m_out_file_name + "/data");
+    OutputBase*        output        = OutputFactory::build (options);
     BorderBase*        border        = new BorderWrapparound (options.m_bounds);
     AlgorithmBase*     algorithm     = AlgorithmFactory::build (options);
     DatastructureBase* datastructure = 0;
     if (options.m_autotuning) {
-        datastructure = Autotuning::get_best_datastructure (options, *border, *algorithm, *writer);
+        datastructure = Autotuning::get_best_datastructure (options, *border, *algorithm, *output);
     } else {
-        datastructure    = DatastructureFactory::build (options, *border, *algorithm, *writer);
+        datastructure    = DatastructureFactory::build (options, *border, *algorithm, *output);
         InputBase* input = InputFactory::build (options, *datastructure);
         input->initialize_datastructure ();
         delete input;
@@ -47,7 +47,7 @@ int main (int argc, char** argv) {
     Benchmark::begin ("everything", false);
     particle_simulator.simulate ();
     Benchmark::end ();
-    writer->finalize ();
+    output->finalize ();
 #ifdef CALCULATE_STATISTICS
     m_verbose_stream << "calculate statistics" << std::endl;
     struct timeval time_end;
@@ -57,7 +57,7 @@ int main (int argc, char** argv) {
     m_verbose_stream << g_statistics;
 #endif
     m_verbose_stream << "delete writer;" << std::endl;
-    delete writer;
+    delete output;
     m_verbose_stream << "delete border;" << std::endl;
     delete border;
     m_verbose_stream << "delete algorithm;" << std::endl;

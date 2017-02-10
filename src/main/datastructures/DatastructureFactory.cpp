@@ -6,7 +6,7 @@
  *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
 #include "DatastructureFactory.hpp"
-DatastructureBase* DatastructureFactory::build (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_writer) {
+DatastructureBase* DatastructureFactory::build (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, OutputBase& p_writer) {
     switch (p_options.m_data_structure_type) {
         case e_datastructure_type::LINKED_CELLS:
             return new DatastructureLinkedCells (p_options, p_border, p_algorithm, p_writer);

@@ -15,7 +15,7 @@ class DatastructureNeighborList : public DatastructureBase {
     /**
      * constructor
      */
-    DatastructureNeighborList (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_particle_writer);
+    DatastructureNeighborList (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, OutputBase& p_particle_writer);
     /**
      * destructor
      */

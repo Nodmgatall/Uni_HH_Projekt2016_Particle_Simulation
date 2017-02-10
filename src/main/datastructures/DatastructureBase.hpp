@@ -12,9 +12,9 @@
 #include "algorithms/AlgorithmBase.hpp"
 #include "borders/BorderBase.hpp"
 #include "helper/ParticleGroup.hpp"
-#include "io/output/file/FileWriterCSV.hpp"
 #include "options/Options.hpp"
 #include <Statistics.hpp>
+#include <io/output/file/FileOutputCSV.hpp>
 #include <iostream>
 #include <vector>
 class DatastructureBase {
@@ -38,7 +38,7 @@ class DatastructureBase {
     /**
      * how the data should be saved
      */
-    WriterBase& m_writer;
+    OutputBase& m_writer;
     /**
      * true if an error happened, and the simulation should be stopped
      */
@@ -100,7 +100,7 @@ class DatastructureBase {
     /**
      * constructor
      */
-    DatastructureBase (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_writer)
+    DatastructureBase (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, OutputBase& p_writer)
     : m_options (p_options), m_border (p_border), m_algorithm (p_algorithm), m_writer (p_writer), m_error_happened (false), m_iterations_until_rearange_particles (1),
       m_iterations_since_rearange_particles (0), m_idx_a (0), m_idx_b (1), m_max_id (0), m_datastructure_rebuild_last_iteration_flag (true /*list MUST rebuild in first iteration*/) {
         m_iterations_until_rearange_particles = p_options.m_max_iterations_between_datastructure_rebuild;

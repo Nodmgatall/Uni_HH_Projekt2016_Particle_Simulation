@@ -5,11 +5,11 @@
  *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
  *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
-#ifndef SRC_MAIN_IO_INPUT_FILE_FILEREADERCSV_HPP_
-#define SRC_MAIN_IO_INPUT_FILE_FILEREADERCSV_HPP_
+#ifndef SRC_MAIN_IO_INPUT_FILE_FILEINPUTCSV_HPP_
+#define SRC_MAIN_IO_INPUT_FILE_FILEINPUTCSV_HPP_
 #include "io/input/InputBase.hpp"
 #include <algorithm>
-class FileReaderCSV : public InputBase {
+class FileInputCSV : public InputBase {
   protected:
     /**
      * string left trim removes whitespaces etc from the left string side
@@ -28,11 +28,11 @@ class FileReaderCSV : public InputBase {
     /**
      * constructor
      */
-    FileReaderCSV (s_options& p_options, DatastructureBase& p_datastructure);
+    FileInputCSV (s_options& p_options, DatastructureBase& p_datastructure);
     /**
      * destructor
      */
-    virtual ~FileReaderCSV ();
+    virtual ~FileInputCSV ();
     virtual void initialize_datastructure () override;
 };
-#endif /* SRC_MAIN_IO_INPUT_FILE_FILEREADERCSV_HPP_ */
+#endif /* SRC_MAIN_IO_INPUT_FILE_FILEINPUTCSV_HPP_ */

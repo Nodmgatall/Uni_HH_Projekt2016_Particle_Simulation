@@ -7,8 +7,8 @@
  */
 #ifndef SRC_PARTICLEFILEWRITER_HPP_
 #define SRC_PARTICLEFILEWRITER_HPP_
-#include "io/output/WriterBase.hpp"
-class FileWriterCSV : public WriterBase {
+#include <io/output/OutputBase.hpp>
+class FileOutputCSV : public OutputBase {
   protected:
     /**
      * the current timestep which is used as fileending. this could be much less, than the timestep
@@ -33,7 +33,7 @@ class FileWriterCSV : public WriterBase {
     /**
      * constructor
      */
-    FileWriterCSV (s_options& p_options, const std::string& p_file_name_base);
+    FileOutputCSV (s_options& p_options, const std::string& p_file_name_base);
     void start () override;
     void end () override;
     void finalize () override;

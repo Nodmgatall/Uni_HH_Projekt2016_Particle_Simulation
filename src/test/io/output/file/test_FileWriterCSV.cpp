@@ -1,3 +1,4 @@
+
 /*
  * test_FileWriterCSV.cpp
  *
@@ -6,14 +7,14 @@
  */
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "FileWriterCSV"
-#include "io/output/file/FileWriterCSV.hpp"
 #include "options/Options.hpp"
 #include "string"
 #include <boost/test/unit_test.hpp>
+#include <io/output/file/FileOutputCSV.hpp>
 BOOST_AUTO_TEST_CASE (test1) {
     s_options options_test;
     options_test.m_write_modes = { e_csv_column_type::ID, e_csv_column_type::POSITION, e_csv_column_type::VELOCITY };
-    FileWriterCSV writer (options_test, "../Temporary/test_FileWriterCSV.test1.tmp.");
+    FileOutputCSV writer (options_test, "../Temporary/test_FileWriterCSV.test1.tmp.");
     writer.start ();
     writer.end ();
     //
@@ -26,7 +27,7 @@ BOOST_AUTO_TEST_CASE (test1) {
 BOOST_AUTO_TEST_CASE (test2) {
     s_options options_test;
     options_test.m_write_modes = { e_csv_column_type::ID, e_csv_column_type::POSITION, e_csv_column_type::VELOCITY };
-    FileWriterCSV writer (options_test, "../Temporary/test_FileWriterCSV.test2.tmp.");
+    FileOutputCSV writer (options_test, "../Temporary/test_FileWriterCSV.test2.tmp.");
     writer.start ();
     std::vector<data_type>     positions_x;
     std::vector<data_type>     positions_y;

@@ -16,7 +16,7 @@ typedef GeneratorRandom GeneratorUnderTest;
 #include <algorithms/AlgorithmStoermerVerletLennardJones.hpp>
 #include <boost/test/unit_test.hpp>
 #include <cstring>
-class ParticleWriter : public WriterBase {
+class ParticleWriter : public OutputBase {
   public:
     void saveData (std::vector<data_type>& p_positions_x, std::vector<data_type>& p_positions_y, std::vector<data_type>& p_positions_z, std::vector<unsigned long>& p_ids) {
         (void) p_positions_x;
@@ -36,7 +36,7 @@ class ParticleWriter : public WriterBase {
 class Datastructure : public DatastructureBase {
   public:
     int m_particle_count;
-    Datastructure (s_options& p_options, BorderBase& p_particle_bounds_correction, AlgorithmBase& p_algorithm, WriterBase& p_particle_file_writer)
+    Datastructure (s_options& p_options, BorderBase& p_particle_bounds_correction, AlgorithmBase& p_algorithm, OutputBase& p_particle_file_writer)
     : DatastructureBase (p_options, p_particle_bounds_correction, p_algorithm, p_particle_file_writer), m_particle_count (0) {
     }
     ~Datastructure () {

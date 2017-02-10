@@ -15,7 +15,7 @@
 /**
  * implemented or planned output types for simulation
  */
-enum class e_output_type { FILE_CSV = 1, FILE_LAMMPS = 2, FILE_ESPRESSO = 3, FILE_GROMACS = 4, FILE_VMD = 5, FILE_VTK = 6, FILE_CSV_AVI = 7 };
+enum class e_output_type { VOID = 1, FILE_CSV = 2, FILE_LAMMPS = 3, FILE_ESPRESSO = 4, FILE_GROMACS = 5, FILE_VMD = 6, FILE_VTK = 7, FILE_CSV_AVI = 8 };
 // CSV::ParaView	how to  -> http://www.paraview.org/Wiki/ParaView/Data_formats
 /* visualisierungs software
  *

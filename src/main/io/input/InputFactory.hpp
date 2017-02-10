@@ -10,11 +10,11 @@
 #include "Definitions.hpp"
 #include "InputBase.hpp"
 #include "datastructures/DatastructureBase.hpp"
-#include "file/FileReaderCSV.hpp"
 #include "generators/GeneratorGridDistribution.hpp"
 #include "generators/GeneratorRandom.hpp"
 #include "generators/GeneratorSingleObjectMiddle.hpp"
 #include "options/Options.hpp"
+#include <io/input/file/FileInputCSV.hpp>
 class InputFactory {
   public:
     /**

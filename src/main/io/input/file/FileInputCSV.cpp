@@ -5,23 +5,23 @@
  *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
  *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
-#include "FileReaderCSV.hpp"
-FileReaderCSV::FileReaderCSV (s_options& p_options, DatastructureBase& p_datastructure) : InputBase (p_options, p_datastructure) {
-    m_stucture_name = "FileReaderCSV";
+#include <io/input/file/FileInputCSV.hpp>
+FileInputCSV::FileInputCSV (s_options& p_options, DatastructureBase& p_datastructure) : InputBase (p_options, p_datastructure) {
+    m_stucture_name = "FileInputCSV";
 }
-FileReaderCSV::~FileReaderCSV () {
+FileInputCSV::~FileInputCSV () {
 }
-void FileReaderCSV::ltrim (std::string& s) {
+void FileInputCSV::ltrim (std::string& s) {
     s.erase (s.begin (), std::find_if (s.begin (), s.end (), std::not1 (std::ptr_fun<int, int> (std::isspace))));
 }
-void FileReaderCSV::rtrim (std::string& s) {
+void FileInputCSV::rtrim (std::string& s) {
     s.erase (std::find_if (s.rbegin (), s.rend (), std::not1 (std::ptr_fun<int, int> (std::isspace))).base (), s.end ());
 }
-void FileReaderCSV::trim (std::string& s) {
+void FileInputCSV::trim (std::string& s) {
     ltrim (s);
     rtrim (s);
 }
-void FileReaderCSV::initialize_datastructure () {
+void FileInputCSV::initialize_datastructure () {
     std::ifstream file = std::ifstream (m_options.m_in_file_name);
     std::string   line;
     std::string   word;

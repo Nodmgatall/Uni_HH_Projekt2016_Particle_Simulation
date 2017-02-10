@@ -6,7 +6,7 @@
  *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
 #include <datastructures/DatastructureLinkedCellsNeighborList.hpp>
-DatastructureLinkedCellsNeighborList::DatastructureLinkedCellsNeighborList (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_particle_writer)
+DatastructureLinkedCellsNeighborList::DatastructureLinkedCellsNeighborList (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, OutputBase& p_particle_writer)
 : DatastructureLinkedCells (p_options, p_border, p_algorithm, p_particle_writer) {
     m_stucture_name = "DatastructureLinkedCellsNeighborList";
 }

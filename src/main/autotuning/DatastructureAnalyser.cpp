@@ -8,7 +8,7 @@
 #include <autotuning/DatastructureAnalyser.hpp>
 /*m_idx_a -> position*/
 /*m_idx_a -> velocity*/
-DatastructureAnalyser::DatastructureAnalyser (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_writer)
+DatastructureAnalyser::DatastructureAnalyser (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, OutputBase& p_writer)
 : DatastructureBase (p_options, p_border, p_algorithm, p_writer) {
     m_stucture_name = "DatastructureAnalyser";
     m_particle_groups.push_back (ParticleGroup (Vec3l (), m_options.m_bounds));

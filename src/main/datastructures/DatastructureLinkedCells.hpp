@@ -106,7 +106,7 @@ class DatastructureLinkedCells : public DatastructureBase {
     /**
      * constructor
      */
-    DatastructureLinkedCells (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_particle_writer);
+    DatastructureLinkedCells (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, OutputBase& p_particle_writer);
     /**
      * destructor
      */
