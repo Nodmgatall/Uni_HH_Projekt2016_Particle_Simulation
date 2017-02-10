@@ -17,7 +17,6 @@ class OutputFactory {
     /**
      * creates an Output subclass based on the options.
      * @param p_options the options which specify which Output to return
-     * @param p_datastructure passed as parameter to the constructor for the Output-base class
      * @return
      */
     static OutputBase* build (s_options& p_options);
