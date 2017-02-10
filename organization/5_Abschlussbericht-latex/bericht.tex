@@ -78,9 +78,8 @@
 	\vfill
 
 	{\large\begin{tabular}{ll}
-		Vorgelegt von:  & \begin{tabular}{@{}l@{}}Oliver Heidmann, \\ Benjamin Warnke\end{tabular} \\
+		Vorgelegt von:  & \begin{tabular}{@{}l@{}}Oliver Heidmann (1234567), \\ Benjamin Warnke (6676867)\end{tabular} \\%TODO
 		E-Mail-Adresse: & \begin{tabular}{@{}l@{}}\href{mailto:oliverheidmann@hotmail.de}{oliverheidmann@hotmail.de},\\ \href{mailto:4bwarnke@informatik.uni-hamburg.de}{4bwarnke@informatik.uni-hamburg.de}\end{tabular}\\
-		Matrikelnummer: & \begin{tabular}{@{}l@{}}1234567,\\6676867\end{tabular} \\%TODO
 		Studiengang:    & Bachelor Informatik\\
 		\\
 		Betreuer:       & Philipp Neumann \\
@@ -101,19 +100,10 @@ Ziel des dieses Projektes ist die Implementierung einer Partikel-Simulation für
 \chapter{Einleitung}
 \label{Einleitung}
 
-Bei Partikel Simulationen müssen normalerweise die Wechselwirkungen zwischen jedem möglichen Partikelpaar berechnet werden. Die Laufzeit des Programms steigt quadratisch zur Anzahl der Partikel. Dies ist besonders bei hohen Anzahlen von Partikeln kritisch für die Laufzeit. Die in diesem Projekt implementierte Partikel-Simulation ist für kurzreichweitige Interaktionen optimiert. Dadurch lassen sich die Interaktionen zwischen weit auseinanderliegenden Partikeln vernachlässigen, wodurch die Laufzeit kürzer werden kann. Es gibt verschiedene Möglichkeiten, die Interaktionen auf die kurzreichweitige Interaktion zu beschränken um das Programm zu beschleunigen. Das Problem bei diesen verschiedenen Möglichkeiten der Beschleunigung besteht darin, dass je nach Eingabe eine andere Art der Vereinfachung eine bessere Programm-Laufzeit ermöglicht. Die Besonderheit dieser Partikel Simulation liegt darin, dass das Programm zu beginn selbst entscheiden kann, welche Optimierungsstrategie für die gegebene Eingabe am sinnvollsten ist. Hieraus resultiert der Vorteil gegenüber anderen Programmen, dass die Laufzeit für jede beliebige Eingabe besonders schnell ist, und nicht nur wenn die Eingabe passend ist. Dies ist besonders dann spannend, wenn man selbst nicht sicher ist, welches verfahren für die Eingabe am besten geeignet ist, ohne selbst vorher alle Möglichkeiten einmal auszuprobieren.
+Bei Partikel Simulationen müssen normalerweise die Wechselwirkungen zwischen jedem möglichen Partikelpaar berechnet werden. Die Laufzeit des Programms steigt quadratisch zur Anzahl der Partikel. Dies ist besonders bei hohen Anzahlen von Partikeln kritisch für die Laufzeit. Die in diesem Projekt implementierte Partikel-Simulation ist für kurzreichweitige Interaktionen optimiert. Dadurch lassen sich die Interaktionen zwischen weit auseinanderliegenden Partikeln vernachlässigen, wodurch die Laufzeit kürzer werden kann. Es gibt verschiedene Möglichkeiten, die Interaktionen auf die kurzreichweitige Interaktion zu beschränken um das Programm zu beschleunigen. Das Problem bei diesen verschiedenen Möglichkeiten der Beschleunigung besteht darin, dass je nach Eingabe eine andere Art der Vereinfachung eine bessere Programm-Laufzeit ermöglicht. Die Besonderheit dieser Partikel Simulation liegt darin, dass das Programm zu beginn selbst entscheiden kann, welche Optimierungsstrategie für die gegebene Eingabe am sinnvollsten ist. Hieraus resultiert der Vorteil gegenüber anderen Programmen, dass die Laufzeit für jede beliebige Eingabe besonders schnell ist, und nicht nur wenn die Eingabe passend ist. Dies ist besonders dann spannend, wenn man selbst nicht sicher ist, welches Verfahren für die Eingabe am besten geeignet ist, ohne selbst vorher alle Möglichkeiten einmal auszuprobieren.
 
 \chapter{Realisierung}
 \label{Realisierung}
-\section{Vorgehen}
-
-%TODO 
-planung
-aufteilung + zeitplan -> realität
-zeiteinschätzung vs reale zeit
-unerwartete schwierigkeiten
-
-\newpage
 \section{Design}
 \begin{figure}[h]
 	\centering
@@ -130,14 +120,21 @@ Das Programm lässt sich grob in 5 Logische Teilbereiche gliedern.
 	\item \textbf{Algorithmus} (grün) Es gibt verschiedene physikalische oder chemische zusammenhänge zwischen verschiedenen Partikeln oder Molekülen. Dieses Programm ermöglicht es relativ einfach weitere Arten der Interaktion zwischen Partikeln zu definieren, und diese dann zur Programmlaufzeit auszuwählen.
 	\item \textbf{Steuerung} (lila) Ein Teil des Programms ist für die Kontrolle der anderen Teilbereiche Notwendig. Zur den Kontrollstrukturen gehören in diesem Programm zum einen die Parameter, welche die Startbedingungen definieren, zum anderen gehört das Auto-tuning auch mit in diese Kategorie, da es beim Auto-tuning darum geht zu entscheiden, welche Voraussetzungen für das weitere Programm gelten sollen.
 \end{enumerate}
-%TODO 
-welche klasse tut was
-für spätere programierer erklären
 
 \section{Implementierung}
+Zu Beginn des Projektes haben wir uns eine grobe Struktur des Programms überlegt, und Schnittstellen definiert, um gleichzeitig in verschiedenen Komponenten an dem Projekt arbeiten zu können. Wir haben das Projekt in die folgenden Komponenten zerlegt:
 
-%TODO 
-beschreiben der benutzung(parameter)
+\begin{itemize}
+	\item \textbf{Parameter} Schon zu beginn des Projektes war absehbar, dass das Programm mit verschiedenen Startparametern umgehen können muss. Zum einen ist dies Sehr hilfreich, um zum Testen spezielles Verhalten zu provozieren, zum anderen ermöglicht ein Parametrisierter Programmaufruf eine sehr flexible Einsatzmöglichkeit des Programms. Während des Programmierens wurden zunehmend mehr Parameter hinzugefügt. Sodass die Art wie die Parameter im Programm abgespeichert werden angepasst werden musste. Sobald die ersten Parameter übernommen werden konnten, war das hinzufügen weiterer Parameter sehr einfach. Um es späteren Anwendern zu erleichtern wurde für jeden Programmparameter ein Hilfetext aufgeschrieben. Der Hilfetext für alle Parameter kann mithilfe des Parameters '-{}-help' ausgegeben werden.
+	\item \textbf{Basis-Klassen} Da unser Projekt zum Ziel hat, dass das Programm automatisch entscheiden kann, welche Optimierung für die gegebenen Daten am sinnvollsten ist, muss es einen Weg geben verschiedene Implementationen schnell zur Laufzeit austauschen zu können. Da es in Cpp keine Interfaces gibt, wurden die Schnittstellen in Form von abstrakten Klassen realisiert. Um später keine Probleme zu bekommen, war es sinnvoll möglichst früh zu erkennen, welche arten von Methoden definiert sein müssen, um eine gute Austauschbarkeit zu erreichen.
+	\item \textbf{Logging} Beim Programmieren ist es manchmal sinnvoll, lokale Variablen auf die Konsole zu schreiben, um den aktuellen Status des Programms zur Laufzeit nachverfolgen zu können. Auch zur Fehlersuche ist dies manchmal sehr hilfreich, da Debugger die Ausführungszeit teilweise so stark verlangsamen, dass einige Fehler dadurch nicht mehr auftreten. Deshalb haben wir uns schon zu beginn des Programmierens überlegt, wie wir hilfreiche Informationen ausgeben können, wenn das Programm getestet wird, und gleichzeitig nicht die Release-Version des Programmes durch unnötige Textausgaben zu verlangsamen. Wir haben dies durch Makros realisiert, die in der Release-Version dafür sorgen, dass keine Ausgabe generiert wird.
+	\item \textbf{Startdaten} Da es verschiedene Möglichkeiten geben soll, wie die Partikel zu beginn der Simulation angeordnet sind, ist auch hier eine sehr gute Austauschbarkeit von verschiedenen Datenquellen erforderlich. Zum einen können die Partikel zur Laufzeit unter Berücksichtigung von Start Parametern generiert werden, zum anderen können die Partikel auch aus einer Datei geladen werden. 
+	\item \textbf{Algorithmus zur Interaktion} Wir haben uns in diesem Projekt darauf beschränkt, dass zur Berechnung der Kräfte zwischen Partikeln das Lennard-Jones-Potential zu verwenden. Da es theoretisch möglich sein soll, dieses Verfahren auch durch Parameter zu ändern, wurde auch hier darauf geachtet, dass Der Code so organisiert ist, dass eine einfache Austauschbarkeit erreicht wird. Der Algorithmus wurde hierzu aufgespalten in zwei Teile. Der erste Teil beschränkt sich auf die Bewegung, die aus der aktuellen Geschwindigkeit des einzelnen Partikels resultiert. Der zweite Teil beschränkt sich auf die Kräfte, die durch Wechselwirkungen zwischen Partikeln entstehen.
+	\item \textbf{Ausgabe} Damit es sinnvoll ist Partikel zu simulieren, müssen die Daten in irgendeiner Form ausgegeben werden, um eine spätere Analyse zu ermöglichen. Hierfür wurde in diesem Projekt ein Modul programmiert, welches alle Partikel in einer '*.csv' Datei-Serie abspeichern kann. 
+	\item \textbf{Datenstrukturen} Zu beginn des Projektes wurden zwei verschiedene Optimierungsstrategien vorgeschlagen. In der Linked-Cells Variante wird ein Raster über das zu simulierende Volumen gelegt, und die Partikel werden in dieses Raster eingefügt. Interaktionen zwischen Partikeln können nur dann stattfinden, wenn sich 2 Partikel entweder in der gleichen Zelle befinden oder Wenn die Zellen der Partikel benachbart sind. Bei einer großen Anzahl Zellen, sind nur noch relativ wenig Partikel in den einzelnen Zellen. Dadurch reduziert sich der benötigte Rechenaufwand enorm. Die andere Variante benutzt Nachbarschafts-Listen, um während der Iterationen nur die direkten Nachbarn zur Interaktion zu berücksichtigen. Der Nachteil bei dieser Variante besteht darin, dass das Aufbauen der Listen, welche Partikel in der Nachbarschaft sind eine hohe Laufzeit verursacht. Dafür ist allerdings sie benötigte Zeit pro Iteration niedriger als in der Linked-Cells Variante. Nachdem beide Varianten einzeln implementiert worden waren, war es relativ einfach möglich, eine Kombinierte Variante zu erstellen, die innerhalb der Zellen Nachbarschafts Listen verwendet.
+	\item \textbf{Optimierung} Zur Optimierung wurde in der Linked-Cells Variante OpenMP verwendet. Die Variante mit den Nachbarschafts Listen konnte nicht ohne weiteres Parallelisiert werden.
+\end{itemize}
+
 
 \section{Analyse}
 \subsection{Korrektheit}
@@ -177,7 +174,7 @@ Damit das Auto-tuning entscheiden kann, welche Variante verwendet werden soll, m
 	\item \textbf{Startanordnung} Je nachdem wie die Partikel bei Programmstart angeordnet sind ergeben sich andere Effekte. Zum Beispiel wäre es möglich, dass sich zu beginn alle Partikel in einem kleinem Bereich des zu simulierenden Raum aufhalten. Hieraus folgt, dass einige Zellen sehr viel mehr Partikel enthalten als andere. Für die gemischte Variante würde dies Bedeuten, dass die zweite Aufbauphase in einigen Zellen sehr viel Laufzeit benötigt.
 \end{itemize}
 \subsection{Auto-tuning}
-%TODO 
+Um herauszufinden, nach welchen Kriterien das Auto-tuning entscheiden kann, wurden viele Messungen mit verschiedenen Parametern durchgeführt. Wenn die Geschwindigkeit des schnellsten Partikels bekannt ist, sowie die Strecke, die Maximal zurückgelegt werden darf, dann lässt sich die Zeit berechnen, bis die Datenstruktur Reorganisiert werden muss. Da die verschiedenen Datenstrukturen verschiedene Laufzeit Eigenschaften bezüglich Reorganisieren und Iterationen haben, ergibt sich die folgende Formel um zu entscheiden, welche Datenstruktur besser geeignet ist.
 \begin{itemize}
 	\item \textbf{c} $\rightarrow$ cut-off-radius
 	\item \textbf{f} $\rightarrow$ cut-off-radius-factor
@@ -185,7 +182,7 @@ Damit das Auto-tuning entscheiden kann, welche Variante verwendet werden soll, m
 \end{itemize}
 
 \begin{align*}
-2\cdot s < c \cdot (f - 1) - 1
+	2\cdot s < c \cdot (f - 1) - 1
 \end{align*}
 
 \begin{itemize}
@@ -200,7 +197,10 @@ Damit das Auto-tuning entscheiden kann, welche Variante verwendet werden soll, m
 \chapter{Literatur}
 \label{Literatur}
 
-%TODO 
+\begin{itemize}
+	\item M-Griebel, S. Knapek, G. Zumbuschm, A. Caglar: Numerische Simulation in der Moleküldynamic. Springer, 2003
+	\item D.C Rapaport: The Art of Molecular Dynamics Simulation - 2nd edition, Cambridge University Press, 2004
+\end{itemize}
 
 \chapter{Anhang}
 \label{Anhang}
