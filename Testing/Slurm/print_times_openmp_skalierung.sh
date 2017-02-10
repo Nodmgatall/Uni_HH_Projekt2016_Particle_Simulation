@@ -1,4 +1,25 @@
-echo "row,radius,bounds,initial_speed,extra_radius,threads,GRID_rebuild_count_1,GRID_rebuild_count_2,GRID_rebuild_count_3,GRID_LIST_rebuild_count_1,GRID_LIST_rebuild_count_2,GRID_LIST_rebuild_count_3,GRID_time_1,GRID_time_2,GRID_time_3,GRID_LIST_time_1,GRID_LIST_time_2,GRID_LIST_time_3,GRID_average_time,GRID_LIST_average_time,GRID_speedup,GRID_LIST_speedup"
+echo "row,\
+radius,\
+bounds,\
+initial_speed,\
+extra_radius,\
+threads,\
+LINKED_CELLS_rebuild_count_1,\
+LINKED_CELLS_rebuild_count_2,\
+LINKED_CELLS_rebuild_count_3,\
+LINKED_CELLS+NEIGHBOR_LIST_rebuild_count_1,\
+LINKED_CELLS+NEIGHBOR_LIST_rebuild_count_2,\
+LINKED_CELLS+NEIGHBOR_LIST_rebuild_count_3,\
+LINKED_CELLS_time_1,\
+LINKED_CELLS_time_2,\
+LINKED_CELLS_time_3,\
+LINKED_CELLS+NEIGHBOR_LIST_time_1,\
+LINKED_CELLS+NEIGHBOR_LIST_time_2,\
+LINKED_CELLS+NEIGHBOR_LIST_time_3,\
+LINKED_CELLS_average_time,\
+LINKED_CELLS+NEIGHBOR_LIST_average_time,\
+LINKED_CELLS_speedup,\
+LINKED_CELLS_+NEIGHBOR_LIST_speedup"
 
 var_speedup_grid_0=1;
 var_speedup_grid_list_0=1;
@@ -16,7 +37,7 @@ var_line_statistics_total_runtime="";
 var_line_statistics_total_datastructure_rebuild_count="";
 var_sum_square_times_grid=0;
 var_sum_square_times_grid_list=0;
-for var_datastructure in "GRID" "GRID_LIST";
+for var_datastructure in "LINKED_CELLS" "LINKED_CELLS+NEIGHBOR_LIST";
 do
 for var_run_index in 1 2 3;
 do
@@ -62,7 +83,7 @@ echo "${var_row},${var_radius},${var_bounds},${var_initial_speed},${var_radius_e
 var_row=$((var_row + 1))
 }
 
-var_datastructure="GRID"
+var_datastructure="LINKED_CELLS"
 
 for var_cut_off in 1 1.2
 do
