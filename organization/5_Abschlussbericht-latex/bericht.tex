@@ -79,9 +79,9 @@
 
 	{\large\begin{tabular}{ll}
 		Vorgelegt von:  & \begin{tabular}{@{}l@{}}Oliver Heidmann, \\ Benjamin Warnke\end{tabular} \\
-		E-Mail-Adresse: & \begin{tabular}{@{}l@{}}\href{mailto:adresse@email.de}{adresse@email.de},\\ \href{mailto:4bwarnke@informatik.uni-hamburg.de}{4bwarnke@informatik.uni-hamburg.de}\end{tabular}\\
-		Matrikelnummer: & \begin{tabular}{@{}l@{}}1234567,\\6676867\end{tabular} \\
-		Studiengang:    & Informatik\\
+		E-Mail-Adresse: & \begin{tabular}{@{}l@{}}\href{mailto:oliverheidmann@hotmail.de}{oliverheidmann@hotmail.de},\\ \href{mailto:4bwarnke@informatik.uni-hamburg.de}{4bwarnke@informatik.uni-hamburg.de}\end{tabular}\\
+		Matrikelnummer: & \begin{tabular}{@{}l@{}}1234567,\\6676867\end{tabular} \\%TODO
+		Studiengang:    & Bachelor Informatik\\
 		\\
 		Betreuer:       & Philipp Neumann \\
 		\\
@@ -121,6 +121,15 @@ unerwartete schwierigkeiten
 	\caption{Klassendiagramm}
 	\label{figure:Klassendiagramm}
 \end{figure}
+
+Das Programm lässt sich grob in 5 Logische Teilbereiche gliedern.
+\begin{enumerate}
+	\item \textbf{Input} (rot) Damit die Simulation starten kann, müssen Partikel vorhanden sein. Diese werden entweder generiert oder aus einer Datei geladen. Das laden aus einer Datei ist besonders dann hilfreich, wenn aufgrund langer Programmlaufzeiten Checkpoints benutzt werden müssen, um später die Simulation fortzusetzen.
+	\item \textbf{Output} (cyan) Damit die Ergebnisse der Simulation später ausgewertet werden können, müssen diese als Datei vorhanden sein, damit andere Programme zur Visualisierung verwendet werden können.
+	\item \textbf{Datenstruktur} (blau) Es gibt verschiedene Möglichkeiten Partikelkombinationen auszuschließen, die nicht in einer Nachbarschaftsbeziehung sind. In diesem Projekt geht es besonders darum, je nach Eingabe eine andere Datenstruktur auszuwählen. Deshalb wurde bei dem Design darauf geachtet, das verschiedene Implementationen von Datenstrukturen leicht austauschbar sind. In der jeweils aktiven Datenstruktur sind alle Partikel gespeichert, die für die Simulation betrachtet werden sollen.
+	\item \textbf{Algorithmus} (grün) Es gibt verschiedene physikalische oder chemische zusammenhänge zwischen verschiedenen Partikeln oder Molekülen. Dieses Programm ermöglicht es relativ einfach weitere Arten der Interaktion zwischen Partikeln zu definieren, und diese dann zur Programmlaufzeit auszuwählen.
+	\item \textbf{Steuerung} (lila) Ein Teil des Programms ist für die Kontrolle der anderen Teilbereiche Notwendig. Zur den Kontrollstrukturen gehören in diesem Programm zum einen die Parameter, welche die Startbedingungen definieren, zum anderen gehört das Auto-tuning auch mit in diese Kategorie, da es beim Auto-tuning darum geht zu entscheiden, welche Voraussetzungen für das weitere Programm gelten sollen.
+\end{enumerate}
 %TODO 
 welche klasse tut was
 für spätere programierer erklären
