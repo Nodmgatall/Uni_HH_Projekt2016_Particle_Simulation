@@ -22,17 +22,33 @@ struct Statistics {
      */
     unsigned int m_total_datastructure_rebuild_count;
     /**
-     * total runtime in seconds
+     * total runtime in seconds*10⁻6
      */
-    data_type     m_total_runtime;
+    unsigned long long m_total_runtime;
+    /**
+     * total runtime used for calculateing the interactions in seconds*10⁻6
+     */
+    unsigned long long m_total_runtime_calculation;
+    /**
+     * total runtime used for rebuilding the datastructure in seconds*10⁻6
+     */
+    unsigned long long m_total_runtime_rebuild;
+    /**
+     * the number of cells used in the grid datastructure
+     */
     unsigned long m_cell_count;
-    s_options*    m_options;
-    Statistics () : m_total_datastructure_rebuild_count (0), m_total_runtime (0), m_cell_count (-1), m_options (0) {
+    /**
+     * the options given by the program parameters
+     */
+    s_options* m_options;
+    Statistics () : m_total_datastructure_rebuild_count (0), m_total_runtime (0), m_total_runtime_calculation (0), m_total_runtime_rebuild (0), m_cell_count (-1), m_options (0) {
     }
 
     friend std::ostream& operator<< (std::ostream& stream, const Statistics p_statistics) {
         stream << *p_statistics.m_options;
-        stream << "statistics.total_runtime                                     : " << p_statistics.m_total_runtime << std::endl;
+        stream << "statistics.total_runtime                                     : " << (p_statistics.m_total_runtime / 1.e6) << std::endl;
+        stream << "statistics.m_total_runtime_calculation                       : " << (p_statistics.m_total_runtime_calculation / 1.e6) << std::endl;
+        stream << "statistics.m_total_runtime_rebuild                           : " << (p_statistics.m_total_runtime_rebuild / 1.e6) << std::endl;
         stream << "statistics.total_datastructure_rebuild_count                 : " << p_statistics.m_total_datastructure_rebuild_count << std::endl;
         stream << "statistics.average_time_per_iteration                        : " << (p_statistics.m_total_runtime / p_statistics.m_options->m_max_iterations) << std::endl;
         stream << "statistics.average_iterations_between_rebuild                : " << (p_statistics.m_total_datastructure_rebuild_count / p_statistics.m_options->m_max_iterations)

@@ -52,7 +52,7 @@ int main (int argc, char** argv) {
     m_verbose_stream << "calculate statistics" << std::endl;
     struct timeval time_end;
     gettimeofday (&time_end, NULL);
-    g_statistics.m_total_runtime = time_end.tv_sec - time_start.tv_sec + (time_end.tv_usec - time_start.tv_usec) / 1.e6;
+    g_statistics.m_total_runtime = (time_end.tv_sec - time_start.tv_sec) * 1.e6 + (time_end.tv_usec - time_start.tv_usec);
     m_standard_stream << "print statistics" << std::endl;
     m_standard_stream << g_statistics;
 #endif

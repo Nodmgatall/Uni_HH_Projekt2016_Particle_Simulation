@@ -19,8 +19,18 @@ LINKED_CELLS_time_3,\
 LINKED_CELLS+NEIGHBOR_LIST_time_1,\
 LINKED_CELLS+NEIGHBOR_LIST_time_2,\
 LINKED_CELLS+NEIGHBOR_LIST_time_3,\
-LINKED_CELLS_average_time,\
-LINKED_CELLS+NEIGHBOR_LIST_average_time"
+LINKED_CELLS_time_rebuild_1,\
+LINKED_CELLS_time_rebuild_2,\
+LINKED_CELLS_time_rebuild_3,\
+LINKED_CELLS+NEIGHBOR_LIST_time_rebuild_1,\
+LINKED_CELLS+NEIGHBOR_LIST_time_rebuild_2,\
+LINKED_CELLS+NEIGHBOR_LIST_time_rebuild_3,\
+LINKED_CELLS_time_calculate_1,\
+LINKED_CELLS_time_calculate_2,\
+LINKED_CELLS_time_calculate_3,\
+LINKED_CELLS+NEIGHBOR_LIST_time_calculate_1,\
+LINKED_CELLS+NEIGHBOR_LIST_time_calculate_2,\
+LINKED_CELLS+NEIGHBOR_LIST_time_calculate_3,"
 
 var_row=1
 add_job(){
@@ -32,9 +42,9 @@ var_radius_extra=$5
 var_threads=$6
 
 var_line_statistics_total_runtime="";
+var_line_statistics_total_runtime_rebuild="";
+var_line_statistics_total_runtime_calculate="";
 var_line_statistics_total_datastructure_rebuild_count="";
-var_sum_square_times_grid=0;
-var_sum_square_times_grid_list=0;
 var_line_cell_count="";
 var_line_particles_per_cell="";
 var_line_dichte="";
@@ -45,6 +55,8 @@ do
 var_test_name="simulation_${var_datastructure}_${var_radius}_${var_bounds}_${var_initial_speed}_${var_radius_extra}_${var_threads}"
 file_content=$(cat "${var_run_index}/${var_test_name}.out")
 statistics_total_runtime=$(echo "${file_content}" | grep "statistics.total_runtime" | grep -Eo '[+-]?[0-9]+([.][0-9]+)?')
+statistics_total_runtime_rebuild=$(echo "${file_content}" | grep "statistics.m_total_runtime_rebuild" | grep -Eo '[+-]?[0-9]+([.][0-9]+)?')
+statistics_total_runtime_calculate=$(echo "${file_content}" | grep "statistics.m_total_runtime_calculation" | grep -Eo '[+-]?[0-9]+([.][0-9]+)?')
 statistics_total_datastructure_rebuild_count=$(echo "${file_content}" | grep "statistics.total_datastructure_rebuild_count" | grep -Eo '[+-]?[0-9]+([.][0-9]+)?')
 
 var_line_cell_count=$(echo "${file_content}" | grep "statistics.m_cell_count" | grep -Eo '[+-]?[0-9]+([.][0-9]+)?')
@@ -56,34 +68,26 @@ aborted=$(echo "${file_content}" | grep "something went badly wrong")
 if [[ $aborted = *[!\ ]* ]]; then
 var_line_statistics_total_datastructure_rebuild_count="$var_line_statistics_total_datastructure_rebuild_count,999999999"
 var_line_statistics_total_runtime="$var_line_statistics_total_runtime,999999999"
-if [ "$var_datastructure" == "GRID" ]; then
-var_sum_square_times_grid=999999999
-else
-var_sum_square_times_grid_list=999999999
-fi
+var_line_statistics_total_runtime_rebuild="$var_line_statistics_total_runtime_rebuild,999999999"
+var_line_statistics_total_runtime_calculate="$var_line_statistics_total_runtime_calculate,999999999"
 else
 var_line_statistics_total_datastructure_rebuild_count="$var_line_statistics_total_datastructure_rebuild_count,$statistics_total_datastructure_rebuild_count"
 var_line_statistics_total_runtime="$var_line_statistics_total_runtime,$statistics_total_runtime"
-if [ "$var_datastructure" == "GRID" ]; then
-var_sum_square_times_grid=$(echo "scale=8; ${var_sum_square_times_grid} + ${statistics_total_runtime} * ${statistics_total_runtime}" | bc -l)
-else
-var_sum_square_times_grid_list=$(echo "scale=8; ${var_sum_square_times_grid_list} + ${statistics_total_runtime} * ${statistics_total_runtime}" | bc -l)
-fi
+var_line_statistics_total_runtime_rebuild="$var_line_statistics_total_runtime_rebuild,$statistics_total_runtime_rebuild"
+var_line_statistics_total_runtime_calculate="$var_line_statistics_total_runtime_calculate,$statistics_total_runtime_calculate"
 fi
 
 
 done
 done
-var_average_times_grid=$(echo "scale=8; sqrt( ${var_sum_square_times_grid} / 3)" | bc -l)
-var_average_times_grid_list=$(echo "scale=8; sqrt( ${var_sum_square_times_grid_list} / 3)" | bc -l)
 
-echo "${var_row},${var_line_dichte},${var_line_particles_per_cell},${var_line_cell_count},${var_radius},${var_bounds},${var_initial_speed},${var_radius_extra},${var_threads}${var_line_statistics_total_datastructure_rebuild_count}${var_line_statistics_total_runtime},$var_average_times_grid,$var_average_times_grid_list"
+echo "${var_row},${var_line_dichte},${var_line_particles_per_cell},${var_line_cell_count},${var_radius},${var_bounds},${var_initial_speed},${var_radius_extra},${var_threads}${var_line_statistics_total_datastructure_rebuild_count}${var_line_statistics_total_runtime}${var_line_statistics_total_runtime_rebuild}${var_line_statistics_total_runtime_calculate}"
 var_row=$((var_row + 1))
 }
 
 var_threads=11
 
-for var_datastructure in "LINKED_CELLS" "LINKED_CELLS+NEIGHBOR_LIST";
+for var_datastructure in "LINKED_CELLS";
 do
 
 for var_initial_speed in 1;

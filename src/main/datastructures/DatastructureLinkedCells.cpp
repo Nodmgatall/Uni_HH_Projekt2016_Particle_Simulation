@@ -394,6 +394,14 @@ bool DatastructureLinkedCells::grid_step_2 () {
     return false;
 }
 bool DatastructureLinkedCells::run_simulation_iteration (unsigned long p_iteration_number) {
+#ifdef CALCULATE_STATISTICS
+    struct timeval time_start;
+    struct timeval time_end;
+    gettimeofday (&time_start, NULL);
+    ////////////////////////////////////////////////////////////////////////////////
+    // Calculation -->>
+    ////////////////////////////////////////////////////////////////////////////////
+#endif
     unsigned int i, j;
     m_error_happened = false;
     m_verbose_stream << DEBUG_VAR (p_iteration_number) << std::endl;
@@ -418,6 +426,17 @@ bool DatastructureLinkedCells::run_simulation_iteration (unsigned long p_iterati
     grid_step_2 ();
     if (m_error_happened)
         return m_error_happened;
+#ifdef CALCULATE_STATISTICS
+    ////////////////////////////////////////////////////////////////////////////////
+    // Calculation <<--
+    ////////////////////////////////////////////////////////////////////////////////
+    gettimeofday (&time_end, NULL);
+    g_statistics.m_total_runtime_calculation += (time_end.tv_sec - time_start.tv_sec) * 1.e6 + (time_end.tv_usec - time_start.tv_usec);
+    gettimeofday (&time_start, NULL);
+    ////////////////////////////////////////////////////////////////////////////////
+    //rebuild datastructure -->>
+    ////////////////////////////////////////////////////////////////////////////////
+#endif
     {
         if ((p_iteration_number <= 0) || (m_datastructure_rebuild_last_iteration_flag = (m_iterations_until_rearange_particles < 1))) {
 #ifdef CALCULATE_STATISTICS
@@ -440,6 +459,13 @@ bool DatastructureLinkedCells::run_simulation_iteration (unsigned long p_iterati
             calculate_next_datastructure_rebuild ();
         }
     }
+#ifdef CALCULATE_STATISTICS
+    ////////////////////////////////////////////////////////////////////////////////
+    // rebuild datastructure <<--
+    ////////////////////////////////////////////////////////////////////////////////
+    gettimeofday (&time_end, NULL);
+    g_statistics.m_total_runtime_rebuild += (time_end.tv_sec - time_start.tv_sec) * 1.e6 + (time_end.tv_usec - time_start.tv_usec);
+#endif
     m_idx_b = !(m_idx_a = m_idx_b);
 #ifdef CALCULATE_ENERGY_CONSERVATION
     g_sum_energy = 0;
