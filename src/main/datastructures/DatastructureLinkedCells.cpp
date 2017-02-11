@@ -38,7 +38,7 @@ DatastructureLinkedCells::DatastructureLinkedCells (s_options& p_options, Border
 Vec3l DatastructureLinkedCells::getSize (s_options& p_options) {
     m_verbose_stream << "DatastructureLinkedCells::getSize" << std::endl;
     // mindestens 10 Partikel pro Zelle
-    long max_usefull_size = pow (p_options.m_particle_count, 1.0 / 3.0) / 10;
+    long max_usefull_size = pow (p_options.m_particle_count, 1.0 / 3.0) / 2;
     m_verbose_stream << DEBUG_VAR (max_usefull_size) << std::endl;
     Vec3f tmp = p_options.m_bounds / (p_options.m_cut_off_radius * p_options.m_cut_off_factor);
     m_verbose_stream << DEBUG_VAR (tmp) << std::endl;
