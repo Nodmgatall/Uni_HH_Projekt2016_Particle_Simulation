@@ -91,11 +91,16 @@ struct s_options {
      * the size the cuttoff is increased to avoid rebuilding the particles too ofthen
      */
     data_type m_cut_off_factor;
+    /**
+     *the thread count used by openmp
+     */
+    int m_thread_count;
     s_options ()
     : m_algorithm_type (e_algorithm_type::LENNARD_JONES), m_autotuning (false), m_bounds (Vec3f (5.0f, 5.0f, 5.0f)), m_cut_off_radius (0.01),
       m_data_structure_type (e_datastructure_type::LINKED_CELLS), m_input_type (e_input_type::GENERATOR_GRID_DISTRIBUTION), m_in_file_name (""), m_max_iterations (0),
       m_initial_speed (0), m_max_iterations_between_datastructure_rebuild (50), m_output_type (e_output_type::VOID), m_out_file_name (""), m_particle_count (0), m_seed (123456789),
-      m_timestep (1), m_verbose (false), m_write_fequency (1), m_write_modes ({ e_csv_column_type::ID, e_csv_column_type::POSITION, e_csv_column_type::VELOCITY }), m_cut_off_factor (1.2) {
+      m_timestep (1), m_verbose (false), m_write_fequency (1), m_write_modes ({ e_csv_column_type::ID, e_csv_column_type::POSITION, e_csv_column_type::VELOCITY }),
+      m_cut_off_factor (1.2), m_thread_count (1) {
         time_t     current_time;
         struct tm* time_info;
         time (&current_time);
@@ -120,6 +125,7 @@ struct s_options {
         stream << "options.particle_count                                       : " << p_options.m_particle_count << std::endl;
         stream << "options.seed                                                 : " << p_options.m_seed << std::endl;
         stream << "options.timestep                                             : " << p_options.m_timestep << std::endl;
+        stream << "options.thread_count                                         : " << p_options.m_thread_count << std::endl;
         stream << "options.verbose                                              : " << p_options.m_verbose << std::endl;
         stream << "options.write_fequency                                       : " << p_options.m_write_fequency << std::endl;
         stream << "options.write_modes                                          : " << p_options.m_write_modes << std::endl;

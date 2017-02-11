@@ -431,7 +431,7 @@ bool DatastructureLinkedCells::run_simulation_iteration (unsigned long p_iterati
     // Calculation <<--
     ////////////////////////////////////////////////////////////////////////////////
     gettimeofday (&time_end, NULL);
-    g_statistics.m_total_runtime_calculation += (time_end.tv_sec - time_start.tv_sec) * 1.e6 + (time_end.tv_usec - time_start.tv_usec);
+    g_statistics.add_total_tuntime_calculation_grid ((time_end.tv_sec - time_start.tv_sec) * 1.e6 + (time_end.tv_usec - time_start.tv_usec));
     gettimeofday (&time_start, NULL);
 ////////////////////////////////////////////////////////////////////////////////
 // rebuild datastructure -->>
@@ -464,7 +464,7 @@ bool DatastructureLinkedCells::run_simulation_iteration (unsigned long p_iterati
     // rebuild datastructure <<--
     ////////////////////////////////////////////////////////////////////////////////
     gettimeofday (&time_end, NULL);
-    g_statistics.m_total_runtime_rebuild += (time_end.tv_sec - time_start.tv_sec) * 1.e6 + (time_end.tv_usec - time_start.tv_usec);
+    g_statistics.add_total_runtime_rebuild_grid ((time_end.tv_sec - time_start.tv_sec) * 1.e6 + (time_end.tv_usec - time_start.tv_usec));
 #endif
     m_idx_b = !(m_idx_a = m_idx_b);
 #ifdef CALCULATE_ENERGY_CONSERVATION

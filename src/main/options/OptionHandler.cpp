@@ -117,9 +117,8 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                 break;
             }
             case threads_index: {
-                int threads;
-                line >> threads;
-                omp_set_num_threads (threads);
+                line >> p_options.m_thread_count;
+                omp_set_num_threads (p_options.m_thread_count);
                 break;
             }
             default: {
