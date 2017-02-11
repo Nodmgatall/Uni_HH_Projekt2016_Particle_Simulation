@@ -36,13 +36,19 @@ DatastructureLinkedCells::DatastructureLinkedCells (s_options& p_options, Border
     m_standard_stream << DEBUG_VAR (m_options.m_cut_off_radius) << std::endl;
 }
 Vec3l DatastructureLinkedCells::getSize (s_options& p_options) {
+    m_verbose_stream << "DatastructureLinkedCells::getSize" << std::endl;
     // mindestens 10 Partikel pro Zelle
-    long  max_usefull_size = pow (p_options.m_particle_count, 1.0 / 3.0) / 10;
-    Vec3f tmp              = p_options.m_bounds / (p_options.m_cut_off_radius * p_options.m_cut_off_factor);
-    Vec3l grid_size        = Vec3l (ceil (tmp.x), ceil (tmp.y), ceil (tmp.z));
-    grid_size              = Vec3l::min (grid_size, max_usefull_size);
+    long max_usefull_size = pow (p_options.m_particle_count, 1.0 / 3.0) / 10;
+    m_verbose_stream << DEBUG_VAR (max_usefull_size) << std::endl;
+    Vec3f tmp = p_options.m_bounds / (p_options.m_cut_off_radius * p_options.m_cut_off_factor);
+    m_verbose_stream << DEBUG_VAR (tmp) << std::endl;
+    Vec3l grid_size = Vec3l (ceil (tmp.x), ceil (tmp.y), ceil (tmp.z));
+    m_verbose_stream << DEBUG_VAR (grid_size) << std::endl;
+    grid_size = Vec3l::min (grid_size, max_usefull_size);
+    m_verbose_stream << DEBUG_VAR (grid_size) << std::endl;
     // at least 3 cells required because of periodic boundary
     grid_size = Vec3l::max (grid_size, Vec3l (3L));
+    m_verbose_stream << DEBUG_VAR (grid_size) << std::endl;
     { // force odd count off cells in each direction
         if (grid_size.x % 2 == 0)
             grid_size.x--;
@@ -51,7 +57,9 @@ Vec3l DatastructureLinkedCells::getSize (s_options& p_options) {
         if (grid_size.z % 2 == 0)
             grid_size.z--;
     }
+    m_verbose_stream << DEBUG_VAR (grid_size) << std::endl;
     grid_size += 2; // 2 border cells (each border needs 1)
+    m_verbose_stream << DEBUG_VAR (grid_size) << std::endl;
     return grid_size;
 }
 DatastructureLinkedCells::~DatastructureLinkedCells () {
