@@ -395,9 +395,8 @@ bool DatastructureLinkedCells::grid_step_2 () {
 }
 bool DatastructureLinkedCells::run_simulation_iteration (unsigned long p_iteration_number) {
 #ifdef CALCULATE_STATISTICS
-    struct timeval time_start;
-    struct timeval time_end;
-    gettimeofday (&time_start, NULL);
+    data_type time_start;
+    time_start = omp_get_wtime ();
 ////////////////////////////////////////////////////////////////////////////////
 // Calculation -->>
 ////////////////////////////////////////////////////////////////////////////////
@@ -430,9 +429,8 @@ bool DatastructureLinkedCells::run_simulation_iteration (unsigned long p_iterati
     ////////////////////////////////////////////////////////////////////////////////
     // Calculation <<--
     ////////////////////////////////////////////////////////////////////////////////
-    gettimeofday (&time_end, NULL);
-    g_statistics.add_total_tuntime_calculation_grid ((time_end.tv_sec - time_start.tv_sec) * 1.e6 + (time_end.tv_usec - time_start.tv_usec));
-    gettimeofday (&time_start, NULL);
+    g_statistics.add_total_tuntime_calculation_grid (omp_get_wtime () - time_start);
+    time_start = omp_get_wtime ();
 ////////////////////////////////////////////////////////////////////////////////
 // rebuild datastructure -->>
 ////////////////////////////////////////////////////////////////////////////////
@@ -463,8 +461,7 @@ bool DatastructureLinkedCells::run_simulation_iteration (unsigned long p_iterati
     ////////////////////////////////////////////////////////////////////////////////
     // rebuild datastructure <<--
     ////////////////////////////////////////////////////////////////////////////////
-    gettimeofday (&time_end, NULL);
-    g_statistics.add_total_runtime_rebuild_grid ((time_end.tv_sec - time_start.tv_sec) * 1.e6 + (time_end.tv_usec - time_start.tv_usec));
+    g_statistics.add_total_runtime_rebuild_grid (omp_get_wtime () - time_start);
 #endif
     m_idx_b = !(m_idx_a = m_idx_b);
 #ifdef CALCULATE_ENERGY_CONSERVATION

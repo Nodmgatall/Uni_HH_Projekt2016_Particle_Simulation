@@ -22,7 +22,7 @@ class Benchmark {
     /**
      * times when the corresponding section started
      */
-    static std::stack<struct timeval> m_section_starttimes;
+    static std::stack<data_type> m_section_starttimes;
     /**
      * if the section print its time only after the section finishes or if the print statements
      * between begin and end should be indented

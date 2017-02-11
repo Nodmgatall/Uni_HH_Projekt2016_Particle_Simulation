@@ -21,19 +21,19 @@ class Statistics {
     /**
      * total runtime used for calculateing the interactions in seconds*10⁻6
      */
-    unsigned long long m_total_runtime_calculation_grid;
+    double m_total_runtime_calculation_grid;
     /**
      * total runtime used for rebuilding the datastructure in seconds*10⁻6
      */
-    unsigned long long m_total_runtime_rebuild_grid;
+    double m_total_runtime_rebuild_grid;
     /**
      * total runtime used for calculateing the interactions in seconds*10⁻6
      */
-    unsigned long long m_total_runtime_calculation_list;
+    double m_total_runtime_calculation_list;
     /**
      * total runtime used for rebuilding the datastructure in seconds*10⁻6
      */
-    unsigned long long m_total_runtime_rebuild_list;
+    double m_total_runtime_rebuild_list;
 
   public:
     /**
@@ -47,7 +47,7 @@ class Statistics {
     /**
      * total runtime in seconds*10⁻6
      */
-    unsigned long long m_total_runtime;
+    double m_total_runtime;
 
     /**
      * the number of cells used in the grid datastructure
@@ -61,24 +61,24 @@ class Statistics {
 
     friend std::ostream& operator<< (std::ostream& stream, const Statistics p_statistics) {
         stream << *p_statistics.m_options;
-        stream << "statistics.total_runtime                                     : " << (p_statistics.m_total_runtime / 1.e6) << std::endl;
+        stream << "statistics.total_runtime                                     : " << p_statistics.m_total_runtime << std::endl;
         switch (p_statistics.m_options->m_data_structure_type) {
             case e_datastructure_type::LINKED_CELLS:
-                stream << "statistics.m_total_runtime_calculation                       : " << (p_statistics.m_total_runtime_calculation_grid / 1.e6) << std::endl;
-                stream << "statistics.m_total_runtime_rebuild                           : " << (p_statistics.m_total_runtime_rebuild_grid / 1.e6) << std::endl;
+                stream << "statistics.m_total_runtime_calculation                       : " << p_statistics.m_total_runtime_calculation_grid << std::endl;
+                stream << "statistics.m_total_runtime_rebuild                           : " << p_statistics.m_total_runtime_rebuild_grid << std::endl;
                 break;
             case e_datastructure_type::LINKED_CELLS_NEIGHBOR_LIST:
-                stream << "statistics.m_total_runtime_calculation                       : " << (p_statistics.m_total_runtime_calculation_list / 1.e6) << std::endl;
-                stream << "statistics.m_total_runtime_rebuild                           : "
-                       << ((p_statistics.m_total_runtime_rebuild_grid + p_statistics.m_total_runtime_rebuild_list) / 1.e6) << std::endl;
+                stream << "statistics.m_total_runtime_calculation                       : " << p_statistics.m_total_runtime_calculation_list << std::endl;
+                stream << "statistics.m_total_runtime_rebuild                           : " << (p_statistics.m_total_runtime_rebuild_grid + p_statistics.m_total_runtime_rebuild_list)
+                       << std::endl;
                 break;
             case e_datastructure_type::NEIGHBOR_LIST:
-                stream << "statistics.m_total_runtime_calculation                       : " << (p_statistics.m_total_runtime_calculation_list / 1.e6) << std::endl;
-                stream << "statistics.m_total_runtime_rebuild                           : " << (p_statistics.m_total_runtime_rebuild_list / 1.e6) << std::endl;
+                stream << "statistics.m_total_runtime_calculation                       : " << p_statistics.m_total_runtime_calculation_list << std::endl;
+                stream << "statistics.m_total_runtime_rebuild                           : " << p_statistics.m_total_runtime_rebuild_list << std::endl;
                 break;
         }
         stream << "statistics.total_datastructure_rebuild_count                 : " << p_statistics.m_total_datastructure_rebuild_count << std::endl;
-        stream << "statistics.average_time_per_iteration                        : " << ((p_statistics.m_total_runtime / 1.e6) / p_statistics.m_options->m_max_iterations) << std::endl;
+        stream << "statistics.average_time_per_iteration                        : " << ((p_statistics.m_total_runtime) / p_statistics.m_options->m_max_iterations) << std::endl;
         stream << "statistics.average_iterations_between_rebuild                : " << (p_statistics.m_total_datastructure_rebuild_count / p_statistics.m_options->m_max_iterations)
                << std::endl;
         data_type volumen = p_statistics.m_options->m_bounds.x * p_statistics.m_options->m_bounds.y * p_statistics.m_options->m_bounds.z;
@@ -91,19 +91,19 @@ class Statistics {
     void set_options (s_options* p_options) {
         m_options = p_options;
     }
-    void add_total_tuntime_calculation_grid (unsigned long long p_totalRuntimeCalculation) {
+    void add_total_tuntime_calculation_grid (double p_totalRuntimeCalculation) {
 #pragma omp atomic
         m_total_runtime_calculation_grid += p_totalRuntimeCalculation;
     }
-    void add_total_runtime_rebuild_grid (unsigned long long p_totalRuntimeRebuild) {
+    void add_total_runtime_rebuild_grid (double p_totalRuntimeRebuild) {
 #pragma omp atomic
         m_total_runtime_rebuild_grid += p_totalRuntimeRebuild;
     }
-    void add_total_tuntime_calculation_list (unsigned long long p_totalRuntimeCalculation) {
+    void add_total_tuntime_calculation_list (double p_totalRuntimeCalculation) {
 #pragma omp atomic
         m_total_runtime_calculation_list += p_totalRuntimeCalculation;
     }
-    void add_total_runtime_rebuild_list (unsigned long long p_totalRuntimeRebuild) {
+    void add_total_runtime_rebuild_list (double p_totalRuntimeRebuild) {
 #pragma omp atomic
         m_total_runtime_rebuild_list += p_totalRuntimeRebuild;
     }

@@ -22,8 +22,8 @@ int main (int argc, char** argv) {
     s_options options;
 #ifdef CALCULATE_STATISTICS
     g_statistics.m_options = &options; /*pointer*/
-    struct timeval time_start;
-    gettimeofday (&time_start, NULL);
+    data_type time_start;
+    time_start = omp_get_wtime ();
 #endif
     OptionHandler option_handler;
     if (int return_value = option_handler.handle_options (argc, argv, options))
@@ -50,9 +50,7 @@ int main (int argc, char** argv) {
     output->finalize ();
 #ifdef CALCULATE_STATISTICS
     m_verbose_stream << "calculate statistics" << std::endl;
-    struct timeval time_end;
-    gettimeofday (&time_end, NULL);
-    g_statistics.m_total_runtime = (time_end.tv_sec - time_start.tv_sec) * 1.e6 + (time_end.tv_usec - time_start.tv_usec);
+    g_statistics.m_total_runtime = omp_get_wtime () - time_start;
     m_standard_stream << "print statistics" << std::endl;
     m_standard_stream << g_statistics;
 #endif
