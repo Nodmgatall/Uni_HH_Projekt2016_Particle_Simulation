@@ -22,7 +22,7 @@ mkdir "${var_test_name}.gprof"
 cd "${var_test_name}.gprof"
 
 srun hostname
-srun gprof ../../../../particle_simulation.x \
+srun ../../../../particle_simulation.x \
 --algorithm=LENNARD_JONES \
 --data_structure=${var_datastructure} \
 --input=GENERATOR_GRID_DISTRIBUTION --count=64000 \
@@ -35,6 +35,8 @@ srun gprof ../../../../particle_simulation.x \
 --cut_off_extra_factor=${var_radius_extra} \
 --threads=${var_threads} \
 --verbose
+
+gprof ../../../../particle_simulation.x > gprof.out
 EOF
 chmod +x "job_script_${var_test_name}.sh"
 }
