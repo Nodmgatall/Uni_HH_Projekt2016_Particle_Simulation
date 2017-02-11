@@ -1,4 +1,5 @@
 echo "row,\
+iterations,\
 dichte,\
 particles_per_cell,\
 cell_count,\
@@ -40,6 +41,7 @@ var_bounds=$3
 var_initial_speed=$4
 var_radius_extra=$5
 var_threads=$6
+var_iteration=$7
 
 var_line_statistics_total_runtime="";
 var_line_statistics_total_runtime_rebuild="";
@@ -81,7 +83,7 @@ fi
 done
 done
 
-echo "${var_row},${var_line_dichte},${var_line_particles_per_cell},${var_line_cell_count},${var_radius},${var_bounds},${var_initial_speed},${var_radius_extra},${var_threads}${var_line_statistics_total_datastructure_rebuild_count}${var_line_statistics_total_runtime}${var_line_statistics_total_runtime_rebuild}${var_line_statistics_total_runtime_calculate}"
+echo "${var_row},${var_iteration},${var_line_dichte},${var_line_particles_per_cell},${var_line_cell_count},${var_radius},${var_bounds},${var_initial_speed},${var_radius_extra},${var_threads}${var_line_statistics_total_datastructure_rebuild_count}${var_line_statistics_total_runtime}${var_line_statistics_total_runtime_rebuild}${var_line_statistics_total_runtime_calculate}"
 var_row=$((var_row + 1))
 }
 
@@ -93,18 +95,18 @@ do
 for var_initial_speed in 1;
 do
 
-for var_radius in 4 8 12 16;
-do
-
 for var_radius_extra in 1.2;
 do
 
 for var_bounds in 80;
 do
 
-add_job $var_datastructure $var_radius $var_bounds $var_initial_speed $var_radius_extra $var_threads
+add_job $var_datastructure 2 $var_bounds $var_initial_speed $var_radius_extra $var_threads 2000
+add_job $var_datastructure 4 $var_bounds $var_initial_speed $var_radius_extra $var_threads 2000
+add_job $var_datastructure 8 $var_bounds $var_initial_speed $var_radius_extra $var_threads 1500
+add_job $var_datastructure 12 $var_bounds $var_initial_speed $var_radius_extra $var_threads 1000
+add_job $var_datastructure 16 $var_bounds $var_initial_speed $var_radius_extra $var_threads 800
 
-done
 done
 done
 done

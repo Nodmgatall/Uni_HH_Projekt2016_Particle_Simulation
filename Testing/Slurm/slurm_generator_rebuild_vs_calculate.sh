@@ -6,6 +6,7 @@ var_bounds=$3
 var_initial_speed=$4
 var_radius_extra=$5
 var_threads=$6
+var_iteration=$7
 
 var_test_name="simulation_${var_datastructure}_${var_radius}_${var_bounds}_${var_initial_speed}_${var_radius_extra}_${var_threads}"
 cat > "job_script_${var_test_name}.sh" << EOF
@@ -44,18 +45,18 @@ do
 for var_initial_speed in 1;
 do
 
-for var_radius in 4 8 12 16;
-do
-
 for var_radius_extra in 1.2;
 do
 
 for var_bounds in 80;
 do
 
-add_job $var_datastructure $var_radius $var_bounds $var_initial_speed $var_radius_extra $var_threads
+add_job $var_datastructure 2 $var_bounds $var_initial_speed $var_radius_extra $var_threads 2000
+add_job $var_datastructure 4 $var_bounds $var_initial_speed $var_radius_extra $var_threads 2000
+add_job $var_datastructure 8 $var_bounds $var_initial_speed $var_radius_extra $var_threads 1500
+add_job $var_datastructure 12 $var_bounds $var_initial_speed $var_radius_extra $var_threads 1000
+add_job $var_datastructure 16 $var_bounds $var_initial_speed $var_radius_extra $var_threads 800
 
-done
 done
 done
 done
