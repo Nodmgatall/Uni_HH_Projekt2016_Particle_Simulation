@@ -37,7 +37,7 @@ EOF
 chmod +x "job_script_${var_test_name}.sh"
 }
 
-var_threads=11
+var_threads=1
 
 for var_datastructure in "LINKED_CELLS" "LINKED_CELLS+NEIGHBOR_LIST";
 do
@@ -51,11 +51,11 @@ do
 for var_bounds in 80;
 do
 
-add_job $var_datastructure 2 $var_bounds $var_initial_speed $var_radius_extra $var_threads 2000
-add_job $var_datastructure 4 $var_bounds $var_initial_speed $var_radius_extra $var_threads 1500
-add_job $var_datastructure 8 $var_bounds $var_initial_speed $var_radius_extra $var_threads 800
-add_job $var_datastructure 12 $var_bounds $var_initial_speed $var_radius_extra $var_threads 500
-add_job $var_datastructure 16 $var_bounds $var_initial_speed $var_radius_extra $var_threads 400
+add_job $var_datastructure 2 $var_bounds $var_initial_speed $var_radius_extra $var_threads 380
+add_job $var_datastructure 4 $var_bounds $var_initial_speed $var_radius_extra $var_threads 239
+add_job $var_datastructure 8 $var_bounds $var_initial_speed $var_radius_extra $var_threads 718
+add_job $var_datastructure 12 $var_bounds $var_initial_speed $var_radius_extra $var_threads 188
+add_job $var_datastructure 16 $var_bounds $var_initial_speed $var_radius_extra $var_threads 132
 
 done
 done

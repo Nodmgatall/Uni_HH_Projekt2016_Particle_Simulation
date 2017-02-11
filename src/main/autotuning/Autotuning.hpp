@@ -26,11 +26,18 @@ class Autotuning {
             input->initialize_datastructure ();
             analyser->analyse ();
         }
-        Vec3l tmp = DatastructureLinkedCells::getSize (p_options);
-        if (36 < p_options.m_particle_count / (tmp.x * tmp.y * tmp.z)) {
-            // the additional cost for list construction are more expensive than the actual calculation
+        Vec3l              tmp                    = DatastructureLinkedCells::getSize (p_options);
+        data_type          distance_until_rebuild = MAX (p_options.m_cut_off_radius * (p_options.m_cut_off_factor - 1.0), 0);
+        unsigned long long particles_per_cell     = p_options.m_particle_count / (tmp.x * tmp.y * tmp.z);
+        if (36 < particles_per_cell) {
+            // if there are too much particles per cell, then the additional cost for list construction are more expensive than the actual calculation
             p_options.m_data_structure_type = e_datastructure_type::LINKED_CELLS;
-        } else if (2.0 * p_options.m_initial_speed < (p_options.m_cut_off_radius * (p_options.m_cut_off_factor - 1.0) - 1.0)) {
+        } else if (p_options.m_initial_speed * p_options.m_timestep * 2.0 < distance_until_rebuild) {
+            /*  v * t < distance_until_rebuild
+             *  v   = p_options.m_initial_speed
+             *	t   = p_options.m_timestep
+             *	2.0 = mixed form is better if there are at least 2 calculations per rebuild
+             */
             // slow particles do not need rebuild of datastructure and could use the advantages of mixed datastructure
             p_options.m_data_structure_type = e_datastructure_type::LINKED_CELLS_NEIGHBOR_LIST;
         } else {
@@ -48,7 +55,8 @@ class Autotuning {
                 case e_input_type::AUTOTUNING_IRREGULAR_DISTRIBUTION:
                     // distribution of particles is irregular
                     // lot of cells are unused, most interactions are within a few cells. list would improve the runtime
-                    // simulation should be for short-distance-interactions. if nearly all particles are in range, this would be long-distance-interactions, which are not
+                    // simulation should be for short-distance-interactions. if nearly all particles are in range, this would be long-distance_until_rebuild-interactions, which are
+                    // not
                     // the target
                     p_options.m_data_structure_type = e_datastructure_type::LINKED_CELLS_NEIGHBOR_LIST;
                     break;

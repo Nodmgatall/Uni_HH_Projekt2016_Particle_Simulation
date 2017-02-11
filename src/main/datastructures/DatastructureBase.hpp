@@ -105,10 +105,8 @@ class DatastructureBase {
       m_iterations_since_rearange_particles (0), m_idx_a (0), m_idx_b (1), m_max_id (0), m_datastructure_rebuild_last_iteration_flag (true /*list MUST rebuild in first iteration*/) {
         m_iterations_until_rearange_particles = p_options.m_max_iterations_between_datastructure_rebuild;
         m_iterations_since_rearange_particles = p_options.m_max_iterations_between_datastructure_rebuild;
-        // 0.5, because both particles are moving
         // -1 because only the additional bonus space is mesured
-        //-1 because both particles have an radius of 1
-        m_speed_factor = MAX ((m_options.m_cut_off_radius * (p_options.m_cut_off_factor - 1.0) - 1.0) * 0.5, 0);
+        m_speed_factor = MAX (m_options.m_cut_off_radius * (p_options.m_cut_off_factor - 1.0), 0);
     }
     /**
      * @return returns a string form of the name of this datastructure. Can be used to verify the

@@ -10,9 +10,8 @@ DatastructureLinkedCells::DatastructureLinkedCells (s_options& p_options, Border
 : DatastructureBase (p_options, p_border, p_algorithm, p_particle_writer) {
     m_stucture_name = "DatastructureLinkedCells";
     unsigned int idx_x, idx_y, idx_z;
-    grid_size                  = getSize (p_options);
-    grid_size_per_cell         = p_options.m_bounds / Vec3f (grid_size - 2);
-    m_options.m_cut_off_radius = MIN (grid_size_per_cell.x, MIN (grid_size_per_cell.y, grid_size_per_cell.z));
+    grid_size          = getSize (p_options);
+    grid_size_per_cell = p_options.m_bounds / Vec3f (grid_size - 2);
     m_particle_groups.reserve (grid_size.x * grid_size.y * grid_size.z);
     for (idx_x = 0; idx_x < grid_size.x; idx_x++) {
         for (idx_y = 0; idx_y < grid_size.y; idx_y++) {
@@ -37,7 +36,8 @@ DatastructureLinkedCells::DatastructureLinkedCells (s_options& p_options, Border
     m_standard_stream << DEBUG_VAR (m_options.m_cut_off_radius) << std::endl;
 }
 Vec3l DatastructureLinkedCells::getSize (s_options& p_options) {
-    long  max_usefull_size = pow (p_options.m_particle_count, 1.0 / 3.0);
+    // mindestens 10 Partikel pro Zelle
+    long  max_usefull_size = pow (p_options.m_particle_count, 1.0 / 3.0) / 10;
     Vec3f tmp              = p_options.m_bounds / (p_options.m_cut_off_radius * p_options.m_cut_off_factor);
     Vec3l grid_size        = Vec3l (ceil (tmp.x), ceil (tmp.y), ceil (tmp.z));
     grid_size              = Vec3l::min (grid_size, max_usefull_size);
