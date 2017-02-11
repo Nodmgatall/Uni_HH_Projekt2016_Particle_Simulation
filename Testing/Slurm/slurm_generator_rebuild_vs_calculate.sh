@@ -25,7 +25,7 @@ srun ../../../particle_simulation.x \
 --data_structure=${var_datastructure} \
 --input=GENERATOR_GRID_DISTRIBUTION --count=64000 \
 --output=VOID \
---max_iterations=2000 \
+--max_iterations=${var_iteration} \
 --cut_off_radius=${var_radius} \
 --timestep=0.0005 \
 --bounds=${var_bounds}/${var_bounds}/${var_bounds} \
@@ -52,10 +52,10 @@ for var_bounds in 80;
 do
 
 add_job $var_datastructure 2 $var_bounds $var_initial_speed $var_radius_extra $var_threads 2000
-add_job $var_datastructure 4 $var_bounds $var_initial_speed $var_radius_extra $var_threads 2000
-add_job $var_datastructure 8 $var_bounds $var_initial_speed $var_radius_extra $var_threads 1500
-add_job $var_datastructure 12 $var_bounds $var_initial_speed $var_radius_extra $var_threads 1000
-add_job $var_datastructure 16 $var_bounds $var_initial_speed $var_radius_extra $var_threads 800
+add_job $var_datastructure 4 $var_bounds $var_initial_speed $var_radius_extra $var_threads 1500
+add_job $var_datastructure 8 $var_bounds $var_initial_speed $var_radius_extra $var_threads 800
+add_job $var_datastructure 12 $var_bounds $var_initial_speed $var_radius_extra $var_threads 500
+add_job $var_datastructure 16 $var_bounds $var_initial_speed $var_radius_extra $var_threads 400
 
 done
 done
