@@ -24,10 +24,10 @@ struct Statistics {
     /**
      * total runtime in seconds
      */
-    data_type  m_total_runtime;
+    data_type     m_total_runtime;
     unsigned long m_cell_count;
-    s_options* m_options;
-    Statistics () : m_total_datastructure_rebuild_count (0), m_total_runtime (0), m_cell_count(-1),m_options (0) {
+    s_options*    m_options;
+    Statistics () : m_total_datastructure_rebuild_count (0), m_total_runtime (0), m_cell_count (-1), m_options (0) {
     }
 
     friend std::ostream& operator<< (std::ostream& stream, const Statistics p_statistics) {
@@ -41,7 +41,7 @@ struct Statistics {
         stream << "statistics.volumen                                           : " << volumen << std::endl;
         stream << "statistics.partikeldichte                                    : " << (p_statistics.m_options->m_particle_count / volumen) << std::endl;
         stream << "statistics.m_cell_count                                      : " << m_cell_count << std::endl;
-        stream << "statistics.particles_per_cell                                : " <<(p_statistics.m_options->m_particle_count/ m_cell_count) << std::endl;
+        stream << "statistics.particles_per_cell                                : " << (p_statistics.m_options->m_particle_count / m_cell_count) << std::endl;
 
         return stream;
     }
