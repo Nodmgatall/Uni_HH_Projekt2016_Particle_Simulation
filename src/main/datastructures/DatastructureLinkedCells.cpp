@@ -21,6 +21,9 @@ DatastructureLinkedCells::DatastructureLinkedCells (s_options& p_options, Border
             }
         }
     }
+#ifdef CALCULATE_STATISTICS
+    g_statistics.m_cell_count=m_particle_groups.size();
+#endif
     if (m_options.m_cut_off_radius < 1) {
         m_standard_stream << "ERROR :: cut-off-radius too small. Increasing from '" << DEBUG_VAR (m_options.m_cut_off_radius) << "' to '1'!" << std::endl;
         m_options.m_cut_off_radius = 1;

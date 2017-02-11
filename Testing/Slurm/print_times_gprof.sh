@@ -86,16 +86,16 @@ var_threads=11
 for var_datastructure in "LINKED_CELLS" "LINKED_CELLS+NEIGHBOR_LIST";
 do
 
-for var_initial_speed in 0.5;
+for var_initial_speed in 1;
 do
 
-for var_radius in 2 5;
+for var_radius in 4 8 12 16;
 do
 
 for var_radius_extra in 1.2;
 do
 
-for var_bounds in 40 42 45 50 55 60;
+for var_bounds in 80;
 do
 
 add_job $var_datastructure $var_radius $var_bounds $var_initial_speed $var_radius_extra $var_threads

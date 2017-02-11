@@ -53,8 +53,8 @@ int main (int argc, char** argv) {
     struct timeval time_end;
     gettimeofday (&time_end, NULL);
     g_statistics.m_total_runtime = time_end.tv_sec - time_start.tv_sec + (time_end.tv_usec - time_start.tv_usec) / 1.e6;
-    m_verbose_stream << "print statistics" << std::endl;
-    m_verbose_stream << g_statistics;
+    m_standard_stream << "print statistics" << std::endl;
+    m_standard_stream << g_statistics;
 #endif
     m_verbose_stream << "delete writer;" << std::endl;
     delete output;
