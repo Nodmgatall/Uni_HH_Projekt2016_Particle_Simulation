@@ -80,6 +80,10 @@ struct s_options {
      */
     unsigned int m_seed;
     /**
+     *the thread count used by openmp
+     */
+    int m_thread_count;
+    /**
      * how much time is "skipped" between two iteration-steps
      */
     data_type m_timestep;
@@ -87,10 +91,6 @@ struct s_options {
      * if the output should be verbose or not
      */
     bool m_verbose;
-    /**
-     *the thread count used by openmp
-     */
-    int m_thread_count;
     /**
      * how ofthen the data should be outputted to the given output_type_class
      */
@@ -116,8 +116,8 @@ struct s_options {
           m_out_file_name (""),                                                                               //
           m_particle_count (0),                                                                               //
           m_seed (123456789),                                                                                 //
-          m_timestep (1),                                                                                     //
           m_thread_count (1),                                                                                 //
+          m_timestep (1),                                                                                     //
           m_verbose (false),                                                                                  //
           m_write_fequency (1),                                                                               //
           m_write_modes ({ e_csv_column_type::ID, e_csv_column_type::POSITION, e_csv_column_type::VELOCITY }) //
