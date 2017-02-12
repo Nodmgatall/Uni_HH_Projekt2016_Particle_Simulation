@@ -448,7 +448,9 @@ bool DatastructureLinkedCells::run_simulation_iteration (unsigned long p_iterati
             calculate_next_datastructure_rebuild ();
         }
     }
-    m_idx_b = !(m_idx_a = m_idx_b);
+    if (!m_options.m_dry_run) {
+        m_idx_b = !(m_idx_a = m_idx_b);
+    }
 #ifdef CALCULATE_ENERGY_CONSERVATION
     g_sum_energy = 0;
     for (i = 0; i < m_particle_groups.size (); i++) {
