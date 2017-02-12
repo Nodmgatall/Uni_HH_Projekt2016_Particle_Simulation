@@ -14,10 +14,6 @@ DatastructureNeighborList::DatastructureNeighborList (s_options& p_options, Bord
 DatastructureNeighborList::~DatastructureNeighborList () {
 }
 void DatastructureNeighborList::list_step_2_calculate (ParticleGroup& p_cell, AlgorithmBase& p_algorithm, unsigned int p_idx_a, unsigned int p_idx_b) {
-#ifdef CALCULATE_STATISTICS
-    data_type time_start;
-    time_start = omp_get_wtime ();
-#endif
     unsigned long                                 i, j;
     std::vector<std::vector<ParticleIndexRange>>& current_neighbors = p_cell.m_neighbors[13];
     for (i = 0; i < current_neighbors.size (); i++) {
@@ -38,15 +34,8 @@ void DatastructureNeighborList::list_step_2_calculate (ParticleGroup& p_cell, Al
                                 current_neighbors[i][j].m_right_index);
         }
     }
-#ifdef CALCULATE_STATISTICS
-    g_statistics.add_total_tuntime_calculation_list (omp_get_wtime () - time_start);
-#endif
 }
 void DatastructureNeighborList::list_step_2_calculate (ParticleGroup& p_cell_i, ParticleGroup& p_cell_j, AlgorithmBase& p_algorithm, unsigned int p_idx_a, unsigned int p_idx_b) {
-#ifdef CALCULATE_STATISTICS
-    data_type time_start;
-    time_start = omp_get_wtime ();
-#endif
     unsigned long                                 i, j;
     unsigned int                                  neighbor_index    = get_neighbor_index_for_cells (p_cell_i.m_idx, p_cell_j.m_idx);
     std::vector<std::vector<ParticleIndexRange>>& current_neighbors = p_cell_i.m_neighbors[neighbor_index];
@@ -68,9 +57,6 @@ void DatastructureNeighborList::list_step_2_calculate (ParticleGroup& p_cell_i, 
                                 current_neighbors[i][j].m_right_index);
         }
     }
-#ifdef CALCULATE_STATISTICS
-    g_statistics.add_total_tuntime_calculation_list (omp_get_wtime () - time_start);
-#endif
 }
 void DatastructureNeighborList::list_step_2_calculate (ParticleGroup& p_cell_i,
                                                        ParticleGroup& p_cell_j,
@@ -80,10 +66,6 @@ void DatastructureNeighborList::list_step_2_calculate (ParticleGroup& p_cell_i,
                                                        data_type      p_offset_x,
                                                        data_type      p_offset_y,
                                                        data_type      p_offset_z) {
-#ifdef CALCULATE_STATISTICS
-    data_type time_start;
-    time_start = omp_get_wtime ();
-#endif
     unsigned long i, j;
     Vec3l         b = Vec3l (p_cell_j.m_idx);
     if (p_offset_x > 0.001) {
@@ -124,9 +106,6 @@ void DatastructureNeighborList::list_step_2_calculate (ParticleGroup& p_cell_i,
                                        current_neighbors[i][j].m_right_index);
         }
     }
-#ifdef CALCULATE_STATISTICS
-    g_statistics.add_total_tuntime_calculation_list (omp_get_wtime () - time_start);
-#endif
 }
 bool DatastructureNeighborList::run_simulation_iteration (unsigned long p_iteration_number) {
     m_iterations_until_rearange_particles--;
@@ -190,17 +169,13 @@ bool DatastructureNeighborList::run_simulation_iteration (unsigned long p_iterat
     return false; // NO error
 }
 void DatastructureNeighborList::list_rebuild (ParticleGroup& p_cell, unsigned int p_idx_a, s_options& p_options) {
-#ifdef CALCULATE_STATISTICS
-    data_type time_start;
-    time_start = omp_get_wtime ();
-#endif
     unsigned long                                 i;
     unsigned long                                 j;
     std::vector<std::vector<ParticleIndexRange>>& current_neighbors = p_cell.m_neighbors[13];
     current_neighbors.resize (p_cell.m_ids.size ());
     // cut_off_radius*1.2 to allow particles to move before reconstruction of
     // lists is needed
-    data_type cut_off_radius_squared = p_options.m_cut_off_radius * p_options.m_cut_off_radius * p_options.m_cut_off_factor;
+    data_type cut_off_radius_squared = p_options.m_cut_off_radius * p_options.m_cut_off_radius * p_options.m_cut_off_radius_extra_factor;
     for (i = 0; i < current_neighbors.size (); i++) {
         current_neighbors[i].clear ();
     }
@@ -222,15 +197,8 @@ void DatastructureNeighborList::list_rebuild (ParticleGroup& p_cell, unsigned in
     p_cell.testingx.push_back (0);
     p_cell.testingy.push_back (0);
     p_cell.testingz.push_back (0);
-#ifdef CALCULATE_STATISTICS
-    g_statistics.add_total_runtime_rebuild_list (omp_get_wtime () - time_start);
-#endif
 }
 void DatastructureNeighborList::list_rebuild (ParticleGroup& p_cell_i, ParticleGroup& p_cell_j, unsigned int p_idx_a, s_options& p_options) {
-#ifdef CALCULATE_STATISTICS
-    data_type time_start;
-    time_start = omp_get_wtime ();
-#endif
     unsigned long                                 i;
     unsigned long                                 j;
     unsigned int                                  neighbor_index    = get_neighbor_index_for_cells (p_cell_i.m_idx, p_cell_j.m_idx);
@@ -238,7 +206,7 @@ void DatastructureNeighborList::list_rebuild (ParticleGroup& p_cell_i, ParticleG
     current_neighbors.resize (p_cell_i.m_ids.size ());
     // cut_off_radius*1.2 to allow particles to move before reconstruction of
     // lists is needed
-    data_type cut_off_radius_squared = p_options.m_cut_off_radius * p_options.m_cut_off_radius * p_options.m_cut_off_factor;
+    data_type cut_off_radius_squared = p_options.m_cut_off_radius * p_options.m_cut_off_radius * p_options.m_cut_off_radius_extra_factor;
     for (i = 0; i < p_cell_i.m_ids.size (); i++) {
         current_neighbors[i].clear ();
     }
@@ -260,15 +228,8 @@ void DatastructureNeighborList::list_rebuild (ParticleGroup& p_cell_i, ParticleG
     p_cell_i.testingx.push_back (0);
     p_cell_i.testingy.push_back (0);
     p_cell_i.testingz.push_back (0);
-#ifdef CALCULATE_STATISTICS
-    g_statistics.add_total_runtime_rebuild_list (omp_get_wtime () - time_start);
-#endif
 }
 void DatastructureNeighborList::list_rebuild (ParticleGroup& p_cell_i, ParticleGroup& p_cell_j, unsigned int p_idx_a, s_options& p_options, data_type p_offset_x, data_type p_offset_y, data_type p_offset_z) {
-#ifdef CALCULATE_STATISTICS
-    data_type time_start;
-    time_start = omp_get_wtime ();
-#endif
     unsigned long i;
     unsigned long j;
     Vec3l         b = Vec3l (p_cell_j.m_idx);
@@ -292,7 +253,7 @@ void DatastructureNeighborList::list_rebuild (ParticleGroup& p_cell_i, ParticleG
     current_neighbors.resize (p_cell_i.m_ids.size ());
     // cut_off_radius*1.2 to allow particles to move before reconstruction of
     // lists is needed
-    data_type cut_off_radius_squared = p_options.m_cut_off_radius * p_options.m_cut_off_radius * p_options.m_cut_off_factor;
+    data_type cut_off_radius_squared = p_options.m_cut_off_radius * p_options.m_cut_off_radius * p_options.m_cut_off_radius_extra_factor;
     for (i = 0; i < p_cell_i.m_ids.size (); i++) {
         current_neighbors[i].clear ();
     }
@@ -314,9 +275,6 @@ void DatastructureNeighborList::list_rebuild (ParticleGroup& p_cell_i, ParticleG
     p_cell_i.testingx.push_back (p_offset_x * 1000 + p_cell_j.m_idx.x);
     p_cell_i.testingy.push_back (p_offset_y * 1000 + p_cell_j.m_idx.y);
     p_cell_i.testingz.push_back (p_offset_z * 1000 + p_cell_j.m_idx.z);
-#ifdef CALCULATE_STATISTICS
-    g_statistics.add_total_runtime_rebuild_list (omp_get_wtime () - time_start);
-#endif
 }
 int DatastructureNeighborList::get_neighbor_index_for_cells (Vec3l& p_idx_i, Vec3l& p_idx_j) {
     return (p_idx_j.x - p_idx_i.x + 1) * 9 + (p_idx_j.y - p_idx_i.y + 1) * 3 + (p_idx_j.z - p_idx_i.z + 1);

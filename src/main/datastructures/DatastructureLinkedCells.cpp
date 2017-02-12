@@ -40,7 +40,7 @@ Vec3l DatastructureLinkedCells::getSize (s_options& p_options) {
     // mindestens 10 Partikel pro Zelle
     long max_usefull_size = pow (p_options.m_particle_count, 1.0 / 3.0) / 2;
     m_verbose_stream << DEBUG_VAR (max_usefull_size) << std::endl;
-    Vec3f tmp = p_options.m_bounds / (p_options.m_cut_off_radius * p_options.m_cut_off_factor);
+    Vec3f tmp = p_options.m_bounds / (p_options.m_cut_off_radius * p_options.m_cut_off_radius_extra_factor);
     m_verbose_stream << DEBUG_VAR (tmp) << std::endl;
     Vec3l grid_size = Vec3l (ceil (tmp.x), ceil (tmp.y), ceil (tmp.z));
     m_verbose_stream << DEBUG_VAR (grid_size) << std::endl;
@@ -402,13 +402,6 @@ bool DatastructureLinkedCells::grid_step_2 () {
     return false;
 }
 bool DatastructureLinkedCells::run_simulation_iteration (unsigned long p_iteration_number) {
-#ifdef CALCULATE_STATISTICS
-    data_type time_start;
-    time_start = omp_get_wtime ();
-////////////////////////////////////////////////////////////////////////////////
-// Calculation -->>
-////////////////////////////////////////////////////////////////////////////////
-#endif
     unsigned int i, j;
     m_error_happened = false;
     m_verbose_stream << DEBUG_VAR (p_iteration_number) << std::endl;
@@ -433,16 +426,6 @@ bool DatastructureLinkedCells::run_simulation_iteration (unsigned long p_iterati
     grid_step_2 ();
     if (m_error_happened)
         return m_error_happened;
-#ifdef CALCULATE_STATISTICS
-    ////////////////////////////////////////////////////////////////////////////////
-    // Calculation <<--
-    ////////////////////////////////////////////////////////////////////////////////
-    g_statistics.add_total_tuntime_calculation_grid (omp_get_wtime () - time_start);
-    time_start = omp_get_wtime ();
-////////////////////////////////////////////////////////////////////////////////
-// rebuild datastructure -->>
-////////////////////////////////////////////////////////////////////////////////
-#endif
     {
         if ((p_iteration_number <= 0) || (m_datastructure_rebuild_last_iteration_flag = (m_iterations_until_rearange_particles < 1))) {
 #ifdef CALCULATE_STATISTICS
@@ -465,12 +448,6 @@ bool DatastructureLinkedCells::run_simulation_iteration (unsigned long p_iterati
             calculate_next_datastructure_rebuild ();
         }
     }
-#ifdef CALCULATE_STATISTICS
-    ////////////////////////////////////////////////////////////////////////////////
-    // rebuild datastructure <<--
-    ////////////////////////////////////////////////////////////////////////////////
-    g_statistics.add_total_runtime_rebuild_grid (omp_get_wtime () - time_start);
-#endif
     m_idx_b = !(m_idx_a = m_idx_b);
 #ifdef CALCULATE_ENERGY_CONSERVATION
     g_sum_energy = 0;

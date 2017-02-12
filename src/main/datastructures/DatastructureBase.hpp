@@ -106,7 +106,7 @@ class DatastructureBase {
         m_iterations_until_rearange_particles = p_options.m_max_iterations_between_datastructure_rebuild;
         m_iterations_since_rearange_particles = p_options.m_max_iterations_between_datastructure_rebuild;
         // -1 because only the additional bonus space is mesured
-        m_speed_factor = MAX (m_options.m_cut_off_radius * (p_options.m_cut_off_factor - 1.0), 0);
+        m_speed_factor = MAX (m_options.m_cut_off_radius * (p_options.m_cut_off_radius_extra_factor - 1.0), 0);
     }
     /**
      * @return returns a string form of the name of this datastructure. Can be used to verify the

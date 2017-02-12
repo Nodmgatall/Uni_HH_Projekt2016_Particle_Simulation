@@ -34,6 +34,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
     const int           cut_off_extra_radius_index                         = 8;
     const int           print_config_index                                 = 9;
     const int           threads_index                                      = 10;
+    const int           dry_run_index                                      = 11;
     std::vector<option> options                                            = { { "algorithm", required_argument, 0, algorithm_type_index * 1000 },
                                     { "data_structure", required_argument, 0, datastructure_type_index * 1000 },
                                     { "input", required_argument, 0, input_type_index * 1000 },
@@ -41,6 +42,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                                     { "autotuning", no_argument, 0, 'a' },
                                     { "bounds", required_argument, 0, 'b' },
                                     { "count", required_argument, 0, 'c' },
+                                    { "dry_run", no_argument, 0, dry_run_index*1000},
                                     { "write_fequency", required_argument, 0, 'f' },
                                     { "help", optional_argument, 0, 'h' },
                                     { "in_file_name", required_argument, 0, 'i' },
@@ -113,13 +115,17 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                 break;
             }
             case cut_off_extra_radius_index: {
-                line >> p_options.m_cut_off_factor;
+                line >> p_options.m_cut_off_radius_extra_factor;
                 break;
             }
             case threads_index: {
                 line >> p_options.m_thread_count;
                 omp_set_num_threads (p_options.m_thread_count);
                 break;
+            }
+            case dry_run_index:{
+            	p_options.m_dry_run=true;
+            	break;
             }
             default: {
                 switch (opt_index) {
@@ -155,8 +161,10 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                             } else if (!strcmp (optarg, "bounds")) {
                                 print_usage_bounds ();
                             } else if (!strcmp (optarg, "count")) {
-                                print_usage_particle_count ();
-                            } else if (!strcmp (optarg, "write_fequency")) {
+                                                            print_usage_particle_count ();
+                            } else if (!strcmp (optarg, "dry_run")) {
+                                                            print_usage_dry_run ();
+                                                        } else if (!strcmp (optarg, "write_fequency")) {
                                 print_usage_write_fequency ();
                             } else if (!strcmp (optarg, "in_file_name")) {
                                 print_usage_in_file_name ();
@@ -480,6 +488,15 @@ void OptionHandler::print_usage_verbose () {
         << "|  -v                      If set, the program prints more messages to         |" << std::endl
         << "|                          console.                                            |" << std::endl;
 }
+void OptionHandler::print_usage_dry_run(){
+    m_standard_stream //
+        << "| --dry_run                                                                    |" << std::endl
+        << "|                          If set, the program prevents the particles from     |" << std::endl
+        << "|                          moving. This option should help to equalize the     |" << std::endl
+        << "|                          used for each iteration. This is used for           |" << std::endl
+        << "|                          measurements to improve the fine-tuning of the      |" << std::endl
+        << "|                          autotuning component.                               |" << std::endl;
+}
 void OptionHandler::print_usage_max_iterations_between_datastructure_rebuild () {
     m_standard_stream //
         << "| --max_iterations_between_datastructure_rebuild                               |" << std::endl
@@ -556,6 +573,7 @@ void OptionHandler::print_usage_particle_sim () {
         << "|                                                                              |" << std::endl;
     print_usage_bounds ();
     print_usage_threads ();
+    print_usage_dry_run();
     m_standard_stream //
         << "|                                                                              |" << std::endl
         << "+==============================================================================+" << std::endl

@@ -42,6 +42,7 @@ class OptionHandler {
     void print_header ();
     void print_usage_print_config ();
     void print_usage_cut_off_extra_factor ();
+    void print_usage_dry_run ();
 
   public:
     /**

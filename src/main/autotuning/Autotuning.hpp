@@ -27,7 +27,7 @@ class Autotuning {
             analyser->analyse ();
         }
         Vec3l              tmp                    = DatastructureLinkedCells::getSize (p_options);
-        data_type          distance_until_rebuild = MAX (p_options.m_cut_off_radius * (p_options.m_cut_off_factor - 1.0), 0);
+        data_type          distance_until_rebuild = MAX (p_options.m_cut_off_radius * (p_options.m_cut_off_radius_extra_factor - 1.0), 0);
         unsigned long long particles_per_cell     = p_options.m_particle_count / (tmp.x * tmp.y * tmp.z);
         if (36 < particles_per_cell) {
             // if there are too much particles per cell, then the additional cost for list construction are more expensive than the actual calculation
