@@ -201,10 +201,10 @@ class BoundsCorrection : public BorderBase {
 BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_1) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
-    options.m_particle_count = 999999999;
-    options.m_bounds         = Vec3f (3, 3, 3);
-    options.m_cut_off_radius = 1;
-    options.m_timestep       = 1;
+    options.m_particle_count              = 999999999;
+    options.m_bounds                      = Vec3f (3, 3, 3);
+    options.m_cut_off_radius              = 1;
+    options.m_timestep                    = 1;
     options.m_cut_off_radius_extra_factor = 1.2;
     BoundsCorrection       border (options.m_bounds);
     Algorithm              algorithm (options);
@@ -267,11 +267,11 @@ BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_1) {
 BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_2) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
-    int size                 = 3;
-    options.m_particle_count = 999999999;
-    options.m_bounds         = Vec3f (size, size, size);
-    options.m_cut_off_radius = 1;
-    options.m_timestep       = 1;
+    int size                              = 3;
+    options.m_particle_count              = 999999999;
+    options.m_bounds                      = Vec3f (size, size, size);
+    options.m_cut_off_radius              = 1;
+    options.m_timestep                    = 1;
     options.m_cut_off_radius_extra_factor = 1.2;
     BoundsCorrection       border (options.m_bounds);
     Algorithm              algorithm (options);
@@ -338,11 +338,11 @@ BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_2) {
 BOOST_AUTO_TEST_CASE (test_serialize) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
-    int size                 = 4;
-    int count_3              = 5;
-    options.m_bounds         = Vec3f (size, size, size);
-    options.m_cut_off_radius = 1;
-    options.m_timestep       = 1;
+    int size                              = 4;
+    int count_3                           = 5;
+    options.m_bounds                      = Vec3f (size, size, size);
+    options.m_cut_off_radius              = 1;
+    options.m_timestep                    = 1;
     options.m_cut_off_radius_extra_factor = 1.2;
     BoundsCorrection       border (options.m_bounds);
     Algorithm              algorithm (options);
