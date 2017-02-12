@@ -414,18 +414,22 @@ bool DatastructureLinkedCells::run_simulation_iteration (unsigned long p_iterati
     m_error_happened = false;
     m_verbose_stream << DEBUG_VAR (p_iteration_number) << std::endl;
     m_iterations_until_rearange_particles--;
-    unsigned int idx_x, idx_y, idx_z;
+    unsigned int idx_x, idx_y, idx_z, idx;
     {
         m_verbose_stream << "grid_step_1>" << p_iteration_number << std::endl;
-#pragma omp parallel for private(idx_x, idx_y, idx_z)
-        for (idx_x = 0; idx_x < grid_size.x; idx_x++) {
-            for (idx_y = 0; idx_y < grid_size.y; idx_y++) {
-                for (idx_z = 0; idx_z < grid_size.z; idx_z++) {
-                    ParticleGroup& cell = grid_get_cell_at (idx_x, idx_y, idx_z);
-                    step_1_prepare_cell (cell);
-                    grid_step_2a_calculate_inside_cell (cell);
-                }
-            }
+
+        unsigned int size = grid_size.x * grid_size.y * grid_size.z;
+        unsigned int sz   = grid_size.z;
+        unsigned int sy   = grid_size.y;
+
+#pragma omp parallel for private(idx_x, idx_y, idx_z, idx)
+        for (idx = 0; idx < size; idx++) {
+            idx_z               = idx % sz;
+            idx_y               = (idx / sz) % sy;
+            idx_x               = (idx / sz) / sy;
+            ParticleGroup& cell = grid_get_cell_at (idx_x, idx_y, idx_z);
+            step_1_prepare_cell (cell);
+            grid_step_2a_calculate_inside_cell (cell);
         }
     }
     if (m_error_happened)
