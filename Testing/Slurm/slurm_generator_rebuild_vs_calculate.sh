@@ -53,32 +53,39 @@ var_threads=11
 for var_datastructure in "LINKED_CELLS" "LINKED_CELLS+NEIGHBOR_LIST";
 do
 
-for var_initial_speed in 0;
-do
-
-for var_radius_extra in 1.2;
-do
-
-for var_bounds in 80;
-do
-
 for var_rebuild in 'r' 'n';
 do
 
-for var_radius in 2 4 6 8;
-do
+add_job $var_datastructure 2  80  0  1.2 $var_threads 420  $var_rebuild
+add_job $var_datastructure 4  80  0  1.2 $var_threads 498  $var_rebuild
+add_job $var_datastructure 6  80  0  1.2 $var_threads 858  $var_rebuild
+add_job $var_datastructure 8  80  0  1.2 $var_threads 755  $var_rebuild
+add_job $var_datastructure 16 80  0  1.2 $var_threads 122  $var_rebuild
+add_job $var_datastructure 12 120 0  1.1 $var_threads 45   $var_rebuild
+add_job $var_datastructure 24 240 0  1.1 $var_threads 42   $var_rebuild
+add_job $var_datastructure 24 240 1  1.1 $var_threads 40   $var_rebuild
+add_job $var_datastructure 6  60  0  1.2 $var_threads 40   $var_rebuild
+add_job $var_datastructure 8  80  0  1.2 $var_threads 46   $var_rebuild
+add_job $var_datastructure 24 240 0  1.2 $var_threads 42   $var_rebuild
+add_job $var_datastructure 12 120 1  1.1 $var_threads 43   $var_rebuild
+add_job $var_datastructure 24 240 1  1.2 $var_threads 44   $var_rebuild
+add_job $var_datastructure 12 120 0  1.2 $var_threads 44   $var_rebuild
+add_job $var_datastructure 12 120 1  1.2 $var_threads 39   $var_rebuild
+add_job $var_datastructure 8  80  1  1.2 $var_threads 41   $var_rebuild
+add_job $var_datastructure 6  60  1  1.2 $var_threads 77   $var_rebuild
+add_job $var_datastructure 6  60  0  1   $var_threads 1430 $var_rebuild
+add_job $var_datastructure 24 240 0  1   $var_threads 1435 $var_rebuild
+add_job $var_datastructure 12 120 0  1   $var_threads 1432 $var_rebuild
+add_job $var_datastructure 8  80  0  1   $var_threads 1410 $var_rebuild
+add_job $var_datastructure 6  60  0  1.1 $var_threads 1412 $var_rebuild
+add_job $var_datastructure 24 240 1  1   $var_threads 1403 $var_rebuild
+add_job $var_datastructure 8  80  0  1.1 $var_threads 1400 $var_rebuild
+add_job $var_datastructure 12 120 1  1   $var_threads 1354 $var_rebuild
+add_job $var_datastructure 8  80  1  1   $var_threads 1335 $var_rebuild
+add_job $var_datastructure 6  60  1  1   $var_threads 1339 $var_rebuild
+add_job $var_datastructure 8  80  1  1.1 $var_threads 1298 $var_rebuild
+add_job $var_datastructure 6  60  1  1.1 $var_threads 1293 $var_rebuild
 
-add_job $var_datastructure $var_radius $var_bounds $var_initial_speed $var_radius_extra $var_threads 2000 $var_rebuild
+done
+done
 
-done
-for var_radius in 16;
-do
-
-add_job $var_datastructure $var_radius $var_bounds $var_initial_speed $var_radius_extra $var_threads 500 $var_rebuild
-
-done
-done
-done
-done
-done
-done
