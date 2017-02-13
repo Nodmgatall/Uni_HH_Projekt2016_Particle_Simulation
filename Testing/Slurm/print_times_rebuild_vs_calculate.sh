@@ -39,9 +39,9 @@ var_line_particles_per_cell="";
 var_line_dichte="";
 for var_datastructure in "LINKED_CELLS" "LINKED_CELLS+NEIGHBOR_LIST";
 do
+var_test_name="simulation_${var_datastructure}_${var_radius}_${var_bounds}_${var_initial_speed}_${var_radius_extra}_${var_threads}_${var_rebuild}"
 for var_run_index in 1 2 3;
 do
-var_test_name="simulation_${var_datastructure}_${var_radius}_${var_bounds}_${var_initial_speed}_${var_radius_extra}_${var_threads}_${var_rebuild}"
 file_content=$(cat "${var_run_index}/${var_test_name}.out")
 statistics_total_runtime=$(echo "${file_content}" | grep "statistics.total_runtime" | grep -Eo '[+-]?[0-9]+([.][0-9]+)?')
 statistics_total_datastructure_rebuild_count=$(echo "${file_content}" | grep "statistics.total_datastructure_rebuild_count" | grep -Eo '[+-]?[0-9]+([.][0-9]+)?')
@@ -69,7 +69,9 @@ var_row=$((var_row + 1))
 }
 
 var_threads=11
-var_datastructure=""
+
+for var_datastructure in "LINKED_CELLS";
+do
 
 for var_rebuild in 'r' 'n';
 do
@@ -105,5 +107,5 @@ add_job $var_datastructure 8  80  1  1.1 $var_threads 1298 $var_rebuild
 add_job $var_datastructure 6  60  1  1.1 $var_threads 1293 $var_rebuild
 
 done
-
+done
 
