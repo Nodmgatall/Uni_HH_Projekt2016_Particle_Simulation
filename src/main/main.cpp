@@ -28,9 +28,6 @@ int main (int argc, char** argv) {
     OptionHandler option_handler;
     if (int return_value = option_handler.handle_options (argc, argv, options))
         return return_value;
-    if (mkdir (options.m_out_file_name.c_str (), 0700)) {
-        // don't care ... but return value is used
-    }
     OutputBase*        output        = OutputFactory::build (options);
     BorderBase*        border        = new BorderWrapparound (options.m_bounds);
     AlgorithmBase*     algorithm     = AlgorithmFactory::build (options);

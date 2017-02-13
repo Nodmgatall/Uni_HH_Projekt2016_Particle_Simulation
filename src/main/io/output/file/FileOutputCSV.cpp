@@ -6,9 +6,11 @@
  *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
 #include <io/output/file/FileOutputCSV.hpp>
-FileOutputCSV::FileOutputCSV (s_options& p_options, const std::string& p_file_name_base)
-: OutputBase (), m_timestep (0), m_file_name_base (p_file_name_base), m_options (p_options) {
+FileOutputCSV::FileOutputCSV (s_options& p_options) : OutputBase (), m_timestep (0), m_file_name_base (p_options.m_out_file_name + "/data"), m_options (p_options) {
     m_stucture_name = "FileOutputCSV";
+    if (mkdir (p_options.m_out_file_name.c_str (), 0700)) {
+        // don't care ... but return value is used
+    }
 }
 void FileOutputCSV::start () {
     m_file = std::ofstream (m_file_name_base + "." + std::to_string (m_timestep) + ".csv");
