@@ -12,6 +12,9 @@ FileOutputCSV::FileOutputCSV (s_options& p_options) : OutputBase (), m_timestep 
         // don't care ... but return value is used
     }
 }
+FileOutputCSV::FileOutputCSV (s_options& p_options, const std::string& p_file_name_base) : FileOutputCSV (p_options) {
+    m_file_name_base = p_file_name_base;
+}
 void FileOutputCSV::start () {
     m_file = std::ofstream (m_file_name_base + "." + std::to_string (m_timestep) + ".csv");
     m_file << "\"" << g_printed_csv_column_names[static_cast<int> (e_csv_column_type::ID)][0] << "\"";

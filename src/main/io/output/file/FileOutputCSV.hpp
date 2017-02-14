@@ -34,6 +34,7 @@ class FileOutputCSV : public OutputBase {
      * constructor
      */
     FileOutputCSV (s_options& p_options);
+    FileOutputCSV (s_options& p_options, const std::string& p_file_name_base);
     void start () override;
     void end () override;
     void finalize () override;
