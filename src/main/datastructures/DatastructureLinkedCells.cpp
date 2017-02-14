@@ -18,7 +18,8 @@ DatastructureLinkedCells::DatastructureLinkedCells (s_options& p_options, Border
     m_particle_groups_count = sx * sy * sz;
     m_particle_groups       = (ParticleGroup*) malloc (sizeof (ParticleGroup) * m_particle_groups_count);
     m_standard_stream << DEBUG_VAR (grid_size) << std::endl;
-    size_t idx;
+    size_t  idx;
+#pragma omp parallel for private(idx, idx_x, idx_y, idx_z)
     for (idx = 0; idx < m_particle_groups_count; idx++) {
         idx_x = (idx / sz) / sy;
         idx_y = (idx / sz) % sy;
