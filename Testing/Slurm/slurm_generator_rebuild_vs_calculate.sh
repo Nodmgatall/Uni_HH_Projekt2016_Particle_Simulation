@@ -13,9 +13,11 @@ var_test_name="simulation_${var_datastructure}_${var_radius}_${var_bounds}_${var
 
 var_rebuild_params=""
 if [ "$var_rebuild" == "n" ]; then
-var_rebuild_params=" --dry_run --max_iterations_between_datastructure_rebuild=99999999 "
+var_rebuild_params=" --dry_run --max_iterations_between_datastructure_rebuild=99999999 --max_iterations=${var_iteration} "
+elif [ "$var_rebuild" == "b" ]; then
+var_rebuild_params=" --dry_run --max_iterations_between_datastructure_rebuild=99999999 --max_iterations=1                "
 else
-var_rebuild_params=" --dry_run --max_iterations_between_datastructure_rebuild=1 "
+var_rebuild_params=" --dry_run --max_iterations_between_datastructure_rebuild=1        --max_iterations=${var_iteration} "
 fi
 
 
@@ -35,7 +37,6 @@ srun ../../../particle_simulation.x \
 --data_structure=${var_datastructure} \
 --input=GENERATOR_GRID_DISTRIBUTION --count=64000 \
 --output=VOID \
---max_iterations=${var_iteration} \
 --cut_off_radius=${var_radius} \
 --timestep=0.0005 \
 --bounds=${var_bounds}/${var_bounds}/${var_bounds} \
@@ -53,7 +54,7 @@ var_threads=11
 for var_datastructure in "LINKED_CELLS" "LINKED_CELLS+NEIGHBOR_LIST";
 do
 
-for var_rebuild in 'r' 'n';
+for var_rebuild in 'r' 'n' 'b';
 do
 
 add_job $var_datastructure 6  60  0 1.2 $var_threads 2000 $var_rebuild

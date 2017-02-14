@@ -1,4 +1,5 @@
 echo "row,\
+rebuild,\
 iterations,\
 dichte,\
 particles_per_cell,\
@@ -64,7 +65,7 @@ fi
 done
 done
 
-echo "${var_row},${var_iteration},${var_line_dichte},${var_line_particles_per_cell},${var_line_cell_count},${var_radius},${var_bounds},${var_initial_speed},${var_radius_extra},${var_threads}${var_line_statistics_total_datastructure_rebuild_count}${var_line_statistics_total_runtime}"
+echo "${var_row},${var_rebuild},${var_iteration},${var_line_dichte},${var_line_particles_per_cell},${var_line_cell_count},${var_radius},${var_bounds},${var_initial_speed},${var_radius_extra},${var_threads}${var_line_statistics_total_datastructure_rebuild_count}${var_line_statistics_total_runtime}"
 var_row=$((var_row + 1))
 }
 
@@ -73,7 +74,7 @@ var_threads=11
 for var_datastructure in "LINKED_CELLS";
 do
 
-for var_rebuild in 'r' 'n';
+for var_rebuild in 'r' 'n' 'b';
 do
 
 add_job $var_datastructure 6  60  0 1.2 $var_threads 2000 $var_rebuild

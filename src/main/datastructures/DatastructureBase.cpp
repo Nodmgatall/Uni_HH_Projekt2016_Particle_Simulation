@@ -22,15 +22,17 @@ void DatastructureBase::step_3_fit_into_borders (ParticleGroup& p_cell) {
     m_border.updatePosition (p_cell, m_idx_a, m_error_happened);
 }
 void DatastructureBase::serialize () {
-    Benchmark::begin ("saving the data", false);
-    m_writer.start ();
-    for (ParticleGroup cell : m_particle_groups) {
-        if (!(cell.m_ids.empty ())) {
-            m_writer.saveData (cell.m_positions_x[m_idx_a], cell.m_positions_y[m_idx_a], cell.m_positions_z[m_idx_a], cell.m_ids);
+    if (m_options.m_output_type != e_output_type::VOID) {
+        Benchmark::begin ("saving the data", false);
+        m_writer.start ();
+        for (ParticleGroup cell : m_particle_groups) {
+            if (!(cell.m_ids.empty ())) {
+                m_writer.saveData (cell.m_positions_x[m_idx_a], cell.m_positions_y[m_idx_a], cell.m_positions_z[m_idx_a], cell.m_ids);
+            }
         }
+        m_writer.end ();
+        Benchmark::end ();
     }
-    m_writer.end ();
-    Benchmark::end ();
 }
 bool DatastructureBase::run_simulation_iteration (unsigned long p_iteration_number) {
     (void) p_iteration_number;
