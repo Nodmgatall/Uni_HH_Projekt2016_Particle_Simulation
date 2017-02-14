@@ -25,9 +25,13 @@ void DatastructureBase::serialize () {
     if (m_options.m_output_type != e_output_type::VOID) {
         Benchmark::begin ("saving the data", false);
         m_writer.start ();
-        for (ParticleGroup cell : m_particle_groups) {
-            if (!(cell.m_ids.empty ())) {
-                m_writer.saveData (cell.m_positions_x[m_idx_a], cell.m_positions_y[m_idx_a], cell.m_positions_z[m_idx_a], cell.m_ids);
+        size_t idx;
+        for (idx = 0; idx < m_particle_groups.size (); idx++) {
+            if (!(m_particle_groups[idx].m_ids.empty ())) {
+                m_writer.saveData (m_particle_groups[idx].m_positions_x[m_idx_a],
+                                   m_particle_groups[idx].m_positions_y[m_idx_a],
+                                   m_particle_groups[idx].m_positions_z[m_idx_a],
+                                   m_particle_groups[idx].m_ids);
             }
         }
         m_writer.end ();
@@ -55,8 +59,9 @@ void DatastructureBase::add_particle (Vec3f p_position) {
 }
 unsigned long DatastructureBase::get_particle_count () {
     unsigned long particle_count = 0;
-    for (ParticleGroup cell : m_particle_groups) {
-        particle_count += cell.m_ids.size ();
+    size_t        idx;
+    for (idx = 0; idx < m_particle_groups.size (); idx++) {
+        particle_count += m_particle_groups[idx].m_ids.size ();
     }
     return particle_count;
 }

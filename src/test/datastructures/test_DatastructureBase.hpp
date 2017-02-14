@@ -199,6 +199,7 @@ class BoundsCorrection : public BorderBase {
     }
 };
 BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_1) {
+    std::cout << "test_run_simulation_iteration_1" << std::endl;
     s_options options;
     memset (&options, 0, sizeof (s_options));
     options.m_particle_count              = 999999999;
@@ -265,6 +266,7 @@ BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_1) {
     }
 }
 BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_2) {
+    std::cout << "test_run_simulation_iteration_2" << std::endl;
     s_options options;
     memset (&options, 0, sizeof (s_options));
     int size                              = 3;
@@ -273,6 +275,7 @@ BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_2) {
     options.m_cut_off_radius              = 1;
     options.m_timestep                    = 1;
     options.m_cut_off_radius_extra_factor = 1.2;
+    options.m_verbose                     = true;
     BoundsCorrection       border (options.m_bounds);
     Algorithm              algorithm (options);
     ParticleWriter         writer = ParticleWriter (0);
@@ -288,9 +291,13 @@ BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_2) {
             }
         }
     }
+    std::cout << "test_run_simulation_iteration_2 a" << std::endl;
     algorithm.test_prepare (-count);
+    std::cout << "test_run_simulation_iteration_2 c" << std::endl;
     particlesGrid.run_simulation_iteration (0);
+    std::cout << "test_run_simulation_iteration_2 d" << std::endl;
     BOOST_CHECK_EQUAL (particlesGrid.get_particle_count (), -count);
+    std::cout << "test_run_simulation_iteration_2 e" << std::endl;
     for (unsigned int i = 0; i < allParticles.size (); i++) {
         BOOST_CHECK_EQUAL (algorithm.m_step_1_helper[i], 1);
         BOOST_CHECK_EQUAL (algorithm.m_step_2_helper[i][i], 0);
@@ -317,6 +324,7 @@ BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_2) {
             }
         }
     }
+    std::cout << "test_run_simulation_iteration_2 b" << std::endl;
     printf ("target\n");
     for (unsigned int i = 0; i < allParticles.size (); i++) {
         for (unsigned int j = 0; j < allParticles.size (); j++) {
@@ -336,6 +344,7 @@ BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_2) {
     }
 }
 BOOST_AUTO_TEST_CASE (test_serialize) {
+    std::cout << "test_serialize" << std::endl;
     s_options options;
     memset (&options, 0, sizeof (s_options));
     int size                              = 4;
