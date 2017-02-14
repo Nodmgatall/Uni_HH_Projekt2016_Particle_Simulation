@@ -13,25 +13,18 @@ DatastructureLinkedCells::DatastructureLinkedCells (s_options& p_options, Border
     grid_size          = getSize (p_options);
     grid_size_per_cell = p_options.m_bounds / Vec3f (grid_size - 2);
     m_particle_groups.reserve (grid_size.x * grid_size.y * grid_size.z);
-    /* long   sx    = grid_size.x;
-     long   sy    = grid_size.y;
-     long   sz    = grid_size.z;
-     size_t limit = sx * sy * sz;
-     m_particle_groups.reserve (limit);
-     m_standard_stream << DEBUG_VAR (grid_size) << std::endl;
-     size_t idx;
-     for (idx = 0; idx < limit; idx++) {
-         idx_x = (idx / sz) / sy;
-         idx_y = (idx / sz) % sy;
-         idx_z = idx % sz;
-         m_particle_groups.push_back (ParticleGroup (Vec3l (idx_x, idx_y, idx_z), grid_size_per_cell));
-     }*/
-    for (idx_x = 0; idx_x < grid_size.x; idx_x++) {
-        for (idx_y = 0; idx_y < grid_size.y; idx_y++) {
-            for (idx_z = 0; idx_z < grid_size.z; idx_z++) {
-                m_particle_groups.push_back (ParticleGroup (Vec3l (idx_x, idx_y, idx_z), grid_size_per_cell));
-            }
-        }
+    long   sx    = grid_size.x;
+    long   sy    = grid_size.y;
+    long   sz    = grid_size.z;
+    size_t limit = sx * sy * sz;
+    m_particle_groups.reserve (limit);
+    m_standard_stream << DEBUG_VAR (grid_size) << std::endl;
+    size_t idx;
+    for (idx = 0; idx < limit; idx++) {
+        idx_x = (idx / sz) / sy;
+        idx_y = (idx / sz) % sy;
+        idx_z = idx % sz;
+        m_particle_groups.push_back (ParticleGroup (Vec3l (idx_x, idx_y, idx_z), grid_size_per_cell));
     }
 #ifdef CALCULATE_STATISTICS
     g_statistics.m_cell_count = m_particle_groups.size ();
