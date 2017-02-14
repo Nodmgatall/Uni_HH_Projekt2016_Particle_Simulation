@@ -57,21 +57,21 @@ do
 for var_rebuild in 'r' 'n' 'b';
 do
 
-add_job $var_datastructure 2  100 0 1.2 $var_threads 10 $var_rebuild
-add_job $var_datastructure 3  100 0 1.2 $var_threads 10 $var_rebuild
-add_job $var_datastructure 4  100 0 1.2 $var_threads 10 $var_rebuild
-add_job $var_datastructure 5  100 0 1.2 $var_threads 10 $var_rebuild
-add_job $var_datastructure 6  100 0 1.2 $var_threads 10 $var_rebuild
-add_job $var_datastructure 8  100 0 1.2 $var_threads 10 $var_rebuild
-add_job $var_datastructure 10 100 0 1.2 $var_threads 10 $var_rebuild
-add_job $var_datastructure 12 100 0 1.2 $var_threads 10 $var_rebuild
-add_job $var_datastructure 14 100 0 1.2 $var_threads 10 $var_rebuild
-add_job $var_datastructure 16 100 0 1.2 $var_threads 10 $var_rebuild
-add_job $var_datastructure 18 100 0 1.2 $var_threads 10 $var_rebuild
-add_job $var_datastructure 20 100 0 1.2 $var_threads 10 $var_rebuild
-add_job $var_datastructure 22 100 0 1.2 $var_threads 10 $var_rebuild
-add_job $var_datastructure 24 100 0 1.2 $var_threads 10 $var_rebuild
-add_job $var_datastructure 26 100 0 1.2 $var_threads 10 $var_rebuild
+add_job $var_datastructure 2  100 0 1.2 $var_threads 8000 $var_rebuild
+add_job $var_datastructure 3  100 0 1.2 $var_threads 7723 $var_rebuild
+add_job $var_datastructure 4  100 0 1.2 $var_threads 6979 $var_rebuild
+add_job $var_datastructure 5  100 0 1.2 $var_threads 6468 $var_rebuild
+add_job $var_datastructure 6  100 0 1.2 $var_threads 7384 $var_rebuild
+add_job $var_datastructure 8  100 0 1.2 $var_threads 4184 $var_rebuild
+add_job $var_datastructure 10 100 0 1.2 $var_threads 1908 $var_rebuild
+add_job $var_datastructure 12 100 0 1.2 $var_threads 1144 $var_rebuild
+add_job $var_datastructure 14 100 0 1.2 $var_threads 391  $var_rebuild
+add_job $var_datastructure 16 100 0 1.2 $var_threads 358  $var_rebuild
+add_job $var_datastructure 18 100 0 1.2 $var_threads 316  $var_rebuild
+add_job $var_datastructure 20 100 0 1.2 $var_threads 272  $var_rebuild
+add_job $var_datastructure 22 100 0 1.2 $var_threads 23   $var_rebuild
+add_job $var_datastructure 24 100 0 1.2 $var_threads 21   $var_rebuild
+add_job $var_datastructure 26 100 0 1.2 $var_threads 20   $var_rebuild
 
 done
 done
