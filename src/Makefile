@@ -10,7 +10,7 @@ format:
 
 clean: format
 	cd .. && $(MAKE) clean --no-print-directory
-	rm -rf ../CMakeFiles ../CMakeCache.txt ../Makefile ../cmake_install.cmake CTestTestfile.cmake ../xml ../html ../latex  ../Testing/Binary ../Testing/Coverage ../Testing/Temporary
+	rm -rf ../CMakeFiles ../CMakeCache.txt ../Makefile ../cmake_install.cmake CTestTestfile.cmake ../xml ../html ../latex  ../Testing/Binary ../Testing/Coverage ../Testing/Temporary ../CTestTestfile.cmake
 
 doxygen:
 	cd .. && doxygen

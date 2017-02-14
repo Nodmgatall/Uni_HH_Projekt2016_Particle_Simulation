@@ -8,10 +8,18 @@
 #include <datastructures/DatastructureNeighborList.hpp>
 DatastructureNeighborList::DatastructureNeighborList (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, OutputBase& p_particle_writer)
 : DatastructureBase (p_options, p_border, p_algorithm, p_particle_writer) {
-    m_stucture_name = "DatastructureNeighborList";
-    m_particle_groups.push_back (ParticleGroup (Vec3l (), m_options.m_bounds));
+    m_stucture_name         = "DatastructureNeighborList";
+    m_particle_groups_count = 1;
+    m_particle_groups       = (ParticleGroup*) malloc (sizeof (ParticleGroup) * m_particle_groups_count);
+    new (m_particle_groups) ParticleGroup (Vec3l (), m_options.m_bounds); // placement new operator
 }
 DatastructureNeighborList::~DatastructureNeighborList () {
+    size_t idx;
+    for (idx = 0; idx < m_particle_groups_count; idx++) {
+        // destroy classes created by placement new operator manually
+        (m_particle_groups + idx)->~ParticleGroup ();
+    }
+    free (m_particle_groups);
 }
 void DatastructureNeighborList::list_step_2_calculate (ParticleGroup& p_cell, AlgorithmBase& p_algorithm, unsigned int p_idx_a, unsigned int p_idx_b) {
     unsigned long                                 i, j;
@@ -153,7 +161,7 @@ bool DatastructureNeighborList::run_simulation_iteration (unsigned long p_iterat
 #ifdef CALCULATE_ENERGY_CONSERVATION
     unsigned int i, j;
     g_sum_energy = 0;
-    for (i = 0; i < m_particle_groups.size (); i++) {
+    for (i = 0; i < m_particle_groups_count; i++) {
         ParticleGroup& group = m_particle_groups[i];
         for (j = 0; j < group.m_ids.size (); j++) {
             data_type m = 1;

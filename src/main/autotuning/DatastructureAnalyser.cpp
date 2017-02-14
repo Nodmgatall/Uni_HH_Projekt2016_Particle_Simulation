@@ -10,10 +10,18 @@
 /*m_idx_a -> velocity*/
 DatastructureAnalyser::DatastructureAnalyser (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, OutputBase& p_writer)
 : DatastructureBase (p_options, p_border, p_algorithm, p_writer) {
-    m_stucture_name = "DatastructureAnalyser";
-    m_particle_groups.push_back (ParticleGroup (Vec3l (), m_options.m_bounds));
+    m_stucture_name         = "DatastructureAnalyser";
+    m_particle_groups_count = 1;
+    m_particle_groups       = (ParticleGroup*) malloc (sizeof (ParticleGroup) * m_particle_groups_count);
+    new (m_particle_groups) ParticleGroup (Vec3l (), m_options.m_bounds); // placement new operator
 }
 DatastructureAnalyser::~DatastructureAnalyser () {
+    size_t idx;
+    for (idx = 0; idx < m_particle_groups_count; idx++) {
+        // destroy classes created by placement new operator manually
+        (m_particle_groups + idx)->~ParticleGroup ();
+    }
+    free (m_particle_groups);
 }
 void DatastructureAnalyser::transfer_particles_to (DatastructureBase& p_datastructure) {
     unsigned long i;

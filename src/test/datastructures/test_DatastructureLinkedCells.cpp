@@ -243,7 +243,7 @@ class DatastructureGridTestClass : public DatastructureLinkedCells {
     }
     ~DatastructureGridTestClass () {
     }
-    const std::vector<ParticleGroup>& get_cells () {
+    ParticleGroup* get_cells () {
         return m_particle_groups;
     }
     unsigned int get_idx_a () {

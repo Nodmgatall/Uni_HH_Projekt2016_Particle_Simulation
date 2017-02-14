@@ -26,7 +26,7 @@ void DatastructureBase::serialize () {
         Benchmark::begin ("saving the data", false);
         m_writer.start ();
         size_t idx;
-        for (idx = 0; idx < m_particle_groups.size (); idx++) {
+        for (idx = 0; idx < m_particle_groups_count; idx++) {
             if (!(m_particle_groups[idx].m_ids.empty ())) {
                 m_writer.saveData (m_particle_groups[idx].m_positions_x[m_idx_a],
                                    m_particle_groups[idx].m_positions_y[m_idx_a],
@@ -60,7 +60,7 @@ void DatastructureBase::add_particle (Vec3f p_position) {
 unsigned long DatastructureBase::get_particle_count () {
     unsigned long particle_count = 0;
     size_t        idx;
-    for (idx = 0; idx < m_particle_groups.size (); idx++) {
+    for (idx = 0; idx < m_particle_groups_count; idx++) {
         particle_count += m_particle_groups[idx].m_ids.size ();
     }
     return particle_count;
@@ -71,7 +71,7 @@ void DatastructureBase::calculate_next_datastructure_rebuild () { // calculate, 
     data_type    v_max_y = 0.00001; // do not devide through 0
     data_type    v_max_z = 0.00001; // do not devide through 0
     data_type    v_max   = 0.00001; // do not devide through 0
-    for (i = 0; i < m_particle_groups.size (); i++) {
+    for (i = 0; i < m_particle_groups_count; i++) {
         ParticleGroup& group = m_particle_groups[i];
         for (j = 0; j < group.m_ids.size (); j++) {
             v_max_x = MAX (v_max_x, fabs (group.m_positions_x[m_idx_b][j] - group.m_positions_x[m_idx_a][j]));

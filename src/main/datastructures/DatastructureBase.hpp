@@ -83,7 +83,11 @@ class DatastructureBase {
     /**
      * the cells in which the particles are stored
      */
-    std::vector<ParticleGroup> m_particle_groups;
+    ParticleGroup* m_particle_groups;
+    /**
+     * the count of cells in which the particles are stored
+     */
+    size_t m_particle_groups_count;
     /**
      * verify that all particles in cell are inside the given bounds, if they are not, they are
      * moved
@@ -102,7 +106,8 @@ class DatastructureBase {
      */
     DatastructureBase (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, OutputBase& p_writer)
     : m_options (p_options), m_border (p_border), m_algorithm (p_algorithm), m_writer (p_writer), m_error_happened (false), m_iterations_until_rearange_particles (1),
-      m_iterations_since_rearange_particles (0), m_idx_a (0), m_idx_b (1), m_max_id (0), m_datastructure_rebuild_last_iteration_flag (true /*list MUST rebuild in first iteration*/) {
+      m_iterations_since_rearange_particles (0), m_idx_a (0), m_idx_b (1), m_max_id (0),
+      m_datastructure_rebuild_last_iteration_flag (true /*list MUST rebuild in first iteration*/), m_particle_groups (0), m_particle_groups_count (0) {
         m_iterations_until_rearange_particles = p_options.m_max_iterations_between_datastructure_rebuild;
         m_iterations_since_rearange_particles = p_options.m_max_iterations_between_datastructure_rebuild;
         // -1 because only the additional bonus space is mesured

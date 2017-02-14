@@ -10,24 +10,23 @@ DatastructureLinkedCells::DatastructureLinkedCells (s_options& p_options, Border
 : DatastructureBase (p_options, p_border, p_algorithm, p_particle_writer) {
     m_stucture_name = "DatastructureLinkedCells";
     long idx_x, idx_y, idx_z;
-    grid_size          = getSize (p_options);
-    grid_size_per_cell = p_options.m_bounds / Vec3f (grid_size - 2);
-    m_particle_groups.reserve (grid_size.x * grid_size.y * grid_size.z);
-    long   sx    = grid_size.x;
-    long   sy    = grid_size.y;
-    long   sz    = grid_size.z;
-    size_t limit = sx * sy * sz;
-    m_particle_groups.reserve (limit);
+    grid_size               = getSize (p_options);
+    grid_size_per_cell      = p_options.m_bounds / Vec3f (grid_size - 2);
+    long sx                 = grid_size.x;
+    long sy                 = grid_size.y;
+    long sz                 = grid_size.z;
+    m_particle_groups_count = sx * sy * sz;
+    m_particle_groups       = (ParticleGroup*) malloc (sizeof (ParticleGroup) * m_particle_groups_count);
     m_standard_stream << DEBUG_VAR (grid_size) << std::endl;
     size_t idx;
-    for (idx = 0; idx < limit; idx++) {
+    for (idx = 0; idx < m_particle_groups_count; idx++) {
         idx_x = (idx / sz) / sy;
         idx_y = (idx / sz) % sy;
         idx_z = idx % sz;
-        m_particle_groups.push_back (ParticleGroup (Vec3l (idx_x, idx_y, idx_z), grid_size_per_cell));
+        new (m_particle_groups + idx) ParticleGroup (Vec3l (idx_x, idx_y, idx_z), grid_size_per_cell); // placement new operator
     }
 #ifdef CALCULATE_STATISTICS
-    g_statistics.m_cell_count = m_particle_groups.size ();
+    g_statistics.m_cell_count = m_particle_groups_count;
 #endif
     if (m_options.m_cut_off_radius < 1) {
         m_standard_stream << "ERROR :: cut-off-radius too small. Increasing from '" << DEBUG_VAR (m_options.m_cut_off_radius) << "' to '1'!" << std::endl;
@@ -69,6 +68,12 @@ Vec3l DatastructureLinkedCells::getSize (s_options& p_options) {
     return grid_size;
 }
 DatastructureLinkedCells::~DatastructureLinkedCells () {
+    size_t idx;
+    for (idx = 0; idx < m_particle_groups_count; idx++) {
+        // destroy classes created by placement new operator manually
+        (m_particle_groups + idx)->~ParticleGroup ();
+    }
+    free (m_particle_groups);
 }
 unsigned long DatastructureLinkedCells::grid_get_cell_index (long x, long y, long z) {
     return z + grid_size.z * (y + grid_size.y * x);
@@ -471,7 +476,7 @@ bool DatastructureLinkedCells::run_simulation_iteration (unsigned long p_iterati
     }
 #ifdef CALCULATE_ENERGY_CONSERVATION
     g_sum_energy = 0;
-    for (i = 0; i < m_particle_groups.size (); i++) {
+    for (i = 0; i < m_particle_groups_count; i++) {
         ParticleGroup& group = m_particle_groups[i];
         for (j = 0; j < group.m_ids.size (); j++) {
             data_type m = 1;
