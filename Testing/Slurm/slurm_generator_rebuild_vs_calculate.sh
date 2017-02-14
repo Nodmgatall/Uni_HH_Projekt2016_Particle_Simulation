@@ -57,14 +57,17 @@ do
 for var_rebuild in 'r' 'n' 'b';
 do
 
-add_job $var_datastructure 6  60  0 1.2 $var_threads 3000 $var_rebuild
-add_job $var_datastructure 8  80  0 1.2 $var_threads 3000 $var_rebuild
-add_job $var_datastructure 12 120 0 1.2 $var_threads 3000 $var_rebuild
-add_job $var_datastructure 24 240 0 1.2 $var_threads 3000 $var_rebuild
-add_job $var_datastructure 6  60  1 1.2 $var_threads 3000 $var_rebuild
-add_job $var_datastructure 8  80  1 1.2 $var_threads 3000 $var_rebuild
-add_job $var_datastructure 12 120 1 1.2 $var_threads 3000 $var_rebuild
-add_job $var_datastructure 24 240 1 1.2 $var_threads 3000 $var_rebuild
+add_job $var_datastructure 2  100 0 1.2 $var_threads 10 $var_rebuild
+add_job $var_datastructure 6  100 0 1.2 $var_threads 10 $var_rebuild
+add_job $var_datastructure 16 100 0 1.2 $var_threads 10 $var_rebuild
+add_job $var_datastructure 26 100 0 1.2 $var_threads 10 $var_rebuild
+add_job $var_datastructure 36 100 0 1.2 $var_threads 10 $var_rebuild
+add_job $var_datastructure 46 100 0 1.2 $var_threads 10 $var_rebuild
+add_job $var_datastructure 56 100 0 1.2 $var_threads 10 $var_rebuild
+add_job $var_datastructure 66 100 0 1.2 $var_threads 10 $var_rebuild
+add_job $var_datastructure 76 100 0 1.2 $var_threads 10 $var_rebuild
+add_job $var_datastructure 86 100 0 1.2 $var_threads 10 $var_rebuild
+add_job $var_datastructure 96 100 0 1.2 $var_threads 10 $var_rebuild
 
 done
 done
