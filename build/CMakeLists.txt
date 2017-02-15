@@ -21,7 +21,7 @@ if(OPTIMIZED EQUAL 1)
     set(exec_name "particle_sim_opti.x")
 endif()
 if(GPROF EQUAL 1)
-    set(CMAKE_EXE_LINKER_FLAGS ${CMAKE_EXE_LINKER_FLAGS} "-pg")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pg")
     message("compiler flags for gprof set")
 endif()
 
