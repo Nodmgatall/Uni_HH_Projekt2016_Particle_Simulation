@@ -1,12 +1,12 @@
 /*
- * test_DatastructureBaseForGrid.cpp
+ * test_DatastructureBaseForListGrid.cpp
  *
- *  Created on: Dec 10, 2016
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
 #ifndef BOOST_TEST_DYN_LINK
-#include "datastructures/DatastructureListGrid.hpp"
-typedef DatastructureListGrid DatastructureUnderTest;
+#include <datastructures/DatastructureLinkedCellsNeighborList.hpp>
+typedef DatastructureLinkedCellsNeighborList DatastructureUnderTest;
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "DatastructureBaseListGrid"
 #include "test_DatastructureBase.hpp"

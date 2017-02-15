@@ -1,11 +1,12 @@
 /*
  * EnumOutputType.hpp
  *
- *  Created on: Dec 10, 2016
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
-#ifndef SRC_MAIN_OPTIONS_ENUM_OUTPUT_TYPE_HPP_
-#define SRC_MAIN_OPTIONS_ENUM_OUTPUT_TYPE_HPP_
+#ifndef SRC_MAIN_ENUMS_ENUMOUTPUTTYPE_HPP_
+#define SRC_MAIN_ENUMS_ENUMOUTPUTTYPE_HPP_
 #include <cstring>
 #include <exception>
 #include <istream>
@@ -14,7 +15,7 @@
 /**
  * implemented or planned output types for simulation
  */
-enum class e_output_type { FILE_CSV = 1, FILE_LAMMPS = 2, FILE_ESPRESSO = 3, FILE_GROMACS = 4, FILE_VMD = 5, FILE_VTK = 6, FILE_CSV_AVI = 7 };
+enum class e_output_type { VOID = 1, FILE_CSV = 2, FILE_LAMMPS = 3, FILE_ESPRESSO = 4, FILE_GROMACS = 5, FILE_VMD = 6, FILE_VTK = 7, FILE_CSV_AVI = 8 };
 // CSV::ParaView	how to  -> http://www.paraview.org/Wiki/ParaView/Data_formats
 /* visualisierungs software
  *

@@ -1,11 +1,12 @@
 /*
  * Benchmark.hpp
  *
- *  Created on: 11.11.2016
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
-#ifndef SRC_TOOLS_BENCHMARK_HPP_
-#define SRC_TOOLS_BENCHMARK_HPP_
+#ifndef SRC_MAIN_TOOLS_BENCHMARK_HPP_
+#define SRC_MAIN_TOOLS_BENCHMARK_HPP_
 #include "Debug.hpp"
 #include <iomanip>
 #include <stack>
@@ -21,7 +22,7 @@ class Benchmark {
     /**
      * times when the corresponding section started
      */
-    static std::stack<struct timeval> m_section_starttimes;
+    static std::stack<data_type> m_section_starttimes;
     /**
      * if the section print its time only after the section finishes or if the print statements
      * between begin and end should be indented

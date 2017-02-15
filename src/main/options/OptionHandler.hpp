@@ -1,5 +1,12 @@
-#ifndef OPTION_HANDLER_HPP
-#define OPTION_HANDLER_HPP
+/*
+ * OptionHandler.hpp
+ *
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
+ */
+#ifndef SRC_MAIN_OPTIONS_OPTIONHANDLER_HPP_
+#define SRC_MAIN_OPTIONS_OPTIONHANDLER_HPP_
 #include "Definitions.hpp"
 #include "Options.hpp"
 #include <cstring>
@@ -35,6 +42,7 @@ class OptionHandler {
     void print_header ();
     void print_usage_print_config ();
     void print_usage_cut_off_extra_factor ();
+    void print_usage_dry_run ();
 
   public:
     /**

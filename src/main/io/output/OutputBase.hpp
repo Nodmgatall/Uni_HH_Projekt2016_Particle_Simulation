@@ -1,14 +1,15 @@
 /*
- * ParticleWriterBase.hpp
+ * WriterBase.hpp
  *
- *  Created on: Dec 10, 2016
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
-#ifndef SRC_MAIN_IO_PARTICLEWRITERBASE_HPP_
-#define SRC_MAIN_IO_PARTICLEWRITERBASE_HPP_
+#ifndef SRC_MAIN_IO_OUTPUT_OUTPUTBASE_HPP_
+#define SRC_MAIN_IO_OUTPUT_OUTPUTBASE_HPP_
 #include "Definitions.hpp"
 #include "options/Options.hpp"
-class WriterBase {
+class OutputBase {
   protected:
     /**
      * the name of the child-class to verify which subclass is used at runtime
@@ -19,12 +20,12 @@ class WriterBase {
     /**
      * constructor
      */
-    WriterBase () {
+    OutputBase () {
     }
     /**
      * destructor
      */
-    virtual ~WriterBase () {
+    virtual ~OutputBase () {
     }
     /**
      *

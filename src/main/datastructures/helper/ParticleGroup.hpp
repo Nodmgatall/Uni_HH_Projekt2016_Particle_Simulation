@@ -1,8 +1,9 @@
 /*
  * ParticleGroup.hpp
  *
- *  Created on: Jan 20, 2017
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
 #ifndef SRC_MAIN_DATASTRUCTURES_HELPER_PARTICLEGROUP_HPP_
 #define SRC_MAIN_DATASTRUCTURES_HELPER_PARTICLEGROUP_HPP_
@@ -29,11 +30,11 @@ struct ParticleGroup {
      */
     std::vector<unsigned long> m_ids;
     /**
-     * the boundarys for this cell. important for grid datastructure
+     * the boundarys for this cell. important for linked-cells datastructure
      */
     Vec3f m_corner000, m_corner111;
     /**
-     * the index in the cell array. important for grid-datastructure
+     * the index in the cell array. important for linked-cells-datastructure
      */
     Vec3l m_idx;
     /**

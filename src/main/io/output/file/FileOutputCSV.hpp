@@ -1,13 +1,14 @@
 /*
- * ParticleFileWriter.hpp
+ * FileWriterCSV.hpp
  *
- *  Created on: Oct 29, 2016
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
-#ifndef SRC_PARTICLEFILEWRITER_HPP_
-#define SRC_PARTICLEFILEWRITER_HPP_
-#include "io/output/WriterBase.hpp"
-class FileWriterCSV : public WriterBase {
+#ifndef SRC_MAIN_IO_OUTPUT_FILE_FILEOUTPUTCSV_HPP_
+#define SRC_MAIN_IO_OUTPUT_FILE_FILEOUTPUTCSV_HPP_
+#include <io/output/OutputBase.hpp>
+class FileOutputCSV : public OutputBase {
   protected:
     /**
      * the current timestep which is used as fileending. this could be much less, than the timestep
@@ -32,7 +33,8 @@ class FileWriterCSV : public WriterBase {
     /**
      * constructor
      */
-    FileWriterCSV (s_options& p_options, const std::string& p_file_name_base);
+    FileOutputCSV (s_options& p_options);
+    FileOutputCSV (s_options& p_options, const std::string& p_file_name_base);
     void start () override;
     void end () override;
     void finalize () override;

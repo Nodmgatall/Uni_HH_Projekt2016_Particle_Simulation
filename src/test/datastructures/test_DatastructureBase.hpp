@@ -1,23 +1,23 @@
 /*
- * test_ParticleGeneratorRandom.cpp
+ * test_DatastructureBase.hpp
  *
- *  Created on: Dec 8, 2016
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
 #ifndef BOOST_TEST_DYN_LINK
 // this code is never executed !! -->>
 #include "datastructures/DatastructureGrid.hpp"
-typedef DatastructureGrid DatastructureUnderTest;
+typedef DatastructureLinkedCells DatastructureUnderTest;
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "DatastructureBaseGrid"
 //<<-- this code is never executed !!
 #endif
 #include "algorithms/AlgorithmBase.hpp"
 #include "borders/BorderBase.hpp"
-#include "io/output/WriterBase.hpp"
 #include <boost/test/unit_test.hpp>
 #include <cstring>
-class ParticleWriter : public WriterBase {
+#include <io/output/OutputBase.hpp>
+class ParticleWriter : public OutputBase {
   public:
     bool             m_start_called;
     bool             m_end_called;
@@ -199,13 +199,14 @@ class BoundsCorrection : public BorderBase {
     }
 };
 BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_1) {
+    std::cout << "test_run_simulation_iteration_1" << std::endl;
     s_options options;
     memset (&options, 0, sizeof (s_options));
-    options.m_particle_count = 999999999;
-    options.m_bounds         = Vec3f (3, 3, 3);
-    options.m_cut_off_radius = 1;
-    options.m_timestep       = 1;
-    options.m_cut_off_factor = 1.2;
+    options.m_particle_count              = 999999999;
+    options.m_bounds                      = Vec3f (3, 3, 3);
+    options.m_cut_off_radius              = 1;
+    options.m_timestep                    = 1;
+    options.m_cut_off_radius_extra_factor = 1.2;
     BoundsCorrection       border (options.m_bounds);
     Algorithm              algorithm (options);
     ParticleWriter         writer = ParticleWriter (0);
@@ -265,14 +266,16 @@ BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_1) {
     }
 }
 BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_2) {
+    std::cout << "test_run_simulation_iteration_2" << std::endl;
     s_options options;
     memset (&options, 0, sizeof (s_options));
-    int size                 = 3;
-    options.m_particle_count = 999999999;
-    options.m_bounds         = Vec3f (size, size, size);
-    options.m_cut_off_radius = 1;
-    options.m_timestep       = 1;
-    options.m_cut_off_factor = 1.2;
+    int size                              = 3;
+    options.m_particle_count              = 999999999;
+    options.m_bounds                      = Vec3f (size, size, size);
+    options.m_cut_off_radius              = 1;
+    options.m_timestep                    = 1;
+    options.m_cut_off_radius_extra_factor = 1.2;
+    options.m_verbose                     = true;
     BoundsCorrection       border (options.m_bounds);
     Algorithm              algorithm (options);
     ParticleWriter         writer = ParticleWriter (0);
@@ -288,9 +291,13 @@ BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_2) {
             }
         }
     }
+    std::cout << "test_run_simulation_iteration_2 a" << std::endl;
     algorithm.test_prepare (-count);
+    std::cout << "test_run_simulation_iteration_2 c" << std::endl;
     particlesGrid.run_simulation_iteration (0);
+    std::cout << "test_run_simulation_iteration_2 d" << std::endl;
     BOOST_CHECK_EQUAL (particlesGrid.get_particle_count (), -count);
+    std::cout << "test_run_simulation_iteration_2 e" << std::endl;
     for (unsigned int i = 0; i < allParticles.size (); i++) {
         BOOST_CHECK_EQUAL (algorithm.m_step_1_helper[i], 1);
         BOOST_CHECK_EQUAL (algorithm.m_step_2_helper[i][i], 0);
@@ -317,6 +324,7 @@ BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_2) {
             }
         }
     }
+    std::cout << "test_run_simulation_iteration_2 b" << std::endl;
     printf ("target\n");
     for (unsigned int i = 0; i < allParticles.size (); i++) {
         for (unsigned int j = 0; j < allParticles.size (); j++) {
@@ -336,14 +344,15 @@ BOOST_AUTO_TEST_CASE (test_run_simulation_iteration_2) {
     }
 }
 BOOST_AUTO_TEST_CASE (test_serialize) {
+    std::cout << "test_serialize" << std::endl;
     s_options options;
     memset (&options, 0, sizeof (s_options));
-    int size                 = 4;
-    int count_3              = 5;
-    options.m_bounds         = Vec3f (size, size, size);
-    options.m_cut_off_radius = 1;
-    options.m_timestep       = 1;
-    options.m_cut_off_factor = 1.2;
+    int size                              = 4;
+    int count_3                           = 5;
+    options.m_bounds                      = Vec3f (size, size, size);
+    options.m_cut_off_radius              = 1;
+    options.m_timestep                    = 1;
+    options.m_cut_off_radius_extra_factor = 1.2;
     BoundsCorrection       border (options.m_bounds);
     Algorithm              algorithm (options);
     ParticleWriter         writer = ParticleWriter (count_3 * count_3 * count_3);

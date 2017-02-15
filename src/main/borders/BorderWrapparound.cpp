@@ -1,8 +1,9 @@
 /*
  * BorderWrapparound.cpp
  *
- *  Created on: 06.12.2016
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
 #include "BorderWrapparound.hpp"
 BorderWrapparound::BorderWrapparound (Vec3f& p_bounds) : BorderBase (p_bounds) {

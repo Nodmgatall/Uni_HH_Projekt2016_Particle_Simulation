@@ -1,8 +1,9 @@
 /*
  * ParticleGroup.cpp
  *
- *  Created on: Jan 20, 2017
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
 #include <datastructures/helper/ParticleGroup.hpp>
 ParticleGroup::ParticleGroup (Vec3l p_idx, Vec3f p_size_per_group) {

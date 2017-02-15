@@ -1,18 +1,18 @@
 /*
- * test_LennardJonesAlgorithm.cpp
+ * test_DatastructureFactory.cpp
  *
- *  Created on: 07.12.2016
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "DatastructureFactory"
 #include "algorithms/AlgorithmBase.hpp"
 #include "borders/BorderBase.hpp"
 #include "datastructures/DatastructureFactory.hpp"
-#include "io/output/WriterBase.hpp"
 #include <boost/test/unit_test.hpp>
 #include <cstring>
-class ParticleWriter : public WriterBase {
+#include <io/output/OutputBase.hpp>
+class ParticleWriter : public OutputBase {
   public:
     bool             m_start_called;
     bool             m_end_called;
@@ -195,22 +195,31 @@ class BoundsCorrection : public BorderBase {
 BOOST_AUTO_TEST_CASE (test1) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
-    options.m_data_structure_type = e_datastructure_type::GRID;
+    options.m_data_structure_type = e_datastructure_type::LINKED_CELLS;
     BoundsCorrection border (options.m_bounds);
     Algorithm        algorithm (options);
     ParticleWriter   writer = ParticleWriter (0);
-    BOOST_CHECK_EQUAL (DatastructureFactory::build (options, border, algorithm, writer)->get_structure_name (), "DatastructureGrid");
+    BOOST_CHECK_EQUAL (DatastructureFactory::build (options, border, algorithm, writer)->get_structure_name (), "DatastructureLinkedCells");
 }
 BOOST_AUTO_TEST_CASE (test2) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
-    options.m_data_structure_type = e_datastructure_type::LIST;
+    options.m_data_structure_type = e_datastructure_type::NEIGHBOR_LIST;
     BoundsCorrection border (options.m_bounds);
     Algorithm        algorithm (options);
     ParticleWriter   writer = ParticleWriter (0);
-    BOOST_CHECK_EQUAL (DatastructureFactory::build (options, border, algorithm, writer)->get_structure_name (), "DatastructureList");
+    BOOST_CHECK_EQUAL (DatastructureFactory::build (options, border, algorithm, writer)->get_structure_name (), "DatastructureNeighborList");
 }
 BOOST_AUTO_TEST_CASE (test3) {
+    s_options options;
+    memset (&options, 0, sizeof (s_options));
+    options.m_data_structure_type = e_datastructure_type::LINKED_CELLS_NEIGHBOR_LIST;
+    BoundsCorrection border (options.m_bounds);
+    Algorithm        algorithm (options);
+    ParticleWriter   writer = ParticleWriter (0);
+    BOOST_CHECK_EQUAL (DatastructureFactory::build (options, border, algorithm, writer)->get_structure_name (), "DatastructureLinkedCellsNeighborList");
+}
+BOOST_AUTO_TEST_CASE (test4) {
     s_options options;
     memset (&options, 0, sizeof (s_options));
     BoundsCorrection border (options.m_bounds);

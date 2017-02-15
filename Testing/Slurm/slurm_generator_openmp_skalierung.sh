@@ -37,7 +37,7 @@ EOF
 chmod +x "job_script_${var_test_name}.sh"
 }
 
-for var_datastructure in "GRID" "GRID_LIST";
+for var_datastructure in "LINKED_CELLS" "LINKED_CELLS+NEIGHBOR_LIST";
 do
 for var_cut_off in 1 1.2
 do

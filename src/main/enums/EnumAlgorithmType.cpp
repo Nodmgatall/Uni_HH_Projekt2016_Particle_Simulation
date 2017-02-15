@@ -1,8 +1,9 @@
 /*
  * EnumAlgorithmType.cpp
  *
- *  Created on: Dec 10, 2016
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
 #include "enums/EnumAlgorithmType.hpp"
 std::vector<const char*> g_algorithm_names       = { "UNDEFINED", "LENNARD_JONES", "SMOTHED_PARTICLE_HYDRODYNAMICS", "DISSIPATIVE_PARTICLE_DYNAMICS" };

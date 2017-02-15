@@ -1,11 +1,12 @@
 /*
  * DataType.hpp
  *
- *  Created on: 08.12.2016
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
-#ifndef DATA_TYPE_DEFINED
-#define DATA_TYPE_DEFINED
+#ifndef SRC_MAIN_DATATYPE_HPP_
+#define SRC_MAIN_DATATYPE_HPP_
 /**
  * data_type is the type the data-structures and the algorithms should
  * internally use

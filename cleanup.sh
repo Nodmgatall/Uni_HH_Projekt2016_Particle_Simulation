@@ -4,7 +4,12 @@ make clean
 rm -rf ./CMakeFiles ./CMakeCache.txt ./Makefile ./cmake_install.cmake CTestTestfile.cmake ./xml ./html ./latex  ./Testing/Binary ./Testing/Coverage ./Testing/Temporary
 
 find . -maxdepth 10 -name "*.aux" -exec rm -r {} \;
+find . -maxdepth 10 -name "*.bbl" -exec rm -r {} \;
+find . -maxdepth 10 -name "*.blg" -exec rm -r {} \;
+find . -maxdepth 10 -name "*.lof" -exec rm -r {} \;
 find . -maxdepth 10 -name "*.log" -exec rm -r {} \;
+find . -maxdepth 10 -name "*.lol" -exec rm -r {} \;
+find . -maxdepth 10 -name "*.lot" -exec rm -r {} \;
 find . -maxdepth 10 -name "*.nav" -exec rm -r {} \;
 find . -maxdepth 10 -name "*.out" -exec rm -r {} \;
 find . -maxdepth 10 -name "*.snm" -exec rm -r {} \;
