@@ -32,7 +32,10 @@
 \usepackage{microtype}
 \usepackage[list=true,hypcap=true]{subcaption}
 \usepackage{units}
-
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\usepackage{filecontents}
 \usepackage{varioref}
 \usepackage[hidelinks]{hyperref}
 \usepackage[capitalise,noabbrev]{cleveref}
@@ -173,6 +176,37 @@ Damit das Auto-tuning entscheiden kann, welche Variante verwendet werden soll, m
 	\item \textbf{Startgeschwindigkeit} Je schneller sich die Partikel sich bewegen, desto schneller wird der cut-off Bereich verlassen. Hieraus folgt, dass die Datenstruktur besonders oft neu aufgebaut werden muss. Hier ist die nur Zellen basierte im Vorteil.
 	\item \textbf{Startanordnung} Je nachdem wie die Partikel bei Programmstart angeordnet sind ergeben sich andere Effekte. Zum Beispiel wäre es möglich, dass sich zu beginn alle Partikel in einem kleinem Bereich des zu simulierenden Raum aufhalten. Hieraus folgt, dass einige Zellen sehr viel mehr Partikel enthalten als andere. Für die gemischte Variante würde dies Bedeuten, dass die zweite Aufbauphase in einigen Zellen sehr viel Laufzeit benötigt.
 \end{itemize}
+\subsection{Parallelisierung}
+%TODO text
+\begin{figure}[h]
+		\centering
+		\begin{tikzpicture}
+			\begin{axis}[
+			xmin = 0,
+			xmax = 26,
+			xtick = {2,4,6,...,24},
+			ymin = 0.5,
+			ymax = 10,
+			legend pos=south east,
+			xmajorgrids=true,
+			ymajorgrids=true,
+			grid style=dashed,
+			ytick = {1,1.5,...,9.5},
+			xlabel = $Threads$, 
+			ylabel = $Speedup$]
+			\addplot table [domain=1:16, samples=1000,x=threads, y=LINKED_CELLS_speedup, col sep=comma] {times_openmp_skalierung_1.csv};
+			\addlegendentry{$linked-cells-1$}
+			\addplot table [domain=1:16, samples=1000,x=threads, y=LINKED_CELLS_speedup, col sep=comma] {times_openmp_skalierung_1_2.csv};
+			\addlegendentry{$linked-cells-1.2$}
+			\addplot table [domain=1:16, samples=1000,x=threads, y=LINKED_CELLS+NEIGHBOR_LIST_speedup, col sep=comma] {times_openmp_skalierung_1.csv};
+			\addlegendentry{$linked-cells+verlet-list-1$}
+			\addplot table [domain=1:16, samples=1000,x=threads, y=LINKED_CELLS+NEIGHBOR_LIST_speedup, col sep=comma] {times_openmp_skalierung_1_2.csv};
+			\addlegendentry{$linked-cells+verlet-list-1.2$}
+			\end{axis}
+			\end{tikzpicture}
+			\caption{OpenMP Speedup Diagramm}
+	\label{figure:OpenMPSpeedup}
+	\end{figure}
 \subsection{Auto-tuning}
 Um herauszufinden, nach welchen Kriterien das Auto-tuning entscheiden kann, wurden viele Messungen mit verschiedenen Parametern durchgeführt. Wenn die Geschwindigkeit des schnellsten Partikels bekannt ist, sowie die Strecke, die Maximal zurückgelegt werden darf, dann lässt sich die Zeit berechnen, bis die Datenstruktur Reorganisiert werden muss. Da die verschiedenen Datenstrukturen verschiedene Laufzeit Eigenschaften bezüglich Reorganisieren und Iterationen haben, ergibt sich die folgende Formel um zu entscheiden, welche Datenstruktur besser geeignet ist.
 \begin{itemize}
@@ -189,6 +223,31 @@ Um herauszufinden, nach welchen Kriterien das Auto-tuning entscheiden kann, wurd
 	\item \textbf{true} $\rightarrow$ linked-cells+verlet-list
 	\item \textbf{false} $\rightarrow$ linked-cells
 \end{itemize}
+\begin{figure}[h]
+		\centering
+		\begin{tikzpicture}
+			\begin{axis}[
+			xmin = 0,
+			xmax = 27,
+			ymin = -4,
+			ymax = 4,
+			legend pos=south east,
+			xmajorgrids=true,
+			ymajorgrids=true,
+			grid style=dashed,
+			ytick = {0,0.5,...,4},
+			xlabel = $cut-off$, 
+			ylabel = $qoutient$,
+			xtick = {4,5,6,8,10,12,14,16,18,20,22,24,26},]
+			\addplot table [domain=1:16, samples=1000,x=radius, y=fn_s, col sep=comma] {times_rebuild.csv};
+			\addlegendentry{$\frac{cell}{mix} no rebuild$}
+			\addplot table [domain=1:16, samples=1000,x=radius, y=fr_s, col sep=comma] {times_rebuild.csv};
+			\addlegendentry{$\frac{cell}{mix} with rebuild$}
+			\end{axis}
+			\end{tikzpicture}
+			\caption{Laufzeit-Quotient der verschiedenen Verfahren}
+	\label{figure:OpenMPSpeedup}
+	\end{figure}
 \chapter{Zusammenfassung}
 \label{Zusammenfassung}
 
