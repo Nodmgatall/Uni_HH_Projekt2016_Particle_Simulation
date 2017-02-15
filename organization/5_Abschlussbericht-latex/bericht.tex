@@ -229,27 +229,35 @@ Ziel des dieses Projektes ist die Implementierung einer Partikel-Simulation für
 			xmin = 0,
 			xmax = 27,
 			ymin = -1,
-			ymax = 3.5,
+			ymax = 5,
 			legend pos=south east,
 			xmajorgrids=true,
 			ymajorgrids=true,
 			grid style=dashed,
-			ytick = {0,0.25,...,3},
+			ytick = {0,0.25,...,4.5},
 			xlabel = cut-off, 
 			ylabel = qoutient,
 			xtick = {4,5,6,8,10,12,14,16,18,20,22,24,26},]
 			\addplot table [domain=1:16, samples=1000,x=radius, y=fn_s, col sep=comma] {times_rebuild.csv};
-			\addlegendentry{$\frac{cell}{mix}$ no rebuild}
+			\addlegendentry{$\frac{cn}{mn}$}
 			\addplot table [domain=1:16, samples=1000,x=radius, y=fr_s, col sep=comma] {times_rebuild.csv};
-			\addlegendentry{$\frac{cell}{mix}$ with rebuild}
+			\addlegendentry{$\frac{cr}{mr}$}
+			\addplot table [domain=1:16, samples=1000,x=radius, y=iterations_until_mix_is_better, col sep=comma] {times_rebuild.csv};
+			\addlegendentry{$\frac{cr-mr}{mn-cn}$}
 		\end{axis}
 		\end{tikzpicture}
 		\caption{Laufzeit-Quotient der verschiedenen Verfahren}
 		\label{figure:LaufzeitQuotient}
 	\end{figure}
+	\footnotesize\textbf{Abkürzungen:}\begin{labeling}[~--]{MAX}
+		\item[cn] Zellen Variante Iteration ohne Neubauen
+		\item[mn] Misch Variante Iteration ohne Neubauen
+		\item[cr] Zellen Variante Iteration mit Neubauen
+		\item[mr] Misch Variante Iteration mit Neubauen
+	\end{labeling}
 	In dem Diagramm (siehe Figure \ref{figure:LaufzeitQuotient}) kann man erkennen, wie sich die Laufzeit relativ verhält, wenn man die verschiedenen Datenstrukturen wählt. Zur Erstellung der Messdaten wurde ein Volumen mit den Abmessungen 100x100x100  betrachtet. Die gemessenen Werte repräsentieren das gesamte Spektrum der verschieden lang Langreichweitigen Interaktionen. Cut-off-Radien größer als 26 müssen nicht betrachtet werden, da Implementationsabhängig immer mindestens 9 Zellen (als 3x3x3 Würfel) existieren müssen. Bei den Iterationen, in denen die Datenstruktur neu gebaut wird benötigt die kombinierte Datenstruktur immer (genau) doppelt so viel Zeit, wie die nur Zellen basierte Variante. In den Iterationen, in denen kein Neubauen erforderlich wird, ist das Ergebnis nicht mehr ganz so deutlich.
-	
-	Wenn man beide Quotienten zusammen betrachtet, dann stellt man fest, dass die Mischvariante ab 3 Iterationen ohne Neukonstruktion pro Neukonstruktion schneller läuft, als die nur Zellen basierte Variante. Spätestens bei der 8ten Iteration ohne Neubauen der Datenstruktur ist die Mischvariante auch bei relativ Langreichweitigen Interaktionen immer im Vorteil.
+	%TODO ausführen warum die formel \frac{cr-mr}{mn-cn} gilt
+	Wenn man beide Quotienten zusammen betrachtet, dann stellt man fest, dass die Mischvariante spätestens ab der 4 Iterationen ohne Neukonstruktion pro Neukonstruktion schneller läuft, als die nur Zellen basierte Variante.
 \newpage
 \subsection{resultierende Formel}
 	Nachdem aus den vorherigen Kapiteln bekannt ist, wie oft die Datenstruktur neu gebaut werden muss, kann diese Erkenntnis mit dem Verhältnis aus der Dauer des Neubauens kombiniert werden. 
