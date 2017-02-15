@@ -1,8 +1,9 @@
 /*
  * EnumCSVColumnType.cpp
  *
- *  Created on: Dec 10, 2016
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
 #include "EnumCSVColumnType.hpp"
 std::vector<const char*> g_csv_column_names              = { "UNDEFINED", "ID", "VELOCITY", "POSITION", "ACCELERATION", "PARTICLE_TYPE" };

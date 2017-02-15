@@ -1,11 +1,12 @@
 /*
  * EnumInputType.hpp
  *
- *  Created on: Dec 10, 2016
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
-#ifndef SRC_MAIN_OPTIONS_ENUM_INPUT_TYPE_HPP_
-#define SRC_MAIN_OPTIONS_ENUM_INPUT_TYPE_HPP_
+#ifndef SRC_MAIN_ENUMS_ENUMINPUTTYPE_HPP_
+#define SRC_MAIN_ENUMS_ENUMINPUTTYPE_HPP_
 #include <cstring>
 #include <exception>
 #include <istream>
@@ -15,17 +16,17 @@
  * implemented or planned input types for the simulation
  */
 enum class e_input_type {
-    GENERATOR_RANDOM                   = 1,
-    GENERATOR_RANDOM_UNIFORM           = 2,
-    GENERATOR_SINGLE_OBJECT_MIDDLE     = 3,
-    GENERATOR_GRID_DISTRIBUTION        = 4,
-    GENERATOR_MULTIPLE_OBJECTS         = 5,
-    FILE_CSV                           = 6,
-    AUTOTUNEING_REGULAR_DISTRIBUTION   = 7,
-    AUTOTUNEING_IRREGULAR_DISTRIBUTION = 8,
-    AUTOTUNEING_ERROR                  = 9,
+    GENERATOR_RANDOM                  = 1,
+    GENERATOR_RANDOM_UNIFORM          = 2,
+    GENERATOR_SINGLE_OBJECT_MIDDLE    = 3,
+    GENERATOR_GRID_DISTRIBUTION       = 4,
+    GENERATOR_MULTIPLE_OBJECTS        = 5,
+    FILE_CSV                          = 6,
+    AUTOTUNING_REGULAR_DISTRIBUTION   = 7,
+    AUTOTUNING_IRREGULAR_DISTRIBUTION = 8,
+    AUTOTUNING_ERROR                  = 9,
 };
-const int     g_input_type_autotuneing_enums_count = 3;
+const int     g_input_type_autotuning_enums_count = 3;
 std::ostream& operator<< (std::ostream& stream, const e_input_type& p_input_type);
 std::istream& operator>> (std::istream& stream, e_input_type& p_input_type);
 extern std::vector<const char*> g_input_names;

@@ -1,8 +1,8 @@
 /*
- * test_Vec3.cpp
+ * test_EnumDatastructureType.cpp
  *
- *  Created on: 07.12.2016
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "EnumDatastructureType"
@@ -10,49 +10,50 @@
 #include <boost/test/unit_test.hpp>
 #include <sstream>
 BOOST_AUTO_TEST_CASE (testException1) {
-    DatastructureTypeInvalidException exception (e_datastructure_type::GRID);
-    BOOST_CHECK_EQUAL (exception.what (), "datastructure type ( GRID ) is invalid");
+    DatastructureTypeInvalidException exception (e_datastructure_type::LINKED_CELLS);
+    BOOST_CHECK_EQUAL (exception.what (), "datastructure type ( LINKED_CELLS ) is invalid");
 }
 BOOST_AUTO_TEST_CASE (testException2) {
-    DatastructureTypeInvalidException exception (e_datastructure_type::LIST);
-    BOOST_CHECK_EQUAL (exception.what (), "datastructure type ( LIST ) is invalid");
+    DatastructureTypeInvalidException exception (e_datastructure_type::LINKED_CELLS_NEIGHBOR_LIST);
+    BOOST_CHECK_EQUAL (exception.what (), "datastructure type ( LINKED_CELLS+NEIGHBOR_LIST ) is invalid");
 }
 BOOST_AUTO_TEST_CASE (testException3) {
-    DatastructureTypeInvalidException exception (e_datastructure_type::GRID_LIST);
-    BOOST_CHECK_EQUAL (exception.what (), "datastructure type ( GRID_LIST ) is invalid");
+    DatastructureTypeInvalidException exception (e_datastructure_type::NEIGHBOR_LIST);
+    BOOST_CHECK_EQUAL (exception.what (), "datastructure type ( NEIGHBOR_LIST ) is invalid");
 }
 BOOST_AUTO_TEST_CASE (testString1Out) {
     std::stringstream s;
-    s << e_datastructure_type::GRID;
-    BOOST_CHECK_EQUAL (s.str (), "GRID");
+    s << e_datastructure_type::LINKED_CELLS;
+    BOOST_CHECK_EQUAL (s.str (), "LINKED_CELLS");
 }
 BOOST_AUTO_TEST_CASE (testString2Out) {
     std::stringstream s;
-    s << e_datastructure_type::LIST;
-    BOOST_CHECK_EQUAL (s.str (), "LIST");
+    s << e_datastructure_type::LINKED_CELLS_NEIGHBOR_LIST;
+    BOOST_CHECK_EQUAL (s.str (), "LINKED_CELLS+NEIGHBOR_LIST");
 }
 BOOST_AUTO_TEST_CASE (testString3Out) {
     std::stringstream s;
-    s << e_datastructure_type::GRID_LIST;
-    BOOST_CHECK_EQUAL (s.str (), "GRID_LIST");
+    s << e_datastructure_type::NEIGHBOR_LIST;
+    BOOST_CHECK_EQUAL (s.str (), "NEIGHBOR_LIST");
 }
+
 BOOST_AUTO_TEST_CASE (testStringIn1) {
-    std::stringstream    s ("GRID");
+    std::stringstream    s ("LINKED_CELLS");
     e_datastructure_type tmp;
     s >> tmp;
-    BOOST_CHECK_EQUAL (tmp, e_datastructure_type::GRID);
+    BOOST_CHECK_EQUAL (tmp, e_datastructure_type::LINKED_CELLS);
 }
 BOOST_AUTO_TEST_CASE (testStringIn2) {
-    std::stringstream    s ("LIST");
+    std::stringstream    s ("LINKED_CELLS+NEIGHBOR_LIST");
     e_datastructure_type tmp;
     s >> tmp;
-    BOOST_CHECK_EQUAL (tmp, e_datastructure_type::LIST);
+    BOOST_CHECK_EQUAL (tmp, e_datastructure_type::LINKED_CELLS_NEIGHBOR_LIST);
 }
 BOOST_AUTO_TEST_CASE (testStringIn3) {
-    std::stringstream    s ("GRID_LIST");
+    std::stringstream    s ("NEIGHBOR_LIST");
     e_datastructure_type tmp;
     s >> tmp;
-    BOOST_CHECK_EQUAL (tmp, e_datastructure_type::GRID_LIST);
+    BOOST_CHECK_EQUAL (tmp, e_datastructure_type::NEIGHBOR_LIST);
 }
 BOOST_AUTO_TEST_CASE (testStringException) {
     std::stringstream s;

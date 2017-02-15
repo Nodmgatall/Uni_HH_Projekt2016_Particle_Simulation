@@ -1,22 +1,23 @@
 /*
  * DatastructureAnalyser.hpp
  *
- *  Created on: 21.01.2017
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
-#ifndef SRC_MAIN_AUTOTUNEING_DATASTRUCTUREANALYSER_HPP_
-#define SRC_MAIN_AUTOTUNEING_DATASTRUCTUREANALYSER_HPP_
+#ifndef SRC_MAIN_AUTOTUNING_DATASTRUCTUREANALYSER_HPP_
+#define SRC_MAIN_AUTOTUNING_DATASTRUCTUREANALYSER_HPP_
 #include "borders/BorderWrapparound.hpp"
-#include "io/output/file/FileWriterCSV.hpp"
 #include <algorithms/AlgorithmStoermerVerletLennardJones.hpp>
 #include <cstring>
 #include <datastructures/DatastructureBase.hpp>
+#include <io/output/file/FileOutputCSV.hpp>
 class DatastructureAnalyser : public DatastructureBase {
   public:
     /**
      * constructor
      */
-    DatastructureAnalyser (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_writer);
+    DatastructureAnalyser (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, OutputBase& p_writer);
     /**
      * destructor
      */
@@ -33,4 +34,4 @@ class DatastructureAnalyser : public DatastructureBase {
     void add_particle (Vec3f p_position) override;
     void add_particle (Vec3f p_position, Vec3f p_velocity, int p_id = -1) override;
 };
-#endif /* SRC_MAIN_AUTOTUNEING_DATASTRUCTUREANALYSER_HPP_ */
+#endif /* SRC_MAIN_AUTOTUNING_DATASTRUCTUREANALYSER_HPP_ */

@@ -1,8 +1,8 @@
 /*
- * test_Vec3.cpp
+ * test_EnumAlgorithmType.cpp
  *
- *  Created on: 07.12.2016
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "EnumAlgorithmType"

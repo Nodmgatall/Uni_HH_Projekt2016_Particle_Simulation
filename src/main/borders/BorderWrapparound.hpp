@@ -1,11 +1,12 @@
 /*
- * ParticleBoundsCorrectionWraparound.hpp
+ * BorderWrapparound.hpp
  *
- *  Created on: 06.12.2016
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
-#ifndef SRC_ALGORITHMS_PARTICLEBOUNDSCORRECTIONWRAPAROUND_HPP_
-#define SRC_ALGORITHMS_PARTICLEBOUNDSCORRECTIONWRAPAROUND_HPP_
+#ifndef SRC_MAIN_BORDERS_BORDERWRAPPAROUND_HPP_
+#define SRC_MAIN_BORDERS_BORDERWRAPPAROUND_HPP_
 #include "BorderBase.hpp"
 class BorderWrapparound : public BorderBase {
   public:

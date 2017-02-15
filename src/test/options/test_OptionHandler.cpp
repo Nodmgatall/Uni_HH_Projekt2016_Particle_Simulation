@@ -1,8 +1,8 @@
 /*
- * test_ParticleBoundsCorrectionWraparound.cpp
+ * test_OptionHandler.cpp
  *
- *  Created on: 08.12.2016
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "OptionHandler"
@@ -45,14 +45,14 @@ BOOST_AUTO_TEST_CASE (test_algorithmSMOTHED_PARTICLE_HYDRODYNAMICS) {
     BOOST_CHECK_EQUAL (memcmp (&options_test, &options_compare, sizeof (s_options)), 0);
     BOOST_CHECK_EQUAL (res, 0);
 }
-BOOST_AUTO_TEST_CASE (test_datastructureGRID) {
+BOOST_AUTO_TEST_CASE (test_datastructureLINKED_CELLS) {
     OptionHandler handler;
     s_options     options_test;
     memset (&options_test, 0, sizeof (s_options));
     s_options options_compare;
     memset (&options_compare, 0, sizeof (s_options));
-    options_compare.m_data_structure_type = e_datastructure_type::GRID;
-    std::vector<const char*> args         = { "./particle_simulation.x", "--data_structure=GRID" };
+    options_compare.m_data_structure_type = e_datastructure_type::LINKED_CELLS;
+    std::vector<const char*> args         = { "./particle_simulation.x", "--data_structure=LINKED_CELLS" };
     int                      res          = handler.handle_options ((int) args.size (), const_cast<char**> (args.data ()), options_test);
     BOOST_CHECK_EQUAL (memcmp (&options_test, &options_compare, sizeof (s_options)), 0);
     BOOST_CHECK_EQUAL (res, 0);
@@ -63,20 +63,20 @@ BOOST_AUTO_TEST_CASE (test_datastructureLIST) {
     memset (&options_test, 0, sizeof (s_options));
     s_options options_compare;
     memset (&options_compare, 0, sizeof (s_options));
-    options_compare.m_data_structure_type = e_datastructure_type::LIST;
-    std::vector<const char*> args         = { "./particle_simulation.x", "--data_structure=LIST" };
+    options_compare.m_data_structure_type = e_datastructure_type::NEIGHBOR_LIST;
+    std::vector<const char*> args         = { "./particle_simulation.x", "--data_structure=NEIGHBOR_LIST" };
     int                      res          = handler.handle_options ((int) args.size (), const_cast<char**> (args.data ()), options_test);
     BOOST_CHECK_EQUAL (memcmp (&options_test, &options_compare, sizeof (s_options)), 0);
     BOOST_CHECK_EQUAL (res, 0);
 }
-BOOST_AUTO_TEST_CASE (test_datastructureGRID_LIST) {
+BOOST_AUTO_TEST_CASE (test_datastructureLINKED_CELLS_LIST) {
     OptionHandler handler;
     s_options     options_test;
     memset (&options_test, 0, sizeof (s_options));
     s_options options_compare;
     memset (&options_compare, 0, sizeof (s_options));
-    options_compare.m_data_structure_type = e_datastructure_type::GRID_LIST;
-    std::vector<const char*> args         = { "./particle_simulation.x", "--data_structure=GRID_LIST" };
+    options_compare.m_data_structure_type = e_datastructure_type::LINKED_CELLS_NEIGHBOR_LIST;
+    std::vector<const char*> args         = { "./particle_simulation.x", "--data_structure=LINKED_CELLS+NEIGHBOR_LIST" };
     int                      res          = handler.handle_options ((int) args.size (), const_cast<char**> (args.data ()), options_test);
     BOOST_CHECK_EQUAL (memcmp (&options_test, &options_compare, sizeof (s_options)), 0);
     BOOST_CHECK_EQUAL (res, 0);
@@ -225,14 +225,14 @@ BOOST_AUTO_TEST_CASE (test_outputFILE_VTK) {
     BOOST_CHECK_EQUAL (memcmp (&options_test, &options_compare, sizeof (s_options)), 0);
     BOOST_CHECK_EQUAL (res, 0);
 }
-BOOST_AUTO_TEST_CASE (test_autotuneing) {
+BOOST_AUTO_TEST_CASE (test_autotuning) {
     OptionHandler handler;
     s_options     options_test;
     memset (&options_test, 0, sizeof (s_options));
     s_options options_compare;
     memset (&options_compare, 0, sizeof (s_options));
-    options_compare.m_autotuneing = true;
-    std::vector<const char*> args = { "./particle_simulation.x", "--autotuneing" };
+    options_compare.m_autotuning  = true;
+    std::vector<const char*> args = { "./particle_simulation.x", "--autotuning" };
     int                      res  = handler.handle_options ((int) args.size (), const_cast<char**> (args.data ()), options_test);
     BOOST_CHECK_EQUAL (memcmp (&options_test, &options_compare, sizeof (s_options)), 0);
     BOOST_CHECK_EQUAL (res, 0);
@@ -399,7 +399,7 @@ BOOST_AUTO_TEST_CASE (test_help2) {
                                       "--help=data_structure",
                                       "--help=input",
                                       "--help=output",
-                                      "--help=autotuneing",
+                                      "--help=autotuning",
                                       "--help=bounds",
                                       "--help=count",
                                       "--help=write_fequency",
@@ -425,7 +425,7 @@ BOOST_AUTO_TEST_CASE (test_print_config) {
     s_options                options_test;
     std::vector<const char*> args = { "./particle_simulation.x",
                                       "--algorithm=LENNARD_JONES",
-                                      "--data_structure=GRID",
+                                      "--data_structure=LINKED_CELLS",
                                       "--output=FILE_CSV",
                                       "--input=GENERATOR_GRID_DISTRIBUTION",
                                       "--WRITE_ID",
@@ -453,7 +453,7 @@ BOOST_AUTO_TEST_CASE (test_invalid_option) {
     OptionHandler handler;
     s_options     options_test;
     memset (&options_test, 0, sizeof (s_options));
-    std::vector<const char*> args = { "./particle_simulation.x", "--algorithm=LENNARD_JONES",           "--data_structure=GRID",
+    std::vector<const char*> args = { "./particle_simulation.x", "--algorithm=LENNARD_JONES",           "--data_structure=LINKED_CELLS",
                                       "--output=FILE_CSV",       "--input=GENERATOR_GRID_DISTRIBUTION", "--this_option_does_not_exist" };
     int res = handler.handle_options ((int) args.size (), const_cast<char**> (args.data ()), options_test);
     BOOST_CHECK_EQUAL (res, 1);

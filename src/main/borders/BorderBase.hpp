@@ -1,11 +1,12 @@
 /*
- * ParticleBoundsCorrection.hpp
+ * BorderBase.hpp
  *
- *  Created on: 06.12.2016
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
-#ifndef SRC_ALGORITHMS_PARTICLEBOUNDSCORRECTION_HPP_
-#define SRC_ALGORITHMS_PARTICLEBOUNDSCORRECTION_HPP_
+#ifndef SRC_MAIN_BORDERS_BORDERBASE_HPP_
+#define SRC_MAIN_BORDERS_BORDERBASE_HPP_
 #include "Vec3.hpp"
 #include "datastructures/helper/ParticleGroup.hpp"
 class BorderBase {

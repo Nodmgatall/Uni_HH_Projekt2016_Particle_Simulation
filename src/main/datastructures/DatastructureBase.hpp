@@ -1,13 +1,20 @@
-#ifndef PARTICLE_HPP
-#define PARTICLE_HPP
+/*
+ * DatastructureBase.hpp
+ *
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
+ */
+#ifndef SRC_MAIN_DATASTRUCTURES_DATASTRUCTUREBASE_HPP_
+#define SRC_MAIN_DATASTRUCTURES_DATASTRUCTUREBASE_HPP_
 #include "Definitions.hpp"
 #include "Vec3.hpp"
 #include "algorithms/AlgorithmBase.hpp"
 #include "borders/BorderBase.hpp"
 #include "helper/ParticleGroup.hpp"
-#include "io/output/file/FileWriterCSV.hpp"
 #include "options/Options.hpp"
 #include <Statistics.hpp>
+#include <io/output/file/FileOutputCSV.hpp>
 #include <iostream>
 #include <vector>
 class DatastructureBase {
@@ -31,7 +38,7 @@ class DatastructureBase {
     /**
      * how the data should be saved
      */
-    WriterBase& m_writer;
+    OutputBase& m_writer;
     /**
      * true if an error happened, and the simulation should be stopped
      */
@@ -63,7 +70,7 @@ class DatastructureBase {
      */
     long m_max_id;
     /**
-     * flag indicates if the datastructure was rebuild in the last iteration. used for grid-list combination
+     * flag indicates if the datastructure was rebuild in the last iteration. used for linked cells and neighbor list combination
      */
     bool m_datastructure_rebuild_last_iteration_flag;
     /**
@@ -76,7 +83,11 @@ class DatastructureBase {
     /**
      * the cells in which the particles are stored
      */
-    std::vector<ParticleGroup> m_particle_groups;
+    ParticleGroup* m_particle_groups;
+    /**
+     * the count of cells in which the particles are stored
+     */
+    size_t m_particle_groups_count;
     /**
      * verify that all particles in cell are inside the given bounds, if they are not, they are
      * moved
@@ -93,15 +104,14 @@ class DatastructureBase {
     /**
      * constructor
      */
-    DatastructureBase (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_writer)
+    DatastructureBase (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, OutputBase& p_writer)
     : m_options (p_options), m_border (p_border), m_algorithm (p_algorithm), m_writer (p_writer), m_error_happened (false), m_iterations_until_rearange_particles (1),
-      m_iterations_since_rearange_particles (0), m_idx_a (0), m_idx_b (1), m_max_id (0), m_datastructure_rebuild_last_iteration_flag (true /*list MUST rebuild in first iteration*/) {
+      m_iterations_since_rearange_particles (0), m_idx_a (0), m_idx_b (1), m_max_id (0),
+      m_datastructure_rebuild_last_iteration_flag (true /*list MUST rebuild in first iteration*/), m_particle_groups (0), m_particle_groups_count (0) {
         m_iterations_until_rearange_particles = p_options.m_max_iterations_between_datastructure_rebuild;
         m_iterations_since_rearange_particles = p_options.m_max_iterations_between_datastructure_rebuild;
-        // 0.5, because both particles are moving
         // -1 because only the additional bonus space is mesured
-        //-1 because both particles have an radius of 1
-        m_speed_factor = MAX ((m_options.m_cut_off_radius * (p_options.m_cut_off_factor - 1.0) - 1.0) * 0.5, 0);
+        m_speed_factor = MAX (m_options.m_cut_off_radius * (p_options.m_cut_off_radius_extra_factor - 1.0), 0);
     }
     /**
      * @return returns a string form of the name of this datastructure. Can be used to verify the

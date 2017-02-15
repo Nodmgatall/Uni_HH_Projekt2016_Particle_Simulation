@@ -1,15 +1,15 @@
 /*
- * test_LennardJonesAlgorithm.cpp
+ * test_InputFactory.cpp
  *
- *  Created on: 07.12.2016
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "AlgorithmFactory"
 #include "io/input/InputFactory.hpp"
 #include <boost/test/unit_test.hpp>
 #include <cstring>
-class ParticleWriter : public WriterBase {
+class ParticleWriter : public OutputBase {
   public:
     bool             m_start_called;
     bool             m_end_called;
@@ -192,7 +192,7 @@ class BoundsCorrection : public BorderBase {
 class Datastructure : public DatastructureBase {
   public:
     int m_particle_count;
-    Datastructure (s_options& p_options, BorderBase& p_particle_bounds_correction, AlgorithmBase& p_algorithm, WriterBase& p_particle_file_writer)
+    Datastructure (s_options& p_options, BorderBase& p_particle_bounds_correction, AlgorithmBase& p_algorithm, OutputBase& p_particle_file_writer)
     : DatastructureBase (p_options, p_particle_bounds_correction, p_algorithm, p_particle_file_writer), m_particle_count (0) {
     }
     ~Datastructure () {
@@ -235,7 +235,7 @@ BOOST_AUTO_TEST_CASE (test1) {
     Algorithm        algorithm (options);
     ParticleWriter   writer    = ParticleWriter (0);
     Datastructure    particles = Datastructure (options, border, algorithm, writer);
-    BOOST_CHECK_EQUAL (InputFactory::build (options, particles)->get_structure_name (), "FileReaderCSV");
+    BOOST_CHECK_EQUAL (InputFactory::build (options, particles)->get_structure_name (), "FileInputCSV");
 }
 BOOST_AUTO_TEST_CASE (test2) {
     s_options options;

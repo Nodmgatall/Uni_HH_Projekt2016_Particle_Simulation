@@ -39,7 +39,7 @@ chmod +x "job_script_${var_test_name}.sh"
 
 var_threads=24
 
-for var_datastructure in "GRID" "GRID_LIST";
+for var_datastructure in "LINKED_CELLS" "LINKED_CELLS+NEIGHBOR_LIST";
 do
 
 add_job $var_datastructure 6 60 0 1.2 $var_threads

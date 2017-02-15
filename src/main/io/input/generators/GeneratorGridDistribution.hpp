@@ -1,11 +1,12 @@
 /*
- * GeneratorGridDistribution.h
+ * GeneratorGridDistribution.hpp
  *
- *  Created on:  11.11.2016
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
-#ifndef SRC_GENERATORS_GENERATORGRIDDISTRIBUTION_HPP_
-#define SRC_GENERATORS_GENERATORGRIDDISTRIBUTION_HPP_
+#ifndef SRC_MAIN_IO_INPUT_GENERATORS_GENERATORGRIDDISTRIBUTION_HPP_
+#define SRC_MAIN_IO_INPUT_GENERATORS_GENERATORGRIDDISTRIBUTION_HPP_
 #include "io/input/InputBase.hpp"
 class GeneratorGridDistribution : public InputBase {
   public:

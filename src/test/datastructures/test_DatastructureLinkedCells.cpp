@@ -1,18 +1,18 @@
 /*
- * test_ParticleGeneratorRandom.cpp
+ * test_DatastructureLinkedCells.cpp
  *
- *  Created on: Dec 8, 2016
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE "DatastructureGrid"
 #include "algorithms/AlgorithmBase.hpp"
 #include "borders/BorderBase.hpp"
-#include "datastructures/DatastructureGrid.hpp"
-#include "io/output/WriterBase.hpp"
 #include <boost/test/unit_test.hpp>
 #include <cstring>
-class ParticleWriter : public WriterBase {
+#include <datastructures/DatastructureLinkedCells.hpp>
+#include <io/output/OutputBase.hpp>
+class ParticleWriter : public OutputBase {
   public:
     void saveData (std::vector<data_type>& p_positions_x, std::vector<data_type>& p_positions_y, std::vector<data_type>& p_positions_z, std::vector<unsigned long>& p_ids) {
         (void) p_positions_x;
@@ -209,7 +209,7 @@ class BoundsCorrection : public BorderBase {
         return true;
     }
 };
-class DatastructureGridTestClass : public DatastructureGrid {
+class DatastructureGridTestClass : public DatastructureLinkedCells {
   public:
     unsigned long public_get_cell_index (long x, long y, long z) {
         return grid_get_cell_index (x, y, z);
@@ -238,12 +238,12 @@ class DatastructureGridTestClass : public DatastructureGrid {
     void public_step_3_remove_wrong_particles_from_cell (ParticleGroup& p_cell) {
         grid_step_3_remove_wrong_particles_from_cell (p_cell);
     }
-    DatastructureGridTestClass (s_options& p_options, BorderBase& p_particle_bounds_correction, AlgorithmBase& p_algorithm, WriterBase& p_particle_file_writer)
-    : DatastructureGrid (p_options, p_particle_bounds_correction, p_algorithm, p_particle_file_writer) {
+    DatastructureGridTestClass (s_options& p_options, BorderBase& p_particle_bounds_correction, AlgorithmBase& p_algorithm, OutputBase& p_particle_file_writer)
+    : DatastructureLinkedCells (p_options, p_particle_bounds_correction, p_algorithm, p_particle_file_writer) {
     }
     ~DatastructureGridTestClass () {
     }
-    const std::vector<ParticleGroup>& get_cells () {
+    ParticleGroup* get_cells () {
         return m_particle_groups;
     }
     unsigned int get_idx_a () {

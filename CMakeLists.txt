@@ -52,7 +52,7 @@ include_directories(${Boost_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/src/test)
                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Testing/Binary 
                  COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/particle_simulation.x
                  --algorithm=LENNARD_JONES
-                 --data_structure=GRID
+                 --data_structure=LINKED_CELLS
                  --input=GENERATOR_GRID_DISTRIBUTION
                  --count=100 
                  --output=FILE_CSV
@@ -65,7 +65,7 @@ include_directories(${Boost_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/src/test)
                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Testing/Binary 
                  COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/particle_simulation.x
                  --algorithm=LENNARD_JONES
-                 --data_structure=GRID
+                 --data_structure=LINKED_CELLS
                  --input=GENERATOR_GRID_DISTRIBUTION
                  --count=100 
                  --output=FILE_CSV

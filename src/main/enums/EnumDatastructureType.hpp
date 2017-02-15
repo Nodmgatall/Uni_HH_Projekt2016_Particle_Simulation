@@ -1,11 +1,12 @@
 /*
  * EnumDatastructureType.hpp
  *
- *  Created on: Dec 10, 2016
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
-#ifndef SRC_MAIN_OPTIONS_ENUM_DATASTRUCTURE_TYPE_HPP_
-#define SRC_MAIN_OPTIONS_ENUM_DATASTRUCTURE_TYPE_HPP_
+#ifndef SRC_MAIN_ENUMS_ENUMDATASTRUCTURETYPE_HPP_
+#define SRC_MAIN_ENUMS_ENUMDATASTRUCTURETYPE_HPP_
 #include <cstring>
 #include <exception>
 #include <istream>
@@ -14,7 +15,7 @@
 /**
  * implemented or plannes datastructures for optimizeing the particle-calculation
  */
-enum class e_datastructure_type { GRID = 1, LIST = 2, LIST_BENJAMIN = 3, GRID_LIST = 4 };
+enum class e_datastructure_type { LINKED_CELLS = 1, NEIGHBOR_LIST = 2, LINKED_CELLS_NEIGHBOR_LIST = 3 };
 std::ostream& operator<< (std::ostream& stream, const e_datastructure_type& p_datastructure_type);
 std::istream& operator>> (std::istream& stream, e_datastructure_type& p_datastructure_type);
 extern std::vector<const char*> g_datastructure_names;

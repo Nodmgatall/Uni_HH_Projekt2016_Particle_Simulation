@@ -1,3 +1,10 @@
+/*
+ * OptionHandler.cpp
+ *
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
+ */
 #include "OptionHandler.hpp"
 int OptionHandler::indexInArray (std::vector<const char*> elements, char* element) {
     unsigned int index;
@@ -27,13 +34,15 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
     const int           cut_off_extra_radius_index                         = 8;
     const int           print_config_index                                 = 9;
     const int           threads_index                                      = 10;
+    const int           dry_run_index                                      = 11;
     std::vector<option> options                                            = { { "algorithm", required_argument, 0, algorithm_type_index * 1000 },
                                     { "data_structure", required_argument, 0, datastructure_type_index * 1000 },
                                     { "input", required_argument, 0, input_type_index * 1000 },
                                     { "output", required_argument, 0, output_type_index * 1000 },
-                                    { "autotuneing", no_argument, 0, 'a' },
+                                    { "autotuning", no_argument, 0, 'a' },
                                     { "bounds", required_argument, 0, 'b' },
                                     { "count", required_argument, 0, 'c' },
+                                    { "dry_run", no_argument, 0, dry_run_index * 1000 },
                                     { "write_fequency", required_argument, 0, 'f' },
                                     { "help", optional_argument, 0, 'h' },
                                     { "in_file_name", required_argument, 0, 'i' },
@@ -106,19 +115,22 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                 break;
             }
             case cut_off_extra_radius_index: {
-                line >> p_options.m_cut_off_factor;
+                line >> p_options.m_cut_off_radius_extra_factor;
                 break;
             }
             case threads_index: {
-                int threads;
-                line >> threads;
-                omp_set_num_threads (threads);
+                line >> p_options.m_thread_count;
+                omp_set_num_threads (p_options.m_thread_count);
+                break;
+            }
+            case dry_run_index: {
+                p_options.m_dry_run = true;
                 break;
             }
             default: {
                 switch (opt_index) {
                     case 'a': {
-                        p_options.m_autotuneing = true;
+                        p_options.m_autotuning = true;
                         break;
                     }
                     case 'b': {
@@ -144,12 +156,14 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
                                 print_usage_input ();
                             } else if (!strcmp (optarg, "output")) {
                                 print_usage_output ();
-                            } else if (!strcmp (optarg, "autotuneing")) {
-                                print_usage_autotuneing ();
+                            } else if (!strcmp (optarg, "autotuning")) {
+                                print_usage_autotuning ();
                             } else if (!strcmp (optarg, "bounds")) {
                                 print_usage_bounds ();
                             } else if (!strcmp (optarg, "count")) {
                                 print_usage_particle_count ();
+                            } else if (!strcmp (optarg, "dry_run")) {
+                                print_usage_dry_run ();
                             } else if (!strcmp (optarg, "write_fequency")) {
                                 print_usage_write_fequency ();
                             } else if (!strcmp (optarg, "in_file_name")) {
@@ -238,7 +252,7 @@ int OptionHandler::handle_options (int p_argc, char** p_argv, s_options& p_optio
 void OptionHandler::print_choosen_options (s_options& p_options) {
     bool first = true;
     m_standard_stream << "algorithm_type                               " << p_options.m_algorithm_type << std::endl
-                      << "autotuneing                                  " << p_options.m_autotuneing << std::endl
+                      << "autotuning                                  " << p_options.m_autotuning << std::endl
                       << "output_type                                  " << p_options.m_output_type << std::endl
                       << "in_file_name                                 " << p_options.m_in_file_name << std::endl
                       << "out_file_name                                " << p_options.m_out_file_name << std::endl
@@ -311,14 +325,14 @@ void OptionHandler::print_usage_data_structure () {
         << "|                          stores the particles. The different datastructures  |" << std::endl
         << "|                          have different advantages based on the              |" << std::endl
         << "|                          particle-placement. This option must not be used    |" << std::endl
-        << "|                          together with 'autotuneing'.                        |" << std::endl;
+        << "|                          together with 'autotuning'.                         |" << std::endl;
 }
 void OptionHandler::print_usage_input () {
     int index;
     m_standard_stream //
         << "| --input=             " << g_input_names[1] << get_not_implemented (g_input_implemented[1])
         << std::string (56 - strlen (g_input_names[1]) - get_not_implemented (g_input_implemented[1]).length (), ' ') << "|" << std::endl;
-    for (index = 2; index < (signed) g_input_names.size () - g_input_type_autotuneing_enums_count; index++) {
+    for (index = 2; index < (signed) g_input_names.size () - g_input_type_autotuning_enums_count; index++) {
         m_standard_stream //
             << "|                      " << g_input_names[index] << get_not_implemented (g_input_implemented[index])
             << std::string (56 - strlen (g_input_names[index]) - get_not_implemented (g_input_implemented[index]).length (), ' ') << "|" << std::endl;
@@ -362,10 +376,10 @@ void OptionHandler::print_usage_write_modes () {
         << "|                          should be stored on disk. If 'output' is set to     |" << std::endl
         << "|                          something else, than this option must not be used.  |" << std::endl;
 }
-void OptionHandler::print_usage_autotuneing () {
+void OptionHandler::print_usage_autotuning () {
     m_standard_stream //
-        << "| --autotuneing                                                                |" << std::endl
-        << "|  -a                      If 'autotuneing' is enabled, then the program will  |" << std::endl
+        << "| --autotuning                                                                 |" << std::endl
+        << "|  -a                      If 'autotuning' is enabled, then the program will   |" << std::endl
         << "|                          choose the best datastructure based on the given    |" << std::endl
         << "|                          particles. This option must not be used together    |" << std::endl
         << "|                          with the 'datastructure' option.                    |" << std::endl;
@@ -474,6 +488,15 @@ void OptionHandler::print_usage_verbose () {
         << "|  -v                      If set, the program prints more messages to         |" << std::endl
         << "|                          console.                                            |" << std::endl;
 }
+void OptionHandler::print_usage_dry_run () {
+    m_standard_stream //
+        << "| --dry_run                                                                    |" << std::endl
+        << "|                          If set, the program prevents the particles from     |" << std::endl
+        << "|                          moving. This option should help to equalize the     |" << std::endl
+        << "|                          used for each iteration. This is used for           |" << std::endl
+        << "|                          measurements to improve the fine-tuning of the      |" << std::endl
+        << "|                          autotuning component.                               |" << std::endl;
+}
 void OptionHandler::print_usage_max_iterations_between_datastructure_rebuild () {
     m_standard_stream //
         << "| --max_iterations_between_datastructure_rebuild                               |" << std::endl
@@ -511,7 +534,7 @@ void OptionHandler::print_usage_particle_sim () {
         << "|                        options for  the datastructure                        |" << std::endl
         << "|                                                                              |" << std::endl;
     print_usage_data_structure ();
-    print_usage_autotuneing ();
+    print_usage_autotuning ();
     print_usage_max_iterations_between_datastructure_rebuild ();
     m_standard_stream //
         << "|                                                                              |" << std::endl
@@ -550,6 +573,7 @@ void OptionHandler::print_usage_particle_sim () {
         << "|                                                                              |" << std::endl;
     print_usage_bounds ();
     print_usage_threads ();
+    print_usage_dry_run ();
     m_standard_stream //
         << "|                                                                              |" << std::endl
         << "+==============================================================================+" << std::endl

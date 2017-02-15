@@ -1,11 +1,12 @@
 /*
- * definitions.hpp
+ * Definitions.hpp
  *
- *  Created on: 27.10.2016
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
-#ifndef DEFINITIONS_HPP_
-#define DEFINITIONS_HPP_
+#ifndef SRC_MAIN_DEFINITIONS_HPP_
+#define SRC_MAIN_DEFINITIONS_HPP_
 #define _USE_MATH_DEFINES
 #ifndef MIN
 #define MIN(a, b) ((a) < (b) ? (a) : (b))

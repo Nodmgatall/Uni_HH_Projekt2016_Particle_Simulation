@@ -1,0 +1,103 @@
+%url = https://www.overleaf.com/7690515vynnjrmjmtvc
+%url = https://git.overleaf.com/7690515vynnjrmjmtvc
+
+
+\documentclass[compress]{beamer}
+
+\usetheme{Hamburg}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage{lmodern}
+\usepackage{svg}
+
+%\usepackage[english]{babel}
+\usepackage[ngerman]{babel}
+
+\usepackage{eurosym}
+\usepackage{listings}
+\usepackage{microtype}
+\usepackage{units}
+\usepackage{minted}
+
+\usepackage{lineno}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{caption}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{pxfonts}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\usepackage{filecontents}
+
+\lstset{
+	basicstyle=\ttfamily\footnotesize,
+	frame=single,
+	numbers=left,
+	language=C,
+	breaklines=true,
+	breakatwhitespace=true,
+	postbreak=\hbox{$\hookrightarrow$ },
+	showstringspaces=false,
+	tabsize=4,
+	captionpos=b,
+	morekeywords={gboolean,gpointer,gconstpointer,gchar,guchar,gint,guint,gshort,gushort,glong,gulong,gint8,guint8,gint16,guint16,gint32,guint32,gint64,guint64,gfloat,gdouble,gsize,gssize,goffset,gintptr,guintptr,int8_t,uint8_t,int16_t,uint16_t,int32_t,uint32_t,int64_t,uint64_t,size_t,ssize_t,off_t,intptr_t,uintptr_t,mode_t}
+}
+\pgfplotsset{tick label style={font=\tiny\bfseries},
+	label style={font=\small},
+	legend style={font=\tiny}
+}
+\pgfplotsset{compat=1.13}
+\AtBeginSection[]
+{
+\begin{frame}
+\frametitle{Gliederung (Agenda)}
+\tableofcontents[currentsection]
+\end{frame}
+}
+
+\title{Partikelsimulation}
+\author{Oliver Heidmann \& Benjamin Warnke}
+\institute{Arbeitsbereich Wissenschaftliches Rechnen\\Fachbereich Informatik\\Fakultät für Mathematik, Informatik und Naturwissenschaften\\Universität Hamburg}
+\date{2017-02-09}
+
+\titlegraphic{\includegraphics[width=0.75\textwidth]{logo}}
+
+\begin{document}
+
+\begin{frame}
+	\titlepage
+\end{frame}
+
+\begin{frame}
+	\frametitle{Gliederung (Agenda)}
+	\tableofcontents
+\end{frame}
+\section{Einleitung}
+\subsection{}
+\begin{frame}
+	\frametitle{Ziele}
+	\begin{itemize}
+		\item Partikel-Simulation für kurzreichweitige Interaktionen
+		\item optimiert \& parallelisiert
+		\item erweiterbar
+		\item Cpp
+		\item Auto-Tuning
+		\item periodische Ränder
+	\end{itemize}
+\end{frame}
+
+\section{Literatur}
+\subsection{}
+\begin{frame}
+	\frametitle{Literatur}
+	\begin{itemize}
+        \item M-Griebel, S. Knapek, G. Zumbuschm, A. Caglar: Numerische Simulation in der Moleküldynamic. Springer, 2003
+		\item D.C Rapaport: The Art of Molecular Dynamics Simulation - 2nd edition, Cambridge University Press, 2004
+	\end{itemize}
+\end{frame}
+
+\end{document}

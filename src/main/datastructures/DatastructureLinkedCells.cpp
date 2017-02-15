@@ -1,35 +1,34 @@
-#include "DatastructureGrid.hpp"
-DatastructureGrid::DatastructureGrid (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, WriterBase& p_particle_writer)
+/*
+ * DatastructureLinkedCells.cpp
+ *
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
+ */
+#include <datastructures/DatastructureLinkedCells.hpp>
+DatastructureLinkedCells::DatastructureLinkedCells (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, OutputBase& p_particle_writer)
 : DatastructureBase (p_options, p_border, p_algorithm, p_particle_writer) {
-    m_stucture_name = "DatastructureGrid";
-    unsigned int idx_x, idx_y, idx_z;
-    long         max_usefull_size = pow (m_options.m_particle_count, 1.0 / 3.0);
-    m_max_id                      = 0;
-    Vec3f tmp                     = m_options.m_bounds / (m_options.m_cut_off_radius * p_options.m_cut_off_factor);
-    grid_size                     = Vec3l (ceil (tmp.x), ceil (tmp.y), ceil (tmp.z));
-    grid_size                     = Vec3l::min (grid_size, max_usefull_size);
-
-    // at least 3 cells required because of periodic boundary
-    grid_size = Vec3l::max (grid_size, Vec3l (3L));
-    { // force odd count off cells in each direction
-        if (grid_size.x % 2 == 0)
-            grid_size.x--;
-        if (grid_size.y % 2 == 0)
-            grid_size.y--;
-        if (grid_size.z % 2 == 0)
-            grid_size.z--;
+    m_stucture_name = "DatastructureLinkedCells";
+    long idx_x, idx_y, idx_z;
+    grid_size               = getSize (p_options);
+    grid_size_per_cell      = p_options.m_bounds / Vec3f (grid_size - 2);
+    long sx                 = grid_size.x;
+    long sy                 = grid_size.y;
+    long sz                 = grid_size.z;
+    m_particle_groups_count = sx * sy * sz;
+    m_particle_groups       = (ParticleGroup*) malloc (sizeof (ParticleGroup) * m_particle_groups_count);
+    m_standard_stream << DEBUG_VAR (grid_size) << std::endl;
+    size_t  idx;
+#pragma omp parallel for private(idx, idx_x, idx_y, idx_z)
+    for (idx = 0; idx < m_particle_groups_count; idx++) {
+        idx_x = (idx / sz) / sy;
+        idx_y = (idx / sz) % sy;
+        idx_z = idx % sz;
+        new (m_particle_groups + idx) ParticleGroup (Vec3l (idx_x, idx_y, idx_z), grid_size_per_cell); // placement new operator
     }
-    grid_size_per_cell         = m_options.m_bounds / Vec3f (grid_size);
-    m_options.m_cut_off_radius = MIN (grid_size_per_cell.x, MIN (grid_size_per_cell.y, grid_size_per_cell.z));
-    grid_size += 2; // 2 border cells (each border needs 1)
-    m_particle_groups.reserve (grid_size.x * grid_size.y * grid_size.z);
-    for (idx_x = 0; idx_x < grid_size.x; idx_x++) {
-        for (idx_y = 0; idx_y < grid_size.y; idx_y++) {
-            for (idx_z = 0; idx_z < grid_size.z; idx_z++) {
-                m_particle_groups.push_back (ParticleGroup (Vec3l (idx_x, idx_y, idx_z), grid_size_per_cell));
-            }
-        }
-    }
+#ifdef CALCULATE_STATISTICS
+    g_statistics.m_cell_count = m_particle_groups_count;
+#endif
     if (m_options.m_cut_off_radius < 1) {
         m_standard_stream << "ERROR :: cut-off-radius too small. Increasing from '" << DEBUG_VAR (m_options.m_cut_off_radius) << "' to '1'!" << std::endl;
         m_options.m_cut_off_radius = 1;
@@ -42,25 +41,58 @@ DatastructureGrid::DatastructureGrid (s_options& p_options, BorderBase& p_border
     m_standard_stream << DEBUG_VAR (m_options.m_timestep) << std::endl;
     m_standard_stream << DEBUG_VAR (m_options.m_cut_off_radius) << std::endl;
 }
-DatastructureGrid::~DatastructureGrid () {
+Vec3l DatastructureLinkedCells::getSize (s_options& p_options) {
+    m_verbose_stream << "DatastructureLinkedCells::getSize" << std::endl;
+    // mindestens 10 Partikel pro Zelle
+    long max_usefull_size = pow (p_options.m_particle_count, 1.0 / 3.0) / 2;
+    m_verbose_stream << DEBUG_VAR (max_usefull_size) << std::endl;
+    Vec3f tmp = p_options.m_bounds / (p_options.m_cut_off_radius * p_options.m_cut_off_radius_extra_factor);
+    m_verbose_stream << DEBUG_VAR (tmp) << std::endl;
+    Vec3l grid_size = Vec3l (ceil (tmp.x), ceil (tmp.y), ceil (tmp.z));
+    m_verbose_stream << DEBUG_VAR (grid_size) << std::endl;
+    grid_size = Vec3l::min (grid_size, max_usefull_size);
+    m_verbose_stream << DEBUG_VAR (grid_size) << std::endl;
+    // at least 3 cells required because of periodic boundary
+    grid_size = Vec3l::max (grid_size, Vec3l (3L));
+    m_verbose_stream << DEBUG_VAR (grid_size) << std::endl;
+    { // force odd count off cells in each direction
+        if (grid_size.x % 2 == 0)
+            grid_size.x--;
+        if (grid_size.y % 2 == 0)
+            grid_size.y--;
+        if (grid_size.z % 2 == 0)
+            grid_size.z--;
+    }
+    m_verbose_stream << DEBUG_VAR (grid_size) << std::endl;
+    grid_size += 2; // 2 border cells (each border needs 1)
+    m_verbose_stream << DEBUG_VAR (grid_size) << std::endl;
+    return grid_size;
 }
-unsigned long DatastructureGrid::grid_get_cell_index (long x, long y, long z) {
+DatastructureLinkedCells::~DatastructureLinkedCells () {
+    size_t idx;
+    for (idx = 0; idx < m_particle_groups_count; idx++) {
+        // destroy classes created by placement new operator manually
+        (m_particle_groups + idx)->~ParticleGroup ();
+    }
+    free (m_particle_groups);
+}
+unsigned long DatastructureLinkedCells::grid_get_cell_index (long x, long y, long z) {
     return z + grid_size.z * (y + grid_size.y * x);
 }
-ParticleGroup& DatastructureGrid::grid_get_cell_at (long x, long y, long z) {
+ParticleGroup& DatastructureLinkedCells::grid_get_cell_at (long x, long y, long z) {
     return m_particle_groups[grid_get_cell_index (x, y, z)];
 }
-ParticleGroup& DatastructureGrid::grid_get_cell_for_particle (data_type x, data_type y, data_type z) {
+ParticleGroup& DatastructureLinkedCells::grid_get_cell_for_particle (data_type x, data_type y, data_type z) {
     Vec3l idx = grid_get_cell_index_for_particle (x, y, z);
     return m_particle_groups[grid_get_cell_index (idx.x, idx.y, idx.z)];
 }
-Vec3l DatastructureGrid::grid_get_cell_index_for_particle (data_type x, data_type y, data_type z) {
+Vec3l DatastructureLinkedCells::grid_get_cell_index_for_particle (data_type x, data_type y, data_type z) {
     return Vec3l ((long) (x / grid_size_per_cell.x) + 1, (long) (y / grid_size_per_cell.y) + 1, (long) (z / grid_size_per_cell.z) + 1);
 }
-ParticleGroup& DatastructureGrid::grid_get_cell_for_particle (Vec3f m_position) {
+ParticleGroup& DatastructureLinkedCells::grid_get_cell_for_particle (Vec3f m_position) {
     return grid_get_cell_for_particle (m_position.x, m_position.y, m_position.z);
 }
-void DatastructureGrid::add_particle (Vec3f p_current_position, Vec3f p_current_velocity, int p_id) {
+void DatastructureLinkedCells::add_particle (Vec3f p_current_position, Vec3f p_current_velocity, int p_id) {
     long id = 0;
     if (p_id >= 0) {
         id       = p_id;
@@ -73,7 +105,7 @@ void DatastructureGrid::add_particle (Vec3f p_current_position, Vec3f p_current_
     ParticleGroup& cell = grid_get_cell_for_particle (p_current_position);
     cell.add_particle (p_current_position, old_position, m_idx_a, id);
 }
-void DatastructureGrid::grid_step_2a_calculate_inside_cell (ParticleGroup& p_cell) {
+void DatastructureLinkedCells::grid_step_2a_calculate_inside_cell (ParticleGroup& p_cell) {
     unsigned long      i;
     const unsigned int max   = p_cell.m_ids.size ();
     const unsigned int max_1 = max - 1;
@@ -96,7 +128,7 @@ void DatastructureGrid::grid_step_2a_calculate_inside_cell (ParticleGroup& p_cel
         }
     }
 }
-void DatastructureGrid::grid_step_2b_calculate_between_cells (ParticleGroup& p_cell_i, ParticleGroup& p_cell_j) {
+void DatastructureLinkedCells::grid_step_2b_calculate_between_cells (ParticleGroup& p_cell_i, ParticleGroup& p_cell_j) {
     unsigned int       i;
     const unsigned int max = p_cell_i.m_ids.size ();
     if (p_cell_j.m_ids.size () > 0) {
@@ -118,7 +150,7 @@ void DatastructureGrid::grid_step_2b_calculate_between_cells (ParticleGroup& p_c
         }
     }
 }
-void DatastructureGrid::grid_step_2b_calculate_between_cells (ParticleGroup& p_cell_i, ParticleGroup& p_cell_j, data_type offset_x, data_type offset_y, data_type offset_z) {
+void DatastructureLinkedCells::grid_step_2b_calculate_between_cells (ParticleGroup& p_cell_i, ParticleGroup& p_cell_j, data_type offset_x, data_type offset_y, data_type offset_z) {
     unsigned int       i;
     const unsigned int max = p_cell_i.m_ids.size ();
     if (p_cell_j.m_ids.size () > 0) {
@@ -143,7 +175,7 @@ void DatastructureGrid::grid_step_2b_calculate_between_cells (ParticleGroup& p_c
         }
     }
 }
-void DatastructureGrid::grid_step_3_remove_wrong_particles_from_cell (ParticleGroup& p_cell) {
+void DatastructureLinkedCells::grid_step_3_remove_wrong_particles_from_cell (ParticleGroup& p_cell) {
     step_3_fit_into_borders (p_cell);
     if (!m_error_happened) {
         int i;
@@ -156,7 +188,7 @@ void DatastructureGrid::grid_step_3_remove_wrong_particles_from_cell (ParticleGr
         }
     }
 }
-bool DatastructureGrid::grid_step_2 () {
+bool DatastructureLinkedCells::grid_step_2 () {
     unsigned int    idx;
     unsigned int    idx_x, idx_y, idx_z;
     unsigned int    idx_x_2, idx_y_2, idx_z_2;
@@ -174,6 +206,8 @@ bool DatastructureGrid::grid_step_2 () {
     const long      ux                         = (rx - lx) / 2;
     const long      uy                         = (ry - ly) / 2;
     const long      uz                         = (rz - lz) / 2;
+    const long      uxy                        = ux * uy;
+    const long      uxz                        = ux * uz;
     const long      uyz                        = uy * uz;
     const long      uxyz                       = ux * uyz;
     m_verbose_stream << "l:" << lx << "," << ly << "," << lz << std::endl;
@@ -190,9 +224,9 @@ bool DatastructureGrid::grid_step_2 () {
                         idx_z_2 = idx % uz;
                         idx_y_2 = (idx / uz) % uy;
                         idx_x_2 = (idx / uz) / uy;
-                        idx_x   = lx + idx_x_2 * 2 + parallel_offset_x;
-                        idx_y   = ly + idx_y_2 * 2 + parallel_offset_y;
                         idx_z   = lz + idx_z_2 * 2 + parallel_offset_z;
+                        idx_y   = ly + idx_y_2 * 2 + parallel_offset_y;
+                        idx_x   = lx + idx_x_2 * 2 + parallel_offset_x;
                         grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 1, idx_z + 1), grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
                         grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 1, idx_z + 0), grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 0));
                         grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 1, idx_z + 0), grid_get_cell_at (idx_x + 0, idx_y + 0, idx_z + 1));
@@ -217,23 +251,25 @@ bool DatastructureGrid::grid_step_2 () {
         m_verbose_stream << "grid_step_2::2" << std::endl;
         for (parallel_offset_y = 0; parallel_offset_y < 2; parallel_offset_y++) {
             for (parallel_offset_z = 0; parallel_offset_z < 2; parallel_offset_z++) {
-#pragma omp parallel for private(idx_y, idx_z)
-                for (idx_y = parallel_offset_y + ly; idx_y < ry; idx_y += 2) {
-                    for (idx_z = parallel_offset_z + lz; idx_z < rz; idx_z += 2) {
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (rx, idx_y + 1, idx_z + 1), grid_get_cell_at (rx, idx_y + 0, idx_z + 0));
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (rx, idx_y + 1, idx_z + 0), grid_get_cell_at (rx, idx_y + 0, idx_z + 0));
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (rx, idx_y + 1, idx_z + 0), grid_get_cell_at (rx, idx_y + 0, idx_z + 1));
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (rx, idx_y + 0, idx_z + 1), grid_get_cell_at (rx, idx_y + 0, idx_z + 0));
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 1, idx_z + 1), grid_get_cell_at (rx, idx_y + 0, idx_z + 0), ox, 0, 0);
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 1, idx_z + 0), grid_get_cell_at (rx, idx_y + 0, idx_z + 0), ox, 0, 0);
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 1, idx_z + 0), grid_get_cell_at (rx, idx_y + 0, idx_z + 1), ox, 0, 0);
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 0, idx_z + 1), grid_get_cell_at (rx, idx_y + 0, idx_z + 0), ox, 0, 0);
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 0, idx_z + 0), grid_get_cell_at (rx, idx_y + 0, idx_z + 0), ox, 0, 0);
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 0, idx_z + 0), grid_get_cell_at (rx, idx_y + 0, idx_z + 1), ox, 0, 0);
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 0, idx_z + 1), grid_get_cell_at (rx, idx_y + 1, idx_z + 0), ox, 0, 0);
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 0, idx_z + 0), grid_get_cell_at (rx, idx_y + 1, idx_z + 0), ox, 0, 0);
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 0, idx_z + 0), grid_get_cell_at (rx, idx_y + 1, idx_z + 1), ox, 0, 0);
-                    }
+#pragma omp parallel for private(idx, idx_y, idx_z, idx_y_2, idx_z_2)
+                for (idx = 0; idx < uyz; idx++) {
+                    idx_z_2 = idx % uz;
+                    idx_y_2 = idx / uz;
+                    idx_z   = lz + idx_z_2 * 2 + parallel_offset_z;
+                    idx_y   = ly + idx_y_2 * 2 + parallel_offset_y;
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (rx, idx_y + 1, idx_z + 1), grid_get_cell_at (rx, idx_y + 0, idx_z + 0));
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (rx, idx_y + 1, idx_z + 0), grid_get_cell_at (rx, idx_y + 0, idx_z + 0));
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (rx, idx_y + 1, idx_z + 0), grid_get_cell_at (rx, idx_y + 0, idx_z + 1));
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (rx, idx_y + 0, idx_z + 1), grid_get_cell_at (rx, idx_y + 0, idx_z + 0));
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 1, idx_z + 1), grid_get_cell_at (rx, idx_y + 0, idx_z + 0), ox, 0, 0);
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 1, idx_z + 0), grid_get_cell_at (rx, idx_y + 0, idx_z + 0), ox, 0, 0);
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 1, idx_z + 0), grid_get_cell_at (rx, idx_y + 0, idx_z + 1), ox, 0, 0);
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 0, idx_z + 1), grid_get_cell_at (rx, idx_y + 0, idx_z + 0), ox, 0, 0);
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 0, idx_z + 0), grid_get_cell_at (rx, idx_y + 0, idx_z + 0), ox, 0, 0);
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 0, idx_z + 0), grid_get_cell_at (rx, idx_y + 0, idx_z + 1), ox, 0, 0);
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 0, idx_z + 1), grid_get_cell_at (rx, idx_y + 1, idx_z + 0), ox, 0, 0);
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 0, idx_z + 0), grid_get_cell_at (rx, idx_y + 1, idx_z + 0), ox, 0, 0);
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (lx, idx_y + 0, idx_z + 0), grid_get_cell_at (rx, idx_y + 1, idx_z + 1), ox, 0, 0);
                 }
             }
         }
@@ -244,23 +280,25 @@ bool DatastructureGrid::grid_step_2 () {
         m_verbose_stream << "grid_step_2::3" << std::endl;
         for (parallel_offset_x = 0; parallel_offset_x < 2; parallel_offset_x++) {
             for (parallel_offset_z = 0; parallel_offset_z < 2; parallel_offset_z++) {
-#pragma omp parallel for private(idx_x, idx_z)
-                for (idx_x = parallel_offset_x + lx; idx_x < rx; idx_x += 2) {
-                    for (idx_z = parallel_offset_z + lz; idx_z < rz; idx_z += 2) {
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ry, idx_z + 1), grid_get_cell_at (idx_x + 0, ry, idx_z + 0));
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ry, idx_z + 0), grid_get_cell_at (idx_x + 0, ry, idx_z + 0));
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ry, idx_z + 0), grid_get_cell_at (idx_x + 0, ry, idx_z + 1));
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, ry, idx_z + 1), grid_get_cell_at (idx_x + 0, ry, idx_z + 0));
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ly, idx_z + 1), grid_get_cell_at (idx_x + 0, ry, idx_z + 0), 0, oy, 0);
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ly, idx_z + 0), grid_get_cell_at (idx_x + 0, ry, idx_z + 0), 0, oy, 0);
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ly, idx_z + 0), grid_get_cell_at (idx_x + 0, ry, idx_z + 1), 0, oy, 0);
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ry, idx_z + 1), grid_get_cell_at (idx_x + 0, ly, idx_z + 0), 0, -oy, 0);
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ry, idx_z + 0), grid_get_cell_at (idx_x + 0, ly, idx_z + 0), 0, -oy, 0);
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ry, idx_z + 0), grid_get_cell_at (idx_x + 0, ly, idx_z + 1), 0, -oy, 0);
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, ly, idx_z + 1), grid_get_cell_at (idx_x + 0, ry, idx_z + 0), 0, oy, 0);
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, ly, idx_z + 0), grid_get_cell_at (idx_x + 0, ry, idx_z + 0), 0, oy, 0);
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, ly, idx_z + 0), grid_get_cell_at (idx_x + 0, ry, idx_z + 1), 0, oy, 0);
-                    }
+#pragma omp parallel for private(idx, idx_x, idx_z, idx_x_2, idx_z_2)
+                for (idx = 0; idx < uxz; idx++) {
+                    idx_z_2 = idx % uz;
+                    idx_x_2 = idx / uz;
+                    idx_z   = lz + idx_z_2 * 2 + parallel_offset_z;
+                    idx_x   = lx + idx_x_2 * 2 + parallel_offset_x;
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ry, idx_z + 1), grid_get_cell_at (idx_x + 0, ry, idx_z + 0));
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ry, idx_z + 0), grid_get_cell_at (idx_x + 0, ry, idx_z + 0));
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ry, idx_z + 0), grid_get_cell_at (idx_x + 0, ry, idx_z + 1));
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, ry, idx_z + 1), grid_get_cell_at (idx_x + 0, ry, idx_z + 0));
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ly, idx_z + 1), grid_get_cell_at (idx_x + 0, ry, idx_z + 0), 0, oy, 0);
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ly, idx_z + 0), grid_get_cell_at (idx_x + 0, ry, idx_z + 0), 0, oy, 0);
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ly, idx_z + 0), grid_get_cell_at (idx_x + 0, ry, idx_z + 1), 0, oy, 0);
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ry, idx_z + 1), grid_get_cell_at (idx_x + 0, ly, idx_z + 0), 0, -oy, 0);
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ry, idx_z + 0), grid_get_cell_at (idx_x + 0, ly, idx_z + 0), 0, -oy, 0);
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, ry, idx_z + 0), grid_get_cell_at (idx_x + 0, ly, idx_z + 1), 0, -oy, 0);
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, ly, idx_z + 1), grid_get_cell_at (idx_x + 0, ry, idx_z + 0), 0, oy, 0);
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, ly, idx_z + 0), grid_get_cell_at (idx_x + 0, ry, idx_z + 0), 0, oy, 0);
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, ly, idx_z + 0), grid_get_cell_at (idx_x + 0, ry, idx_z + 1), 0, oy, 0);
                 }
             }
         }
@@ -271,23 +309,25 @@ bool DatastructureGrid::grid_step_2 () {
         m_verbose_stream << "grid_step_2::4" << std::endl;
         for (parallel_offset_x = 0; parallel_offset_x < 2; parallel_offset_x++) {
             for (parallel_offset_y = 0; parallel_offset_y < 2; parallel_offset_y++) {
-#pragma omp parallel for private(idx_x, idx_y)
-                for (idx_x = parallel_offset_x + lx; idx_x < rx; idx_x += 2) {
-                    for (idx_y = parallel_offset_y + ly; idx_y < ry; idx_y += 2) {
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 1, rz), grid_get_cell_at (idx_x + 0, idx_y + 0, rz));
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, rz), grid_get_cell_at (idx_x + 0, idx_y + 0, rz));
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, rz), grid_get_cell_at (idx_x + 0, idx_y + 1, rz));
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, idx_y + 1, rz), grid_get_cell_at (idx_x + 0, idx_y + 0, rz));
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 1, lz), grid_get_cell_at (idx_x + 0, idx_y + 0, rz), 0, 0, oz);
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 1, rz), grid_get_cell_at (idx_x + 0, idx_y + 0, lz), 0, 0, -oz);
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, lz), grid_get_cell_at (idx_x + 0, idx_y + 0, rz), 0, 0, oz);
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, rz), grid_get_cell_at (idx_x + 0, idx_y + 0, lz), 0, 0, -oz);
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, lz), grid_get_cell_at (idx_x + 0, idx_y + 1, rz), 0, 0, oz);
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, rz), grid_get_cell_at (idx_x + 0, idx_y + 1, lz), 0, 0, -oz);
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, idx_y + 1, lz), grid_get_cell_at (idx_x + 0, idx_y + 0, rz), 0, 0, oz);
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, idx_y + 1, rz), grid_get_cell_at (idx_x + 0, idx_y + 0, lz), 0, 0, -oz);
-                        grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, idx_y + 0, lz), grid_get_cell_at (idx_x + 0, idx_y + 0, rz), 0, 0, oz);
-                    }
+#pragma omp parallel for private(idx, idx_x, idx_y, idx_x_2, idx_y_2)
+                for (idx = 0; idx < uxy; idx++) {
+                    idx_y_2 = idx % uy;
+                    idx_x_2 = idx / uy;
+                    idx_y   = ly + idx_y_2 * 2 + parallel_offset_y;
+                    idx_x   = lx + idx_x_2 * 2 + parallel_offset_x;
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 1, rz), grid_get_cell_at (idx_x + 0, idx_y + 0, rz));
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, rz), grid_get_cell_at (idx_x + 0, idx_y + 0, rz));
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, rz), grid_get_cell_at (idx_x + 0, idx_y + 1, rz));
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, idx_y + 1, rz), grid_get_cell_at (idx_x + 0, idx_y + 0, rz));
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 1, lz), grid_get_cell_at (idx_x + 0, idx_y + 0, rz), 0, 0, oz);
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 1, rz), grid_get_cell_at (idx_x + 0, idx_y + 0, lz), 0, 0, -oz);
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, lz), grid_get_cell_at (idx_x + 0, idx_y + 0, rz), 0, 0, oz);
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, rz), grid_get_cell_at (idx_x + 0, idx_y + 0, lz), 0, 0, -oz);
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, lz), grid_get_cell_at (idx_x + 0, idx_y + 1, rz), 0, 0, oz);
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 1, idx_y + 0, rz), grid_get_cell_at (idx_x + 0, idx_y + 1, lz), 0, 0, -oz);
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, idx_y + 1, lz), grid_get_cell_at (idx_x + 0, idx_y + 0, rz), 0, 0, oz);
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, idx_y + 1, rz), grid_get_cell_at (idx_x + 0, idx_y + 0, lz), 0, 0, -oz);
+                    grid_step_2b_calculate_between_cells (grid_get_cell_at (idx_x + 0, idx_y + 0, lz), grid_get_cell_at (idx_x + 0, idx_y + 0, rz), 0, 0, oz);
                 }
             }
         }
@@ -381,23 +421,27 @@ bool DatastructureGrid::grid_step_2 () {
     }
     return false;
 }
-bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_number) {
+bool DatastructureLinkedCells::run_simulation_iteration (unsigned long p_iteration_number) {
     unsigned int i, j;
     m_error_happened = false;
-    // m_standard_stream << DEBUG_VAR (p_iteration_number) << std::endl;
+    m_verbose_stream << DEBUG_VAR (p_iteration_number) << std::endl;
     m_iterations_until_rearange_particles--;
-    unsigned int idx_x, idx_y, idx_z;
+    unsigned int idx_x, idx_y, idx_z, idx;
     {
         m_verbose_stream << "grid_step_1>" << p_iteration_number << std::endl;
-#pragma omp parallel for private(idx_x, idx_y, idx_z)
-        for (idx_x = 0; idx_x < grid_size.x; idx_x++) {
-            for (idx_y = 0; idx_y < grid_size.y; idx_y++) {
-                for (idx_z = 0; idx_z < grid_size.z; idx_z++) {
-                    ParticleGroup& cell = grid_get_cell_at (idx_x, idx_y, idx_z);
-                    step_1_prepare_cell (cell);
-                    grid_step_2a_calculate_inside_cell (cell);
-                }
-            }
+
+        unsigned int size = grid_size.x * grid_size.y * grid_size.z;
+        unsigned int sz   = grid_size.z;
+        unsigned int sy   = grid_size.y;
+
+#pragma omp parallel for private(idx_x, idx_y, idx_z, idx)
+        for (idx = 0; idx < size; idx++) {
+            idx_z               = idx % sz;
+            idx_y               = (idx / sz) % sy;
+            idx_x               = (idx / sz) / sy;
+            ParticleGroup& cell = grid_get_cell_at (idx_x, idx_y, idx_z);
+            step_1_prepare_cell (cell);
+            grid_step_2a_calculate_inside_cell (cell);
         }
     }
     if (m_error_happened)
@@ -428,10 +472,12 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
             calculate_next_datastructure_rebuild ();
         }
     }
-    m_idx_b = !(m_idx_a = m_idx_b);
+    if (!m_options.m_dry_run) {
+        m_idx_b = !(m_idx_a = m_idx_b);
+    }
 #ifdef CALCULATE_ENERGY_CONSERVATION
     g_sum_energy = 0;
-    for (i = 0; i < m_particle_groups.size (); i++) {
+    for (i = 0; i < m_particle_groups_count; i++) {
         ParticleGroup& group = m_particle_groups[i];
         for (j = 0; j < group.m_ids.size (); j++) {
             data_type m = 1;
@@ -446,7 +492,7 @@ bool DatastructureGrid::run_simulation_iteration (unsigned long p_iteration_numb
 #endif
     return m_error_happened;
 }
-inline void DatastructureGrid::grid_moveParticle (ParticleGroup& p_cell_from, ParticleGroup& p_cell_to, long p_index_from) {
+inline void DatastructureLinkedCells::grid_moveParticle (ParticleGroup& p_cell_from, ParticleGroup& p_cell_to, long p_index_from) {
     // the last element overrides the element to be deleted, then the last element gets removed
     unsigned int j;
     p_cell_to.m_ids.push_back (p_cell_from.m_ids[p_index_from]);
@@ -464,6 +510,6 @@ inline void DatastructureGrid::grid_moveParticle (ParticleGroup& p_cell_from, Pa
         p_cell_from.m_positions_z[j].pop_back ();
     }
 }
-void DatastructureGrid::add_particle (Vec3f p_position) {
+void DatastructureLinkedCells::add_particle (Vec3f p_position) {
     add_particle (p_position, Vec3f (0));
 }

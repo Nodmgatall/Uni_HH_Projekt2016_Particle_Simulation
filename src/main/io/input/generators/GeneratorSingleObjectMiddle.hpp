@@ -1,11 +1,12 @@
 /*
  * GeneratorSingleObjectMiddle.hpp
  *
- *  Created on: 23.11.2016
- *      Author: benjamin
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
  */
-#ifndef SRC_GENERATORS_GENERATORSINGLEOBJECTMIDDLE_HPP_
-#define SRC_GENERATORS_GENERATORSINGLEOBJECTMIDDLE_HPP_
+#ifndef SRC_MAIN_IO_INPUT_GENERATORS_GENERATORSINGLEOBJECTMIDDLE_HPP_
+#define SRC_MAIN_IO_INPUT_GENERATORS_GENERATORSINGLEOBJECTMIDDLE_HPP_
 #include "io/input/InputBase.hpp"
 #include <math.h>
 class GeneratorSingleObjectMiddle : public InputBase {
