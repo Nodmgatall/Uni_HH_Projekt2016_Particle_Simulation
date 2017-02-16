@@ -84,10 +84,14 @@ void AlgorithmStoermerVerletLennardJones::step_2 (const data_type& __restrict__ 
                                                   const unsigned long p_index_j_begin,
                                                   const unsigned long p_index_j_end) {
     unsigned long          num_of_calculations = p_index_j_end - p_index_j_begin;
-    std::vector<data_type> change_x (num_of_calculations);
-    std::vector<data_type> change_y (num_of_calculations);
-    std::vector<data_type> change_z (num_of_calculations);
 
+   data_type change_x;
+   data_type change_y;
+   data_type change_z;	
+
+   data_type change_x_sum = 0.0f;
+   data_type change_y_sum = 0.0f;
+   data_type change_z_sum = 0.0f;	
     // data_type change_x;
     // data_type change_y;
     // data_type change_z;
@@ -120,12 +124,15 @@ void AlgorithmStoermerVerletLennardJones::step_2 (const data_type& __restrict__ 
         const data_type r_ij_14 = r_ij_6 * r_ij_6 * r_ij_2;
 
         s_ij *= (A_ij - B_ij * r_ij_6) / (r_ij_14);
-        change_x[j] = (s_ij * d_x) / m_i;
-        change_y[j] = (s_ij * d_y) / m_i;
-        change_z[j] = (s_ij * d_z) / m_i;
-        x_pos_other_b[j] += change_x[j];
-        y_pos_other_b[j] += change_y[j];
-        z_pos_other_b[j] += change_z[j];
+        change_x = (s_ij * d_x) / m_i;
+        change_y = (s_ij * d_y) / m_i;
+        change_z = (s_ij * d_z) / m_i;
+        x_pos_other_b[j] += change_x;
+        y_pos_other_b[j] += change_y;
+        z_pos_other_b[j] += change_z;
+	change_x_sum += change_x;
+	change_y_sum += change_y;
+	change_z_sum += change_z;
         /*
          change_x[j] =( s_ij * d_x) / m_i;
          change_y[j] =( s_ij * d_y) / m_i;
@@ -139,11 +146,9 @@ void AlgorithmStoermerVerletLennardJones::step_2 (const data_type& __restrict__ 
 
          */
     }
-    for (j = 0; j < num_of_calculations; j++) {
-        p_position_bix -= change_x[j];
-        p_position_biy -= change_y[j];
-        p_position_biz -= change_z[j];
-    }
+    p_position_bix -= change_x_sum;
+    p_position_biy -= change_y_sum;
+    p_position_biz -= change_z_sum;
 }
 #endif
 void AlgorithmStoermerVerletLennardJones::step_2_offset (const data_type&       p_offset_position_aix,
