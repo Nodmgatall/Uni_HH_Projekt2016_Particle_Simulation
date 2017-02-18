@@ -137,9 +137,6 @@ void AlgorithmStoermerVerletLennardJones::step_2 (const data_type& __restrict__ 
     data_type change_x_sum = 0.0f;
     data_type change_y_sum = 0.0f;
     data_type change_z_sum = 0.0f;
-    // data_type change_x;
-    // data_type change_y;
-    // data_type change_z;
 
     const data_type* const __restrict__ x_pos_other_a = p_position_ajx + p_index_j_begin;
     const data_type* const __restrict__ y_pos_other_a = p_position_ajy + p_index_j_begin;
@@ -148,11 +145,17 @@ void AlgorithmStoermerVerletLennardJones::step_2 (const data_type& __restrict__ 
     data_type* const __restrict__ x_pos_other_b = p_position_bjx + p_index_j_begin;
     data_type* const __restrict__ y_pos_other_b = p_position_bjy + p_index_j_begin;
     data_type* const __restrict__ z_pos_other_b = p_position_bjz + p_index_j_begin;
-    data_type     d_x;
-    data_type     d_y;
-    data_type     d_z;
-    data_type     s_ij;
-    data_type     r_ij_2;
+
+    data_type d_x;
+    data_type d_y;
+    data_type d_z;
+
+    data_type s_ij;
+    data_type r_ij_2;
+    data_type r_ij_4;
+    data_type r_ij_6;
+    data_type r_ij_14;
+
     unsigned long j;
     // vectorized
     for (j = 0; j < num_of_calculations; j++) {
@@ -161,13 +164,16 @@ void AlgorithmStoermerVerletLennardJones::step_2 (const data_type& __restrict__ 
         d_z    = z_pos_other_a[j] - p_position_aiz;
         r_ij_2 = d_x * d_x + d_y * d_y + d_z * d_z;
 
-        // NOTE: badly visible if statement for vectorization
-        s_ij = r_ij_2 > m_cut_off_squared ? 0 : 1;
+        // NOTE: badly visible and hidden if statement for vectorization
+        // if the squared distance is smaller than the squared cutoff radius
+        // s_ij will be set to 1 and later multiplied by its actual value
+        // other wise s_ij will be 0 and the multiplication with the potential
+        // change will be 0 so that no movement will happen.
+        s_ij = r_ij_2 < m_cut_off_squared;
 
-        const data_type r_ij_4  = r_ij_2 * r_ij_2;
-        const data_type r_ij_6  = r_ij_2 * r_ij_4;
-        const data_type r_ij_14 = r_ij_6 * r_ij_6 * r_ij_2;
-
+        r_ij_4  = r_ij_2 * r_ij_2;
+        r_ij_6  = r_ij_2 * r_ij_4;
+        r_ij_14 = r_ij_6 * r_ij_6 * r_ij_2;
         s_ij *= (A_ij - B_ij * r_ij_6) / (r_ij_14);
         change_x = (s_ij * d_x) / m_i;
         change_y = (s_ij * d_y) / m_i;
@@ -183,15 +189,15 @@ void AlgorithmStoermerVerletLennardJones::step_2 (const data_type& __restrict__ 
     p_position_biy -= change_y_sum;
     p_position_biz -= change_z_sum;
 }
-void AlgorithmStoermerVerletLennardJones::step_2_offset (const data_type& p_offset_position_aix,
-                                                         const data_type& p_offset_position_aiy,
-                                                         const data_type& p_offset_position_aiz,
-                                                         const data_type& p_position_aix,
-                                                         const data_type& p_position_aiy,
-                                                         const data_type& p_position_aiz,
-                                                         data_type&       p_position_bix,
-                                                         data_type&       p_position_biy,
-                                                         data_type&       p_position_biz,
+void AlgorithmStoermerVerletLennardJones::step_2_offset (const data_type& __restrict__ p_offset_position_aix,
+                                                         const data_type& __restrict__ p_offset_position_aiy,
+                                                         const data_type& __restrict__ p_offset_position_aiz,
+                                                         const data_type& __restrict__ p_position_aix,
+                                                         const data_type& __restrict__ p_position_aiy,
+                                                         const data_type& __restrict__ p_position_aiz,
+                                                         data_type&       __restrict__ p_position_bix,
+                                                         data_type&       __restrict__ p_position_biy,
+                                                         data_type&       __restrict__ p_position_biz,
                                                          const data_type* const __restrict__ p_position_ajx,
                                                          const data_type* const __restrict__ p_position_ajy,
                                                          const data_type* const __restrict__ p_position_ajz,
@@ -206,13 +212,13 @@ void AlgorithmStoermerVerletLennardJones::step_2_offset (const data_type& p_offs
     data_type change_y;
     data_type change_z;
 
-    data_type       change_x_sum = 0.0f;
-    data_type       change_y_sum = 0.0f;
-    data_type       change_z_sum = 0.0f;
+    data_type change_x_sum = 0.0f;
+    data_type change_y_sum = 0.0f;
+    data_type change_z_sum = 0.0f;
 
-    const data_type ix           = p_position_aix + p_offset_position_aix;
-    const data_type iy           = p_position_aiy + p_offset_position_aiy;
-    const data_type iz           = p_position_aiz + p_offset_position_aiz;
+    const data_type ix = p_position_aix + p_offset_position_aix;
+    const data_type iy = p_position_aiy + p_offset_position_aiy;
+    const data_type iz = p_position_aiz + p_offset_position_aiz;
 
     const data_type* const __restrict__ x_pos_other_a = p_position_ajx + p_index_j_begin;
     const data_type* const __restrict__ y_pos_other_a = p_position_ajy + p_index_j_begin;
@@ -221,11 +227,16 @@ void AlgorithmStoermerVerletLennardJones::step_2_offset (const data_type& p_offs
     data_type* const __restrict__ x_pos_other_b = p_position_bjx + p_index_j_begin;
     data_type* const __restrict__ y_pos_other_b = p_position_bjy + p_index_j_begin;
     data_type* const __restrict__ z_pos_other_b = p_position_bjz + p_index_j_begin;
-    data_type     d_x;
-    data_type     d_y;
-    data_type     d_z;
+
+    data_type d_x;
+    data_type d_y;
+    data_type d_z;
+
     data_type     s_ij;
     data_type     r_ij_2;
+    data_type     r_ij_4;
+    data_type     r_ij_6;
+    data_type     r_ij_14;
     unsigned long j;
     // vectorized
     for (j = 0; j < num_of_calculations; j++) {
@@ -235,11 +246,11 @@ void AlgorithmStoermerVerletLennardJones::step_2_offset (const data_type& p_offs
         r_ij_2 = d_x * d_x + d_y * d_y + d_z * d_z;
 
         // NOTE: badly visible if statement for vectorization
-        s_ij = r_ij_2 > m_cut_off_squared ? 0 : 1;
+        s_ij = r_ij_2 < m_cut_off_squared;
 
-        const data_type r_ij_4  = r_ij_2 * r_ij_2;
-        const data_type r_ij_6  = r_ij_2 * r_ij_4;
-        const data_type r_ij_14 = r_ij_6 * r_ij_6 * r_ij_2;
+        r_ij_4  = r_ij_2 * r_ij_2;
+        r_ij_6  = r_ij_2 * r_ij_4;
+        r_ij_14 = r_ij_6 * r_ij_6 * r_ij_2;
 
         s_ij *= (A_ij - B_ij * r_ij_6) / (r_ij_14);
         change_x = (s_ij * d_x) / m_i;
