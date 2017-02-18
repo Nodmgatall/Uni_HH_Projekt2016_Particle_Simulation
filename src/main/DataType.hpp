@@ -12,6 +12,6 @@
  * internally use
  * data_type should be one of <float | double | long double>
  */
-// typedef float data_type __attribute__((aligned(32)));
-typedef float data_type;
+ typedef float data_type __attribute__((aligned(32)));
+//typedef float data_type;
 #endif
