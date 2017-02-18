@@ -30,7 +30,7 @@ if(GPROF EQUAL 1)
     message("compiler flags for gprof set")
 endif()
 
-add_definitions(" -Wall -Wextra -Werror -W -Wshadow -Wunused-variable \
+add_definitions("-Wall -Wextra -Werror -W -Wshadow -Wunused-variable \
  -Wunused-parameter -Wunused-function -Wunused -Wno-system-headers \
  -Wno-deprecated -Woverloaded-virtual -Wwrite-strings -pedantic -g ")
 
