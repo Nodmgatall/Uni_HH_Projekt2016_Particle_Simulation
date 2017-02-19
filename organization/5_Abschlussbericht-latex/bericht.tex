@@ -1,3 +1,4 @@
+%https://www.overleaf.com/7690515vynnjrmjmtvc#/26945709/
 \documentclass[
 	12pt,
 	a4paper,
@@ -81,7 +82,7 @@
 	\vfill
 
 	{\large\begin{tabular}{ll}
-		Vorgelegt von:  & \begin{tabular}{@{}l@{}}Oliver Heidmann (1234567), \\ Benjamin Warnke (6676867)\end{tabular} \\%TODO
+		Vorgelegt von:  & \begin{tabular}{@{}l@{}}Oliver Heidmann (6420331), \\ Benjamin Warnke (6676867)\end{tabular} \\
 		E-Mail-Adresse: & \begin{tabular}{@{}l@{}}\href{mailto:oliverheidmann@hotmail.de}{oliverheidmann@hotmail.de},\\ \href{mailto:4bwarnke@informatik.uni-hamburg.de}{4bwarnke@informatik.uni-hamburg.de}\end{tabular}\\
 		Studiengang:    & Bachelor Informatik\\
 		\\
@@ -92,27 +93,57 @@
 \end{titlepage}
 
 \chapter*{Abstract}
-
 \thispagestyle{empty}
 
-%TODO 
-Ziel des dieses Projektes ist die Implementierung einer Partikel-Simulation für kurzreichweitige Partikel-Interaktionen mit Autotuning.
-
+%TODO ausformulieren(Oliver)
+%Implementation für das automatische Auswählen von Algorithmen und Datenstrukturen in einer, innerhalb des Projekts entwickelten, Partikelsimulation für kurzreichweitige Partikelinteraktionen. Das Autotuning analysiert die Startparameter der Simulation und ermittelt die geeignetste, in der Simulation vorhandene, Datenstruktur.
+Ziel des Projektes ist die Implementierung einer Partikel Simulation für kurzreichweitige Interaktionen, mit automatischer Auswahl der am besten wirkenden Optimierung für die gegebenen Eingabedaten.
 \tableofcontents
 
 \chapter{Einleitung}
 \label{Einleitung}
+%fertig?!?
+Bei Partikel Simulationen müssen in der naiven Implementation die Wechselwirkungen zwischen jedem möglichen Partikelpaar berechnet werden. Die Laufzeit des Programms steigt quadratisch zur Anzahl der Partikel. Dies ist besonders bei hohen Anzahlen von Partikeln kritisch für die Laufzeit. Die in diesem Projekt implementierte Partikel-Simulation ist für kurzreichweitige Interaktionen optimiert. Dadurch lassen sich die Interaktionen zwischen weit auseinanderliegenden Partikeln vernachlässigen, wodurch die Laufzeit kürzer werden kann. Es gibt verschiedene Möglichkeiten, die Interaktionen auf die kurzreichweitige Interaktion zu beschränken um das Programm zu beschleunigen. Das Problem bei diesen verschiedenen Möglichkeiten der Beschleunigung besteht darin, dass je nach Eingabe eine andere Art der Vereinfachung eine bessere Programm-Laufzeit ermöglicht. Die Besonderheit dieser Partikel Simulation liegt darin, dass das Programm zu beginn selbst entscheiden kann, welche Optimierungsstrategie für die gegebene Eingabe am sinnvollsten ist. Hieraus resultiert der Vorteil gegenüber anderen Programmen, dass die Laufzeit für jede beliebige Eingabe besonders schnell ist, und nicht nur wenn die Eingabe passend ist. Dies ist besonders dann spannend, wenn man selbst nicht sicher ist, welches Verfahren für die Eingabe am besten geeignet ist, ohne selbst vorher alle Möglichkeiten einmal auszuprobieren.
 
-	Bei Partikel Simulationen müssen normalerweise die Wechselwirkungen zwischen jedem möglichen Partikelpaar berechnet werden. Die Laufzeit des Programms steigt quadratisch zur Anzahl der Partikel. Dies ist besonders bei hohen Anzahlen von Partikeln kritisch für die Laufzeit. Die in diesem Projekt implementierte Partikel-Simulation ist für kurzreichweitige Interaktionen optimiert. Dadurch lassen sich die Interaktionen zwischen weit auseinanderliegenden Partikeln vernachlässigen, wodurch die Laufzeit kürzer werden kann. Es gibt verschiedene Möglichkeiten, die Interaktionen auf die kurzreichweitige Interaktion zu beschränken um das Programm zu beschleunigen. Das Problem bei diesen verschiedenen Möglichkeiten der Beschleunigung besteht darin, dass je nach Eingabe eine andere Art der Vereinfachung eine bessere Programm-Laufzeit ermöglicht. Die Besonderheit dieser Partikel Simulation liegt darin, dass das Programm zu beginn selbst entscheiden kann, welche Optimierungsstrategie für die gegebene Eingabe am sinnvollsten ist. Hieraus resultiert der Vorteil gegenüber anderen Programmen, dass die Laufzeit für jede beliebige Eingabe besonders schnell ist, und nicht nur wenn die Eingabe passend ist. Dies ist besonders dann spannend, wenn man selbst nicht sicher ist, welches Verfahren für die Eingabe am besten geeignet ist, ohne selbst vorher alle Möglichkeiten einmal auszuprobieren.
-
-\chapter{Realisierung}
-\label{Realisierung}
-\section{Design}
+\chapter{Aufgabenstellung}
+\label{Aufgabenstellung}
+%fertig?!?
+Die Aufgabe für dieses Projekt bestand darin, eine Partikel-Simulation für kurzreichweitige Partikel Interaktionen zu schreiben. Im Zusammenspiel mit den kurzreichweitigen Interaktionen gibt es verschiedene Ansätze die Laufzeit zu verringern. Einer der Ansätze besteht darin, eine Zellenstruktur zu definieren, die den Raum in kleinere Bereiche unterteilt. Ein anderer Ansatz basiert darauf, dass die Nachbarschafts Verhältnisse einmalig berechnet werden, und später mehrfach wiederverwendet werden können, da sich die Nachbarschaft sich selten ändern. Es ist möglich beide Varianten zu einer dritten zu kombinieren. Teil der Aufgabenstellung war es die eben genannten Ansätze zu Implementieren. Der zentrale Kern der Aufgabenstellung bezieht sich auf die automatische Auswahl der schnellsten Variante unter Berücksichtigung der aktuellen Optionen. Dies wird im folgenden als Auto-Tuning bezeichnet. Für die Interaktionen zwischen Partikeln soll das Lennard-Jones Potential verwendet werden, dies soll für spätere Erweiterungen austauschbar sein. Um eine hohe Laufzeiteffizienz zu erreichen sollte eine Kompilersprache wie Fortran oder C/Cpp verwendet werden. Aufgrund der Hardwarenähe haben wir uns dazu entschieden Cpp zu verwenden. Dies ermöglicht es, mithilfe von OpenMP, das Programm zu parallelisieren, sowie die Vektorisierungsmöglichekeiten des Kompilers zu nutzen. Die Simulation soll mit verschiedenartigen Eingaben starten können. Zum einen soll es möglich sein, die Startdaten aus einer Datei zu laden, zum anderen soll es auch relativ einfach möglich sein Daten nach vorgegebenen Mustern zu generieren, um Interaktionan darauf basierend berechnen zu können. Während und nach der Simulation sollen die Partikelpositionen abgespeichert werden, damit diese für spätere Analysen verwendet werden können. Um große Volumen zu Simulieren ist es sinnvoll, periodische Ränder zu verwenden, bei denen die Partikel auch über die Grenzen des Raumes hinweg miteinander Interagieren. Dies ermöglicht es einen Auschnitt eines sehr großen Bereichs zu simulieren, und dadurch auf das Verhalten in einem größeren Kontext zu schließen.
+\chapter{Grundkonzepte}
+\label{Grundkonzepte}
+%(Oliver)
+Im folgenden werden die in der Simulation verwendeten Grundkonzepte beschrieben. Sie bilden sowohl die Grundlage des Designs als auch die Grundlage der Implementation.
+\section{Lennard-Jones-Potential}
+Das Lennard-Jones-Potential beschreibt vereinfacht die kurzreichweitige Interaktion von zwei chemisch nicht aneinander gebundenen Partikel mit gleichem oder unterschiedlichem Typ. Das Potential liefert die Bindungsenergie in Joule[TODO: quelle wiki deu lj] Obwohl es nur eine Annäherung an die, aus der Quantenmechanik resultierenden, Ergebnisse ist, sind die Abweichungen zur Realität klein genug um relevante Daten zu erhalten. Des weiteren ist der benötigte Rechenaufwand um ein vielfaches geringer und ermöglicht somit die Simulation mit einer hohen Anzahl von Partikeln. Deshalb wird diese Art der Modellierung sehr häufig für Partikelsimulationen benutzt, obwohl es genauere Verfahren gibt.
+%TODO: Formel LJ (OLIVER)
+%TODO: EIGENSCHAFTEN QUATSCH UEBERARBETIEN WENN DIE FORMEL HIER STEHT
+%TODO links graph recht formel
+Die Eigenschaft der Interaktion, dass die Partikel sich, ab einem gewissen Abstand $r$, welcher von der Partikelart abhängt, abstoßen beziehungsweise anziehen,wird durch die im Potential zu sehenden Verhältnisse zwischen $\omega$ und $r$ und deren Potenzierung abgebildet. $\omega$ Ist hierbei die feste Distanz bei der das Potenzial Null ergibt. $\epsilon$ steht des weiteren für den Potenzialtopf.
+%TODO: add formel from presentation!! OLIVER?
+%TODO potential graph mathematische-grundlagen
+\section{Störmer-Verlet-Integration}
+%TODO leapfrog
+\section{Linked-Cells}
+Bei dieser Methode die Partikel zu Strukturieren wird der Raum in mehrere gleich große Zellen unterteilt wobei die Kantenlänge der Zellen von dem in der Simulation benutzten Maximalabstand abhängt. Der Maximalabstand legt fest, bis wann die Partikel miteinander Reagieren. Zu diesem Mindestabstand wird noch eine von der höchst Geschwindigkeit abhängige, Länge addiert, um so dafür zu sorgen, dass die Partikel nicht jede Iteration darauf überprüft werden müssen ob sie noch innerhalb ihrer Zelle ist.%TODO neee das hat nix mit der geschwindigkeit zu tun ... zumindfest nicht im quell-code
+Zur Berechnung einer Zelle werden 13 der 27 Nachbarzellen sowie die Partikel in der Zelle selbst betrachtet. Die Partikel sind hierbei, nach ihrer Position im Raum, in die zu dem Teilraum gehörige Zelle einsortiert.  
+%TODO OLIVER BILD REIN
+%TODO cache
+\section{Verlet-Lists}
+Bei Verlet-Listen existiert für jedes Partikel eine Liste der Nachbarn. Die Nachbarn werden aufgrund der Nähe der Partikel zueinander berechnet. Jedes Partikel wird nur mit den in der Nachbarschaftsliste befindlichen Partikeln verrechnet. Zu Beginn der Simulation sowie alle $n$ Simulationsschritte müssen die Listen für jedes Partikel neu generiert werden wobei jede Partikel Position mit allen anderen Positionen verglichen wird. Um die Neugenerierung der Listen möglichst selten auszuführen wird auf den Mindestabstand noch eine weitere, abhängig von der höchsten Partikelgeschwindigkeit, Distanz abgerechet, sodass sichergestellt ist, dass kein Partikel innerhalb der nächsten $n$ Iterationen einen relevanten Einfluss auf nicht gelistete Partikel hat. %TODO der zusatzabstand ist konstannt!!! und wird als parameter übergeben. der hat auch hier nix mit der geschwindigkeit zu tun(von Benjamin)
+%TODO cache
+\chapter{Realisierung(Design+Implementierung)}
+\label{Realisierung(Design+Implementierung)}
+%TODO schnittstelle wiso wichtig, was ermöglicht sie= basisklasse beschreiben
+%TODO doppelten code vermeiden(platzfüller)
+%TODO vectorisierbare datenstrukturen - modularität
+%TODO velocity wird nicht abgespeichert, sondern berechnet bei bedarf.
+%TODO austauschbarer datentyp data_type typedef
 	\begin{figure}[h]
 		\centering
 		\includegraphics[height=0.6\textheight]{ClassDiagram.png}
 		\caption{Klassendiagramm}
 		\label{figure:Klassendiagramm}
+		%TODO autotuning eigene komponente=farbe
 	\end{figure}
 	Das Programm lässt sich grob in 5 Logische Teilbereiche gliedern.
 	\begin{enumerate}
@@ -120,30 +151,43 @@ Ziel des dieses Projektes ist die Implementierung einer Partikel-Simulation für
 		\item \textbf{Output} (cyan) Damit die Ergebnisse der Simulation später ausgewertet werden können, müssen diese als Datei vorhanden sein, damit andere Programme zur Visualisierung verwendet werden können. Wenn ausschließlich Analysen zur Laufzeit ausgeführt werden sollen, oder es darum geht Laufzeiten zu messen, dann kann der Output auch deaktiviert werden, um die reine Rechenzeit messen zu können.
 		\item \textbf{Datenstruktur} (blau) Es gibt verschiedene Möglichkeiten Partikelkombinationen auszuschließen, die nicht in einer Nachbarschaftsbeziehung sind. In diesem Projekt geht es besonders darum, je nach Eingabe eine andere Datenstruktur auszuwählen. Deshalb wurde bei dem Design darauf geachtet, das verschiedene Implementationen von Datenstrukturen leicht austauschbar sind. In der jeweils aktiven Datenstruktur sind alle Partikel gespeichert, die für die Simulation betrachtet werden sollen.
 		\item \textbf{Algorithmus} (grün) Es gibt verschiedene physikalische oder chemische zusammenhänge zwischen verschiedenen Partikeln oder Molekülen. Dieses Programm ermöglicht es relativ einfach weitere Arten der Interaktion zwischen Partikeln zu definieren, und diese dann zur Programmlaufzeit auszuwählen. Während dieses Projektes wurde ausschließlich das Lennard-Jones Potential zur Kräfteberechnung implementiert. Selbst wenn später andere Algorithmen zur Kraft Berechnung verwendet werden, sind die Datenstrukturen mit allen Optimierungen weiterhin verwendbar.
-		\item \textbf{Steuerung} (lila) Ein Teil des Programms ist für die Kontrolle der anderen Teilbereiche Zuständig. Zur den Kontrollstrukturen gehören in diesem Programm zum einen die Parameter, welche die Startbedingungen definieren, zum anderen gehört das Auto-tuning auch mit in diese Kategorie, da es beim Auto-tuning darum geht zu entscheiden, welche Voraussetzungen für das weitere Programm gelten sollen. Die Partikel Simulator Klasse steuert das verhalten der verschiedenen Iterationen. und führt Aktionen zwischen den Iterationen aus. Unter anderem können die Daten zwischen den Iterationen mithilfe der Output Komponente gespeichert werden.
+		\item \textbf{Steuerung} (lila) Ein Teil des Programms ist für die Kontrolle der anderen Teilbereiche Zuständig. Zur den Kontrollstrukturen gehören in diesem Programm die Parameter, welche die Startbedingungen definieren, da aufgrund der Parameter völlig unterschiedliche Ergebnisse produziert werden können. Die Partikel Simulator Klasse steuert das Verhalten der verschiedenen Iterationen und führt Aktionen zwischen den Iterationen aus. Unter anderem können die Daten zwischen den Iterationen mithilfe der Output Komponente gespeichert werden.
+		\item \textbf{Auto-Tuning} (???) %TODO farbe
+		Das Auto-Tuning entscheidet zu beginn des Programms, welche Optimierte Datenstruktur die Programmlaufzeit am stärksten verkürzen kann. Im Rahmen des Projektes wurde nur die Entscheidung zu beginn des Programms implementiert. Um nach X Iterationen erneut zu entscheiden, welche Datenstruktur am besten geeignet ist, wäre es möglich die Partikel abzuspeichern, und von dem Speicherstand erneut zu starten. Dies ist ohnehinn notwendig, wenn die vom Batchsystem zur Verfügung gestellte Laufzeit nicht ausreichend lang ist.
 	\end{enumerate}
-\section{Implementierung}
+%TODO übergabe von pointern und indexbereichen stadt arrays
 	Zu Beginn des Projektes haben wir uns eine grobe Struktur des Programms überlegt, und Schnittstellen definiert, um gleichzeitig in verschiedenen Komponenten an dem Projekt arbeiten zu können. Wir haben das Projekt in die folgenden Komponenten zerlegt:
 	\begin{itemize}
 		\item \textbf{Parameter} Schon zu beginn des Projektes war absehbar, dass das Programm mit verschiedenen Startparametern umgehen können muss. Zum einen ist dies sehr hilfreich, um zum Testen spezielles Verhalten zu provozieren, zum anderen ermöglicht ein parametrisierter Programmaufruf eine sehr flexible Einsatzmöglichkeit des Programms. Während des Programmierens wurden zunehmend mehr Parameter hinzugefügt. Sodass die Art wie die Parameter im Programm abgespeichert werden angepasst werden musste. Sobald die ersten Parameter übernommen werden konnten, war das hinzufügen weiterer Parameter sehr einfach. Um es späteren Anwendern zu erleichtern wurde für jeden Programmparameter ein Hilfetext aufgeschrieben. Der Hilfetext für alle Parameter kann mithilfe des Parameters '-{}-help' ausgegeben werden.
+		%TODO relevante parameter beschreiben/ kritische kombinationen erwähnen /bessere position im text finden
 		\item \textbf{Abstrakte-Klassen} Da unser Projekt zum Ziel hat, dass das Programm automatisch entscheiden kann, welche Optimierung für die gegebenen Daten am sinnvollsten ist, muss es einen Weg geben verschiedene Implementationen schnell zur Laufzeit austauschen zu können. Um später keine Probleme zu bekommen, war es sinnvoll möglichst früh zu erkennen, welche Arten von Methoden definiert sein müssen, um eine gute Austauschbarkeit zu erreichen. Da nicht nur die Datenstruktur sondern generell jede Komponente des Programms flexibel sein solle, wurde für jede Komponente eine andere Abstrakte Klasse definiert. Daraus folgte für die Implementierung, dass die Implementationen der abstrakten Klassen wiederum nur die Basisklassen der anderen Komponenten kennen dürfen, um die volle Flexibilität zu gewährleisten.
-		\item \textbf{Logging} Beim Programmieren ist es manchmal sinnvoll, lokale Variablen auf die Konsole zu schreiben, um den aktuellen Status des Programms zur Laufzeit nachverfolgen zu können. Auch zur Fehlersuche ist dies manchmal sehr hilfreich, da Debugger die Ausführungszeit teilweise so stark verlangsamen, dass einige Fehler dadurch nicht mehr auftreten. Deshalb haben wir uns schon zu beginn des Programmierens überlegt, wie wir hilfreiche Informationen ausgeben können, während das Programm getestet wird. Gleichzeitig sollte die Release-Version des Programms nicht unnötig durch Textausgaben verlangsamt werden. Wir haben dies durch Makros realisiert, die in der Release-Version dafür sorgen, dass nicht nur keine Ausgabe generiert wird, sondern zusätzlich nicht mal eine leere Funktion aufgerufen wird. Der Grund hierfür ist, dass selbst der Aufruf einer leeren Funktion etwas Zeit kostet. Durch große Anzahlen an Funktionsaufrufen, würde selbst diese Zeit zu merkbare Laufzeitunterschieden führen.
+		%TODO eher in design verschieben
+		\item \textbf{Logging} Beim Programmieren ist es manchmal sinnvoll, lokale Variablen auf die Konsole zu schreiben, um den aktuellen Status des Programms zur Laufzeit nachverfolgen zu können. Auch zur Fehlersuche ist dies manchmal sehr hilfreich, da Debugger die Ausführungszeit teilweise so stark verlangsamen, dass einige Fehler dadurch nicht mehr auftreten. Deshalb haben wir uns schon zu beginn des Programmierens überlegt, wie wir hilfreiche Informationen ausgeben können, während das Programm getestet wird. Gleichzeitig sollte die Release-Version des Programms nicht unnötig durch Textausgaben verlangsamt werden. Wir haben dies durch Makros realisiert, die in der Release-Version dafür sorgen, dass nicht nur keine Ausgabe generiert wird, sondern zusätzlich nicht mal eine leere Funktion aufgerufen wird. Der Grund hierfür ist, dass selbst der Aufruf einer leeren Funktion etwas Zeit kostet. Durch große Anzahlen an Funktionsaufrufen, würde selbst diese Zeit zu merkbare Laufzeitunterschieden führen. Da es häufig vorkommt, dass der selbe Datentyp an verschiedenen Stellen ausgegeben werden soll, wurden die entsprechenden Stream-Operatoren überschrieben, wodurch auch Vektoren oder ganze Klassen relativ einfach und lesbar in der Logdatei wiederzufinden sind. Dies erleichtert das Suchen nach Semantikfehlern in den Debug-Logausgaben.
 		\item \textbf{Startdaten} Da es verschiedene Möglichkeiten geben soll, wie die Partikel zu beginn der Simulation angeordnet sind, ist auch hier eine sehr gute Austauschbarkeit von verschiedenen Datenquellen erforderlich. Zum einen können die Partikel zur Laufzeit unter Berücksichtigung von Start Parametern generiert werden, zum anderen können die Partikel auch aus einer Datei geladen werden. Im Rahmen dieses Projekts werden die Partikel ausschließlich aus '*.csv' Datein geladen.
 		\item \textbf{Algorithmus zur Interaktion} Wir haben uns in diesem Projekt darauf beschränkt, zur Berechnung der Kräfte zwischen Partikeln das Lennard-Jones-Potential zu verwenden. Da es theoretisch möglich sein soll, dieses Verfahren auch durch Parameter zu ändern, wurde auch hier darauf geachtet, dass der Code so organisiert ist, dass eine einfache Austauschbarkeit erreicht wird. Der Algorithmus wurde hierzu aufgespalten in zwei Teile. Der erste Teil beschränkt sich auf die Bewegung, die aus der aktuellen Geschwindigkeit des einzelnen Partikels resultiert. Der zweite Teil beschränkt sich auf die Kräfte, die durch Wechselwirkungen zwischen Partikeln entstehen.
 		\item \textbf{Ausgabe} Damit es sinnvoll ist Partikel zu simulieren, müssen die Daten in irgendeiner Form ausgegeben werden, um eine spätere Analyse zu ermöglichen. Hierfür wurde in diesem Projekt ein Modul implementiert, welches alle Partikel in einer '*.csv' Datei-Serie abspeichern kann. Wenn eine Ausgabe unerwünscht ist, z.B. um Laufzeitmessungen durchzuführen, dann kann diese auch deaktiviert werden.
 		\item \textbf{Datenstrukturen} Zu beginn des Projektes wurden zwei verschiedene Optimierungsstrategien vorgeschlagen. In der Linked-Cells Variante wird ein Raster über das zu simulierende Volumen gelegt, und die Partikel werden in dieses Raster eingefügt. Interaktionen zwischen Partikeln können nur dann stattfinden, wenn sich 2 Partikel entweder in der gleichen Zelle befinden oder wenn die Zellen der Partikel benachbart sind. Bei einer großen Anzahl Zellen, sind nur noch relativ wenig Partikel in den einzelnen Zellen. Dadurch reduziert sich der benötigte Rechenaufwand enorm. Die andere Variante benutzt Nachbarschafts-Listen, um während der Iterationen nur die direkten Nachbarn zur Interaktion zu berücksichtigen. Der Nachteil bei dieser Variante besteht darin, dass das Aufbauen der Listen, welche Partikel in der Nachbarschaft sind eine hohe Laufzeit verursacht. Dafür ist allerdings sie benötigte Zeit pro Iteration niedriger als in der Linked-Cells Variante. Nachdem beide Varianten einzeln implementiert worden waren, war es relativ einfach möglich, eine kombinierte Variante zu erstellen, die innerhalb der Zellen Nachbarschafts Listen verwendet. Die kombinierte Variante kombiniert Vorteile und Nachteile von beiden Verfahren, und erzielt somit bei manchen Eingaben eine bessere Laufzeit, als die Verfahren jeweils einzeln betrachtet.
 		\item \textbf{Parallelisierung} Zur Parallelisierung wurde in der Linked-Cells Variante OpenMP verwendet. Die Variante mit den Nachbarschafts Listen konnte nicht ohne weiteres Parallelisiert werden.
 	\end{itemize}
-\section{Analyse}
-\subsection{Korrektheit}
+\section{Korrektheit}
 	Um sicherzustellen, dass das Programm korrekte Ausgaben liefert, wurden verschiedene Arten von Test durchgeführt. Zum einen wurden einzelne Komponenten getestet, zum anderen wurde auch das Gesamtverhalten des Programms überprüft.
 	\begin{itemize}
 		\item \textbf{Unit-Tests} Um die Korrektheit von den einzelnen Komponenten des Programms zu gewährleisten wurden Unit-Tests eingesetzt. Schon beim schreiben der Unit-tests wurden viele Fehler gefunden und behoben. Bei späteren Refactoring-Maßnahmen wurden durch diese Testfälle viele neue Fehler verhindert. Zudem konnten diese Testfälle helfen, wenn neue Implementationen von Abstrakten Klassen eingefügt wurden. Hier konnte man die neue Implementierung so lange verbessern, bis die schon existierenden Unit-Tests nicht mehr fehlschlagen.
 		\item \textbf{Energieerhaltung} Aus dem Physikalischen Gesetz 'Aktion gleich Reaktion' ergibt sich, dass die Energie in einem geschlossenen System immer erhalten belieben muss. Eingebaute Funktionen im Programm ermöglichen die Ausgabe der aktuellen Energie im System, sodass leicht überprüft werden kann, ob die Energie in einem Akzeptablen Rahmen beleibt. Durch Rechenungenauigkeiten ist es sehr unwahrscheinlich, dass die Energie exakt gleich beleibt.
 		\item \textbf{Visualisierung} Durch Visualisieren der Ausgabedaten wurde auch das fertige Ergebnis stichprobenartig überprüft. Bei den getesteten Parametern verhielt sich das Programm wie erwartet.
 	\end{itemize}
-\subsection{Parallelisierung}
-%TODO text
+\section{Parallelisierung}
+%TODO (Benjamin) fertig?
+	Im Verlauf des Projektes wurden die Interaktionen auf Zellenbasis parallelisiert (siehe Figure \ref{figure:OpenMPAufteilung}). Dies liegt daran, dass per Definition nur Partikel in aneinandergrenzenden Zellen interagieren können. Da es sich um kurzreichweitige Partikelinteraktionen handelt, gibt es mit steigender Partikelzahl auch mehr Zellen. Hieraus folgt, dass die Parallelisierung viele Möglichkeiten hat, die Last unter den Threads sinnvoll aufzuteilen. Die nur Listenbasierende Version wurde nicht parallelisiert, da diese deutlich mehr Laufzeit benötigt um die Datenstruktur zu reorganisieren. 
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.5\textwidth]{GridParallel.png}
+        \caption{OpenMP Rechenverteilung}
+		\label{figure:OpenMPAufteilung}
+	\end{figure}\\
+    In der Figure \ref{figure:OpenMPAufteilung} kann man sehen, dass ein Thread immer nur einen 2x2x2 Block benötigt, um Interaktionen zu berechnen. Nachdem alle 2x2x2 Blocke in einem 2er Raster berechnet wurden, ist es notwendig mithilve von einem Offset dieses 2er Raster zu verschieben, sodass schlussendlich alle Interaktionen beachtet werden. 
+    
+    In der Figure \ref{figure:OpenMPAufteilung} ist das Skalierungsverhalten der Simulation mit verschiedenartigen Eingaben dargestellt. Mit bis zu 11 Threads ist das Skalierungsverhalten relativ gut. Bei 13 oder mehr Threads muss der Prozessor auf dem 2ten Sockel mit benutzt werden. Dies führt zu deutlich längeren Zugriffszeiten auf den lokalen Speicher des jeweils anderen Prozessors. Hinzu kommt, dass zwar der Laufzeitintensivste Programmteil parallelisiert wurde, aber nicht das gesammte Programm. Dies führt bei insgesammt kürzeren Laufzeiten zu einem immer größreren relativem Anteil des sequentiellen Codes.
 	\begin{figure}[h]
 		\centering
 		\begin{tikzpicture}
@@ -174,9 +218,12 @@ Ziel des dieses Projektes ist die Implementierung einer Partikel-Simulation für
 		\caption{OpenMP Speedup Diagramm}
 		\label{figure:OpenMPSpeedup}
 	\end{figure}
+\section{Vektorisierung}
+%TODO (Oliver)
 \newpage
 \section{Auto-tuning}
-	Um herauszufinden, nach welchen Kriterien das Auto-tuning entscheiden kann, wurden viele Messungen mit verschiedenen Parametern durchgeführt. Natürlich ist klar, dass die Laufzeit des Programmes mindestens Linear von der Anzahl der zu simulierenden Partikel abhängt. Bei kurzreichweitigen Interaktionen kann man die Laufzeitabschätzung mit $p\cdot\frac{r^3}{V}\sim O\left(1\right)$ vereinfachen (siehe Tabelle \ref{table:Laufzeitvergleich}).\\
+%TODO (Benjamin) fertig?
+	Um herauszufinden, nach welchen Kriterien das Auto-tuning entscheiden kann, wurden viele Messungen mit verschiedenen Parametern durchgeführt. Natürlich ist klar, dass die Laufzeit des Programmes mindestens Linear von der Anzahl der zu simulierenden Partikel abhängt. Bei kurzreichweitigen Interaktionen kann die Laufzeitabschätzung mit $p\cdot\frac{r^3}{V}\sim O\left(1\right)$ vereinfacht werden (siehe Tabelle \ref{table:Laufzeitvergleich}).\\
 	\begin{table}[h]
 		\centering
 		\begin{tabular}{c|l|l|l|l}
@@ -196,12 +243,13 @@ Ziel des dieses Projektes ist die Implementierung einer Partikel-Simulation für
 		\item[r] cut-off-Radius
 		\item[V] gesamt Volumen
 	\end{labeling}
-	Die Gesamtlaufzeit hängt von den Faktoren 'Wie oft?' und 'Wie lange?' ab. 
-\subsection{wie oft?}
-	 Wie oft muss die Datenstruktur neu gebaut werden? Dies hängt ausschließlich von Eingabeparametern ab.
+	Die Gesamtlaufzeit hängt von den Faktoren 'Wie oft wird die Datenstruktur neu organisiert?' und 'Wie lange dauert das Umorganisieren?' ab. 
+\subsection{Wie oft wird die Datenstruktur neu organisiert?}
+	Wie oft die Datenstruktur neu Oranisiert werden muss hängt von den folgenden Eingabeparametern in deren Kombination ab.
 	\begin{itemize}
 		\item \textbf{cut-off Zusatzbereich} Je mehr Spielraum auf den cut-off Radius hinzugefügt wird, desto seltener müssen die Datenstrukturen neu aufgebaut werden. Dies geht allerdings auch sehr zulasten der Laufzeit, die in den Iterationen gebraucht wird.
 		\item \textbf{Startgeschwindigkeit} Je schneller sich die Partikel sich bewegen, desto schneller wird der dem cut-off hinzugefügte Bereich verlassen. Hieraus folgt, dass die Datenstruktur häufiger neu aufgebaut werden muss.
+        \item \textbf{Maximale Iterationen ohne Reorganisation} Manchmal ist es sinnvoll anzugeben wie oft die Datenstruktur mindestens neu gebaut werden muss. Dies ist insbesonderen dann sinnvoll, wenn die Startgeschwindigkeit 0 ist.
 	\end{itemize}
 	Strecke ist gleich Zeit multipliziert mit Geschwindigkeit - das ist die Grundidee hinter der Formel die berechnet, wie oft die Datenstruktur neu gebaut werden muss. Zwei der Variablen sind zu beginn des Programms gegeben. Die Geschwindigkeit und die Strecke, die maximal zurückgelegt werden darf bevor die Datenstruktur neu gebaut werden muss.
 	\begin{align*}
@@ -213,13 +261,14 @@ Ziel des dieses Projektes ist die Implementierung einer Partikel-Simulation für
 		\item[s] Startgeschwindigkeit
 		\item[i] Iterationen
 	\end{labeling}
-\subsection{wie lange?}
-	Wie lange dauert es die Datenstruktur neu zu bauen? Wie viel schneller wird durch den Mehraufwand des Neubauens die einzelne Iteration? Je nachdem, welches Verfahren gewählt wird, ist die Laufzeit unterschiedlich. Bei der Variante bei der nur Nachbar-Listen verwendet werden ist der Aufwand diese Listen aufzubauen Quadratisch zur Anzahl der Partikel. Dies ist so ungünstig, dass es nicht empfehlenswert ist, diese Variante zu Benutzen. Die Linked-Cells-Variante benötigt wenig Zeit um die Datenstruktur aufzubauen, dafür aber wird pro Iteration viel Zeit benötigt. Die Kombinierte Variante benötigt mittelmäßig viel Zeit für den Aufbau der Datenstruktur kosten, und nur Minimale Zeit pro Iteration. Auch die Laufzeit für das Neubauen hängt von verschiedenen Parametern ab.
+\subsection{Wie lange dauert das Reorganisieren der Datenstrukturen?}
+	Wie lange dauert es die Datenstruktur neu zu bauen? Wie viel schneller wird durch den Mehraufwand des Neubauens die einzelne Iteration? Je nachdem, welches Verfahren gewählt wird, ist die Laufzeit unterschiedlich. Bei der Variante bei der nur Nachbar-Listen verwendet werden ist der Aufwand diese Listen aufzubauen Quadratisch zur Anzahl der Partikel. Dies ist so ungünstig, dass es nicht empfehlenswert ist, diese Variante zu Benutzen. Die Linked-Cells-Variante benötigt wenig Zeit um die Datenstruktur aufzubauen, dafür aber wird pro Iteration viel Zeit benötigt. Die Kombinierte Variante benötigt mittelmäßig viel Zeit für den Aufbau der Datenstruktur, und nur Minimale Zeit pro Iteration. Auch die Laufzeit für das Neubauen hängt von verschiedenen Parametern ab.
 	\begin{itemize}
 		\item \textbf{cut-off Radius} Je größer der cut-off Radius gewählt wird, desto mehr Partikel befinden sich in der Nachbarschaft. Die Zellen werden hierdurch größer. Wenn der cut-off Radius relativ groß ist, dann ist die Laufzeit pro Iteration in der nur Zellen basierten Version länger, in der Kombinierten Variante hingegen steigt die benötigte Laufzeit für den Neuaufbau der Datenstruktur. Allgemein gilt, je mehr Partikel in einer Zelle sind, desto günstiger wird die Verwendung der Kombinierten Variante, solange diese nicht allzu häufig neugebaut werden muss. Da dieses Programm sich auf kurzreichweitige Interaktionen fokussiert, werden keine sehr großen cut-off Radien auftreten.
 		\item \textbf{Dichte} Wenn die Partikel dichter aneinander liegen, führt das dazu, dass sich Potentiell mehr Partikel innerhalb des cut-off Radius befinden.
 		\item \textbf{Partikel Anzahl} Wenn die Anzahl der Partikel sehr gering ist, dann ist die Laufzeit des naiven Algorithmus ohne Optimierung kürzer, als eine der Optimierten Varianten, da der Naive Algorithmus nur sehr kleine Konstanten hat. Sobald mehrere hundert Partikel verwendet werden lohnt es sich optimierte Datenstrukturen zu verwenden, um unnötige Interaktionen schnell herausfiltern zu können. Wenn die absolute Anzahl der Partikel sehr groß ist, dann lohnt sich jedes einzelne Partikelpaar zwischen dem keine Interaktion berechnet werden muss. Die Listen basierenden Verfahren reduzieren die Laufzeit pro Iteration auf ein Minimum, haben aber einen dementsprechend größeren Zeitaufwand beim Neubauen der Datenstruktur. 
 		\item \textbf{Startanordnung} Je nachdem wie die Partikel bei Programmstart angeordnet sind ergeben sich andere Effekte. Zum Beispiel wäre es möglich, dass sich zu beginn alle Partikel in einem kleinem Bereich des zu simulierenden Raum aufhalten. Hieraus folgt, dass einige Zellen sehr viel mehr Partikel enthalten als andere. In der aktuellen Version des Programms wird für das Auto-tuning angenommen, das die Partikel einigermaßen gleichmäßig auf das Volumen verteilt sind.
+    \newpage
 	\end{itemize}
 	\begin{figure}[h]
 		\centering
@@ -255,15 +304,20 @@ Ziel des dieses Projektes ist die Implementierung einer Partikel-Simulation für
 		\item[cr] Zellen Variante Iteration mit Neubauen
 		\item[mr] Misch Variante Iteration mit Neubauen
 	\end{labeling}
-	In dem Diagramm (siehe Figure \ref{figure:LaufzeitQuotient}) kann man erkennen, wie sich die Laufzeit relativ verhält, wenn man die verschiedenen Datenstrukturen wählt. Zur Erstellung der Messdaten wurde ein Volumen mit den Abmessungen 100x100x100  betrachtet. Die gemessenen Werte repräsentieren das gesamte Spektrum der verschieden lang Langreichweitigen Interaktionen. Cut-off-Radien größer als 26 müssen nicht betrachtet werden, da Implementationsabhängig immer mindestens 9 Zellen (als 3x3x3 Würfel) existieren müssen. Bei den Iterationen, in denen die Datenstruktur neu gebaut wird benötigt die kombinierte Datenstruktur immer (genau) doppelt so viel Zeit, wie die nur Zellen basierte Variante. In den Iterationen, in denen kein Neubauen erforderlich wird, ist das Ergebnis nicht mehr ganz so deutlich.
-	%TODO ausführen warum die formel \frac{cr-mr}{mn-cn} gilt
-	Wenn man beide Quotienten zusammen betrachtet, dann stellt man fest, dass die Mischvariante spätestens ab der 4 Iterationen ohne Neukonstruktion pro Neukonstruktion schneller läuft, als die nur Zellen basierte Variante.
+	In dem Diagramm (siehe Figure \ref{figure:LaufzeitQuotient}) kann man erkennen, wie sich die Laufzeit relativ verhält, wenn man die verschiedenen Datenstrukturen wählt. Zur Erstellung der Messdaten wurde ein Volumen mit den Abmessungen 100x100x100  betrachtet. Die gemessenen Werte repräsentieren das gesamte Spektrum der verschieden lang Langreichweitigen Interaktionen. Cut-off-Radien größer als 26 müssen nicht betrachtet werden, da Implementationsabhängig immer mindestens 9 Zellen (als 3x3x3 Würfel) existieren müssen. Dies führt dazu, dass in den Iterationen alle Paare von Partikeln miteinander interagieren. Bei den Iterationen, in denen die Datenstruktur neu gebaut wird benötigt die kombinierte Datenstruktur immer (genau) doppelt so viel Zeit, wie die nur Zellen basierte Variante. In den Iterationen, in denen kein Neubauen erforderlich wird, ist das Ergebnis nicht mehr ganz so deutlich.
+    \begin{align*}
+    	cr+i\cdot cn&=mr+i\cdot mn\\
+        i\cdot mn-i\cdot cn&=cr-mr\\
+        i\cdot (mn-cn)&=cr-mr\\
+    	i&=\frac{cr-mr}{mn-cn}
+    \end{align*}
+Die Formel $i=\frac{cr-mr}{mn-cn}$ beschreibt den Zeitpunkt, an dem beide Varianten gleich schnell sind. Durch '$<$' bzw '$>$' kann entschieden werden, welches Verfahren dannach schneller ist. Je nachdem wie genau die Zellgröße dem angegebenen cut-off entpricht kann der Quotient $i$ stark variieren. An der Figure \ref{figure:LaufzeitQuotient}) kann man erkennen, dass durchschnittlich nach 2 Iterationen die Kombinierte Variante schneller ist, als die nur Zellenbasierte Variante.
 \newpage
 \subsection{resultierende Formel}
 	Nachdem aus den vorherigen Kapiteln bekannt ist, wie oft die Datenstruktur neu gebaut werden muss, kann diese Erkenntnis mit dem Verhältnis aus der Dauer des Neubauens kombiniert werden. 
 	\begin{align*}
 		i&=\frac{r \cdot (f - 1)}{s} &\text{'Wie oft?'}\\
-		i&>2&\text{Verhältnis von 'Wie lange?'}\\
+		i&>\frac{cr-mr}{mn-cn}\sim 2&\text{'Wie lange?'}\\
 		2&<\frac{r \cdot (f - 1)}{s}
 	\end{align*}
 	\footnotesize\textbf{Abkürzungen:}\begin{labeling}[~--]{MAX}
@@ -293,7 +347,6 @@ Ziel des dieses Projektes ist die Implementierung einer Partikel-Simulation für
 
 \chapter{Anhang}
 \label{Anhang}
-
 Verwendete Bibliotheken und Programme zum ausführen des Programms
 \begin{itemize}
 	\item Boost
@@ -303,6 +356,9 @@ Verwendete Bibliotheken und Programme zum ausführen des Programms
 	\item CMake 
 	\item Make
 	\item clang-format
+	\begin{itemize}
+		\item automatisches formatieren des Codes
+	\end{itemize}
 	\item paraview
 	\begin{itemize}
 		\item Visualisierung der Ausgabe
@@ -324,6 +380,11 @@ Verwendete Bibliotheken und Programme zum ausführen des Programms
 		\item dieses Dokument
 		\item Präsentationen
 	\end{itemize}
+\end{itemize}
+Verwendete Compiler
+\begin{itemize}
+	\item clang-omp -{}-version\\clang version 3.5.0 \\Target: x86\_64-apple-darwin16.4.0\\Thread model: posix	
+%TODO compiler mit denen getestet wurde ergänzen
 \end{itemize}
 
 
