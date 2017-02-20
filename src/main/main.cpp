@@ -26,8 +26,12 @@ int main (int argc, char** argv) {
     time_start = omp_get_wtime ();
 #endif
     OptionHandler option_handler;
-    if (int return_value = option_handler.handle_options (argc, argv, options))
-        return return_value;
+    try {
+        if (int return_value = option_handler.handle_options (argc, argv, options))
+            return return_value;
+    } catch (...) {
+        return (1);
+    }
     OutputBase*        output        = OutputFactory::build (options);
     BorderBase*        border        = new BorderWrapparound (options.m_bounds);
     AlgorithmBase*     algorithm     = AlgorithmFactory::build (options);
