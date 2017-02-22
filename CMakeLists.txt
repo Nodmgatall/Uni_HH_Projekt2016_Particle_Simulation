@@ -38,6 +38,7 @@ set_target_properties(particle_simulation.x PROPERTIES COMPILE_FLAGS "-O3")
 
 add_executable(particle_simulation_vectorized.x src/main/main.cpp ${sources})
 set_target_properties(particle_simulation_vectorized.x PROPERTIES COMPILE_FLAGS "-O3 -DOPTIMIZED=1")
+set_target_properties(particle_simulation_vectorized.x PROPERTIES COMPILE_DEFINITIONS "-DOPTIMIZED")
 
 if(Boost_FOUND)
 	target_link_libraries(particle_simulation.x ${Boost_LIBRARIES})
