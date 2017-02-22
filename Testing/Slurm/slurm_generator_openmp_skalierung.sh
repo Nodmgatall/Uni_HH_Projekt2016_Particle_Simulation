@@ -6,8 +6,9 @@ var_bounds=$3
 var_initial_speed=$4
 var_radius_extra=$5
 var_threads=$6
+var_vectorized=$7
 
-var_test_name="simulation_${var_datastructure}_${var_radius}_${var_bounds}_${var_initial_speed}_${var_radius_extra}_${var_threads}"
+var_test_name="simulation_${var_datastructure}_${var_radius}_${var_bounds}_${var_initial_speed}_${var_radius_extra}_${var_threads}${var_vectorized}"
 cat > "job_script_${var_test_name}.sh" << EOF
 #!/bin/bash
 #SBATCH --time=01:00:00
@@ -19,7 +20,7 @@ cat > "job_script_${var_test_name}.sh" << EOF
 #SBATCH -n 1
 rm -rf out_64000_particles
 srun hostname
-srun ../../../particle_simulation.x \
+srun ../../../particle_simulation${var_vectorized}.x \
 --algorithm=LENNARD_JONES \
 --data_structure=${var_datastructure} \
 --input=GENERATOR_GRID_DISTRIBUTION --count=64000 \
@@ -43,7 +44,10 @@ for var_cut_off in 1 1.2
 do
 for var_threads in `seq 1 24`
 do
-add_job $var_datastructure 8 80 0 $var_cut_off $var_threads
+for var_vectorized in "" "_vectorized"
+do
+add_job $var_datastructure 8 80 0 $var_cut_off $var_threads $var_vectorized
+done
 done
 done
 done

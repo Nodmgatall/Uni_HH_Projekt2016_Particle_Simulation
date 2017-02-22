@@ -4,6 +4,7 @@ bounds,\
 initial_speed,\
 extra_radius,\
 threads,\
+vectorized,\
 LINKED_CELLS_rebuild_count_1,\
 LINKED_CELLS_rebuild_count_2,\
 LINKED_CELLS_rebuild_count_3,\
@@ -32,6 +33,7 @@ var_bounds=$3
 var_initial_speed=$4
 var_radius_extra=$5
 var_threads=$6
+var_vectorized=$7
 
 var_line_statistics_total_runtime="";
 var_line_statistics_total_datastructure_rebuild_count="";
@@ -41,7 +43,7 @@ for var_datastructure in "LINKED_CELLS" "LINKED_CELLS+NEIGHBOR_LIST";
 do
 for var_run_index in 1 2 3;
 do
-var_test_name="simulation_${var_datastructure}_${var_radius}_${var_bounds}_${var_initial_speed}_${var_radius_extra}_${var_threads}"
+var_test_name="simulation_${var_datastructure}_${var_radius}_${var_bounds}_${var_initial_speed}_${var_radius_extra}_${var_threads}${var_vectorized}"
 file_content=$(cat "${var_run_index}/${var_test_name}.out")
 statistics_total_runtime=$(echo "${file_content}" | grep "statistics.total_runtime" | grep -Eo '[+-]?[0-9]+([.][0-9]+)?')
 statistics_total_datastructure_rebuild_count=$(echo "${file_content}" | grep "statistics.total_datastructure_rebuild_count" | grep -Eo '[+-]?[0-9]+([.][0-9]+)?')
@@ -79,16 +81,19 @@ fi
 var_speedup_grid=$(echo "scale=8; ${var_speedup_grid_0} / ${var_average_times_grid}" | bc -l)
 var_speedup_grid_list=$(echo "scale=8; ${var_speedup_grid_list_0} / ${var_average_times_grid_list}" | bc -l)
 
-echo "${var_row},${var_radius},${var_bounds},${var_initial_speed},${var_radius_extra},${var_threads}${var_line_statistics_total_datastructure_rebuild_count}${var_line_statistics_total_runtime},$var_average_times_grid,$var_average_times_grid_list,$var_speedup_grid,$var_speedup_grid_list"
+echo "${var_row},${var_radius},${var_bounds},${var_initial_speed},${var_radius_extra},${var_threads},${var_vectorized}${var_line_statistics_total_datastructure_rebuild_count}${var_line_statistics_total_runtime},$var_average_times_grid,$var_average_times_grid_list,$var_speedup_grid,$var_speedup_grid_list"
 var_row=$((var_row + 1))
 }
-
-var_datastructure="LINKED_CELLS"
-
+for var_vectorized in "" "_vectorized"
+do
+for var_datastructure in "LINKED_CELLS" "LINKED_CELLS+NEIGHBOR_LIST";
+do
 for var_cut_off in 1 1.2
 do
 for var_threads in `seq 1 24`
 do
-add_job $var_datastructure 8 80 0 $var_cut_off $var_threads
+add_job $var_datastructure 8 80 0 $var_cut_off $var_threads $var_vectorized
+done
+done
 done
 done
