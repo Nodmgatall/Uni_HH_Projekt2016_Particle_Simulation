@@ -86,7 +86,7 @@ var_row=$((var_row + 1))
 }
 for var_vectorized in "" "_vectorized"
 do
-for var_datastructure in "LINKED_CELLS" "LINKED_CELLS+NEIGHBOR_LIST";
+for var_datastructure in "LINKED_CELLS";
 do
 for var_cut_off in 1 1.2
 do
