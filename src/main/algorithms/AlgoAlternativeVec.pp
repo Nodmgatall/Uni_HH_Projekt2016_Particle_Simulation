@@ -1,0 +1,303 @@
+/*
+ * AlgorithmStoermerVerletLennardJones.cpp
+ *
+ *  Created on: Feb 10, 2017
+ *      Author: Oliver Heidmann <oliverheidmann@hotmail.de>
+ *      Author: Benjamin Warnke <4bwarnke@informatik.uni-hamburg.de>
+ */
+#include "AlgorithmStoermerVerletLennardJones.hpp"
+AlgorithmStoermerVerletLennardJones::AlgorithmStoermerVerletLennardJones (s_options& p_options) : AlgorithmBase (p_options) {
+    m_stucture_name   = "AlgorithmStoermerVerletLennardJones";
+    A_ij              = 48 * p_options.m_timestep * p_options.m_timestep;
+    B_ij              = 24 * p_options.m_timestep * p_options.m_timestep;
+    m_i               = 1;
+    m_j               = 1;
+    m_cut_off_squared = p_options.m_cut_off_radius * p_options.m_cut_off_radius;
+}
+void AlgorithmStoermerVerletLennardJones::step_1_local (const data_type& p_position_a, data_type& p_position_b) {
+    p_position_b = p_position_a * 2 - p_position_b;
+}
+void AlgorithmStoermerVerletLennardJones::step_1 (const data_type& p_position_ax,
+                                                  const data_type& p_position_ay,
+                                                  const data_type& p_position_az,
+                                                  data_type&       p_position_bx,
+                                                  data_type&       p_position_by,
+                                                  data_type&       p_position_bz) {
+    step_1_local (p_position_ax, p_position_bx);
+    step_1_local (p_position_ay, p_position_by);
+    step_1_local (p_position_az, p_position_bz);
+}
+#ifndef OPTIMIZED
+void AlgorithmStoermerVerletLennardJones::step_2 (const data_type&       p_position_aix,
+                                                  const data_type&       p_position_aiy,
+                                                  const data_type&       p_position_aiz,
+                                                  data_type&             p_position_bix,
+                                                  data_type&             p_position_biy,
+                                                  data_type&             p_position_biz,
+                                                  const data_type* const p_position_ajx,
+                                                  const data_type* const p_position_ajy,
+                                                  const data_type* const p_position_ajz,
+                                                  data_type* const       p_position_bjx,
+                                                  data_type* const       p_position_bjy,
+                                                  data_type* const       p_position_bjz,
+                                                  const unsigned long    p_index_j_begin,
+                                                  const unsigned long    p_index_j_end) {
+    unsigned long j;
+    for (j = p_index_j_begin; j < p_index_j_end; j++) {
+        // Distance vector calculation
+        const data_type d_x = p_position_ajx[j] - p_position_aix;
+        const data_type d_y = p_position_ajy[j] - p_position_aiy;
+        const data_type d_z = p_position_ajz[j] - p_position_aiz;
+        // distance scalar squared calc
+        const data_type r_ij_2 = d_x * d_x + d_y * d_y + d_z * d_z;
+        if (r_ij_2 < m_cut_off_squared) {
+            const data_type r_ij_4  = r_ij_2 * r_ij_2;
+            const data_type r_ij_6  = r_ij_2 * r_ij_4;
+            const data_type r_ij_14 = r_ij_6 * r_ij_6 * r_ij_2;
+            const data_type s_ij    = (A_ij - B_ij * r_ij_6) / (r_ij_14);
+            const data_type s_ij_x  = s_ij * d_x;
+            const data_type s_ij_y  = s_ij * d_y;
+            const data_type s_ij_z  = s_ij * d_z;
+            p_position_bix -= s_ij_x / m_i;
+            p_position_biy -= s_ij_y / m_i;
+            p_position_biz -= s_ij_z / m_i;
+            p_position_bjx[j] += s_ij_x / m_j;
+            p_position_bjy[j] += s_ij_y / m_j;
+            p_position_bjz[j] += s_ij_z / m_j;
+        }
+    }
+}
+void AlgorithmStoermerVerletLennardJones::step_2_offset (const data_type&       p_offset_position_aix,
+                                                         const data_type&       p_offset_position_aiy,
+                                                         const data_type&       p_offset_position_aiz,
+                                                         const data_type&       p_position_aix,
+                                                         const data_type&       p_position_aiy,
+                                                         const data_type&       p_position_aiz,
+                                                         data_type&             p_position_bix,
+                                                         data_type&             p_position_biy,
+                                                         data_type&             p_position_biz,
+                                                         const data_type* const p_position_ajx,
+                                                         const data_type* const p_position_ajy,
+                                                         const data_type* const p_position_ajz,
+                                                         data_type* const       p_position_bjx,
+                                                         data_type* const       p_position_bjy,
+                                                         data_type* const       p_position_bjz,
+                                                         const unsigned long    p_index_j_begin,
+                                                         const unsigned long    p_index_j_end) {
+    unsigned long   j;
+    const data_type ix = p_position_aix + p_offset_position_aix;
+    const data_type iy = p_position_aiy + p_offset_position_aiy;
+    const data_type iz = p_position_aiz + p_offset_position_aiz;
+    for (j = p_index_j_begin; j < p_index_j_end; j++) {
+        // Distance vector calculation
+        const data_type d_x = p_position_ajx[j] - ix;
+        const data_type d_y = p_position_ajy[j] - iy;
+        const data_type d_z = p_position_ajz[j] - iz;
+        // distance scalar squared calc
+        const data_type r_ij_2 = d_x * d_x + d_y * d_y + d_z * d_z;
+        if (r_ij_2 < m_cut_off_squared) {
+            const data_type r_ij_4  = r_ij_2 * r_ij_2;
+            const data_type r_ij_6  = r_ij_2 * r_ij_4;
+            const data_type r_ij_14 = r_ij_6 * r_ij_6 * r_ij_2;
+            const data_type s_ij    = (A_ij - B_ij * r_ij_6) / (r_ij_14);
+            const data_type s_ij_x  = s_ij * d_x;
+            const data_type s_ij_y  = s_ij * d_y;
+            const data_type s_ij_z  = s_ij * d_z;
+            p_position_bix -= s_ij_x / m_i;
+            p_position_biy -= s_ij_y / m_i;
+            p_position_biz -= s_ij_z / m_i;
+            p_position_bjx[j] += s_ij_x / m_j;
+            p_position_bjy[j] += s_ij_y / m_j;
+            p_position_bjz[j] += s_ij_z / m_j;
+        }
+    }
+}
+#else
+#include <iostream>
+#define SIZE_BLOCK 8
+void AlgorithmStoermerVerletLennardJones::step_2 (const data_type& __restrict__ p_position_aix,
+                                                  const data_type& __restrict__ p_position_aiy,
+                                                  const data_type& __restrict__ p_position_aiz,
+                                                  data_type& __restrict__ p_position_bix,
+                                                  data_type& __restrict__ p_position_biy,
+                                                  data_type& __restrict__ p_position_biz,
+                                                  const data_type* const __restrict__ p_position_ajx,
+                                                  const data_type* const __restrict__ p_position_ajy,
+                                                  const data_type* const __restrict__ p_position_ajz,
+                                                  data_type* const __restrict__ p_position_bjx,
+                                                  data_type* const __restrict__ p_position_bjy,
+                                                  data_type* const __restrict__ p_position_bjz,
+                                                  const unsigned long p_index_j_begin,
+                                                  const unsigned long p_index_j_end) {
+    unsigned long num_calculations = p_index_j_end - p_index_j_begin;
+
+    data_type change_x[SIZE_BLOCK];
+    data_type change_y[SIZE_BLOCK];
+    data_type change_z[SIZE_BLOCK];
+
+    const data_type* const __restrict__ x_pos_other_a = p_position_ajx + p_index_j_begin;
+    const data_type* const __restrict__ y_pos_other_a = p_position_ajy + p_index_j_begin;
+    const data_type* const __restrict__ z_pos_other_a = p_position_ajz + p_index_j_begin;
+
+    data_type* const __restrict__ x_pos_other_b = p_position_bjx + p_index_j_begin;
+    data_type* const __restrict__ y_pos_other_b = p_position_bjy + p_index_j_begin;
+    data_type* const __restrict__ z_pos_other_b = p_position_bjz + p_index_j_begin;
+
+    data_type d_x[SIZE_BLOCK];
+    data_type d_y[SIZE_BLOCK];
+    data_type d_z[SIZE_BLOCK];
+
+    data_type s_ij[SIZE_BLOCK];
+    data_type r_ij_2[SIZE_BLOCK];
+    data_type r_ij_4[SIZE_BLOCK];
+    data_type r_ij_6[SIZE_BLOCK];
+    data_type r_ij_14[SIZE_BLOCK];
+
+    unsigned long l;
+    unsigned long j;
+    unsigned long k;
+    unsigned long num_vec_calculations = (num_calculations / SIZE_BLOCK) * SIZE_BLOCK;
+    unsigned long rest = num_calculations - num_vec_calculations;
+	for(l = 0; l < num_vec_calculations; l +=SIZE_BLOCK){
+		for(k = 0, j = l + k; k < SIZE_BLOCK; k++, j++){	
+       			 d_x[k]    = x_pos_other_a[j] - p_position_aix;
+       			 d_y[k]    = y_pos_other_a[j] - p_position_aiy;
+       			 d_z[k]    = z_pos_other_a[j] - p_position_aiz;
+       			 r_ij_2[k] = d_x[k] * d_x[k] + d_y[k] * d_y[k] + d_z[k] * d_z[k];
+
+       			 // NOTE: badly visible and hidden if statement for vectorization
+       			 // if the squared distance is smaller than the squared cutoff radius
+       			 // s_ij will be set to 1 and later multiplied by its actual value
+       			 // other wise s_ij will be 0 and the multiplication with the potential
+       			 // change will be 0 so that no movement will happen.
+       			 s_ij[k] = r_ij_2[k] < m_cut_off_squared;
+
+       			 r_ij_4[k]  = r_ij_2[k] * r_ij_2[k];
+       			 r_ij_6[k]  = r_ij_2[k] * r_ij_4[k];
+       			 r_ij_14[k] = r_ij_6[k] * r_ij_6[k] * r_ij_2[k];
+       			 s_ij[k] *= (A_ij - B_ij * r_ij_6[k]) / (r_ij_14[k]);
+       			 change_x[k] = (s_ij[k] * d_x[k]) / m_i;
+       			 change_y[k] = (s_ij[k] * d_y[k]) / m_i;
+       			 change_z[k] = (s_ij[k] * d_z[k]) / m_i;
+       			 x_pos_other_b[j] += change_x[k];
+       			 y_pos_other_b[j] += change_y[k];
+       			 z_pos_other_b[j] += change_z[k];
+		}
+		for(int i = 0; i < SIZE_BLOCK; i++){
+			p_position_bix -= change_x[i];
+			p_position_biy -= change_y[i];
+			p_position_biz -= change_z[i];
+		}
+	}
+    // vectorized
+		for(k = 0 ; k < rest; k++){
+			j = l +k;	
+       			 d_x[k]    = x_pos_other_a[j] - p_position_aix;
+       			 d_y[k]    = y_pos_other_a[j] - p_position_aiy;
+       			 d_z[k]    = z_pos_other_a[j] - p_position_aiz;
+       			 r_ij_2[k] = d_x[k] * d_x[k] + d_y[k] * d_y[k] + d_z[k] * d_z[k];
+
+       			 // NOTE: badly visible and hidden if statement for vectorization
+       			 // if the squared distance is smaller than the squared cutoff radius
+       			 // s_ij will be set to 1 and later multiplied by its actual value
+       			 // other wise s_ij will be 0 and the multiplication with the potential
+       			 // change will be 0 so that no movement will happen.
+       			 s_ij[k] = r_ij_2[k] < m_cut_off_squared;
+
+       			 r_ij_4[k]  = r_ij_2[k] * r_ij_2[k];
+       			 r_ij_6[k]  = r_ij_2[k] * r_ij_4[k];
+       			 r_ij_14[k] = r_ij_6[k] * r_ij_6[k] * r_ij_2[k];
+       			 s_ij[k] *= (A_ij - B_ij * r_ij_6[k]) / (r_ij_14[k]);
+       			 change_x[k] = (s_ij[k] * d_x[k]) / m_i;
+       			 change_y[k] = (s_ij[k] * d_y[k]) / m_i;
+       			 change_z[k] = (s_ij[k] * d_z[k]) / m_i;
+       			 x_pos_other_b[j] += change_x[k];
+       			 y_pos_other_b[j] += change_y[k];
+       			 z_pos_other_b[j] += change_z[k];
+		}
+		for(int i = 0; i < 4; i++){
+			p_position_bix -= change_x[i];
+			p_position_biy -= change_y[i];
+			p_position_biz -= change_z[i];
+		}
+}
+void AlgorithmStoermerVerletLennardJones::step_2_offset (const data_type& __restrict__ p_offset_position_aix,
+                                                         const data_type& __restrict__ p_offset_position_aiy,
+                                                         const data_type& __restrict__ p_offset_position_aiz,
+                                                         const data_type& __restrict__ p_position_aix,
+                                                         const data_type& __restrict__ p_position_aiy,
+                                                         const data_type& __restrict__ p_position_aiz,
+                                                         data_type& __restrict__ p_position_bix,
+                                                         data_type& __restrict__ p_position_biy,
+                                                         data_type& __restrict__ p_position_biz,
+                                                         const data_type* const __restrict__ p_position_ajx,
+                                                         const data_type* const __restrict__ p_position_ajy,
+                                                         const data_type* const __restrict__ p_position_ajz,
+                                                         data_type* const __restrict__ p_position_bjx,
+                                                         data_type* const __restrict__ p_position_bjy,
+                                                         data_type* const __restrict__ p_position_bjz,
+                                                         const unsigned long p_index_j_begin,
+                                                         const unsigned long p_index_j_end) {
+    unsigned long num_of_calculations = p_index_j_end - p_index_j_begin;
+
+    data_type change_x;
+    data_type change_y;
+    data_type change_z;
+
+    data_type change_x_sum = 0.0f;
+    data_type change_y_sum = 0.0f;
+    data_type change_z_sum = 0.0f;
+
+    const data_type ix = p_position_aix + p_offset_position_aix;
+    const data_type iy = p_position_aiy + p_offset_position_aiy;
+    const data_type iz = p_position_aiz + p_offset_position_aiz;
+
+    const data_type* const __restrict__ x_pos_other_a = p_position_ajx + p_index_j_begin;
+    const data_type* const __restrict__ y_pos_other_a = p_position_ajy + p_index_j_begin;
+    const data_type* const __restrict__ z_pos_other_a = p_position_ajz + p_index_j_begin;
+
+    data_type* const __restrict__ x_pos_other_b = p_position_bjx + p_index_j_begin;
+    data_type* const __restrict__ y_pos_other_b = p_position_bjy + p_index_j_begin;
+    data_type* const __restrict__ z_pos_other_b = p_position_bjz + p_index_j_begin;
+
+    data_type d_x;
+    data_type d_y;
+    data_type d_z;
+
+    data_type     s_ij;
+    data_type     r_ij_2;
+    data_type     r_ij_4;
+    data_type     r_ij_6;
+    data_type     r_ij_14;
+    unsigned long j;
+    // vectorized
+    for (j = 0; j < num_of_calculations; j++) {
+        d_x    = x_pos_other_a[j] - ix;
+        d_y    = y_pos_other_a[j] - iy;
+        d_z    = z_pos_other_a[j] - iz;
+        r_ij_2 = d_x * d_x + d_y * d_y + d_z * d_z;
+
+        // NOTE: badly visible if statement for vectorization
+        s_ij = r_ij_2 < m_cut_off_squared;
+
+        r_ij_4  = r_ij_2 * r_ij_2;
+        r_ij_6  = r_ij_2 * r_ij_4;
+        r_ij_14 = r_ij_6 * r_ij_6 * r_ij_2;
+
+        s_ij *= (A_ij - B_ij * r_ij_6) / (r_ij_14);
+        change_x = (s_ij * d_x) / m_i;
+        change_y = (s_ij * d_y) / m_i;
+        change_z = (s_ij * d_z) / m_i;
+        x_pos_other_b[j] += change_x;
+        y_pos_other_b[j] += change_y;
+        z_pos_other_b[j] += change_z;
+        change_x_sum += change_x;
+        change_y_sum += change_y;
+        change_z_sum += change_z;
+    }
+    p_position_bix -= change_x_sum;
+    p_position_biy -= change_y_sum;
+    p_position_biz -= change_z_sum;
+}
+
+#endif
