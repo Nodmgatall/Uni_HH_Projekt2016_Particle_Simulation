@@ -53,7 +53,7 @@ aborted=$(echo "${file_content}" | grep "something went badly wrong")
 if [[ $aborted = *[!\ ]* ]]; then
 var_line_statistics_total_datastructure_rebuild_count="$var_line_statistics_total_datastructure_rebuild_count,999999999"
 var_line_statistics_total_runtime="$var_line_statistics_total_runtime,999999999"
-if [ "$var_datastructure" == "GRID" ]; then
+if [ "$var_datastructure" == "LINKED_CELLS" ]; then
 var_sum_square_times_grid=999999999
 else
 var_sum_square_times_grid_list=999999999
@@ -61,7 +61,7 @@ fi
 else
 var_line_statistics_total_datastructure_rebuild_count="$var_line_statistics_total_datastructure_rebuild_count,$statistics_total_datastructure_rebuild_count"
 var_line_statistics_total_runtime="$var_line_statistics_total_runtime,$statistics_total_runtime"
-if [ "$var_datastructure" == "GRID" ]; then
+if [ "$var_datastructure" == "LINKED_CELLS" ]; then
 var_sum_square_times_grid=$(echo "scale=8; ${var_sum_square_times_grid} + ${statistics_total_runtime} * ${statistics_total_runtime}" | bc -l)
 else
 var_sum_square_times_grid_list=$(echo "scale=8; ${var_sum_square_times_grid_list} + ${statistics_total_runtime} * ${statistics_total_runtime}" | bc -l)

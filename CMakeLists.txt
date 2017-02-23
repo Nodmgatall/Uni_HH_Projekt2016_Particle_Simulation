@@ -34,10 +34,10 @@ if (OPENMP_FOUND)
 endif()
 
 add_executable(particle_simulation.x src/main/main.cpp ${sources})
-set_target_properties(particle_simulation.x PROPERTIES COMPILE_FLAGS " -Ofast -fassociative-math ")
+set_target_properties(particle_simulation.x PROPERTIES COMPILE_FLAGS " -Ofast -fassociative-math -funit-at-a-time -funswitch-loops -fprefetch-loop-arrays -fmerge-all-constants ")
 
 add_executable(particle_simulation_vectorized.x src/main/main.cpp ${sources})
-set_target_properties(particle_simulation_vectorized.x PROPERTIES COMPILE_FLAGS " -Ofast -DOPTIMIZED=1 -fassociative-math ")
+set_target_properties(particle_simulation_vectorized.x PROPERTIES COMPILE_FLAGS " -Ofast -DOPTIMIZED=1 -fassociative-math -funit-at-a-time -funswitch-loops -fprefetch-loop-arrays -fmerge-all-constants")
 set_target_properties(particle_simulation_vectorized.x PROPERTIES COMPILE_DEFINITIONS " OPTIMIZED=1 ")
 
 if(Boost_FOUND)
