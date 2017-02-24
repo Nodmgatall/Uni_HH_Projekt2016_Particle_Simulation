@@ -73,7 +73,7 @@ run_64_auto2: build_release
 run_64_particles: build_release
 	cd .. && ./particle_simulation.x \
 			--algorithm=LENNARD_JONES \
-			--data_structure=GRID \
+			--data_structure=LINKED_CELLS \
 			--input=GENERATOR_GRID_DISTRIBUTION --count=64 \
 			--output=FILE_CSV --out_file_name="logdata/out_64_particles"\
 			--max_iterations=8000 \
@@ -86,7 +86,7 @@ run_64_particles: build_release
 run_64_particles_listgrid: build_release
 	cd .. && ./particle_simulation.x \
 			--algorithm=LENNARD_JONES \
-			--data_structure=LISTEDGIRD \
+			--data_structure=LINKED_CELLS+NEIGHBOR_LIST  \
 			--input=GENERATOR_GRID_DISTRIBUTION --count=64 \
 			--output=FILE_CSV --out_file_name="logdata/out_64_particles"\
 			--max_iterations=8000 \
@@ -99,7 +99,7 @@ run_64_particles_listgrid: build_release
 run_64000_particles: build_release
 	cd .. && ./particle_simulation.x \
 			--algorithm=LENNARD_JONES \
-			--data_structure=GRID \
+			--data_structure=LINKED_CELLS \
 			--input=GENERATOR_GRID_DISTRIBUTION --count=64000 \
 			--output=FILE_CSV --out_file_name="logdata/out_64000_particles"\
 			--max_iterations=2000 \
@@ -111,7 +111,7 @@ run_64000_particles: build_release
 run_343_particles: build_release
 	cd .. && ./particle_simulation.x \
 			--algorithm=LENNARD_JONES \
-			--data_structure=GRID \
+			--data_structure=LINKED_CELLS \
 			--input=GENERATOR_GRID_DISTRIBUTION --count=343 \
 			--output=FILE_CSV --out_file_name="logdata/out_343_particles"\
 			--max_iterations=7000 \
@@ -124,7 +124,7 @@ run_2_particles: build_release
 	rm -rf ../logdata/2_particles
 	cd .. && ./particle_simulation.x \
 			--algorithm=LENNARD_JONES \
-			--data_structure=GRID \
+			--data_structure=LINKED_CELLS \
 			--input=FILE_CSV --in_file_name="./Testing/Resources/2_particles.csv" \
 			--output=FILE_CSV+AVI --out_file_name="logdata/out_2_particles"\
 			--max_iterations=7090 \
@@ -137,7 +137,7 @@ run_2_particles_periodic_boundary: build_release
 	rm -rf ../logdata/2_particles
 	cd .. && ./particle_simulation.x \
 			--algorithm=LENNARD_JONES \
-			--data_structure=GRID \
+			--data_structure=LINKED_CELLS \
 			--input=FILE_CSV --in_file_name="./Testing/Resources/2_particles_periodic_boundary.csv" \
 			--output=FILE_CSV --out_file_name="logdata/out_2_particles_boundary"\
 			--max_iterations=7090 \
@@ -151,7 +151,7 @@ run_6_particles: build_release
 	rm -rf ../logdata/6_particles
 	cd .. && ./particle_simulation.x \
 			--algorithm=LENNARD_JONES \
-			--data_structure=GRID \
+			--data_structure=LINKED_CELLS \
 			--input=FILE_CSV --in_file_name="./Testing/Resources/6_particles.csv" \
 			--output=FILE_CSV+AVI --out_file_name="logdata/out_6_particles"\
 			--max_iterations=7090 \
