@@ -287,3 +287,6 @@ void DatastructureNeighborList::list_rebuild (ParticleGroup& p_cell_i, ParticleG
 int DatastructureNeighborList::get_neighbor_index_for_cells (Vec3l& p_idx_i, Vec3l& p_idx_j) {
     return (p_idx_j.x - p_idx_i.x + 1) * 9 + (p_idx_j.y - p_idx_i.y + 1) * 3 + (p_idx_j.z - p_idx_i.z + 1);
 }
+e_datastructure_type DatastructureNeighborList::get_structure_type () {
+    return e_datastructure_type::NEIGHBOR_LIST;
+}

@@ -31,3 +31,6 @@ void DatastructureLinkedCellsNeighborList::grid_step_2b_calculate_between_cells 
     }
     DatastructureNeighborList::list_step_2_calculate (p_cell_i, p_cell_j, m_algorithm, m_idx_a, m_idx_b, p_offset_x, p_offset_y, p_offset_z);
 }
+e_datastructure_type DatastructureLinkedCellsNeighborList::get_structure_type () {
+    return e_datastructure_type::LINKED_CELLS_NEIGHBOR_LIST;
+}

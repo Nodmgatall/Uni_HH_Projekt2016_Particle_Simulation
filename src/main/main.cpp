@@ -32,11 +32,17 @@ int main (int argc, char** argv) {
     } catch (...) {
         return (1);
     }
-    OutputBase*        output        = OutputFactory::build (options);
-    BorderBase*        border        = new BorderWrapparound (options.m_bounds);
-    AlgorithmBase*     algorithm     = AlgorithmFactory::build (options);
+    m_verbose_stream << "a" << std::endl;
+    OutputBase* output = OutputFactory::build (options);
+    m_verbose_stream << "b" << std::endl;
+    BorderBase* border = new BorderWrapparound (options.m_bounds);
+    m_verbose_stream << "c" << std::endl;
+    AlgorithmBase* algorithm = AlgorithmFactory::build (options);
+    m_verbose_stream << "d" << std::endl;
     DatastructureBase* datastructure = 0;
+    m_verbose_stream << "e" << std::endl;
     if (options.m_autotuning) {
+        m_verbose_stream << "f" << std::endl;
         datastructure = Autotuning::get_best_datastructure (options, *border, *algorithm, *output);
     } else {
         datastructure    = DatastructureFactory::build (options, *border, *algorithm, *output);
@@ -44,7 +50,7 @@ int main (int argc, char** argv) {
         input->initialize_datastructure ();
         delete input;
     }
-    ParticleSimulator particle_simulator (options, datastructure);
+    ParticleSimulator particle_simulator (options, output, border, algorithm, datastructure);
     Benchmark::begin ("everything", false);
     particle_simulator.simulate ();
     Benchmark::end ();

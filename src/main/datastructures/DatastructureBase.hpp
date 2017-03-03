@@ -24,10 +24,6 @@ class DatastructureBase {
      */
     std::string m_stucture_name;
     /**
-     * the options passed to the program
-     */
-    s_options& m_options;
-    /**
      * the border-helper-functions
      */
     BorderBase& m_border;
@@ -94,8 +90,13 @@ class DatastructureBase {
      * @param p_cell
      */
     void step_3_fit_into_borders (ParticleGroup& p_cell);
+    void add_particle_internal (Vec3f p_current_position, Vec3f p_last_position, int p_id);
 
   public:
+    /**
+     * the options passed to the program
+     */
+    s_options& m_options;
     /**
      *destructor
      */
@@ -105,9 +106,9 @@ class DatastructureBase {
      * constructor
      */
     DatastructureBase (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, OutputBase& p_writer)
-    : m_options (p_options), m_border (p_border), m_algorithm (p_algorithm), m_writer (p_writer), m_error_happened (false), m_iterations_until_rearange_particles (1),
+    : m_border (p_border), m_algorithm (p_algorithm), m_writer (p_writer), m_error_happened (false), m_iterations_until_rearange_particles (1),
       m_iterations_since_rearange_particles (0), m_idx_a (0), m_idx_b (1), m_max_id (0),
-      m_datastructure_rebuild_last_iteration_flag (true /*list MUST rebuild in first iteration*/), m_particle_groups (0), m_particle_groups_count (0) {
+      m_datastructure_rebuild_last_iteration_flag (true /*list MUST rebuild in first iteration*/), m_particle_groups (0), m_particle_groups_count (0), m_options (p_options) {
         m_iterations_until_rearange_particles = p_options.m_max_iterations_between_datastructure_rebuild;
         m_iterations_since_rearange_particles = p_options.m_max_iterations_between_datastructure_rebuild;
         // -1 because only the additional bonus space is mesured
@@ -120,6 +121,11 @@ class DatastructureBase {
     std::string get_structure_name () {
         return m_stucture_name;
     }
+    /**
+     * @return returns a enum representing this datastructure. Can be used to verify the
+     * class.
+     */
+    virtual e_datastructure_type get_structure_type ();
     /**
      * runs a complete timestep simulation on all particles contained in this
      * datastructure
@@ -153,6 +159,15 @@ class DatastructureBase {
      * calculates, based on particlespeed when the datastructure should berebuild the next time
      */
     void calculate_next_datastructure_rebuild ();
+    /**
+     * transfers the internally stored particles to another datastructure.
+     */
+    void transfer_particles_to (DatastructureBase* p_datastructure);
+    /**
+     * analyses the already given particles and returns which datastructure would be the fastest.
+     * this function modifies p_options.m_initial_speed and p_options.m_input_type
+     */
+    void analyse ();
 };
 // TODO phillip erinnern geschwindigkeitsinitialisierung
 #endif

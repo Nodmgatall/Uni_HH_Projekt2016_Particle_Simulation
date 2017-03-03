@@ -513,3 +513,6 @@ inline void DatastructureLinkedCells::grid_moveParticle (ParticleGroup& p_cell_f
 void DatastructureLinkedCells::add_particle (Vec3f p_position) {
     add_particle (p_position, Vec3f (0));
 }
+e_datastructure_type DatastructureLinkedCells::get_structure_type () {
+    return e_datastructure_type::LINKED_CELLS;
+}

@@ -33,6 +33,19 @@ build: format
 
 rmlog: format
 	rm -rf ../logdata
+run_64000_auto_rebuild_test: build_release
+	cd .. && ./particle_simulation.x \
+			--algorithm=LENNARD_JONES \
+			--autotuning \
+			--input=GENERATOR_GRID_DISTRIBUTION --count=64000 \
+			--output=VOID \
+			--max_iterations=8000 \
+			--cut_off_radius=3 \
+			--timestep=0.005 \
+			--bounds=100/100/100 \
+			--speed=0.001 \
+			--cut_off_extra_factor=1.00005 \
+			--verbose
 run_343_auto: build_release
 	cd .. && ./particle_simulation.x \
 			--algorithm=LENNARD_JONES \

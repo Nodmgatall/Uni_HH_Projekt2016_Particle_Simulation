@@ -42,5 +42,6 @@ class DatastructureNeighborList : public DatastructureBase {
      * returns the index in the neighborhoodlist for the first cell
      */
     static int get_neighbor_index_for_cells (Vec3l& p_idx_i, Vec3l& p_idx_j);
+    e_datastructure_type get_structure_type () override;
 };
 #endif /* SRC_MAIN_DATASTRUCTURES_DATASTRUCTURENEIGHBORLIST_HPP_ */

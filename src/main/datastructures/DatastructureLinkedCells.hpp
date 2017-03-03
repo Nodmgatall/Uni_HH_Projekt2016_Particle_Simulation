@@ -115,5 +115,6 @@ class DatastructureLinkedCells : public DatastructureBase {
     void add_particle (Vec3f p_position) override;
     void add_particle (Vec3f p_current_position, Vec3f p_current_velocity, int p_id = -1) override;
     static Vec3l getSize (s_options& p_options);
+    e_datastructure_type get_structure_type () override;
 };
 #endif

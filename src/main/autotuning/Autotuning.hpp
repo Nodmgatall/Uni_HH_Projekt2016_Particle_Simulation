@@ -11,24 +11,37 @@
 #include "io/input/InputBase.hpp"
 #include "io/input/InputFactory.hpp"
 #include "options/Options.hpp"
-#include <autotuning/DatastructureAnalyser.hpp>
 class Autotuning {
   public:
     /**
      * returns an fully initialized datastructure which should be the fastest for the given input
      */
-    static inline DatastructureBase* get_best_datastructure (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, OutputBase& p_writer) {
-        DatastructureAnalyser* analyser = 0;
-        if ((p_options.m_input_type == e_input_type::GENERATOR_RANDOM) || (p_options.m_input_type == e_input_type::FILE_CSV)) {
+    static inline DatastructureBase*
+        get_best_datastructure (s_options& p_options, BorderBase& p_border, AlgorithmBase& p_algorithm, OutputBase& p_writer, DatastructureBase* datastructure_original = NULL) {
+        m_standard_stream << "a" << std::endl;
+        if (datastructure_original) {
+            m_standard_stream << "b" << std::endl;
+            datastructure_original->analyse ();
+            m_standard_stream << "c" << std::endl;
+            p_options.m_initial_speed       = datastructure_original->m_options.m_initial_speed;
+            p_options.m_data_structure_type = datastructure_original->m_options.m_data_structure_type;
+            m_standard_stream << "d" << std::endl;
+        } else if ((p_options.m_input_type == e_input_type::GENERATOR_RANDOM) || (p_options.m_input_type == e_input_type::FILE_CSV)) {
             // TODO unknown
-            analyser         = new DatastructureAnalyser (p_options, p_border, p_algorithm, p_writer);
-            InputBase* input = InputFactory::build (p_options, *analyser);
+            datastructure_original = new DatastructureLinkedCells (p_options, p_border, p_algorithm, p_writer);
+            InputBase* input       = InputFactory::build (p_options, *datastructure_original);
             input->initialize_datastructure ();
-            analyser->analyse ();
+            datastructure_original->analyse ();
+            p_options.m_initial_speed       = datastructure_original->m_options.m_initial_speed;
+            p_options.m_data_structure_type = datastructure_original->m_options.m_data_structure_type;
         }
+        m_standard_stream << "e" << std::endl;
         Vec3l              tmp                    = DatastructureLinkedCells::getSize (p_options);
         data_type          distance_until_rebuild = MAX (p_options.m_cut_off_radius * (p_options.m_cut_off_radius_extra_factor - 1.0), 0);
         unsigned long long particles_per_cell     = p_options.m_particle_count / (tmp.x * tmp.y * tmp.z);
+        m_standard_stream << "f" << std::endl;
+        m_standard_stream << "autotuneing-choosing (" << p_options.m_initial_speed * p_options.m_timestep * 2.0 << "<" << distance_until_rebuild << ")"
+                          << " speed=" << p_options.m_initial_speed << std::endl;
         if (36 < particles_per_cell) {
             // if there are too much particles per cell, then the additional cost for list construction are more expensive than the actual calculation
             p_options.m_data_structure_type = e_datastructure_type::LINKED_CELLS;
@@ -70,20 +83,36 @@ class Autotuning {
                 }
             }
         }
-        DatastructureBase* result = DatastructureFactory::build (p_options, p_border, p_algorithm, p_writer);
-        if (analyser) {
-            // do not load an file again ...
-            // if random is generated again, everything could be different
-            analyser->transfer_particles_to (*result);
-            delete analyser;
+        m_standard_stream << "g" << std::endl;
+        DatastructureBase* result = NULL;
+        if (datastructure_original && (datastructure_original->get_structure_type () == p_options.m_data_structure_type)) {
+            result = datastructure_original;
+            m_standard_stream << "autotuneing-choosing-not-switching " << p_options.m_data_structure_type << std::endl;
         } else {
-            // the generator generates an distribution which will fit in certain criteria so no
-            // transfer needed. instead particles can be generated directly into the final
-            // datastructure
-            InputBase* input = InputFactory::build (p_options, *result);
-            input->initialize_datastructure ();
-            delete input;
+            m_standard_stream << p_options.m_data_structure_type << std::endl;
+            result = DatastructureFactory::build (p_options, p_border, p_algorithm, p_writer);
+            if (datastructure_original) {
+                m_standard_stream << "h" << std::endl;
+                m_standard_stream << result << std::endl;
+                m_standard_stream << datastructure_original << std::endl;
+                // do not load an file again ...
+                // if random is generated again, everything could be different
+                datastructure_original->transfer_particles_to (result);
+                m_standard_stream << "i" << std::endl;
+                delete datastructure_original;
+                m_standard_stream << "j" << std::endl;
+                m_standard_stream << "autotuneing-choosing-with-switching " << p_options.m_data_structure_type << std::endl;
+            } else {
+                // the generator generates an distribution which will fit in certain criteria so no
+                // transfer needed. instead particles can be generated directly into the final
+                // datastructure
+                InputBase* input = InputFactory::build (p_options, *result);
+                input->initialize_datastructure ();
+                delete input;
+                m_standard_stream << "autotuneing-choosing-initial " << p_options.m_data_structure_type << std::endl;
+            }
         }
+        m_standard_stream << "k" << std::endl;
         return result;
     }
 };

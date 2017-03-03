@@ -24,5 +24,6 @@ class DatastructureLinkedCellsNeighborList : public DatastructureLinkedCells {
      * destructor
      */
     virtual ~DatastructureLinkedCellsNeighborList ();
+    e_datastructure_type get_structure_type () override;
 };
 #endif /* SRC_MAIN_DATASTRUCTURES_DATASTRUCTURELINKEDCELLSNEIGHBORLIST_HPP_ */
